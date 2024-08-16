@@ -2,11 +2,11 @@ import { modalControllers } from "../modal/modal.js";
 import productoServices from "../services/product_services.js";
 
 class ProductCard {
-  constructor(description, name, imagePath, price, id) {
-    this.description = description;
+  constructor( name, price,imagePath, description, id) {
     this.name = name;
-    this.imagePath = imagePath;
     this.price = price;
+    this.imagePath = imagePath;
+    this.description = description;
     this.id = id;
   }
 
@@ -35,8 +35,8 @@ class ProductCard {
     card.querySelector("a").addEventListener("click", (e) => {
       e.preventDefault();
       ProductEventHandler.handleShow(
-        this.imagePath,
         this.name,
+        this.imagePath,
         this.description
       );
     });
@@ -49,11 +49,12 @@ class ProductCard {
     card.querySelector("[data-edit]").addEventListener("click", async (e) => {
       e.preventDefault();
       ProductEventHandler.handleEdit(
-        this.id,
+   
         this.name,
         this.price,
         this.imagePath,
-        this.description
+        this.description,
+        this.id,
       );
     });
 
@@ -66,9 +67,9 @@ class ProductEventHandler {
     // No hay necesidad de almacenar datos aquí por ahora
   }
 
-  static handleShow(imagePath, name, description) {
+  static handleShow(name, imagePath,description,) {
     try {
-      mostrarProducto(imagePath, name, description);
+      mostrarProducto(name, imagePath, description);
     } catch (err) {
       console.log(err);
     }
@@ -82,7 +83,7 @@ class ProductEventHandler {
     }
   }
 
-  static async handleEdit(id, name, price, imagePath, description) {
+  static async handleEdit(name, price, imagePath, description,id) {
     try {
       await productoServices.detalleProducto(id);
       const productEditor = new ProductEditor();
@@ -168,7 +169,7 @@ class ProductEditor {
   }
 }
 
-const mostrarProducto = (imagePath, name, description) => {
+const mostrarProducto = (name, price,imagePath, description) => {
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
   const mostrarProducto = modal.querySelector("[data-table]");
@@ -181,6 +182,7 @@ const mostrarProducto = (imagePath, name, description) => {
                 <div class="col-md-6 mx-auto ">
                     <div class="card-body">
                       <h3 class="card-title">${name}</h3>
+                      <p class="card-text">${"$" + price}</p>
                       <br>
                       <h7 class="card-text" style="overflow: auto;">${description}</h7>
                     </div>
@@ -198,11 +200,11 @@ const renderProducts = async () => {
     const { products } = listaProductos;
 
     for (const producto of products) {
-      const productCard = new ProductCard(
-        producto.description,
+      const productCard = new ProductCard( 
         producto.name,
-        producto.imagePath,
         producto.price,
+        producto.imagePath,
+        producto.description,
         producto._id
       );
       // Renderizar el producto y adjuntar al contenedor adecuado

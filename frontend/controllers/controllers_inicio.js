@@ -5,7 +5,7 @@ class ProductInit {
   constructor() {
   }
 
-  productoInicio(description, name, imagePath) {
+  productoInicio(name, price, imagePath,description) {
     const card = document.createElement("div");
     const contenido = `
       <div class="container mx-auto mt-4">
@@ -14,6 +14,7 @@ class ProductInit {
         </div>
         <div class="card-body">
           <a href="#">ver producto </a>
+          <p class="card-text">${"$" + price}</p>
           <h3 class="card-title">${name}</h3>
         </div>
       </div>
@@ -25,7 +26,7 @@ class ProductInit {
     card.querySelector("a").addEventListener("click", (e) => {
       e.preventDefault();
       try {
-        controllers.mostrarProducto(imagePath, name, description);
+        controllers.mostrarProducto(name, price, imagePath,  description);
       } catch (err) {
         console.log(err);
       }
@@ -41,18 +42,20 @@ class ProductInit {
 
       for (const producto of products) {
         this.productoInicio(
-          producto.description,
           producto.name,
-          producto.imagePath
+          producto.price,
+          producto.imagePath,
+          producto.description,
+
         );
         // Renderizar el producto y adjuntar al contenedor adecuado
-        document
-          .querySelector(`[data-${producto.section}]`)
+        document.querySelector(`[data-${producto.section}]`)
           .appendChild(
             this.productoInicio(
-              producto.description,
               producto.name,
-              producto.imagePath
+              producto.price,
+              producto.imagePath,
+              producto.description,
             )
           );
       }
