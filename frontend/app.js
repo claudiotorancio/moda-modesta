@@ -38,12 +38,16 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarUsuario.style.display = "none";
     logoutUsuario.style.display = "none";
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
+    crearproducto.innerHTML = 'Destacados'
   }
 
   // Evento para crear un producto
-  crearproducto.addEventListener("click", () => {
+  if(user){ crearproducto.addEventListener("click", () => {
     productForm.render();
-  });
+  });}else {
+
+  }
+ 
 
   // Evento para iniciar sesión
   const login = document.querySelector("[data-log]");

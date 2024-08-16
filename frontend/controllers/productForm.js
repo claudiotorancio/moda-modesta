@@ -51,7 +51,7 @@ export class ProductForm {
                     <div class="form-group">
                         <select class="form-control  mb-3 p-2" id="miMenuDesplegable" name="section">
                             <option value="opcion1">Vestidos</option>
-                            <option value="opcion2">polleras</option>
+                            <option value="opcion2">Polleras</option>
                             <option value="opcion3">Diversos</option>
                         </select>
                     </div>
