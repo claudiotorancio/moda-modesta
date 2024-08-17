@@ -9,8 +9,7 @@ const ProductSchema = new Schema ({
     description: {type: String},
     section:{type: String},
     user_id: { type: Schema.Types.ObjectId, ref: 'Users' },
-    created_at: {type: Date, default: Date.now},
-    sizes: [string]
+    created_at: {type: Date, default: Date.now}
 }, {
     versionKey:false
 });
