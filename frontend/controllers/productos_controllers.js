@@ -83,11 +83,11 @@ class ProductEventHandler {
     }
   }
 
-  static async handleEdit(name, price, imagePath, description, sizes, id) {
+  static async handleEdit(name, price, imagePath, description,id) {
     try {
       await productoServices.detalleProducto(id);
       const productEditor = new ProductEditor();
-      productEditor.editProduct(name, price, imagePath, description, sizes, id);
+      productEditor.editProduct(name, price, imagePath, description, id);
     } catch (error) {
       console.error("Error al obtener el detalle del producto:", error);
       alert(
@@ -108,37 +108,36 @@ class ProductEditor {
     this.setupFormSubmitHandler(id);
   }
 
-  renderEditor(name, price, imagePath, description, id) {
+  renderEditor(name, price, imagePath, description, sizes, id) {
     modalControllers.baseModal();
     this.productoEdicion.innerHTML = `
       <div class="text-center">
         <div class="card-header">
-        
           <img class="img-card-top mx-auto" style="width: 10rem;" src="${imagePath}" alt="">
-         
-          <form action="/api/updateProduct/" id="form"  enctype="multipart/form-data" method="PUT" data-forma>                
+          <form action="/api/updateProduct/${id}" id="form" enctype="multipart/form-data" method="POST" data-forma>
             <p class="parrafo">Producto a editar</p>
-            <div class="form-group"> 
-              <input class="form-control p-2" placeholder="imageUrl" type="file" name="imagePath" value="${imagePath}" data-image autofocus >
+            <div class="form-group">
+              <input class="form-control p-2" placeholder="imageUrl" type="file" name="imagePath" data-image autofocus>
               <input type="hidden" class="oldImagePath" name="oldImagePath" value="${imagePath}" data-oldPath>
             </div>
             <div class="form-group">
-              <input class="form-control mt-3 p-2" placeholder="nombre" type="text" value="${name}" required data-nombre >
+              <input class="form-control mt-3 p-2" placeholder="nombre" type="text" value="${name}" required data-nombre>
             </div>
-            <div class="form-group"> 
+            <div class="form-group">
               <input class="form-control mt-3 mb-3 p-2" placeholder="precio" type="text" value="${price}" required data-precio>
             </div>
-            <div class="form-group"> 
-              <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripcion" type="text" required data-description>${description}</textarea>
+            <div class="form-group">
+              <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" required data-description>${description}</textarea>
             </div>
-              <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1" >
-            <label class="form-check-label" for="talle1">Talle 1</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
-            <label class="form-check-label" for="talle2">Talle 2</label>
-                    </div>
+            <div class="form-group">
+              <label>Talles disponibles:</label>
+              ${sizes.map((size) => `
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="${size}" name="sizes" id="size-${size}" checked>
+                  <label class="form-check-label" for="size-${size}">${size}</label>
+                </div>
+              `).join('')}
+            </div>
             <div>
               <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
             </div>
@@ -161,26 +160,30 @@ class ProductEditor {
       const oldImagePath = document.querySelector("[data-oldPath]").value;
 
       const selectedSizes = Array.from(document.querySelectorAll('input[name="sizes"]:checked'))
-      .map(checkbox => checkbox.value);
+        .map(checkbox => checkbox.value);
 
       const dataEdit = new FormData();
-      dataEdit.append("imagePath", imagePath);
+      if (imagePath) {
+        dataEdit.append("imagePath", imagePath);
+      }
       dataEdit.append("name", name);
       dataEdit.append("price", price);
       dataEdit.append("description", description);
       dataEdit.append("oldImagePath", oldImagePath);
 
-      selectedSizes.forEach(size => productData.append("sizes[]", size));
+      selectedSizes.forEach(size => dataEdit.append("sizes[]", size));
 
       try {
         await productoServices.actualizarProducto(dataEdit, id);
         modalControllers.modalProductoEditado();
       } catch (err) {
-        console.log(err);
+        console.error("Error al actualizar el producto:", err);
+        alert("Ocurrió un error al actualizar el producto. Por favor, intenta nuevamente.");
       }
     });
   }
 }
+
 
 const mostrarProducto = (name, imagePath, sizes, description) => {
   modalControllers.baseModal();
