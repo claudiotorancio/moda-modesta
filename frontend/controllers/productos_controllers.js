@@ -38,8 +38,9 @@ class ProductCard {
       ProductEventHandler.handleShow(
         this.name,
         this.imagePath,
-        this.description,
-        this.sizes
+        this.sizes,
+        this.description
+        
       );
     });
 
