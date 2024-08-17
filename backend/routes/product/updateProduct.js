@@ -22,6 +22,8 @@ const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, price, description, oldImagePath, sizes } = req.body;
 
+    console.log(req.body)
+
     // Verificar si se proporciona una nueva imagen en el formulario de edición
     let imagePath = oldImagePath;
     if (req.file) {

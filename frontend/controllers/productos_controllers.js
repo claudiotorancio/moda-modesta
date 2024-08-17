@@ -83,11 +83,11 @@ class ProductEventHandler {
     }
   }
 
-  static async handleEdit(name, price, imagePath, description,id) {
+  static async handleEdit(name, price, imagePath, description, sizes, id) {
     try {
       await productoServices.detalleProducto(id);
       const productEditor = new ProductEditor();
-      productEditor.editProduct(name, price, imagePath, description, id);
+      productEditor.editProduct(name, price, imagePath, description, sizes, id);
     } catch (error) {
       console.error("Error al obtener el detalle del producto:", error);
       alert(
@@ -103,8 +103,8 @@ class ProductEditor {
     this.productoEdicion = this.modal.querySelector("[data-table]");
   }
 
-  editProduct(name, price, imagePath, description, id) {
-    this.renderEditor(name, price, imagePath, description, id);
+  editProduct(name, price, imagePath, description, sizes, id) {
+    this.renderEditor(name, price, imagePath, description, sizes, id);
     this.setupFormSubmitHandler(id);
   }
 
