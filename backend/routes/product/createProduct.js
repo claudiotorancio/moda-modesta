@@ -21,7 +21,7 @@ const createProduct = async (req, res) => {
             // Valores del formulario
             const { name, price, description, section, sizes } = req.body;
             const imagePath = req.file.location;
-            const user_id = req.user;
+            const user_id = req.user._id;
 console.log(req.body)
             // Crear los datos del producto
             const createProductData = {
