@@ -14,8 +14,9 @@ class ProductInit {
         </div>
         <div class="card-body">
           <a href="#">ver producto </a>
+           <h3 class="card-title">${name}</h3>
           <p class="card-text">${"$" + price}</p>
-          <h3 class="card-title">${name}</h3>
+         
         </div>
       </div>
     `;
@@ -26,7 +27,7 @@ class ProductInit {
     card.querySelector("a").addEventListener("click", (e) => {
       e.preventDefault();
       try {
-        controllers.mostrarProducto(name, price, imagePath,  description);
+        controllers.mostrarProducto(name, imagePath,  description);
       } catch (err) {
         console.log(err);
       }

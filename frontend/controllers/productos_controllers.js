@@ -169,30 +169,64 @@ class ProductEditor {
   }
 }
 
-const mostrarProducto = (name, price,imagePath, description) => {
+const mostrarProducto = (name, imagePath, description) => {
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
   const mostrarProducto = modal.querySelector("[data-table]");
+
   mostrarProducto.innerHTML = `
-        <div class="contenido_container">
-            <div class="row">
-                <div class="col-md-6 mx-auto ">                
-                      <img class="card-img-top" src=${imagePath} alt="">         
-                </div>
-                <div class="col-md-6 mx-auto ">
-                    <div class="card-body">
-                      <h3 class="card-title">${name}</h3>
-                      <p class="card-text">${"$" + price}</p>
-                      <br>
-                      <h7 class="card-text" style="overflow: auto;">${description}</h7>
-                    </div>
-                </div
-            </div>
+    <div class="contenido_container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <img class="card-img-top" src="${imagePath}" alt="">
         </div>
-    `;
+        <div class="col-md-6 mx-auto d-flex flex-column">
+          <div class="card-body">
+            <h3 class="card-title">${name}</h3>
+            <br>
+            <!-- Área de descripción con altura fija -->
+            <div class="card-text" style="height: 150px; overflow-y: auto;">
+              ${description}
+            </div>
+          </div>
+          
+          <!-- Pie del modal -->
+          <div class="mt-auto pt-3">
+            <!-- Menú desplegable de talles -->
+            <label for="variation_1">Talles disponibles</label>
+            <select id="variation_1" class="form-select mb-1">
+              <option value="talle1">Talle 1</option>
+              <option value="talle2" selected>Talle 2</option>
+              <option value="talle3">Talle 3</option>
+              <option value="talle4">Talle 4</option>
+              <option value="talle5">Talle 5</option>
+            </select>
+
+            <!-- Selector de cantidad y botón de carrito -->
+            <div class="form-row align-items-center">
+             
+              <div class="mx-auto">
+                <a href="https://wa.me/5492954606273" class="btn btn-primary btn-block mt-4">Consulta  <i class="fa-brands fa-whatsapp"></i>  </a>
+              </div>
+           
+            </div>
+          </div>
+             <span class="text-accent">10% de descuento, pagando con Transferencia o depósito bancario (Los datos te llegarán vía mail) *PLAZO MÁXIMO 2HS*
+</span>
+          <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-alternates: normal; font-variant-position: normal; vertical-align: baseline; white-space-collapse: preserve;">
+          Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.
+          </em>
+        </div>
+      </div>
+    </div>
+  `;
 
   mostrarProducto.classList.add("modalVisor");
 };
+
+
+
+
 
 const renderProducts = async () => {
   try {
