@@ -67,9 +67,9 @@ class ProductEventHandler {
     // No hay necesidad de almacenar datos aquí por ahora
   }
 
-  static handleShow(name, imagePath,description,) {
+  static handleShow(name, imagePath, sizes, description,) {
     try {
-      mostrarProducto(name, imagePath, description);
+      mostrarProducto(name, imagePath, sizes, description);
     } catch (err) {
       console.log(err);
     }
@@ -83,11 +83,11 @@ class ProductEventHandler {
     }
   }
 
-  static async handleEdit(name, price, imagePath, description,id) {
+  static async handleEdit(name, price, imagePath, sizes, description,id) {
     try {
       await productoServices.detalleProducto(id);
       const productEditor = new ProductEditor();
-      productEditor.editProduct(name, price, imagePath, description, id);
+      productEditor.editProduct(name, price, imagePath, sizes, description, id);
     } catch (error) {
       console.error("Error al obtener el detalle del producto:", error);
       alert(
