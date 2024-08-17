@@ -2,7 +2,7 @@ import { modalControllers } from "../modal/modal.js";
 import productoServices from "../services/product_services.js";
 
 class ProductCard {
-  constructor( name, price,imagePath, description, id) {
+  constructor(name, price, imagePath, description, id) {
     this.name = name;
     this.price = price;
     this.imagePath = imagePath;
@@ -49,12 +49,11 @@ class ProductCard {
     card.querySelector("[data-edit]").addEventListener("click", async (e) => {
       e.preventDefault();
       ProductEventHandler.handleEdit(
-   
         this.name,
         this.price,
         this.imagePath,
         this.description,
-        this.id,
+        this.id
       );
     });
 
@@ -67,7 +66,7 @@ class ProductEventHandler {
     // No hay necesidad de almacenar datos aquí por ahora
   }
 
-  static handleShow(name, imagePath, sizes, description,) {
+  static handleShow(name, imagePath, sizes, description) {
     try {
       mostrarProducto(name, imagePath, sizes, description);
     } catch (err) {
@@ -83,7 +82,7 @@ class ProductEventHandler {
     }
   }
 
-  static async handleEdit(name, price, imagePath, sizes, description,id) {
+  static async handleEdit(name, price, imagePath, sizes, description, id) {
     try {
       await productoServices.detalleProducto(id);
       const productEditor = new ProductEditor();
@@ -108,8 +107,17 @@ class ProductEditor {
     this.setupFormSubmitHandler(id);
   }
 
-  renderEditor(name, price, imagePath, description,  id) {
+  renderEditor(name, price, imagePath, description, sizes, id) {
     modalControllers.baseModal();
+    // Generar las opciones del select a partir del array sizes
+    const opcionesTalles = sizes
+      .map(
+        (size) => `
+    <option value="${size}">${size}</option>
+  `
+      )
+      .join("");
+
     this.productoEdicion.innerHTML = `
       <div class="text-center">
         <div class="card-header">
@@ -129,16 +137,24 @@ class ProductEditor {
             <div class="form-group">
               <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" required data-description>${description}</textarea>
             </div>
-            <div class="form-group">
-               <div class="form-check">
+
+            <div class="mt-auto pt-3">
+            <!-- Menú desplegable de talles -->
+            <label for="variation_1">Talles disponibles</label>
+            <select id="variation_1" class="form-select mb-3">
+            ${opcionesTalles}
+            </select>
+            </div>
+           
+              <div class="form-check">
             <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1" >
             <label class="form-check-label" for="talle1">Talle 1</label>
           </div>
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
             <label class="form-check-label" for="talle2">Talle 2</label>
-                    </div>
-            <div>
+               </div>
+        
               <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
             </div>
           </form>
@@ -159,8 +175,9 @@ class ProductEditor {
       const imagePath = document.querySelector("[data-image]").files[0];
       const oldImagePath = document.querySelector("[data-oldPath]").value;
 
-      const selectedSizes = Array.from(document.querySelectorAll('input[name="sizes"]:checked'))
-        .map(checkbox => checkbox.value);
+      const selectedSizes = Array.from(
+        document.querySelectorAll('input[name="sizes"]:checked')
+      ).map((checkbox) => checkbox.value);
 
       const dataEdit = new FormData();
       if (imagePath) {
@@ -171,19 +188,20 @@ class ProductEditor {
       dataEdit.append("description", description);
       dataEdit.append("oldImagePath", oldImagePath);
 
-      selectedSizes.forEach(size => dataEdit.append("sizes[]", size));
+      selectedSizes.forEach((size) => dataEdit.append("sizes[]", size));
 
       try {
         await productoServices.actualizarProducto(dataEdit, id);
         modalControllers.modalProductoEditado();
       } catch (err) {
         console.error("Error al actualizar el producto:", err);
-        alert("Ocurrió un error al actualizar el producto. Por favor, intenta nuevamente.");
+        alert(
+          "Ocurrió un error al actualizar el producto. Por favor, intenta nuevamente."
+        );
       }
     });
   }
 }
-
 
 const mostrarProducto = (name, imagePath, sizes, description) => {
   modalControllers.baseModal();
@@ -191,10 +209,13 @@ const mostrarProducto = (name, imagePath, sizes, description) => {
   const mostrarProducto = modal.querySelector("[data-table]");
 
   // Generar las opciones del select a partir del array sizes
-  const opcionesTalles = sizes.map(size => `
+  const opcionesTalles = sizes
+    .map(
+      (size) => `
     <option value="${size}">${size}</option>
-  `).join('');
-
+  `
+    )
+    .join("");
 
   mostrarProducto.innerHTML = `
     <div class="contenido_container">
@@ -242,24 +263,19 @@ const mostrarProducto = (name, imagePath, sizes, description) => {
   mostrarProducto.classList.add("modalVisor");
 };
 
-
-
-
-
 const renderProducts = async () => {
   try {
     const listaProductos = await productoServices.listaProductos();
     const { products } = listaProductos;
 
     for (const producto of products) {
-      const productCard = new ProductCard( 
+      const productCard = new ProductCard(
         producto.name,
         producto.price,
         producto.imagePath,
         producto.description,
         producto.sizes,
         producto._id
-        
       );
       // Renderizar el producto y adjuntar al contenedor adecuado
       document

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import MONGODB_URI from "../../config.js";
-import Product from "../../models/Product.js";
+import Vista from "../../models/Vista.js";
 
 
 const detailsProduct = async (req, res) => {
@@ -14,7 +14,7 @@ const detailsProduct = async (req, res) => {
         //buscar producto con su id
         const productId = req.params.id
 
-        const product = await Product.findById(productId)
+        const product = await Vista.findById(productId)
 
         res.json({ message: 'Product finded', product });
     } catch (error) {
