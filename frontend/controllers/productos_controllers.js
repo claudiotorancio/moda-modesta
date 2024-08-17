@@ -2,11 +2,12 @@ import { modalControllers } from "../modal/modal.js";
 import productoServices from "../services/product_services.js";
 
 class ProductCard {
-  constructor(name, price, imagePath, description, id) {
+  constructor(name, price, imagePath, description, sizes, id) {
     this.name = name;
     this.price = price;
     this.imagePath = imagePath;
     this.description = description;
+    this.sizes = sizes
     this.id = id;
   }
 
@@ -37,7 +38,8 @@ class ProductCard {
       ProductEventHandler.handleShow(
         this.name,
         this.imagePath,
-        this.description
+        this.description,
+        this.sizes
       );
     });
 
@@ -53,6 +55,7 @@ class ProductCard {
         this.price,
         this.imagePath,
         this.description,
+        this.sizes,
         this.id
       );
     });
