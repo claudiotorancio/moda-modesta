@@ -6,7 +6,7 @@ import Vista from "../../models/Vista.js";
 
 const createProduct = async (req, res) => {
     try {
-        // Verificar si el usuario está autenticado
+        // // Verificar si el usuario está autenticado
         if (!req.isAuthenticated()) {
             return res.status(401).json({ error: 'Usuario no autenticado' });
         }
@@ -19,16 +19,17 @@ const createProduct = async (req, res) => {
             }
 
             // Valores del formulario
-            const { name, price, description, section } = req.body;
+            const { name, price, description, section, sizes } = req.body;
             const imagePath = req.file.location;
-            const user_id = req.user._id;
-
+            const user_id = req.user;
+console.log(req.body)
             // Crear los datos del producto
             const createProductData = {
                 name,
                 price,
                 description,
                 section,
+                sizes: Array.isArray(sizes) ? sizes : [sizes],
                 imagePath,
                 user_id
             };

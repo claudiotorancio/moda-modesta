@@ -54,7 +54,15 @@ export class ProductForm {
                             <option value="opcion2">Polleras</option>
                             <option value="opcion3">Diversos</option>
                         </select>
+                        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1" >
+            <label class="form-check-label" for="talle1">Talle 1</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
+            <label class="form-check-label" for="talle2">Talle 2</label>
                     </div>
+                    
                     <button type="submit" class="btn btn-primary btn-lg">Agregar</button>
                 </form>
             </div>
@@ -82,6 +90,10 @@ export class ProductForm {
     const section = document.getElementById("miMenuDesplegable").value;
     const image = document.querySelector("[data-imageUrl]").files[0];
 
+    // Captura todos los checkboxes seleccionados
+    const selectedSizes = Array.from(document.querySelectorAll('input[name="sizes"]:checked'))
+        .map(checkbox => checkbox.value);
+
     const productData = new FormData();
     productData.append("name", name);
     productData.append("price", price);
@@ -89,18 +101,18 @@ export class ProductForm {
     productData.append("section", section);
     productData.append("image", image);
 
+    // Agrega los talles seleccionados al FormData
+    selectedSizes.forEach(size => productData.append("sizes[]", size));
+
     const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
-    if (user) {
     try {
       await productoServices.crearProducto(productData);
       modalControllers.modalProductoCreado();
     } catch (error) {
       console.error(error);
     }
-  }else {
-    modalControllers.modalErrorRegistro()
-  }
+
   }
 }
 

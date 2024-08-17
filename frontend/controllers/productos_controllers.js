@@ -131,6 +131,14 @@ class ProductEditor {
             <div class="form-group"> 
               <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripcion" type="text" required data-description>${description}</textarea>
             </div>
+              <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1" >
+            <label class="form-check-label" for="talle1">Talle 1</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
+            <label class="form-check-label" for="talle2">Talle 2</label>
+                    </div>
             <div>
               <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
             </div>
@@ -152,12 +160,17 @@ class ProductEditor {
       const imagePath = document.querySelector("[data-image]").files[0];
       const oldImagePath = document.querySelector("[data-oldPath]").value;
 
+      const selectedSizes = Array.from(document.querySelectorAll('input[name="sizes"]:checked'))
+      .map(checkbox => checkbox.value);
+
       const dataEdit = new FormData();
       dataEdit.append("imagePath", imagePath);
       dataEdit.append("name", name);
       dataEdit.append("price", price);
       dataEdit.append("description", description);
       dataEdit.append("oldImagePath", oldImagePath);
+
+      selectedSizes.forEach(size => productData.append("sizes[]", size));
 
       try {
         await productoServices.actualizarProducto(dataEdit, id);
@@ -169,10 +182,16 @@ class ProductEditor {
   }
 }
 
-const mostrarProducto = (name, imagePath, description) => {
+const mostrarProducto = (name, imagePath, sizes, description) => {
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
   const mostrarProducto = modal.querySelector("[data-table]");
+
+  // Generar las opciones del select a partir del array sizes
+  const opcionesTalles = sizes.map(size => `
+    <option value="${size}">${size}</option>
+  `).join('');
+
 
   mostrarProducto.innerHTML = `
     <div class="contenido_container">
@@ -190,16 +209,12 @@ const mostrarProducto = (name, imagePath, description) => {
             </div>
           </div>
           
-          <!-- Pie del modal -->
+        
           <div class="mt-auto pt-3">
             <!-- Menú desplegable de talles -->
             <label for="variation_1">Talles disponibles</label>
-            <select id="variation_1" class="form-select mb-1">
-              <option value="talle1">Talle 1</option>
-              <option value="talle2" selected>Talle 2</option>
-              <option value="talle3">Talle 3</option>
-              <option value="talle4">Talle 4</option>
-              <option value="talle5">Talle 5</option>
+            <select id="variation_1" class="form-select mb-3">
+            ${opcionesTalles}
             </select>
 
             <!-- Selector de cantidad y botón de carrito -->
@@ -239,7 +254,9 @@ const renderProducts = async () => {
         producto.price,
         producto.imagePath,
         producto.description,
+        producto.sizes,
         producto._id
+        
       );
       // Renderizar el producto y adjuntar al contenedor adecuado
       document
