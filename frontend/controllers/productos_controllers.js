@@ -149,15 +149,29 @@ class ProductEditor {
             ${opcionesTalles}
             </select>
             </div>
-           
-              <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1" >
-            <label class="form-check-label" for="talle1">Talle 1</label>
+            <p>Talles actuales</p>
+          <div class="form-group mb-4">
+            <div class="form-check-inline me-3">
+              <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">
+              <label class="form-check-label" for="talle1">Talle 1</label>
+            </div>
+            <div class="form-check-inline me-3">
+              <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
+              <label class="form-check-label" for="talle2">Talle 2</label>
+            </div>
+            <div class="form-check-inline me-3">
+              <input class="form-check-input" type="checkbox" value="Talle 3" name="sizes" id="talle3">
+              <label class="form-check-label" for="talle3">Talle 3</label>
+            </div>
+            <div class="form-check-inline me-3">
+              <input class="form-check-input" type="checkbox" value="Talle 4" name="sizes" id="talle4">
+              <label class="form-check-label" for="talle4">Talle 4</label>
+            </div>
+            <div class="form-check-inline me-3">
+              <input class="form-check-input" type="checkbox" value="Talle 5" name="sizes" id="talle5">
+              <label class="form-check-label" for="talle5">Talle 5</label>
+            </div>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
-            <label class="form-check-label" for="talle2">Talle 2</label>
-               </div>
         
               <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
             </div>

@@ -25,49 +25,60 @@ export class ProductForm {
     const card = document.createElement("div");
     card.classList.add("modalVisor");
     card.innerHTML = `
-        <div class="text-center">
-            <div class="card-header">
-                <p>Agregar producto</p>
-            </div>
-            <div class="card-body">
-                <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
-                    <div class="form-group">
-                        <input class="form-control p-2"  type="file" name="image" 
-                            data-imageUrl  required autofocus>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required
-                            data-name>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control mt-3 mb-3 p-2" type="text" placeholder="Precio del producto" name="price"
-                            required data-price>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control mt-3 mb-3 p-2" type="text" placeholder="Descripcion" name="description"
-                            required data-description></textarea>
-                    </div>
-                    <p for="miMenuDesplegable">Seccion</p>
-                    <div class="form-group">
-                        <select class="form-control  mb-3 p-2" id="miMenuDesplegable" name="section">
-                            <option value="opcion1">Vestidos</option>
-                            <option value="opcion2">Polleras</option>
-                            <option value="opcion3">Diversos</option>
-                        </select>
-                        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1" >
-            <label class="form-check-label" for="talle1">Talle 1</label>
+    <div class="text-center">
+      <div class="card-header">
+        <p>Agregar producto</p>
+      </div>
+      <div class="card-body">
+        <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
+          <div class="form-group">
+            <input class="form-control p-2" type="file" name="image" data-imageUrl required autofocus>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
-            <label class="form-check-label" for="talle2">Talle 2</label>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary btn-lg">Agregar</button>
-                </form>
+          <div class="form-group">
+            <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
+          </div>
+          <div class="form-group">
+            <input class="form-control mt-3 mb-3 p-2" type="text" placeholder="Precio del producto" name="price" required data-price>
+          </div>
+          <div class="form-group">
+            <textarea class="form-control mt-3 mb-3 p-2" type="text" placeholder="Descripción" name="description" required data-description></textarea>
+          </div>
+          <p for="miMenuDesplegable">Sección</p>
+          <div class="form-group">
+            <select class="form-control mb-3 p-2" id="miMenuDesplegable" name="section">
+              <option value="opcion1">Vestidos</option>
+              <option value="opcion2">Polleras</option>
+              <option value="opcion3">Diversos</option>
+            </select>
+          </div>
+          <p>Talles disponibles</p>
+          <div class="form-group mb-4">
+            <div class="form-check-inline me-3">
+              <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">
+              <label class="form-check-label" for="talle1">Talle 1</label>
             </div>
-        </div>
-      `;
+            <div class="form-check-inline me-3">
+              <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
+              <label class="form-check-label" for="talle2">Talle 2</label>
+            </div>
+            <div class="form-check-inline me-3">
+              <input class="form-check-input" type="checkbox" value="Talle 3" name="sizes" id="talle3">
+              <label class="form-check-label" for="talle3">Talle 3</label>
+            </div>
+            <div class="form-check-inline me-3">
+              <input class="form-check-input" type="checkbox" value="Talle 4" name="sizes" id="talle4">
+              <label class="form-check-label" for="talle4">Talle 4</label>
+            </div>
+            <div class="form-check-inline me-3">
+              <input class="form-check-input" type="checkbox" value="Talle 5" name="sizes" id="talle5">
+              <label class="form-check-label" for="talle5">Talle 5</label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">Agregar</button>
+        </form>
+      </div>
+    </div>
+  `;
 
     return card;
   }
@@ -81,7 +92,6 @@ export class ProductForm {
     });
   }
 
-
   //recopilar y enviar los datos
   async handleSubmit() {
     const name = document.querySelector("[data-name]").value;
@@ -91,8 +101,9 @@ export class ProductForm {
     const image = document.querySelector("[data-imageUrl]").files[0];
 
     // Captura todos los checkboxes seleccionados
-    const selectedSizes = Array.from(document.querySelectorAll('input[name="sizes"]:checked'))
-        .map(checkbox => checkbox.value);
+    const selectedSizes = Array.from(
+      document.querySelectorAll('input[name="sizes"]:checked')
+    ).map((checkbox) => checkbox.value);
 
     const productData = new FormData();
     productData.append("name", name);
@@ -102,7 +113,7 @@ export class ProductForm {
     productData.append("image", image);
 
     // Agrega los talles seleccionados al FormData
-    selectedSizes.forEach(size => productData.append("sizes[]", size));
+    selectedSizes.forEach((size) => productData.append("sizes[]", size));
 
     const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
@@ -112,7 +123,6 @@ export class ProductForm {
     } catch (error) {
       console.error(error);
     }
-
   }
 }
 

@@ -42,11 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Evento para crear un producto
-  if(user){ crearproducto.addEventListener("click", () => {
+ crearproducto.addEventListener("click", () => {
     productForm.render();
-  });}else {
-
-  }
+  })
  
 
   // Evento para iniciar sesión
