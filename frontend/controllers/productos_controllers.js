@@ -108,7 +108,7 @@ class ProductEditor {
     this.setupFormSubmitHandler(id);
   }
 
-  renderEditor(name, price, imagePath, description, sizes, id) {
+  renderEditor(name, price, imagePath, description,  id) {
     modalControllers.baseModal();
     this.productoEdicion.innerHTML = `
       <div class="text-center">
@@ -130,14 +130,14 @@ class ProductEditor {
               <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" required data-description>${description}</textarea>
             </div>
             <div class="form-group">
-              <label>Talles disponibles:</label>
-              ${sizes.map((size) => `
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="${size}" name="sizes" id="size-${size}" checked>
-                  <label class="form-check-label" for="size-${size}">${size}</label>
-                </div>
-              `).join('')}
-            </div>
+               <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1" >
+            <label class="form-check-label" for="talle1">Talle 1</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
+            <label class="form-check-label" for="talle2">Talle 2</label>
+                    </div>
             <div>
               <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
             </div>
