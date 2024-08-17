@@ -51,7 +51,7 @@ export class ProductForm {
               <option value="opcion3">Diversos</option>
             </select>
           </div>
-          <p>Talles disponibles</p>
+          <label for="variation_1">Talles disponibles</label>
           <div class="form-group mb-4">
             <div class="form-check-inline me-3">
               <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">

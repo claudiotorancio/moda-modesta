@@ -144,12 +144,12 @@ class ProductEditor {
 
             <div class="mt-auto pt-3">
             <!-- Menú desplegable de talles -->
-            <label for="variation_1">Talles disponibles</label>
+            <label for="variation_1">Talles actuales</label>
             <select id="variation_1" class="form-select mb-3">
             ${opcionesTalles}
             </select>
             </div>
-            <p>Talles actuales</p>
+            <label for="variation_1">Modificar talles</label>
           <div class="form-group mb-4">
             <div class="form-check-inline me-3">
               <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">
