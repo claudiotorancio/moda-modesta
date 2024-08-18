@@ -313,6 +313,10 @@ ul li a {
   color: #333;
 }
 
+.js-toggle-cart {
+  text-decoration: none;
+  background-color: #f0f0f0;
+}
 .modal {
   display: none;
   position: fixed;
