@@ -2,6 +2,7 @@ import { modalControllers } from "../modal/modal.js";
 import productoServices from "../services/product_services.js";
 import carrito from "./carrito-controllers.js";
 
+
 class ProductCard {
   constructor(name, price, imagePath, description, sizes, id) {
     this.name = name;
@@ -36,12 +37,13 @@ class ProductCard {
 
     card.querySelector("[data-veradmin]").addEventListener("click", (e) => {
       e.preventDefault();
-      ProductEventHandler.handleShow(
-        this.name,
-        this.imagePath,
-        this.sizes,
-        this.description
-      );
+     mostrarProducto(this.name, this.price, this.imagePath, this.sizes,  this.description, this.id);
+      // ProductEventHandler.handleShow(
+      //   this.name,
+      //   this.imagePath,
+      //   this.sizes,
+      //   this.description
+      // );
     });
 
     card.querySelector("button").addEventListener("click", async (e) => {
@@ -70,13 +72,13 @@ class ProductEventHandler {
     // No hay necesidad de almacenar datos aquí por ahora
   }
 
-  static handleShow(name, imagePath, sizes, description) {
-    try {
-      mostrarProducto(name, imagePath, sizes, description);
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  // static handleShow(name, imagePath, sizes, description) {
+  //   try {
+  //     mostrarProducto(name, imagePath, sizes, description);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
   static handleDelete(id) {
     try {
