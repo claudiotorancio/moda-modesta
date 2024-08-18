@@ -40,7 +40,8 @@ class ProductCard {
         this.name,
         this.imagePath,
         this.sizes,
-        this.description
+        this.description,
+        this.id
         
       );
     });
@@ -71,9 +72,9 @@ class ProductEventHandler {
     // No hay necesidad de almacenar datos aquí por ahora
   }
 
-  static handleShow(name, imagePath, sizes, description) {
+  static handleShow(name, imagePath, sizes, description, id) {
     try {
-      mostrarProducto(name, imagePath, sizes, description);
+      mostrarProducto(name, imagePath, sizes, description, id);
     } catch (err) {
       console.log(err);
     }
