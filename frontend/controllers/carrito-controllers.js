@@ -151,7 +151,14 @@ class Carrito {
                 </div>
             </div>
         `;
-
+        summaryDetails.querySelectorAll(".btn-danger").forEach(button => {
+          button.addEventListener("click", (event) => {
+            const itemId = event.target.dataset.id;
+            const itemSize = event.target.dataset.size;
+            this.eliminarProducto(itemId, itemSize);
+          });
+        });
+    
         // Evento para activar la casilla "Entrega" cuando se selecciona un modo de envío
         document.querySelector("#shipping-options").addEventListener("change", (event) => {
             const shippingCost = {
