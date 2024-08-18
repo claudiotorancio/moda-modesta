@@ -21,7 +21,7 @@ class ProductCard {
           <img class="card-img-top" src="${this.imagePath}" alt="">
         </div>
         <div class="card-body">
-          <a href="#">ver producto</a>
+          <a href="#" class="verTodoAdmin">ver producto</a>
           <h3 class="card-title">${this.name}</h3>
           <p class="card-text">${"$" + this.price}</p>
           <a href="#form" class="btn btn-primary" id="${
@@ -34,15 +34,13 @@ class ProductCard {
       </div>
     `;
 
-    card.querySelector("a").addEventListener("click", (e) => {
+    card.querySelector(".verTodoAdmin").addEventListener("click", (e) => {
       e.preventDefault();
       ProductEventHandler.handleShow(
         this.name,
         this.imagePath,
         this.sizes,
-        this.description,
-        this.id
-        
+        this.description
       );
     });
 
@@ -72,9 +70,9 @@ class ProductEventHandler {
     // No hay necesidad de almacenar datos aquí por ahora
   }
 
-  static handleShow(name, imagePath, sizes, description, id) {
+  static handleShow(name, imagePath, sizes, description) {
     try {
-      mostrarProducto(name, imagePath, sizes, description, id);
+      mostrarProducto(name, imagePath, sizes, description);
     } catch (err) {
       console.log(err);
     }
