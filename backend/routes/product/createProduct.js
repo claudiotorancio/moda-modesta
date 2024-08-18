@@ -19,7 +19,7 @@ const createProduct = async (req, res) => {
             }
 
             // Valores del formulario
-            const { name, price, description, section, sizes } = req.body;
+            const { name, price, description, section, isFeatured, sizes  } = req.body;
             const imagePath = req.file.location;
             const user_id = req.user._id;
 console.log(req.body)
@@ -29,6 +29,7 @@ console.log(req.body)
                 price,
                 description,
                 section,
+                isFeatured,
                 sizes: Array.isArray(sizes) ? sizes : [sizes],
                 imagePath,
                 user_id

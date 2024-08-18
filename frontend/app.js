@@ -33,19 +33,25 @@ document.addEventListener("DOMContentLoaded", () => {
     userActive.style.display = "none";
     contactUser.style.display = "none";
   } else {
-    productosInicio.renderInit();
+    productosInicio.renderInit()
     divUsuario.style.display = "none";
     actualizarUsuario.style.display = "none";
     logoutUsuario.style.display = "none";
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
-    crearproducto.innerHTML = 'Destacados'
+    crearproducto.innerHTML = 'Registrarse'
   }
 
   // Evento para crear un producto
   if(user){ crearproducto.addEventListener("click", () => {
     productForm.render();
   });}else {
+   
+    document.querySelector("[data-init]").addEventListener("click", (e) => {
+        e.preventDefault();
+        const loginControllersInstance = new LoginControllers();
+        loginControllersInstance.renderSignin();
 
+      });
   }
  
 

@@ -2,8 +2,7 @@ import productoServices from "../services/product_services.js";
 import { controllers } from "./productos_controllers.js";
 
 class ProductInit {
-  constructor() {
-  }
+  constructor() {}
 
   productoInicio(name, price, imagePath,description, sizes, id) {
     const card = document.createElement("div");
@@ -13,10 +12,8 @@ class ProductInit {
           <img class="card-img-top" src="${imagePath}" alt="">
         </div>
         <div class="card-body">
-          <a href="#">ver producto </a>
-           <h3 class="card-title">${name}</h3>
-          <p class="card-text">${"$" + price}</p>
-         
+          <a href="#">ver producto</a>
+          <h3 class="card-title">${name}</h3>
         </div>
       </div>
     `;
@@ -38,37 +35,57 @@ class ProductInit {
 
   async renderInit() {
     try {
+      // Renderizar productos destacados
+      const productosDestacados = await productoServices.destacadosProducto();
+      const contenedorDestacados = document.querySelector('[data-destacados]');
+      
+      if (Array.isArray(productosDestacados)) {
+        contenedorDestacados.innerHTML = ''; // Limpiar contenedor de destacados
+        for (const producto of productosDestacados) {
+          const card = this.productoInicio(
+            producto.name,
+          producto.price,
+          producto.imagePath,
+          producto.description,
+          producto.sizes,
+          producto._id
+          );
+          contenedorDestacados.appendChild(card);
+        }
+      } else {
+        console.error('Error: No se recibieron productos destacados.');
+      }
+
+      // Renderizar otras categorías
       const listaProductos = await productoServices.renderInicio();
       const products = listaProductos;
 
+      // Limpiar todos los contenedores de categorías antes de renderizar
+      document.querySelectorAll(".productos").forEach((contenedor) => {
+        if (contenedor !== contenedorDestacados) {
+          contenedor.innerHTML = ""; // Limpiar contenido existente
+        }
+      });
+
       for (const producto of products) {
-        this.productoInicio(
+        const productCard = this.productoInicio(
           producto.name,
           producto.price,
           producto.imagePath,
           producto.description,
           producto.sizes,
           producto._id
-
         );
+
         // Renderizar el producto y adjuntar al contenedor adecuado
-        document.querySelector(`[data-${producto.section}]`)
-          .appendChild(
-            this.productoInicio(
-              producto.name,
-              producto.price,
-              producto.imagePath,
-              producto.description,
-              producto.sizes,
-              producto._id
-            )
-          );
+        document.querySelector(`[data-${producto.section}]`).appendChild(productCard);
       }
     } catch (error) {
       console.log(error);
     }
   }
 }
+
 
 document.querySelectorAll(".categoria").forEach((categoria) => {
   const categoriaBtn = categoria.querySelector("a");
@@ -80,19 +97,11 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
     e.preventDefault(); // Evitar comportamiento predeterminado del enlace
 
     try {
-      // Verificar si hay productos disponibles en la categoría
-      const tarjetas = contenedorProductos.querySelectorAll(".card");
-
-      if (tarjetas.length === 0) {
-        // No hay productos, mostrar mensaje de "sitio en construcción"
-        contenedorProductos.innerHTML = "<p>Seccion en construcción</p>";
-        return; // Salir del evento sin realizar otras acciones
-      }
-
       // Si aún no se han mostrado todos los productos
       if (!enInicio) {
         contenedorProductos.classList.add("allProducts");
 
+        const tarjetas = contenedorProductos.querySelectorAll(".card");
         tarjetas.forEach((tarjeta) => {
           tarjeta.classList.add("allCard");
         });
@@ -108,23 +117,23 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
             contenedor.innerHTML = ""; // Limpiar contenido existente
           }
         });
+          // Ocultar las demás categorías
+          document.querySelectorAll(".categoria").forEach((categoria) => {
+            if (!categoria.querySelector(`[data-${opcion}]`)) {
+              categoria.querySelector(".texto-categoria").style.display = "none";
+              categoria.querySelector(".productos").innerHTML = "";
+            }
+          });
 
-        // Ocultar las demás categorías
-        document.querySelectorAll(".categoria").forEach((categoria) => {
-          if (!categoria.querySelector(`[data-${opcion}]`)) {
-            categoria.querySelector(".texto-categoria").style.display = "none";
-            categoria.querySelector(".productos").innerHTML = "";
-          }
-        });
-
-        // Cambiar el texto del enlace a 'Volver'
+                // Cambiar el texto del enlace a 'Volver'
         categoriaBtn.textContent = "Volver";
+
 
         enInicio = true; // Cambiar el estado para volver
 
         // Desplazar la página hacia arriba
         window.scrollTo({ top: 330, behavior: "smooth" });
-
+      
       } else {
         // Si ya se han mostrado todos los productos, redirigir a la página de inicio
         window.location.href = "index.html";
@@ -143,6 +152,5 @@ document.querySelectorAll(".ver-todos").forEach((enlace) => {
     contenedorProductos.classList.toggle("ver-todos-activado");
   });
 });
-
 
 export const productosInicio = new ProductInit();

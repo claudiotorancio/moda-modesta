@@ -15,14 +15,13 @@ const s3 = new AWS.S3({
 const updateProduct = async (req, res) => {
   try {
 
-    // if (!req.isAuthenticated()) {
-    //   return res.status(401).json({ error: 'Usuario no autenticado' });
-    // }
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: 'Usuario no autenticado' });
+    }
     // Parametros del formulario
     const { id } = req.params;
-    const { name, price, description, oldImagePath, sizes } = req.body;
+    const { name, price, description, oldImagePath, sizes, isFeatured } = req.body;
 
-    console.log(req.body)
 
     // Verificar si se proporciona una nueva imagen en el formulario de edición
     let imagePath = oldImagePath;
@@ -36,6 +35,7 @@ const updateProduct = async (req, res) => {
       price,
       description,
       sizes: Array.isArray(sizes) ? sizes : [sizes],
+      isFeatured
     };
 
     // Agregar la imagen al objeto de actualización solo si se proporciona una nueva imagen

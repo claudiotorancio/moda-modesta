@@ -4,13 +4,14 @@ import carrito from "./carrito-controllers.js";
 
 
 class ProductCard {
-  constructor(name, price, imagePath, description, sizes, id) {
+  constructor(name, price, imagePath, description, sizes, id, isFeatured) {
     this.name = name;
     this.price = price;
     this.imagePath = imagePath;
     this.description = description;
-    this.sizes = sizes
+    this.sizes = sizes;
     this.id = id;
+    this.isFeatured = isFeatured; // Agregar este campo
   }
 
   render() {
@@ -35,15 +36,18 @@ class ProductCard {
       </div>
     `;
 
+    // Manejar eventos
     card.querySelector("[data-veradmin]").addEventListener("click", (e) => {
       e.preventDefault();
-     mostrarProducto(this.name, this.price, this.imagePath, this.sizes,  this.description, this.id);
-      // ProductEventHandler.handleShow(
-      //   this.name,
-      //   this.imagePath,
-      //   this.sizes,
-      //   this.description
-      // );
+      mostrarProducto(
+        this.name,
+        this.price,
+        this.imagePath,
+        this.sizes,
+        this.description,
+        this.id,
+        this.isFeatured
+      );
     });
 
     card.querySelector("button").addEventListener("click", async (e) => {
@@ -59,13 +63,15 @@ class ProductCard {
         this.imagePath,
         this.description,
         this.sizes,
-        this.id
+        this.id,
+        this.isFeatured
       );
     });
 
     return card;
   }
 }
+
 
 class ProductEventHandler {
   constructor() {
@@ -108,14 +114,13 @@ class ProductEditor {
     this.productoEdicion = this.modal.querySelector("[data-table]");
   }
 
-  editProduct(name, price, imagePath, description, sizes, id) {
-    this.renderEditor(name, price, imagePath, description, sizes, id);
+  editProduct(name, price, imagePath, description, sizes, id, isFeatured) {
+    this.renderEditor(name, price, imagePath, description, sizes, id, isFeatured);
     this.setupFormSubmitHandler(id);
   }
 
-  renderEditor(name, price, imagePath, description, sizes, id) {
+  renderEditor(name, price, imagePath, description, sizes, id, isFeatured) {
     modalControllers.baseModal();
-    // Generar las opciones del select a partir del array sizes
     const opcionesTalles = sizes
       .map(
         (size) => `
@@ -144,8 +149,14 @@ class ProductEditor {
               <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" required data-description>${description}</textarea>
             </div>
 
+            <div class="form-group form-check mb-3">
+              <input type="checkbox" class="form-check-input" id="isFeatured" name="isFeatured" ${
+                isFeatured ? "checked" : ""
+              }>
+              <label class="form-check-label" for="isFeatured">Destacar producto</label>
+            </div>
+
             <div class="mt-auto pt-3">
-            <!-- Menú desplegable de talles -->
             <label for="variation_1">Talles actuales</label>
             <select id="variation_1" class="form-select mb-3">
             ${opcionesTalles}
@@ -194,6 +205,7 @@ class ProductEditor {
       const description = document.querySelector("[data-description]").value;
       const imagePath = document.querySelector("[data-image]").files[0];
       const oldImagePath = document.querySelector("[data-oldPath]").value;
+      const isFeatured = document.querySelector("#isFeatured").checked;
 
       const selectedSizes = Array.from(
         document.querySelectorAll('input[name="sizes"]:checked')
@@ -207,6 +219,7 @@ class ProductEditor {
       dataEdit.append("price", price);
       dataEdit.append("description", description);
       dataEdit.append("oldImagePath", oldImagePath);
+      dataEdit.append("isFeatured", isFeatured);
 
       selectedSizes.forEach((size) => dataEdit.append("sizes[]", size));
 

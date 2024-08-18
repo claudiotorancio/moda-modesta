@@ -6,7 +6,7 @@ export class ProductForm {
     this.initForm = document.querySelector("[data-table]");
   }
 
-  //mostrar form
+  // Mostrar formulario
   render() {
     this.clearForm();
     const card = this.createForm();
@@ -14,12 +14,12 @@ export class ProductForm {
     this.setupFormSubmitHandler();
   }
 
-  //vaciar contenido
+  // Vaciar contenido
   clearForm() {
     this.initForm.innerHTML = "";
   }
 
-  //crear formulario dinamico
+  // Crear formulario dinámico
   createForm() {
     modalControllers.baseModal();
     const card = document.createElement("div");
@@ -53,6 +53,7 @@ export class ProductForm {
           </div>
           <label for="variation_1">Talles disponibles</label>
           <div class="form-group mb-4">
+            <!-- Checkbox de talles disponibles -->
             <div class="form-check-inline me-3">
               <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">
               <label class="form-check-label" for="talle1">Talle 1</label>
@@ -74,16 +75,26 @@ export class ProductForm {
               <label class="form-check-label" for="talle5">Talle 5</label>
             </div>
           </div>
+
+          <!-- Checkbox para destacar producto -->
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="isFeatured" name="isFeatured">
+              <label class="form-check-label" for="isFeatured">
+                Destacar producto
+              </label>
+            </div>
+          </div>
+
           <button type="submit" class="btn btn-primary btn-lg">Agregar</button>
         </form>
       </div>
     </div>
   `;
-
     return card;
   }
 
-  //capturar el evento submit
+  // Capturar el evento submit
   setupFormSubmitHandler() {
     const form = this.initForm.querySelector("[data-form]");
     form.addEventListener("submit", (e) => {
@@ -92,13 +103,14 @@ export class ProductForm {
     });
   }
 
-  //recopilar y enviar los datos
+  // Recopilar y enviar los datos
   async handleSubmit() {
     const name = document.querySelector("[data-name]").value;
     const price = document.querySelector("[data-price]").value;
     const description = document.querySelector("[data-description]").value;
     const section = document.getElementById("miMenuDesplegable").value;
     const image = document.querySelector("[data-imageUrl]").files[0];
+    const isFeatured = document.getElementById("isFeatured").checked;
 
     // Captura todos los checkboxes seleccionados
     const selectedSizes = Array.from(
@@ -111,11 +123,10 @@ export class ProductForm {
     productData.append("description", description);
     productData.append("section", section);
     productData.append("image", image);
+    productData.append("isFeatured", isFeatured);
 
     // Agrega los talles seleccionados al FormData
     selectedSizes.forEach((size) => productData.append("sizes[]", size));
-
-    const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
     try {
       await productoServices.crearProducto(productData);
