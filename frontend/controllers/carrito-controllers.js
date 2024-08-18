@@ -92,7 +92,7 @@ class Carrito {
                       <span>$ ${item.price.toFixed(2)}</span>
                     </td>
                     <td class="table-price text-right">
-                      <button class="btn btn-danger" data-id="${item._id}" data-size="${item.size}">Del</button>
+                      <button class="btn btn-danger" data-id="${item._id}" data-size="${item.size}"><i class="fa-solid fa-scissors"></i></button>
                     </td>
                   </tr>
                 `).join('')}
