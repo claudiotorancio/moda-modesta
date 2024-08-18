@@ -318,23 +318,19 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
   // Lógica para compartir en redes sociales
   const compartirProducto = document.getElementById("compartir-producto");
   compartirProducto.addEventListener("click", () => {
+    const productUrl = `${window.location.origin}/product/${id}`;
+    
     if (navigator.share) {
       navigator.share({
         title: name,
-        text: description,
-        url: window.location.href
+        text: `¡Mira este producto! ${name} por solo $${price}`,
+        url: productUrl,  // Aquí utilizas la URL específica del producto
       }).catch((error) => console.log('Error sharing:', error));
     } else {
       alert('La función de compartir no es compatible con tu navegador. Por favor, comparte el enlace manualmente.');
     }
   });
 };
-
-
-
-
-
-
 
 const renderProducts = async () => {
   try {
