@@ -134,7 +134,7 @@ class Carrito {
                                 <td class="text-right">
                                     <select id="shipping-options" class="form-control">
                                         <option value="standard">Seleccione</option>
-                                        <option value="express">Envío exprés - $6000 (La Pampa)</option>
+                                        <option value="express">Envío exprés - $4000 (interior de La Pampa)</option>
                                         <option value="pickup">Retiro en tienda - Gratis</option>
                                     </select>
                                 </td>
@@ -175,7 +175,7 @@ class Carrito {
       document.querySelector("#shipping-options").addEventListener("change", (event) => {
         const shippingCost = {
           standard: 0.00,
-          express: 6000,
+          express: 4000,
           pickup: 0.00
         }[event.target.value];
 

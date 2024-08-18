@@ -260,39 +260,44 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
           <div class="card-body">
             <h3 class="card-title">${name}</h3>
             <br>
-            <!-- Área de descripción con altura fija -->
             <div class="card-text" style="height: 150px; overflow-y: auto;">
               ${description}
             </div>
           </div>
           
           <div class="mt-auto pt-3">
-            <!-- Menú desplegable de talles -->
             <label for="variation_1">Talles disponibles</label>
             <select id="variation_1" class="form-select mb-3">
             ${opcionesTalles}
             </select>
 
-            <!-- Selector de cantidad y botón de carrito -->
+           <div class="d-flex justify-content-between align-items-center">
+              <!-- Icono para compartir -->
+              <a id="compartir-producto" title="Compartir" class="icono-compartir">
+                <i class="fa-solid fa-share-nodes"></i>
+              </a>
+            </div>
             <div class="form-row align-items-center">
               <div class="mx-auto">
                 <button type="button" class="btn btn-primary btn-block mt-4" data-carrito>Agregar al carrito</button>
               </div>
             </div>
+            
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <span class="text-accent">10% de descuento, pagando con Transferencia o depósito bancario (Los datos te llegarán vía mail) *PLAZO MÁXIMO 2HS*</span>
+           
+            </div>
+            
+            <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; vertical-align: baseline;">
+            Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.
+            </em>
           </div>
-          
-          <span class="text-accent">10% de descuento, pagando con Transferencia o depósito bancario (Los datos te llegarán vía mail) *PLAZO MÁXIMO 2HS*</span>
-          
-          <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; vertical-align: baseline;">
-          Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.
-          </em>
         </div>
       </div>
     </div>
   `;
 
-
-  // Aquí ya tienes los datos, no es necesario llamar a productoServices.detalleProducto(id) si ya los tienes
+  // Lógica para agregar al carrito
   const producto = {
     _id: id,
     name: name,
@@ -300,17 +305,31 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
     imagePath: imagePath
   };
 
-  mostrarProducto
-    .querySelector("[data-carrito]")
-    .addEventListener("click", () => {
-      const talleSeleccionado = document.getElementById("variation_1").value;
+  mostrarProducto.querySelector("[data-carrito]").addEventListener("click", () => {
+    const talleSeleccionado = document.getElementById("variation_1").value;
 
-      carrito.agregarProducto({ 
-        product: producto, 
-        size: talleSeleccionado 
-      });
+    carrito.agregarProducto({ 
+      product: producto, 
+      size: talleSeleccionado 
     });
+  });
+
+
+  // Lógica para compartir en redes sociales
+  const compartirProducto = document.getElementById("compartir-producto");
+  compartirProducto.addEventListener("click", () => {
+    if (navigator.share) {
+      navigator.share({
+        title: name,
+        text: description,
+        url: window.location.href
+      }).catch((error) => console.log('Error sharing:', error));
+    } else {
+      alert('La función de compartir no es compatible con tu navegador. Por favor, comparte el enlace manualmente.');
+    }
+  });
 };
+
 
 
 

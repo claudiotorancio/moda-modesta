@@ -424,6 +424,20 @@ text-align: center;
 }
 
 
+.icono-compartir i,
+.icono-like i {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6c757d;
+  transition: color 0.3s ease;
+}
+
+.icono-compartir i:hover,
+.icono-like i:hover {
+  color: #007bff; /* Color al pasar el mouse */
+}
+
+
 @media (min-width: 768px) and (max-width: 1200px) {
   .busqueda {
     margin-right: 10%;

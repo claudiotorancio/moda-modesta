@@ -102,7 +102,7 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
 
       if (tarjetas.length === 0) {
         // No hay productos, mostrar mensaje de "sitio en construcción"
-        contenedorProductos.innerHTML = "<p>Seccion en construcción</p>";
+        contenedorProductos.innerHTML = "<p>No hay productos para mostrar</p>";
         return; // Salir del evento sin realizar otras acciones
       }
 
