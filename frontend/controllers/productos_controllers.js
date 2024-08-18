@@ -21,7 +21,7 @@ class ProductCard {
           <img class="card-img-top" src="${this.imagePath}" alt="">
         </div>
         <div class="card-body">
-          <a href="#" data-verAdmin>ver producto</a>
+          <a href="#" data-veradmin>ver producto</a>
           <h3 class="card-title">${this.name}</h3>
           <p class="card-text">${"$" + this.price}</p>
           <a href="#form" class="btn btn-primary" id="${
@@ -34,7 +34,7 @@ class ProductCard {
       </div>
     `;
 
-    card.querySelector("[data-verAdmin]").addEventListener("click", (e) => {
+    card.querySelector("[data-veradmin]").addEventListener("click", (e) => {
       e.preventDefault();
       ProductEventHandler.handleShow(
         this.name,
