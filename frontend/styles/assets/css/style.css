@@ -303,6 +303,15 @@ ul li a {
   text-decoration: none; /* Quita el subrayado de los enlaces */
   color: #333; /* Color del texto */
 }
+.carrito-monto {
+  text-decoration: none;
+  color: #333;
+}
+
+.carrito-cantidad {
+  text-decoration: none;
+  color: #333;
+}
 
 .modal {
   display: none;
