@@ -1,5 +1,6 @@
 import { modalControllers } from "../modal/modal.js";
 import productoServices from "../services/product_services.js";
+import carrito from "./carrito-controllers.js";
 
 class ProductCard {
   constructor(name, price, imagePath, description, sizes, id) {
@@ -221,7 +222,7 @@ class ProductEditor {
   }
 }
 
-const mostrarProducto = (name, imagePath, sizes, description) => {
+const mostrarProducto = async (name, price, imagePath, sizes, description, id) => {
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
   const mostrarProducto = modal.querySelector("[data-table]");
@@ -251,7 +252,6 @@ const mostrarProducto = (name, imagePath, sizes, description) => {
             </div>
           </div>
           
-        
           <div class="mt-auto pt-3">
             <!-- Menú desplegable de talles -->
             <label for="variation_1">Talles disponibles</label>
@@ -261,16 +261,15 @@ const mostrarProducto = (name, imagePath, sizes, description) => {
 
             <!-- Selector de cantidad y botón de carrito -->
             <div class="form-row align-items-center">
-             
               <div class="mx-auto">
-                <a href="https://wa.me/5492954606273" class="btn btn-primary btn-block mt-4">Consulta  <i class="fa-brands fa-whatsapp"></i>  </a>
+                <button type="button" class="btn btn-primary btn-block mt-4" data-carrito>Agregar al carrito</button>
               </div>
-           
             </div>
           </div>
-             <span class="text-accent">10% de descuento, pagando con Transferencia o depósito bancario (Los datos te llegarán vía mail) *PLAZO MÁXIMO 2HS*
-</span>
-          <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-alternates: normal; font-variant-position: normal; vertical-align: baseline; white-space-collapse: preserve;">
+          
+          <span class="text-accent">10% de descuento, pagando con Transferencia o depósito bancario (Los datos te llegarán vía mail) *PLAZO MÁXIMO 2HS*</span>
+          
+          <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; vertical-align: baseline;">
           Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.
           </em>
         </div>
@@ -278,8 +277,31 @@ const mostrarProducto = (name, imagePath, sizes, description) => {
     </div>
   `;
 
-  mostrarProducto.classList.add("modalVisor");
+
+  // Aquí ya tienes los datos, no es necesario llamar a productoServices.detalleProducto(id) si ya los tienes
+  const producto = {
+    _id: id,
+    name: name,
+    price: price,
+    imagePath: imagePath
+  };
+
+  mostrarProducto
+    .querySelector("[data-carrito]")
+    .addEventListener("click", () => {
+      const talleSeleccionado = document.getElementById("variation_1").value;
+
+      carrito.agregarProducto({ 
+        product: producto, 
+        size: talleSeleccionado 
+      });
+    });
 };
+
+
+
+
+
 
 const renderProducts = async () => {
   try {

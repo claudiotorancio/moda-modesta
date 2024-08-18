@@ -5,7 +5,7 @@ class ProductInit {
   constructor() {
   }
 
-  productoInicio(name, price, imagePath,description, sizes) {
+  productoInicio(name, price, imagePath,description, sizes, id) {
     const card = document.createElement("div");
     const contenido = `
       <div class="container mx-auto mt-4">
@@ -27,7 +27,7 @@ class ProductInit {
     card.querySelector("a").addEventListener("click", (e) => {
       e.preventDefault();
       try {
-        controllers.mostrarProducto(name, imagePath, sizes,  description);
+        controllers.mostrarProducto(name, price, imagePath, sizes,  description, id);
       } catch (err) {
         console.log(err);
       }
@@ -47,7 +47,8 @@ class ProductInit {
           producto.price,
           producto.imagePath,
           producto.description,
-          producto.sizes
+          producto.sizes,
+          producto._id
 
         );
         // Renderizar el producto y adjuntar al contenedor adecuado
@@ -58,7 +59,8 @@ class ProductInit {
               producto.price,
               producto.imagePath,
               producto.description,
-              producto.sizes
+              producto.sizes,
+              producto._id
             )
           );
       }

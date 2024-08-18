@@ -1,0 +1,172 @@
+import { modalControllers } from "../modal/modal.js";
+
+class Carrito {
+  constructor() {
+    this.items = JSON.parse(sessionStorage.getItem('carrito')) || [];
+    this.inicializarEventos();
+    this.mostrarCarrito()
+  }
+
+  inicializarEventos() {
+    const toggleCart = document.querySelector('.js-toggle-cart');
+    if (toggleCart) {
+      toggleCart.addEventListener('click', (event) => {
+        event.preventDefault();
+        modalControllers.baseModal()
+        this.mostrarCarrito();
+      });
+    }
+  }
+
+  agregarProducto({ product, size }) {
+    const productoExistente = this.items.find(
+      item => item._id === product._id && item.size === size
+    );
+
+    if (productoExistente) {
+      productoExistente.cantidad += 1;
+    } else {
+      this.items.push({
+        _id: product._id,
+        name: product.name,
+        price: parseFloat(product.price),
+        cantidad: 1,
+        size: size, // Almacenar el talle seleccionado
+        imagePath: product.imagePath
+      });
+    }
+
+    // Guardar el carrito actualizado en sessionStorage
+    sessionStorage.setItem('carrito', JSON.stringify(this.items));
+
+    this.mostrarCarrito();
+  }
+
+  eliminarProducto(id) {
+    this.items = this.items.filter(item => item._id !== id);
+     // Guardar el carrito actualizado en sessionStorage
+     sessionStorage.setItem('carrito', JSON.stringify(this.items));
+    this.mostrarCarrito();
+
+  }
+
+  actualizarCantidad(id, cantidad) {
+    const producto = this.items.find(item => item._id === id);
+    if (producto) {
+      producto.cantidad = cantidad;
+    }
+    this.mostrarCarrito();
+  }
+
+  calcularTotal() {
+    return this.items.reduce((total, producto) => total + producto.price * producto.cantidad, 0);
+  }
+
+  mostrarCarrito() {
+    const carritoContainer = document.querySelector(".carrito-link");
+    const carritoNotificacion = carritoContainer.querySelector(".carrito-cantidad");
+    const carritoMonto = carritoContainer.querySelector(".carrito-monto");
+    const summaryDetails = document.querySelector("[data-table]");
+  
+    carritoNotificacion.textContent = this.items.reduce((acc, item) => acc + item.cantidad, 0);
+    carritoMonto.textContent = `$${this.calcularTotal().toFixed(2)}`;
+  
+   
+    if (this.items.length !== 0) {
+      summaryDetails.innerHTML = `
+        <div class="container main-container">
+          <span class="m-left-half">Ver detalles de mi compra</span>
+          <span class="summary-total">$ ${this.calcularTotal().toFixed(2)}</span>
+          <div class="summary-details panel p-none">
+            <table class="table table-scrollable">
+              <tbody>
+                ${this.items.map(item => `
+                  <tr>
+                    <td class="summary-img-wrap">
+                      <div class="col-md-6 mx-auto">
+                        <img class="card-img-top" alt="${item.name}" title="${item.name}" src="${item.imagePath}">
+                      </div>
+                    </td>
+                    <td>${item.name} × ${item.cantidad} <br> <small>Talle: ${item.size}</small></td>
+                    <td class="table-price text-right">
+                      <span>$ ${item.price.toFixed(2)}</span>
+                    </td>
+                    <td class="table-price text-right">
+                      <button class="btn btn-danger" data-id="${item._id}" data-size="${item.size}">Del</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+  
+            <div class="table-subtotal">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>Subtotal</td>
+                    <td class="text-right"><span>$ ${this.calcularTotal().toFixed(2)}</span></td>
+                  </tr>
+                  <tr>
+                    <td>Envío</td>
+                    <td class="text-right">
+                      <select id="shipping-options" class="form-control">
+                        <option value="standard">Envío estándar - $5.00</option>
+                        <option value="express">Envío exprés - $10.00</option>
+                        <option value="pickup">Recoger en tienda - Gratis</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot class="table-footer">
+                  <tr>
+                    <td class="table-price">Total</td>
+                    <td class="text-right table-price">
+                      <span id="final-total">$ ${(this.calcularTotal() + 5).toFixed(2)}</span> <!-- Incluye el costo del envío estándar por defecto -->
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+  
+            <div class="purchase-actions">
+              <button class="btn btn-primary" id="finalize-purchase">Finalizar Compra</button>
+            </div>
+          </div>
+        </div>
+      `;
+  
+      summaryDetails.querySelectorAll(".btn-danger").forEach(button => {
+        button.addEventListener("click", (event) => {
+          const itemId = event.target.dataset.id;
+          const itemSize = event.target.dataset.size;
+          this.eliminarProducto(itemId, itemSize);
+        });
+      });
+  
+      document.querySelector("#shipping-options").addEventListener("change", (event) => {
+        const shippingCost = {
+          standard: 5.00,
+          express: 10.00,
+          pickup: 0.00
+        }[event.target.value];
+  
+        const totalCost = this.calcularTotal() + shippingCost;
+        document.querySelector("#final-total").textContent = `$${totalCost.toFixed(2)}`;
+      });
+  
+      document.querySelector("#finalize-purchase").addEventListener("click", () => {
+        // Lógica para finalizar la compra
+        alert("Compra finalizada");
+      });
+  
+      document.querySelector(".carrito-monto").textContent = `$${this.calcularTotal().toFixed(2)}`;
+    } else {
+      summaryDetails.innerHTML = '<div>Carrito vacío</div>';
+    }
+  }
+  
+}
+
+const carrito = new Carrito();
+
+export default carrito;

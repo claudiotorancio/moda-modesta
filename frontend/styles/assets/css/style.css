@@ -61,6 +61,36 @@ header {
   outline: none;
 }
 
+.carrito-link {
+  width: min-content;
+  position: relative;
+  display: inline-block;
+}
+
+.carrito-notificacion {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.carrito-cantidad {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.carrito-monto {
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
 
 
 .div-usuario a {
@@ -252,12 +282,12 @@ header {
 
 }
 
-.modalVisor {
+/* .modalVisor {
   display: flex;
   flex-direction: column;
   background-color: var(--fuente-quienesSomos);
   padding: 2rem;
-}
+} */
 
 ul {
   line-height: 5rem;
@@ -490,6 +520,9 @@ text-align: center;
     display: none;
   }
 
+  .carrito-link {
+    margin-top: 2rem;
+  }
   .texto h1 {
     font-size: 22px;
     margin-left: 1rem;
