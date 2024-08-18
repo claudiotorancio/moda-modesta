@@ -27,7 +27,7 @@ class ProductInit {
     card.querySelector("a").addEventListener("click", (e) => {
       e.preventDefault();
       try {
-        controllers.mostrarProducto(name, price, imagePath, sizes,  description, id);
+        controllers.mostrarProducto(name, imagePath, sizes,  description, id);
       } catch (err) {
         console.log(err);
       }

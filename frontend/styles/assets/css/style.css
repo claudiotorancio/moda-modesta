@@ -637,12 +637,12 @@ height: 15vh;
   }
   
 
-  .modalVisor {
+  /* .modalVisor {
     display: flex;
     flex-direction: column;
     background-color: var(--fuente-quienesSomos);
     padding: 0.5rem;
-  }
+  } */
   .modal p {
     font-size: 1.5rem;
   }
