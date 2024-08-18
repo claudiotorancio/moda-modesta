@@ -97,11 +97,19 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
     e.preventDefault(); // Evitar comportamiento predeterminado del enlace
 
     try {
+      // Verificar si hay productos disponibles en la categoría
+      const tarjetas = contenedorProductos.querySelectorAll(".card");
+
+      if (tarjetas.length === 0) {
+        // No hay productos, mostrar mensaje de "sitio en construcción"
+        contenedorProductos.innerHTML = "<p>Seccion en construcción</p>";
+        return; // Salir del evento sin realizar otras acciones
+      }
+
       // Si aún no se han mostrado todos los productos
       if (!enInicio) {
         contenedorProductos.classList.add("allProducts");
 
-        const tarjetas = contenedorProductos.querySelectorAll(".card");
         tarjetas.forEach((tarjeta) => {
           tarjeta.classList.add("allCard");
         });
@@ -117,23 +125,23 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
             contenedor.innerHTML = ""; // Limpiar contenido existente
           }
         });
-          // Ocultar las demás categorías
-          document.querySelectorAll(".categoria").forEach((categoria) => {
-            if (!categoria.querySelector(`[data-${opcion}]`)) {
-              categoria.querySelector(".texto-categoria").style.display = "none";
-              categoria.querySelector(".productos").innerHTML = "";
-            }
-          });
 
-                // Cambiar el texto del enlace a 'Volver'
+        // Ocultar las demás categorías
+        document.querySelectorAll(".categoria").forEach((categoria) => {
+          if (!categoria.querySelector(`[data-${opcion}]`)) {
+            categoria.querySelector(".texto-categoria").style.display = "none";
+            categoria.querySelector(".productos").innerHTML = "";
+          }
+        });
+
+        // Cambiar el texto del enlace a 'Volver'
         categoriaBtn.textContent = "Volver";
-
 
         enInicio = true; // Cambiar el estado para volver
 
         // Desplazar la página hacia arriba
         window.scrollTo({ top: 330, behavior: "smooth" });
-      
+
       } else {
         // Si ya se han mostrado todos los productos, redirigir a la página de inicio
         window.location.href = "index.html";
@@ -152,5 +160,6 @@ document.querySelectorAll(".ver-todos").forEach((enlace) => {
     contenedorProductos.classList.toggle("ver-todos-activado");
   });
 });
+
 
 export const productosInicio = new ProductInit();

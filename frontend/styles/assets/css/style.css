@@ -315,7 +315,7 @@ ul li a {
 
 .js-toggle-cart {
   text-decoration: none;
-  background-color: #f0f0f0;
+
 }
 .modal {
   display: none;
@@ -398,6 +398,29 @@ text-align: center;
 .quienesSomos_redesSociales a img {
   width: 40px; /* Ajusta el tamaño de los iconos */
   height: 40px;
+}
+
+
+.barra-progreso {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+}
+
+.paso {
+  width: 30%;
+  text-align: center;
+  padding: 10px;
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.paso.completado {
+  background-color: #4CAF50;
+  color: white;
 }
 
 
@@ -739,10 +762,7 @@ margin-top: 1rem;
     width: 4rem;
   }
 
-  .js-toggle-cart {
-    text-decoration: none;
-    background-color: #f0f0f0;
-  }
+
 
   .button-busqueda-login img {
     display: none;
