@@ -39,6 +39,9 @@ class ProductCard {
     // Manejar eventos
     card.querySelector("[data-veradmin]").addEventListener("click", (e) => {
       e.preventDefault();
+      // Actualiza la URL con un hash que incluye el ID del producto
+      window.location.hash = `product-${this.id}`;
+
       mostrarProducto(
         this.name,
         this.price,
@@ -315,10 +318,9 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
   });
 
 
-  // Lógica para compartir en redes sociales
   const compartirProducto = document.getElementById("compartir-producto");
   compartirProducto.addEventListener("click", () => {
-    const productUrl = `${window.location.origin}//api/detailsProduct/${id}`;
+    const productUrl = window.location.href; // Usar la URL actual con el hash
     
     if (navigator.share) {
       navigator.share({
@@ -331,6 +333,7 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
       alert('La función de compartir no es compatible con tu navegador. Por favor, comparte el enlace manualmente.');
     }
   });
+  
 };
 
 const renderProducts = async () => {
@@ -356,6 +359,30 @@ const renderProducts = async () => {
     console.log(error);
   }
 };
+
+window.addEventListener('hashchange', async () => {
+  const hash = window.location.hash;
+  if (hash.startsWith('#product-')) {
+    const id = hash.replace('#product-', '');
+    try {
+      // Obtener detalles del producto usando su ID
+      const producto = await productoServices.detalleProducto(id);
+      
+      mostrarProducto(
+        producto.name,
+        producto.price,
+        producto.imagePath,
+        producto.sizes,
+        producto.description,
+        producto._id,
+        producto.isFeatured
+      );
+    } catch (error) {
+      console.error('Error al obtener los detalles del producto:', error);
+    }
+  }
+});
+
 
 export const controllers = {
   mostrarProducto,
