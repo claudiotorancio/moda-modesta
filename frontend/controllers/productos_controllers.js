@@ -39,8 +39,7 @@ class ProductCard {
     // Manejar eventos
     card.querySelector("[data-veradmin]").addEventListener("click", (e) => {
       e.preventDefault();
-      // Actualiza la URL con un hash que incluye el ID del producto
-      window.location.hash = `product-${this.id}`;
+   
 
       mostrarProducto(
         this.name,
