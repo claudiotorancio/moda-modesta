@@ -245,7 +245,7 @@ header {
   position: absolute;
   width: 100vw;
   margin-left: 0rem;
-  padding: 2.5rem;
+  padding: 2rem;
   cursor: pointer;
 
   border: none;
@@ -277,7 +277,7 @@ header {
 
 #menu-mobile div.open:nth-child(1) {
   z-index: 1000;
-  height: 40vh;
+  height: 60vh;
   
 
 }
