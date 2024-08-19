@@ -24,7 +24,7 @@ class ProductInit {
     card.querySelector("a").addEventListener("click", (e) => {
       e.preventDefault();
             // Actualiza la URL con un hash que incluye el ID del producto
-            window.location.hash = `${id}`;
+            window.location.hash = `product-${id}`;
 
       try {
         controllers.mostrarProducto(name, price, imagePath, sizes,  description, id);

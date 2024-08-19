@@ -39,7 +39,6 @@ class ProductCard {
     // Manejar eventos
     card.querySelector("[data-veradmin]").addEventListener("click", (e) => {
       e.preventDefault();
-   
 
       mostrarProducto(
         this.name,
@@ -359,7 +358,7 @@ const renderProducts = async () => {
   }
 };
 
-window.addEventListener('hashchange', async () => {
+window.addEventListener('hashchange', async (id) => {
   const hash = window.location.hash;
   if (hash.startsWith('#product-')) {
     const id = hash.replace('#product-', '');
