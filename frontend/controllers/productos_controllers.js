@@ -318,10 +318,11 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
   // Lógica para compartir en redes sociales
   const compartirProducto = document.getElementById("compartir-producto");
   compartirProducto.addEventListener("click", () => {
-    const productUrl = `${window.location.origin}/product/${id}`;
+    const productUrl = `${window.location.origin}//api/detailsProduct/${id}`;
     
     if (navigator.share) {
       navigator.share({
+        image: imagePath,
         title: name,
         text: `¡Mira este producto! ${name} por solo $${price}`,
         url: productUrl,  // Aquí utilizas la URL específica del producto
