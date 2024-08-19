@@ -261,7 +261,7 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
           <div class="card-body">
             <h3 class="card-title">${name}</h3>
             <br>
-            <div class="card-text" style="height: 150px; overflow-y: auto;">
+            <div class="card-text"  overflow-y: auto;">
               ${description}
             </div>
           </div>
