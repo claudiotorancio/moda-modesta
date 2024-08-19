@@ -331,6 +331,8 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
       alert('La función de compartir no es compatible con tu navegador. Por favor, comparte el enlace manualmente.');
     }
   });
+
+  
   
 };
 
@@ -358,28 +360,7 @@ const renderProducts = async () => {
   }
 };
 
-window.addEventListener('hashchange', async (id) => {
-  const hash = window.location.hash;
-  if (hash.startsWith('#product-')) {
-    const id = hash.replace('#product-', '');
-    try {
-      // Obtener detalles del producto usando su ID
-      const producto = await productoServices.detalleProducto(id);
-      
-      mostrarProducto(
-        producto.name,
-        producto.price,
-        producto.imagePath,
-        producto.sizes,
-        producto.description,
-        producto._id,
-        producto.isFeatured
-      );
-    } catch (error) {
-      console.error('Error al obtener los detalles del producto:', error);
-    }
-  }
-});
+
 
 
 export const controllers = {

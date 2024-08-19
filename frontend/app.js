@@ -7,9 +7,16 @@ import { ListaControllers } from "./controllers/lista.controllers.js";
 import { productosInicio } from "./controllers/controllers_inicio.js";
 import productForm from "./controllers/productForm.js";
 import { controllers } from "./controllers/productos_controllers.js";
+import productoServices from "./services/product_services.js"
+
+
 
 // Función principal que se ejecuta cuando el DOM está listo
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
+
+
+
   // Obtener usuario autenticado de la sesión
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
@@ -39,8 +46,38 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutUsuario.style.display = "none";
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
     crearproducto.innerHTML = 'Registrarse'
+    const hash = window.location.hash;
+  if (hash.startsWith('#product-')) {
+    const id = hash.replace('#product-', '');
+  
+    try {
+      // Encapsular el producto en un array si es un solo objeto
+      const response = await productoServices.detalleProducto(id);
+      const producto = response.product; // Asumiendo que el objeto está dentro de 'product'
+  
+      // Convertir en array si es necesario
+      const productosArray = [producto];
+  
+      productosArray.forEach(p => {
+        controllers.mostrarProducto(
+          p.name,
+          p.price,
+          p.imagePath,
+          p.sizes,
+          p.description,
+          p._id
+        );
+      });
+    } catch (error) {
+      console.error('Error al obtener los detalles del producto:', error);
+    }
+  }
   }
 
+  
+  
+
+  
   // Evento para crear un producto
   if(user){ crearproducto.addEventListener("click", () => {
     productForm.render();
@@ -54,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
  
+  
 
   // Evento para iniciar sesión
   const login = document.querySelector("[data-log]");
