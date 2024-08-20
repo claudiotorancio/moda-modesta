@@ -23,6 +23,9 @@ import updateUser from "../backend/routes/list/updateUser.js";
 import getUser from "../backend/routes/list/getUser.js";
 import getAdmin from "../backend/routes/list/getAdmin.js";
 import destacadosProduct from "../backend/routes/product/destacados.js";
+import sendMail from "../backend/routes/nodeMailer/sendMail.js";
+import suscribeMail from "../backend/routes/nodeMailer/contactMail.js";
+import confirmMail from "../backend/routes/nodeMailer/confirmMail.js";
 import path from "path";
 
 const router = Router();
@@ -79,6 +82,10 @@ const upload = () =>
 export const uploadSingle = upload(process.env.BUCKET_AWS).single("image");
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
+// Rutas nodeMailer
+router.post("/api/sendMail", sendMail);
+router.post("/api/suscribeMail", suscribeMail);
+router.get("/api/confirmMail", confirmMail);
 
 // Rutas signin
 router.post("/api/signup", signup);

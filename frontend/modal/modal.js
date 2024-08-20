@@ -1,4 +1,5 @@
 import { LoginControllers } from "../controllers/login_controllers.js";
+import mailServices from "../services/mail_services.js";
 import productoServices from "../services/product_services.js";
 
 const baseModal = () => {
@@ -321,6 +322,69 @@ const modalErrConexion = () => {
   }, 3000);
 };
 
+const modalSuscribe = () => {
+  baseModal();
+  const modal = document.getElementById("modal");
+  const suscribe = modal.querySelector("[data-table]");
+  suscribe.innerHTML = `
+   <div class="container main-container">
+    <div class="text-center">
+      <div class="card-header">
+        <h4>¡Ofertas y Novedades!</h4>
+      </div>
+      <div class="card-body">
+        <p>¡Suscribite para no perderte las novedades y recibir descuentos exclusivos!</p>
+        <form id="subscribe-form" action="/api/suscribeMail" enctype="multipart/form-data" method="POST">
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" class="form-control" required>
+          </div>
+          <div class="form-group mb-4">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Suscribirme</button>
+        </form>
+        <em class="mt-3">Recibirás un correo para validar tu email.</em>
+      </div>
+    </div>
+    </div>
+  `;
+
+  const subscribeForm = suscribe.querySelector("#subscribe-form");
+  subscribeForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    
+    // Obtener los datos del formulario
+    const email = document.querySelector("#email").value;
+    const nombre = document.querySelector("#nombre").value;
+
+    const datos = {
+      email,
+      nombre
+    }
+    
+    // Validar que los campos no estén vacíos
+    if (!email || !nombre) {
+      alert("Por favor, complete todos los campos.");
+      return;
+    }
+
+    // Aquí puedes enviar los datos del formulario a tu servidor
+    try {
+      await mailServices.mailContact(datos);
+      modalProductoCreado();
+    } catch (error) {
+      console.error("Error al suscribirse:", error);
+      alert("Hubo un problema al procesar la suscripción. Por favor, intente nuevamente.");
+    }
+  });
+
+  
+};
+
+
+
 
 const container = document.querySelector('#menu-mobile')
 const menu = document.querySelector('#menu-mobile div:nth-child(1)')
@@ -346,5 +410,6 @@ export const modalControllers = {
   modalErrorRegistro,
   modalProductoEditado,
   modalErrConexion,
+  modalSuscribe
 
 };

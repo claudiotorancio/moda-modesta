@@ -8,13 +8,38 @@ import { productosInicio } from "./controllers/controllers_inicio.js";
 import productForm from "./controllers/productForm.js";
 import { controllers } from "./controllers/productos_controllers.js";
 import productoServices from "./services/product_services.js"
-
+import { modalControllers } from "./modal/modal.js";
+import { baseURL } from "./services/product_services.j"
 
 
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
 
+  const urlParams = new URLSearchParams(window.location.search);
+  console.log(urlParams)
+  const token = urlParams.get('token');
 
+  if (token) {
+    try {
+      const response = await fetch(`${baseURL}/api/confirmMail?token=${encodeURIComponent(token)}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        modalControllers.modalSuccessSignIn()
+        showConfirmationModal("Correo confirmado exitosamente.");
+      } else {
+        showConfirmationModal("Hubo un problema al confirmar el correo. Verifica el enlace y vuelve a intentarlo.");
+      }
+    } catch (err) {
+      showConfirmationModal("Error al confirmar el correo. Por favor, intenta nuevamente.");
+    }
+  }
 
 
   // Obtener usuario autenticado de la sesión
@@ -45,7 +70,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     actualizarUsuario.style.display = "none";
     logoutUsuario.style.display = "none";
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
-    crearproducto.innerHTML = 'Registrarse'
+    crearproducto.innerHTML = 'Suscribite!'
+
     const hash = window.location.hash;
   if (hash.startsWith('#product-')) {
     const id = hash.replace('#product-', '');
@@ -85,8 +111,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    
     document.querySelector("[data-init]").addEventListener("click", (e) => {
         e.preventDefault();
-        const loginControllersInstance = new LoginControllers();
-        loginControllersInstance.renderSignin();
+       modalControllers.modalSuscribe()
 
       });
   }

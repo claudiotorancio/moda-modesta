@@ -1,7 +1,7 @@
 import { baseURL } from "./product_services.js";
 
 export class EnvioService {
-    constructor(baseURL) {
+    constructor() {
       this.baseURL = baseURL;
     }
 

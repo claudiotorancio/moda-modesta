@@ -14,6 +14,7 @@ class ProductInit {
         <div class="card-body">
           <a href="#">ver producto</a>
           <h3 class="card-title">${name}</h3>
+          <p class="card-text">${"$" + price}</p>
         </div>
       </div>
     `;

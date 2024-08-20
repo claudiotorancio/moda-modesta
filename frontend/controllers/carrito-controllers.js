@@ -1,4 +1,5 @@
 import { modalControllers } from "../modal/modal.js";
+import mailServices from "../services/mail_services.js";
 
 class Carrito {
   constructor() {
@@ -98,8 +99,6 @@ class Carrito {
       // Añadir los detalles del carrito
       const carritoContent = `
         <div class="container main-container">
-            <span class="m-left-half">Ver detalles de mi compra</span>
-            <span class="summary-total">$ ${this.calcularTotal().toFixed(2)}</span>
             <div class="summary-details panel p-none">
                 <table class="table table-scrollable">
                     <tbody>
@@ -200,7 +199,7 @@ class Carrito {
         const formularioDatosPersonales = `
           <div class="container main-container">
               <h3>Datos personales</h3>
-              <form id="personal-info-form">
+              <form id="personal-info-form" action="/api/sendmail" enctype="multipart/form-data" method="POST">
                   <div class="form-group">
                       <label for="nombre">Nombre:</label>
                       <input type="text" id="nombre" class="form-control" required>
@@ -228,12 +227,45 @@ class Carrito {
         summaryDetails.appendChild(progresoCompra); // Mantener la barra de progreso
         summaryDetails.insertAdjacentHTML('beforeend', formularioDatosPersonales);
 
-        document.querySelector("#finalize-order").addEventListener("click", (event) => {
+        document.querySelector("#finalize-order").addEventListener("click", async (event) => {
           event.preventDefault();
-          // Lógica para manejar la finalización de la compra con los datos ingresados
-          alert("Compra finalizada con éxito");
+          
+          // Recopilar datos personales del formulario
+          const nombre = document.querySelector("#nombre").value;
+          const email = document.querySelector("#email").value;
+          const telefono = document.querySelector("#telefono").value;
+        
+          // Recopilar los productos del carrito
+          const productos = this.items.map(item => ({
+            id: item._id,
+            name: item.name,
+            price: item.price,
+            cantidad: item.cantidad,
+            size: item.size,
+            hash: item._id
+          }));
+        
+          // Crear el objeto con toda la información
+          const datosCompra = {
+            nombre,
+            email,
+            telefono,
+            productos,
+            total: this.calcularTotal()
+          };
+        
+          // Intentar enviar el correo
+          try {
+            await mailServices.sendMail(datosCompra);
+            modalControllers.modalProductoCreado();
+          } catch (error) {
+            console.error("Error al enviar los datos de la compra:", error);
+            alert("Hubo un problema al procesar la compra. Por favor, intente nuevamente.");
+          }
         });
-      });
+        
+});
+
 
       // Evento para navegar a la etapa de "Entrega" al hacer clic en el paso de "Entrega"
       document.querySelector("#progreso-compra").addEventListener("click", (event) => {

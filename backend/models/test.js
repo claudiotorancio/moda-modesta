@@ -2,7 +2,7 @@
 
 import { Schema, model } from "mongoose";
 
-const UsersSchema = new Schema({
+const TestSchema = new Schema({
     username: {
         type: String,
         unique: true,
@@ -26,4 +26,4 @@ const UsersSchema = new Schema({
     versionKey: false
 });
 
-export default model('Users', UsersSchema);
+export default model('Test', TestSchema);
