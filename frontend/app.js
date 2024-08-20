@@ -15,33 +15,6 @@ import { baseURL } from "./services/product_services.js"
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
 
-  const urlParams = new URLSearchParams(window.location.search);
-  console.log(urlParams)
-  const token = urlParams.get('token');
-
-  if (token) {
-    try {
-      const response = await fetch(`${baseURL}/api/confirmMail?token=${encodeURIComponent(token)}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        modalControllers.modalSuccessSignIn()
-        showConfirmationModal("Correo confirmado exitosamente.");
-      } else {
-        showConfirmationModal("Hubo un problema al confirmar el correo. Verifica el enlace y vuelve a intentarlo.");
-      }
-    } catch (err) {
-      showConfirmationModal("Error al confirmar el correo. Por favor, intenta nuevamente.");
-    }
-  }
-
-
   // Obtener usuario autenticado de la sesión
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
@@ -71,6 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     logoutUsuario.style.display = "none";
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
     crearproducto.innerHTML = 'Suscribite!'
+    
 
     const hash = window.location.hash;
   if (hash.startsWith('#product-')) {

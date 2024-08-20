@@ -1,3 +1,4 @@
+import { modalControllers } from "../modal/modal.js";
 import { baseURL } from "./product_services.js";
 
 export class MailServices {
@@ -64,38 +65,7 @@ export class MailServices {
     }
   }
 
-  async confirmMail(token) {
-    try {
-        const response = await fetch(`${this.baseURL}/api/confirmMail?token=${encodeURIComponent(token)}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      // Manejo de la respuesta
-      if (!response.ok) {
-        throw new Error(
-          `Error en la solicitud: ${response.status} - ${response.statusText}`
-        );
-      }
-      const data = await response.json();
-
-      if (data.success) {
-        alert("Correo confirmado exitosamente.");
-      } else {
-        alert("Hubo un problema al confirmar el correo. Verifica el enlace y vuelve a intentarlo.");
-      }
-    } catch (err) {
-      console.error("Error al confirmar el correo:", err);
-      alert("Hubo un error al confirmar el correo. Por favor, intente nuevamente.");
-    }
-  }
-
-  limpiarCarrito() {
-    this.items = [];
-    sessionStorage.removeItem('carrito');
-  }
+  
 }
 
 const mailServices = new MailServices();
