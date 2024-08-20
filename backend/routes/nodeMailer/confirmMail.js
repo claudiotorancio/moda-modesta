@@ -37,7 +37,7 @@ const confirmMail = async (req, res) => {
     user.emailVerified = true;
     await user.save();
 
-    res.send({ success: true, message: 'Correo confirmado exitosamente' });
+    res.redirect('/api/success');
   } catch (error) {
     console.error('Error al confirmar el correo:', error.message);
     res.status(400).send({ success: false, message: 'Token inválido o expirado' });

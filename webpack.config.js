@@ -47,6 +47,18 @@ export default {
         useShortDoctype: true,
       },
     }),
+    new HtmlWebpackPlugin({
+      filename: 'success.html',
+      template: './frontend/success.html',
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true,
+      },
+    }),
     new MiniCssExtractPlugin({
       filename: 'css/bundle.css',
     }),

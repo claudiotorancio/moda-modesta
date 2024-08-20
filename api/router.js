@@ -26,6 +26,7 @@ import destacadosProduct from "../backend/routes/product/destacados.js";
 import sendMail from "../backend/routes/nodeMailer/sendMail.js";
 import suscribeMail from "../backend/routes/nodeMailer/contactMail.js";
 import confirmMail from "../backend/routes/nodeMailer/confirmMail.js";
+import success from "../backend/routes/nodeMailer/success.js";
 import path from "path";
 
 const router = Router();
@@ -86,6 +87,9 @@ const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 router.post("/api/sendMail", sendMail);
 router.post("/api/suscribeMail", suscribeMail);
 router.get("/api/confirmMail", confirmMail);
+router.get("/api/success", success);
+
+
 
 // Rutas signin
 router.post("/api/signup", signup);

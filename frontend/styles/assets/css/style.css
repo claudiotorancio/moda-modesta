@@ -277,7 +277,7 @@ header {
 
 #menu-mobile div.open:nth-child(1) {
   z-index: 1000;
-  height: 60vh;
+  height: 70vh;
   
 
 }
@@ -435,6 +435,78 @@ text-align: center;
 .icono-compartir i:hover,
 .icono-like i:hover {
   color: #007bff; /* Color al pasar el mouse */
+}
+
+/*paginas success y error*/
+
+.registry-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.registry-card__icon-complete {
+  display: block;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1rem;
+  background-image: url(https://moda-modesta.s3.us-east-2.amazonaws.com/checkmark.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+
+}
+
+.registry-card__icon-complete-denied {
+  display: block;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1rem;
+  background-image: url(https://moda-modesta.s3.us-east-2.amazonaws.com/denied.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.registry-card__title {
+  max-width: 20rem;
+}
+
+.button {
+  display: block;
+  background-color: #0071ea;
+  border-radius: 7px;
+  width: 100%;
+  margin-top: 1rem;
+  max-width: 20rem;
+  padding: 1.125rem;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 22px;
+  align-self: center;
+  text-align: center;
+}
+
+/*boton volver al principio*/
+
+.btn-volver {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+  background: #000;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 24px;
+}
+
+.btn-volver:hover {
+  background: #fff;
+  color: #000;
+  text-decoration: none;
 }
 
 
