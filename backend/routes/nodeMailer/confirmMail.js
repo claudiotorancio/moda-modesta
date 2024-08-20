@@ -40,7 +40,7 @@ const confirmMail = async (req, res) => {
     res.redirect('/success.html');
   } catch (error) {
     console.error('Error al confirmar el correo:', error.message);
-    res.status(400).send({ success: false, message: 'Token inválido o expirado' });
+    res.redirect('/error.html');
   }
 };
 

@@ -90,7 +90,7 @@ router.post("/api/sendMail", sendMail);
 router.post("/api/suscribeMail", suscribeMail);
 router.get("/api/confirmMail", confirmMail);
 router.get("/success", success);
-router.get("/error", success);
+router.get("/error", error);
 
 
 
