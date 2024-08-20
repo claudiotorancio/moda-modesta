@@ -9,7 +9,7 @@ import productForm from "./controllers/productForm.js";
 import { controllers } from "./controllers/productos_controllers.js";
 import productoServices from "./services/product_services.js"
 import { modalControllers } from "./modal/modal.js";
-import { baseURL } from "./services/product_services.j"
+import { baseURL } from "./services/product_services.js"
 
 
 // Función principal que se ejecuta cuando el DOM está listo
