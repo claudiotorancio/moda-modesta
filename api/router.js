@@ -29,6 +29,7 @@ import confirmMail from "../backend/routes/nodeMailer/confirmMail.js";
 import success from "../backend/routes/nodeMailer/success.js";
 import path from "path";
 
+
 const router = Router();
 
 // Configuración de midllewares
@@ -87,7 +88,7 @@ const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 router.post("/api/sendMail", sendMail);
 router.post("/api/suscribeMail", suscribeMail);
 router.get("/api/confirmMail", confirmMail);
-router.get("/api/success", success);
+router.get("/success", success);
 
 
 
