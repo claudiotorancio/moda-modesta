@@ -65,22 +65,7 @@ export class MailServices {
     }
   }
 
-  async handleSuccess() {
-    try {
-      const response = await fetch(`${this.baseURL}/success`);
-      if (!response.ok) {
-        throw new Error(`Error en la solicitud: ${response.status} - ${response.statusText}`);
-      }
-
-      const successHTML = await response.text();
-      // Aquí se asume que tienes un método para mostrar un modal con el contenido de success.html
-      modalControllers.showModal(successHTML);
-    } catch (err) {
-      console.error("Error al manejar la redirección de éxito:", err);
-      alert("Hubo un error al mostrar el mensaje de éxito.");
-    }
-  }
-
+ 
   
 }
 

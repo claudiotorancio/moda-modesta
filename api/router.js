@@ -27,6 +27,7 @@ import sendMail from "../backend/routes/nodeMailer/sendMail.js";
 import suscribeMail from "../backend/routes/nodeMailer/contactMail.js";
 import confirmMail from "../backend/routes/nodeMailer/confirmMail.js";
 import success from "../backend/routes/nodeMailer/success.js";
+import error from "../backend/routes/nodeMailer/error.js";
 import path from "path";
 
 
@@ -89,6 +90,8 @@ router.post("/api/sendMail", sendMail);
 router.post("/api/suscribeMail", suscribeMail);
 router.get("/api/confirmMail", confirmMail);
 router.get("/success", success);
+router.get("/error", success);
+
 
 
 

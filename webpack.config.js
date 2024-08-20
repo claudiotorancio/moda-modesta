@@ -59,6 +59,18 @@ export default {
         useShortDoctype: true,
       },
     }),
+    new HtmlWebpackPlugin({
+      filename: 'error.html',
+      template: './frontend/error.html',
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true,
+      },
+    }),
     new MiniCssExtractPlugin({
       filename: 'css/bundle.css',
     }),
