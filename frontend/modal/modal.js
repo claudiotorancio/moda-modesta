@@ -373,7 +373,6 @@ const modalSuscribe = () => {
     // Aquí puedes enviar los datos del formulario a tu servidor
     try {
       await mailServices.mailContact(datos);
-      modalProductoCreado();
     } catch (error) {
       console.error("Error al suscribirse:", error);
       alert("Hubo un problema al procesar la suscripción. Por favor, intente nuevamente.");
@@ -383,6 +382,65 @@ const modalSuscribe = () => {
   
 };
 
+
+const modalCorreoEnviado = () => {
+  baseModal();
+  const modal = document.getElementById("modal");
+  const success = modal.querySelector("[data-table]");
+  success.innerHTML = `
+    <div class="text-center">
+    <div class="card-header">
+    <div>
+        <div>
+            <br>
+            <h4>Correo enviado</h4> 
+            <button class="boton-eliminar btn btn-primary" data-index="">Volver</button>
+            <em class="mt-3">Verifica tu casila de email porfavor.</em>
+        </div>
+    </div>
+    </div>
+    </div>
+    `;
+
+  success.classList.add("modalVisor");
+
+  const botonEliminar = success.querySelector(".boton-eliminar");
+  botonEliminar.addEventListener("click", () => {
+    window.location.replace("/index.html");
+  });
+  setTimeout(() => {
+    window.location.replace("/index.html");
+  }, 3000);
+};
+
+const modalCorreoNoenviado = () => {
+  baseModal();
+  const modal = document.getElementById("modal");
+  const success = modal.querySelector("[data-table]");
+  success.innerHTML = `
+    <div class="text-center">
+    <div class="card-header">
+    <div>
+        <div>
+            <br>
+            <h4>Error al envar el correo</h4> 
+            <button class="boton-eliminar btn btn-primary" data-index="">Reintentar</button>
+        </div>
+    </div>
+    </div>
+    </div>
+    `;
+
+  success.classList.add("modalVisor");
+
+  const botonEliminar = success.querySelector(".boton-eliminar");
+  botonEliminar.addEventListener("click", () => {
+    window.location.replace("/index.html");
+  });
+  setTimeout(() => {
+    window.location.replace("/index.html");
+  }, 3000);
+};
 
 
 
@@ -410,6 +468,8 @@ export const modalControllers = {
   modalErrorRegistro,
   modalProductoEditado,
   modalErrConexion,
-  modalSuscribe
+  modalSuscribe,
+  modalCorreoEnviado,
+  modalCorreoNoenviado
 
 };

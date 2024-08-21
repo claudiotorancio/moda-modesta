@@ -331,7 +331,7 @@ ul li a {
 }
 
 .modal p {
-  font-size: 2rem;
+  font-size: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -341,8 +341,9 @@ ul li a {
   margin: 5% auto;
   padding: 20px;
   border: 1px solid #888;
-  max-width: 50%;
+  max-width: 40%;
   text-align: center;
+
 
 }
 
@@ -424,18 +425,31 @@ text-align: center;
 }
 
 
-.icono-compartir i,
-.icono-like i {
+.icono-compartir {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none; /* Quitar subrayado */
+}
+
+.icono-compartir i {
   font-size: 1.5rem;
   cursor: pointer;
   color: #6c757d;
   transition: color 0.3s ease;
 }
 
-.icono-compartir i:hover,
-.icono-like i:hover {
+.icono-compartir p {
+ 
+  color: #6c757d;
+  margin-top: 0.2rem; /* Espacio entre el ícono y el texto */
+}
+
+.icono-compartir:hover i,
+.icono-compartir:hover p {
   color: #007bff; /* Color al pasar el mouse */
 }
+
 
 /*paginas success y error*/
 
@@ -766,11 +780,11 @@ height: 15vh;
     padding: 0.5rem;
   } */
   .modal p {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 
   .modal-content {
-    max-width: 80%;
+    max-width: 70%;
     max-height: 80%;
     overflow-y: auto;
 

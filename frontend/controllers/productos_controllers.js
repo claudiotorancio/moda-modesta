@@ -272,15 +272,19 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
             ${opcionesTalles}
             </select>
 
-           <div class="d-flex justify-content-between align-items-center">
-              <!-- Icono para compartir -->
-              <a id="compartir-producto" title="Compartir" class="icono-compartir">
-                <i class="fa-solid fa-share-nodes"></i>
-              </a>
-            </div>
+        <div class="mx-auto text-center">
+    <!-- Icono para compartir -->
+    <a id="compartir-producto" title="Compartir" class="icono-compartir">
+        <i class="fa-solid fa-share-nodes"></i>
+        <p>Compartir</p>
+    </a>
+</div>
+
+
+           
             <div class="form-row align-items-center">
               <div class="mx-auto">
-                <button type="button" class="btn btn-primary btn-block mt-4" data-carrito>Agregar al carrito</button>
+                <button type="button" class="btn btn-primary btn-block " data-carrito>Agregar al carrito</button>
               </div>
             </div>
             

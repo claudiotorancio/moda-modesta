@@ -1,5 +1,6 @@
 import { modalControllers } from "../modal/modal.js";
 import mailServices from "../services/mail_services.js";
+import { valida } from "../controllers/validaciones.js";
 
 class Carrito {
   constructor() {
@@ -189,52 +190,78 @@ class Carrito {
         finalizeButton.disabled = !event.target.value;
       });
 
-      // Evento para el botón "Siguiente"
       document.querySelector("#finalize-purchase").addEventListener("click", () => {
         // Marcar la casilla "Pago" como completada
         const pasos = document.querySelectorAll("#progreso-compra .paso");
         pasos[2].classList.add("completado"); // Activa la casilla "Pago"
-
+      
         // Mostrar el formulario de datos personales pero mantener la barra de progreso
         const formularioDatosPersonales = `
           <div class="container main-container">
               <h3>Datos personales</h3>
               <form id="personal-info-form" action="/api/sendmail" enctype="multipart/form-data" method="POST">
-                  <div class="form-group">
-                      <label for="nombre">Nombre:</label>
-                      <input type="text" id="nombre" class="form-control" required>
+               <fieldset>
+                  <div class="input-container">
+                      <input name="name" id="name" type="text" class="input" placeholder="Nombre" data-tipo="nombre">
+                      <label class="input-label" for="name">Nombre</label>
+                        <span class="input-message-error">Este campo no es valido</span>
                   </div>
-                  <div class="form-group">
-                      <label for="email">Correo electrónico:</label>
-                      <input type="email" id="email" class="form-control" required>
+                  <div class="input-container">
+                      <input name="email"  type="email" id="email" class="input" placeholder="Email" data-tipo="email" required>
+                      <label class="input-label" for="email">Email</label>
+                        <span class="input-message-error">Este campo no es valido</span>
                   </div>
-                  <div class="form-group">
-                      <label for="telefono">Teléfono:</label>
-                      <input type="tel" id="telefono" class="form-control" required>
+                  <div class="input-container">
+                      <input name="phoneNumber" type="tel" id="phoneNumber" class="input" placeholder="Número telefónico" pattern="\\d{10}" required maxlength="10" data-tipo="numero"  required>
+                       <label class="input-label" for="phoneNumber">Número telefónico</label>
+                        <span class="input-message-error">Este campo no es valido</span>
                   </div>
+                </fieldset>
                   <div class="purchase-actions">
                       <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; vertical-align: baseline;">
                         Al dar finalizado se enviarán los datos para el pago a las direcciones que ingresó. Por favor, asegúrese de que estén correctos.
                       </em>
-                      <button class="btn btn-success" id="finalize-order">Finalizar compra</button>
+                      <button type="submit" class="btn btn-success" id="finalize-order">Finalizar compra</button>
                   </div>
               </form>
           </div>
         `;
-
+      
         // Reemplazar el contenido del carrito con el formulario de datos personales pero mantener la barra de progreso
         summaryDetails.innerHTML = '';
         summaryDetails.appendChild(progresoCompra); // Mantener la barra de progreso
         summaryDetails.insertAdjacentHTML('beforeend', formularioDatosPersonales);
-
+      
+        // Validar inputs al perder el foco
+        const inputs = document.querySelectorAll("input");
+        inputs.forEach((input) => {
+          input.addEventListener("blur", (event) => {
+            valida(event.target);
+          });
+        });
+      
+        // Agregar evento para validar todo el formulario antes de enviar
         document.querySelector("#finalize-order").addEventListener("click", async (event) => {
           event.preventDefault();
-          
+      
+          let formularioValido = true;
+          inputs.forEach((input) => {
+            valida(input);
+            if (!input.validity.valid) {
+              formularioValido = false;
+            }
+          });
+      
+          if (!formularioValido) {
+            // Detener el envío si hay campos inválidos
+            return;
+          }
+      
           // Recopilar datos personales del formulario
-          const nombre = document.querySelector("#nombre").value;
+          const nombre = document.querySelector("#name").value;
           const email = document.querySelector("#email").value;
-          const telefono = document.querySelector("#telefono").value;
-        
+          const telefono = document.querySelector("#phoneNumber").value;
+      
           // Recopilar los productos del carrito
           const productos = this.items.map(item => ({
             id: item._id,
@@ -244,7 +271,7 @@ class Carrito {
             size: item.size,
             hash: item._id
           }));
-        
+      
           // Crear el objeto con toda la información
           const datosCompra = {
             nombre,
@@ -253,18 +280,20 @@ class Carrito {
             productos,
             total: this.calcularTotal()
           };
-        
+      
           // Intentar enviar el correo
           try {
             await mailServices.sendMail(datosCompra);
-            modalControllers.modalProductoCreado();
+            modalControllers.modalCorreoEnviado();
           } catch (error) {
             console.error("Error al enviar los datos de la compra:", error);
             alert("Hubo un problema al procesar la compra. Por favor, intente nuevamente.");
           }
         });
+      });
+      
         
-});
+
 
 
       // Evento para navegar a la etapa de "Entrega" al hacer clic en el paso de "Entrega"

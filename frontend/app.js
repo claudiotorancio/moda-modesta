@@ -1,6 +1,7 @@
 // Importar estilos y módulos necesarios
 import "./styles/assets/css/style.css";
 import "./styles/assets/css/productos.css";
+import "./styles/assets/css/components/inputs.css"
 import { LoginServices } from "./services/login_services.js";
 import { LoginControllers } from "./controllers/login_controllers.js";
 import { ListaControllers } from "./controllers/lista.controllers.js";

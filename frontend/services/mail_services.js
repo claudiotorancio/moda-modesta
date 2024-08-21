@@ -55,9 +55,9 @@ export class MailServices {
       const data = await response.json();
 
       if (data.success) {
-        alert("Suscripción exitosa. Recibirás un correo para validar tu email.");
+        modalControllers.modalCorreoEnviado()
       } else {
-        alert("Hubo un problema al suscribirse. Por favor, intente nuevamente.");
+        modalControllers.modalCorreoNoenviado()
       }
     } catch (err) {
       console.error("Error al enviar los datos de la suscripción:", err);
@@ -65,7 +65,10 @@ export class MailServices {
     }
   }
 
- 
+  limpiarCarrito() {
+    this.items = [];
+    sessionStorage.removeItem('carrito');
+  }
   
 }
 
