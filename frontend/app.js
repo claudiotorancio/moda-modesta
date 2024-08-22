@@ -3,7 +3,6 @@ import "./styles/assets/css/style.css";
 import "./styles/assets/css/productos.css";
 import "./styles/assets/css/components/inputs.css";
 import "./styles/assets/css/base/variables.css";
-// import "./styles/assets/css/base/base.css";
 
 import "./styles/assets/css/base/reset.css";
 

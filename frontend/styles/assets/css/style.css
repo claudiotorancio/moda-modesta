@@ -3,9 +3,11 @@
 
 body {
   font-family: var(--font-family-body);
+  font-size: 18px;
   line-height: 1.5;
   font-weight: 700;
   box-sizing: border-box;
+  margin-top: 1rem !important;
 }
 
 .fixed-top {
