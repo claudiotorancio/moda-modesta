@@ -3,9 +3,17 @@ import nodemailer from "nodemailer";
 const sendMail = async (req, res) => {
   try {
     const { nombre, email, telefono, productos, total, costoEnvio } = req.body;
+    console.log(req.body);
 
     // Verificar que todos los campos requeridos están presentes
-    if (!nombre || !email || !telefono || !productos || !total || !costoEnvio) {
+    if (
+      !nombre ||
+      !email ||
+      !telefono ||
+      !productos ||
+      !total ||
+      costoEnvio === undefined
+    ) {
       return res
         .status(400)
         .send({ error: "Todos los campos son requeridos." });
