@@ -1,21 +1,24 @@
 // Importar estilos y módulos necesarios
 import "./styles/assets/css/style.css";
 import "./styles/assets/css/productos.css";
-import "./styles/assets/css/components/inputs.css"
+import "./styles/assets/css/components/inputs.css";
+import "./styles/assets/css/base/variables.css";
+import "./styles/assets/css/components/button.css";
+
+import "./styles/assets/css/components/modal.css";
+
 import { LoginServices } from "./services/login_services.js";
 import { LoginControllers } from "./controllers/login_controllers.js";
 import { ListaControllers } from "./controllers/lista.controllers.js";
 import { productosInicio } from "./controllers/controllers_inicio.js";
 import productForm from "./controllers/productForm.js";
 import { controllers } from "./controllers/productos_controllers.js";
-import productoServices from "./services/product_services.js"
+import productoServices from "./services/product_services.js";
 import { modalControllers } from "./modal/modal.js";
-import { baseURL } from "./services/product_services.js"
-
+import { baseURL } from "./services/product_services.js";
 
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
-
   // Obtener usuario autenticado de la sesión
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
@@ -39,59 +42,52 @@ document.addEventListener("DOMContentLoaded", async () => {
     userActive.style.display = "none";
     contactUser.style.display = "none";
   } else {
-    productosInicio.renderInit()
+    productosInicio.renderInit();
     divUsuario.style.display = "none";
     actualizarUsuario.style.display = "none";
     logoutUsuario.style.display = "none";
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
-    crearproducto.innerHTML = 'Suscribite!'
-    
+    crearproducto.innerHTML = "Suscribite!";
 
     const hash = window.location.hash;
-  if (hash.startsWith('#product-')) {
-    const id = hash.replace('#product-', '');
-  
-    try {
-      // Encapsular el producto en un array si es un solo objeto
-      const response = await productoServices.detalleProducto(id);
-      const producto = response.product; // Asumiendo que el objeto está dentro de 'product'
-  
-      // Convertir en array si es necesario
-      const productosArray = [producto];
-  
-      productosArray.forEach(p => {
-        controllers.mostrarProducto(
-          p.name,
-          p.price,
-          p.imagePath,
-          p.sizes,
-          p.description,
-          p._id
-        );
-      });
-    } catch (error) {
-      console.error('Error al obtener los detalles del producto:', error);
+    if (hash.startsWith("#product-")) {
+      const id = hash.replace("#product-", "");
+
+      try {
+        // Encapsular el producto en un array si es un solo objeto
+        const response = await productoServices.detalleProducto(id);
+        const producto = response.product; // Asumiendo que el objeto está dentro de 'product'
+
+        // Convertir en array si es necesario
+        const productosArray = [producto];
+
+        productosArray.forEach((p) => {
+          controllers.mostrarProducto(
+            p.name,
+            p.price,
+            p.imagePath,
+            p.sizes,
+            p.description,
+            p._id
+          );
+        });
+      } catch (error) {
+        console.error("Error al obtener los detalles del producto:", error);
+      }
     }
   }
-  }
 
-  
-  
-
-  
   // Evento para crear un producto
-  if(user){ crearproducto.addEventListener("click", () => {
-    productForm.render();
-  });}else {
-   
+  if (user) {
+    crearproducto.addEventListener("click", () => {
+      productForm.render();
+    });
+  } else {
     document.querySelector("[data-init]").addEventListener("click", (e) => {
-        e.preventDefault();
-       modalControllers.modalSuscribe()
-
-      });
+      e.preventDefault();
+      modalControllers.modalSuscribe();
+    });
   }
- 
-  
 
   // Evento para iniciar sesión
   const login = document.querySelector("[data-log]");

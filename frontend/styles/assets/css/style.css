@@ -1,13 +1,4 @@
-:root {
-  --raleway: "raleway";
-  --background-blanco: #f5f5f5;
-  --fuente-barra: #a2a2a2;
-  --fuente-banner: #ffffff;
-  --fuente-productos: #464646;
-  --fuente-productos-azul: #2a7ae4;
-  --fuente-quienesSomos: #eaf2fd;
-  --background-iniciarSesion: #e5e5e5;
-}
+@import url(../css/base/variables.css);
 
 body {
   font-family: "raleway";
@@ -15,11 +6,10 @@ body {
   box-sizing: border-box;
 }
 
-.fixed-top{
+.fixed-top {
   position: relative;
-} 
+}
 header {
-  
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -27,7 +17,7 @@ header {
 }
 
 .cabecera_container {
-    z-index: 3;
+  z-index: 3;
   width: 85%;
   height: 12vh;
   display: flex;
@@ -40,7 +30,6 @@ header {
 
 .cabecera_logo {
   width: 9.3rem;
-  
 }
 
 .busqueda {
@@ -92,13 +81,10 @@ header {
   margin-top: 5px;
 }
 
-
 .div-usuario a {
-
   list-style-type: none;
   text-decoration: none;
   color: #333;
-
 }
 .login {
   width: 9rem;
@@ -180,7 +166,6 @@ header {
 }
 
 .quienesSomos_container {
- 
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -192,7 +177,6 @@ header {
 }
 
 .quienesSomos_parrafos {
- 
   font-weight: 400;
   display: flex;
   flex-direction: column;
@@ -253,7 +237,7 @@ header {
 
 #menu-mobile {
   z-index: 1;
-  font-size:2vw;
+  font-size: 2vw;
 }
 
 #menu-mobile.active {
@@ -278,16 +262,7 @@ header {
 #menu-mobile div.open:nth-child(1) {
   z-index: 1000;
   height: 70vh;
-  
-
 }
-
-/* .modalVisor {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--fuente-quienesSomos);
-  padding: 2rem;
-} */
 
 ul {
   line-height: 5rem;
@@ -315,83 +290,14 @@ ul li a {
 
 .js-toggle-cart {
   text-decoration: none;
-
 }
-.modal {
-  display: none;
-  position: fixed;
-
-  backdrop-filter: blur(5px);
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-}
-
-.modal-content {
-  position: relative;
-  background-color: #fefefe;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  max-width: 40%;
-  text-align: center;
-
-
-}
-
-/* Estilos para el botón "Cerrar" del modal */
-.modal-close {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  height: auto;
-  padding: 5px;
-  opacity: 0.5;
-  border: 0;
-  z-index: 100;
-}
-
-.modal-close:hover,
-.modal-close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.productoMmodal {
-  width: var(--cardWidth);
-  height: var(--cardHeight);
-  margin: var(--cardMargin);
-}
-
 
 .form-check {
   width: 0%;
-
 }
-
-
-
-.btn {
-
-margin-bottom: 0.5rem;
-  width: 100%;
-
-}
-
-
 
 .quienesSomos_redesSociales {
- 
-text-align: center;
+  text-align: center;
   gap: 10px;
   margin-top: 20px;
 }
@@ -400,7 +306,6 @@ text-align: center;
   width: 40px; /* Ajusta el tamaño de los iconos */
   height: 40px;
 }
-
 
 .barra-progreso {
   display: flex;
@@ -420,10 +325,9 @@ text-align: center;
 }
 
 .paso.completado {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
-
 
 .icono-compartir {
   display: flex;
@@ -440,7 +344,6 @@ text-align: center;
 }
 
 .icono-compartir p {
- 
   color: #6c757d;
   margin-top: 0.2rem; /* Espacio entre el ícono y el texto */
 }
@@ -449,7 +352,6 @@ text-align: center;
 .icono-compartir:hover p {
   color: #007bff; /* Color al pasar el mouse */
 }
-
 
 /*paginas success y error*/
 
@@ -468,7 +370,6 @@ text-align: center;
   background-image: url(https://moda-modesta.s3.us-east-2.amazonaws.com/checkmark.svg);
   background-size: cover;
   background-repeat: no-repeat;
-
 }
 
 .registry-card__icon-complete-denied {
@@ -523,8 +424,24 @@ text-align: center;
   text-decoration: none;
 }
 
-
 @media (min-width: 768px) and (max-width: 1200px) {
+  #menu-mobile {
+    z-index: 1;
+    font-size: 1.8vw;
+  }
+
+  #menuBtn {
+    /* position: fixed; 
+      left: 0; */
+    position: absolute;
+    width: 100vw;
+    margin-left: 0rem;
+    padding: 1.5rem;
+    cursor: pointer;
+
+    border: none;
+  }
+
   .busqueda {
     margin-right: 10%;
   }
@@ -546,6 +463,7 @@ text-align: center;
   .login {
     width: 6rem;
   }
+
   .consolas {
     margin-left: 1rem;
     width: 7rem;
@@ -553,7 +471,6 @@ text-align: center;
     font-size: 14px;
     text-align: center;
   }
-
 
   .button-busqueda {
     display: none;
@@ -566,10 +483,8 @@ text-align: center;
     margin-left: 0.62rem;
   }
   .cabecera_container {
-  
-  height: 8vh;
-
-}
+    height: 8vh;
+  }
   .cabecera_logo {
     width: 9.5rem;
   }
@@ -579,12 +494,10 @@ text-align: center;
   }
 
   .quienesSomos_container {
-    width: 80%;
     height: 50%;
     align-items: center;
   }
   .quienesSomos_logo {
-  
     flex-direction: column;
   }
 
@@ -601,13 +514,11 @@ text-align: center;
   }
 
   .nombre {
-  
     border: none;
     border-radius: 3px;
   }
 
   .textarea {
- 
     border: none;
     border-radius: 3px;
   }
@@ -618,35 +529,29 @@ text-align: center;
 }
 
 @media (min-width: 320px) and (max-width: 768px) {
-
-
   .cabecera_container {
     z-index: 3;
     height: 3vh;
     width: 100%;
     padding-bottom: 0;
   }
-  
+
   .header {
-    
     background-color: #fff;
     height: 10vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-top: 1rem; /* Ajusta el padding según sea necesario */
-   
   }
 
+  .banner {
+    margin-top: 6rem;
+  }
 
-.banner {
-  margin-top: 6rem;
-}
-
-
-.fixed-top {
-  position: fixed;
-}
+  .fixed-top {
+    position: fixed;
+  }
 
   .busqueda {
     margin-right: 10%;
@@ -670,7 +575,7 @@ text-align: center;
   }
 
   .login {
-width: 4rem;
+    width: 4rem;
     margin-top: 1.5rem;
   }
 
@@ -741,37 +646,35 @@ width: 4rem;
   }
 
   #menu-mobile div.open:nth-child(1) {
-
-
-height: 15vh;
+    height: 15vh;
   }
 
   ul {
-  line-height: 0;
+    line-height: 0;
     margin-top: 1rem;
-    list-style-type: style type;;
+    list-style-type: style type;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 2rem;
-    
   }
-  
+
   ul li {
     font-size: 1.2rem;
     text-align: center;
-  text-decoration: underline; /* Agregar subrayado */
-  text-decoration-line: underline; /* Indicar que queremos subrayar */
-  text-decoration-skip-ink: none; /* Evitar que el subrayado se omita alrededor de las letras */
-  text-underline-offset: 0.2em; /* Espacio entre el texto y el subrayado */
+    text-decoration: underline; /* Agregar subrayado */
+    text-decoration-line: underline; /* Indicar que queremos subrayar */
+    text-decoration-skip-ink: none; /* Evitar que el subrayado se omita alrededor de las letras */
+    text-underline-offset: 0.2em; /* Espacio entre el texto y el subrayado */
     text-align: center;
-    width: calc(5% - 20px); /* Ancho del 33.33% menos el espacio entre elementos */
+    width: calc(
+      5% - 20px
+    ); /* Ancho del 33.33% menos el espacio entre elementos */
   }
-  
+
   ul li a {
     text-decoration: none;
     color: #333;
   }
-  
 
   /* .modalVisor {
     display: flex;
@@ -779,16 +682,6 @@ height: 15vh;
     background-color: var(--fuente-quienesSomos);
     padding: 0.5rem;
   } */
-  .modal p {
-    font-size: 1rem;
-  }
-
-  .modal-content {
-    max-width: 80%;
-    max-height: 80%;
-    overflow-y: auto;
-
-  }
 
   .quienesSomos {
     background-color: var(--fuente-quienesSomos);
@@ -828,14 +721,8 @@ height: 15vh;
     border-radius: 3px;
   }
 
-#login {
-  margin-top: 1.5rem;
-}
-
-  .btn {
-
-    width: 100%;
-
+  #login {
+    margin-top: 1.5rem;
   }
 
   p.help {
@@ -843,17 +730,16 @@ height: 15vh;
   }
 
   .profile-notificacion {
- 
     width: 100%; /* Asegura que el texto ocupe todo el ancho del contenedor */
-    font-size: 14px; 
+    font-size: 14px;
     margin: 0.3rem;
   }
   .data-user {
     font-weight: bold; /* Ajusta el peso de la fuente según sea necesario */
   }
-  
+
   .div-usuario {
-margin-top: 1rem;
+    margin-top: 1rem;
   }
 
   .div-usuario a {
@@ -864,8 +750,6 @@ margin-top: 1rem;
     text-align: center;
     width: 4rem;
   }
-
-
 
   .button-busqueda-login img {
     display: none;

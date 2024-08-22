@@ -12,7 +12,6 @@ const baseModal = () => {
   });
 
   modal.addEventListener("click", (e) => {
-   
     if (e.target === modal) {
       modal.style.display = "none";
     }
@@ -75,7 +74,6 @@ const modalSuccessSignIn = (username) => {
     window.location.replace("/index.html");
   }, 3000);
 };
-
 
 const modalProductoCreado = () => {
   baseModal();
@@ -157,11 +155,11 @@ const modalErrorSignIn = () => {
 
   const botonEliminar = incorrect.querySelector(".boton-eliminar");
   botonEliminar.addEventListener("click", () => {
-    const loginControllersInstance = new LoginControllers()
+    const loginControllersInstance = new LoginControllers();
     loginControllersInstance.renderSignin();
   });
   setTimeout(() => {
-    const loginControllersInstance = new LoginControllers()
+    const loginControllersInstance = new LoginControllers();
     loginControllersInstance.renderSignin();
   }, 2000);
 };
@@ -188,11 +186,11 @@ const modalSuccessSignup = () => {
 
   const botonEliminar = successSignup.querySelector(".boton-eliminar");
   botonEliminar.addEventListener("click", () => {
-    const loginControllersInstance = new LoginControllers()
+    const loginControllersInstance = new LoginControllers();
     loginControllersInstance.renderSignin();
   });
   setTimeout(() => {
-    const loginControllersInstance = new LoginControllers()
+    const loginControllersInstance = new LoginControllers();
     loginControllersInstance.renderSignin();
   }, 3000);
 };
@@ -219,12 +217,12 @@ const modalErrorSignup = () => {
 
   const botonEliminar = errorSignup.querySelector(".boton-eliminar");
   botonEliminar.addEventListener("click", () => {
-    const loginControllersInstance = new LoginControllers()
+    const loginControllersInstance = new LoginControllers();
     loginControllersInstance.renderSignup();
   });
 
   setTimeout(() => {
-    const loginControllersInstance = new LoginControllers()
+    const loginControllersInstance = new LoginControllers();
     loginControllersInstance.renderSignup();
   }, 2000);
 };
@@ -251,14 +249,13 @@ const modalErrorRegistro = () => {
 
   const botonEliminar = errorSignup.querySelector(".boton-eliminar");
   botonEliminar.addEventListener("click", () => {
-    const loginControllersInstance = new LoginControllers()
+    const loginControllersInstance = new LoginControllers();
     loginControllersInstance.renderSignin();
-
   });
 
   setTimeout(() => {
-    const loginControllersInstance = new LoginControllers()
-  loginControllersInstance.renderSignin();
+    const loginControllersInstance = new LoginControllers();
+    loginControllersInstance.renderSignin();
   }, 2000);
 };
 
@@ -354,16 +351,16 @@ const modalSuscribe = () => {
   const subscribeForm = suscribe.querySelector("#subscribe-form");
   subscribeForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    
+
     // Obtener los datos del formulario
     const email = document.querySelector("#email").value;
     const nombre = document.querySelector("#nombre").value;
 
     const datos = {
       email,
-      nombre
-    }
-    
+      nombre,
+    };
+
     // Validar que los campos no estén vacíos
     if (!email || !nombre) {
       alert("Por favor, complete todos los campos.");
@@ -375,13 +372,12 @@ const modalSuscribe = () => {
       await mailServices.mailContact(datos);
     } catch (error) {
       console.error("Error al suscribirse:", error);
-      alert("Hubo un problema al procesar la suscripción. Por favor, intente nuevamente.");
+      alert(
+        "Hubo un problema al procesar la suscripción. Por favor, intente nuevamente."
+      );
     }
   });
-
-  
 };
-
 
 const modalCorreoEnviado = () => {
   baseModal();
@@ -394,8 +390,42 @@ const modalCorreoEnviado = () => {
         <div>
             <br>
             <h4>Correo enviado</h4> 
+            <div>
             <button class="boton-eliminar btn btn-primary" data-index="">Volver</button>
+            </div>
             <em class="mt-3">Verifica tu casila de email porfavor.</em>
+        </div>
+    </div>
+    </div>
+    </div>
+    `;
+
+  success.classList.add("modalVisor");
+
+  const botonEliminar = success.querySelector(".boton-eliminar");
+  botonEliminar.addEventListener("click", () => {
+    window.location.replace("/index.html");
+  });
+  setTimeout(() => {
+    window.location.replace("/index.html");
+  }, 3000);
+};
+
+const modalCompraOk = () => {
+  baseModal();
+  const modal = document.getElementById("modal");
+  const success = modal.querySelector("[data-table]");
+  success.innerHTML = `
+    <div class="text-center">
+    <div class="card-header">
+    <div>
+        <div>
+            <br>
+            <h4>Correo enviado</h4> 
+            <div>
+            <button class="boton-eliminar btn btn-primary" data-index="">Volver</button>
+            </div>
+            <em class="mt-3">En breve recibiras un correo con toda la info<em>
         </div>
     </div>
     </div>
@@ -424,7 +454,9 @@ const modalCorreoNoenviado = () => {
         <div>
             <br>
             <h4>Error al envar el correo</h4> 
+           <div>
             <button class="boton-eliminar btn btn-primary" data-index="">Reintentar</button>
+            </div>
         </div>
     </div>
     </div>
@@ -442,19 +474,13 @@ const modalCorreoNoenviado = () => {
   }, 3000);
 };
 
+const container = document.querySelector("#menu-mobile");
+const menu = document.querySelector("#menu-mobile div:nth-child(1)");
 
-
-const container = document.querySelector('#menu-mobile')
-const menu = document.querySelector('#menu-mobile div:nth-child(1)')
-
-container.addEventListener('click', (e) => {
-
-  container.classList.toggle('active')
-  menu.classList.toggle('open')
-
-})
-
-
+container.addEventListener("click", (e) => {
+  container.classList.toggle("active");
+  menu.classList.toggle("open");
+});
 
 export const modalControllers = {
   modalEliminar,
@@ -470,6 +496,6 @@ export const modalControllers = {
   modalErrConexion,
   modalSuscribe,
   modalCorreoEnviado,
-  modalCorreoNoenviado
-
+  modalCorreoNoenviado,
+  modalCompraOk,
 };
