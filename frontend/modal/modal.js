@@ -342,7 +342,7 @@ const modalSuscribe = () => {
           </div>
           <button type="submit" class="btn btn-primary">Suscribirme</button>
         </form>
-        <em class="mt-3">Recibirás un correo para validar tu email.</em>
+        <em style="font-size: 10pt; font-family: Arial, sans-serif; font-style: italic; background-color: transparent; vertical-align: baseline;">Recibirás un correo para validar tu email.</em>
       </div>
     </div>
     </div>
@@ -393,7 +393,7 @@ const modalCorreoEnviado = () => {
             <div>
             <button class="boton-eliminar btn btn-primary" data-index="">Volver</button>
             </div>
-            <em class="mt-3">Verifica tu casila de email porfavor.</em>
+            <em style="font-size: 10pt; font-family: Arial, sans-serif; font-style: italic; background-color: transparent; vertical-align: baseline;">Verifica tu casila de email porfavor.</em>
         </div>
     </div>
     </div>
@@ -425,7 +425,7 @@ const modalCompraOk = () => {
             <div>
             <button class="boton-eliminar btn btn-primary" data-index="">Volver</button>
             </div>
-            <em class="mt-3">En breve recibiras un correo con toda la info<em>
+            <em style="font-size: 10pt; font-family: Arial, sans-serif; font-style: italic; background-color: transparent; vertical-align: baseline;">En breve recibiras un correo con toda la info<em>
         </div>
     </div>
     </div>

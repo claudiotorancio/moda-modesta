@@ -5,6 +5,7 @@ import { valida } from "../controllers/validaciones.js";
 class Carrito {
   constructor() {
     this.items = JSON.parse(sessionStorage.getItem("carrito")) || [];
+    this.costoEnvio = 0; // Variable para almacenar el costo de envío seleccionado
     this.inicializarEventos();
     this.mostrarCarrito();
   }
@@ -206,7 +207,9 @@ class Carrito {
             pickup: 0.0,
           }[event.target.value];
 
-          const totalCost = this.calcularTotal() + shippingCost;
+          this.costoEnvio = shippingCost; // Almacenar el costo de envío seleccionado
+
+          const totalCost = this.calcularTotal() + this.costoEnvio;
           document.querySelector(
             "#final-total"
           ).textContent = `$${totalCost.toFixed(2)}`;
@@ -315,7 +318,8 @@ class Carrito {
                 email,
                 telefono,
                 productos,
-                total: this.calcularTotal(),
+                total: this.calcularTotal() + this.costoEnvio, // Incluir el costo de envío en el total
+                costoEnvio: this.costoEnvio, // Incluir el costo de envío como un campo separado
               };
 
               // Intentar enviar el correo
