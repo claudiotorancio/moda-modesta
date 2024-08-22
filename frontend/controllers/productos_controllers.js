@@ -2,7 +2,6 @@ import { modalControllers } from "../modal/modal.js";
 import productoServices from "../services/product_services.js";
 import carrito from "./carrito-controllers.js";
 
-
 class ProductCard {
   constructor(name, price, imagePath, description, sizes, id, isFeatured) {
     this.name = name;
@@ -73,7 +72,6 @@ class ProductCard {
   }
 }
 
-
 class ProductEventHandler {
   constructor() {
     // No hay necesidad de almacenar datos aquí por ahora
@@ -116,7 +114,15 @@ class ProductEditor {
   }
 
   editProduct(name, price, imagePath, description, sizes, id, isFeatured) {
-    this.renderEditor(name, price, imagePath, description, sizes, id, isFeatured);
+    this.renderEditor(
+      name,
+      price,
+      imagePath,
+      description,
+      sizes,
+      id,
+      isFeatured
+    );
     this.setupFormSubmitHandler(id);
   }
 
@@ -237,7 +243,14 @@ class ProductEditor {
   }
 }
 
-const mostrarProducto = async (name, price, imagePath, sizes, description, id) => {
+const mostrarProducto = async (
+  name,
+  price,
+  imagePath,
+  sizes,
+  description,
+  id
+) => {
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
   const mostrarProducto = modal.querySelector("[data-table]");
@@ -292,10 +305,10 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
               <span class="text-accent">10% de descuento, pagando con Transferencia o depósito bancario (Los datos te llegarán vía mail) *PLAZO MÁXIMO 2HS*</span>
            
             </div>
-            
             <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; vertical-align: baseline;">
             Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.
             </em>
+            
           </div>
         </div>
       </div>
@@ -307,37 +320,39 @@ const mostrarProducto = async (name, price, imagePath, sizes, description, id) =
     _id: id,
     name: name,
     price: price,
-    imagePath: imagePath
+    imagePath: imagePath,
   };
 
-  mostrarProducto.querySelector("[data-carrito]").addEventListener("click", () => {
-    const talleSeleccionado = document.getElementById("variation_1").value;
+  mostrarProducto
+    .querySelector("[data-carrito]")
+    .addEventListener("click", () => {
+      const talleSeleccionado = document.getElementById("variation_1").value;
 
-    carrito.agregarProducto({ 
-      product: producto, 
-      size: talleSeleccionado 
+      carrito.agregarProducto({
+        product: producto,
+        size: talleSeleccionado,
+      });
     });
-  });
-
 
   const compartirProducto = document.getElementById("compartir-producto");
   compartirProducto.addEventListener("click", () => {
     const productUrl = window.location.href; // Usar la URL actual con el hash
-    
+
     if (navigator.share) {
-      navigator.share({
-        image: imagePath,
-        title: name,
-        text: `¡Mira este producto! ${name} por solo $${price}`,
-        url: productUrl,  // Aquí utilizas la URL específica del producto
-      }).catch((error) => console.log('Error sharing:', error));
+      navigator
+        .share({
+          image: imagePath,
+          title: name,
+          text: `¡Mira este producto! ${name} por solo $${price}`,
+          url: productUrl, // Aquí utilizas la URL específica del producto
+        })
+        .catch((error) => console.log("Error sharing:", error));
     } else {
-      alert('La función de compartir no es compatible con tu navegador. Por favor, comparte el enlace manualmente.');
+      alert(
+        "La función de compartir no es compatible con tu navegador. Por favor, comparte el enlace manualmente."
+      );
     }
   });
-
-  
-  
 };
 
 const renderProducts = async () => {
@@ -363,9 +378,6 @@ const renderProducts = async () => {
     console.log(error);
   }
 };
-
-
-
 
 export const controllers = {
   mostrarProducto,

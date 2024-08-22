@@ -1,7 +1,9 @@
 @import url(../css/base/variables.css);
+@import url(../css/base/reset.css);
 
 body {
-  font-family: "raleway";
+  font-family: var(--font-family-body);
+  line-height: 1.5;
   font-weight: 700;
   box-sizing: border-box;
 }
@@ -9,6 +11,7 @@ body {
 .fixed-top {
   position: relative;
 }
+
 header {
   width: 100%;
   display: flex;
@@ -66,9 +69,9 @@ header {
   justify-content: center;
   width: 22px;
   height: 22px;
-  background-color: #fff;
+  background-color: var(--contrast-light-color);
   border-radius: 50%;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow);
 }
 
 .carrito-cantidad {
@@ -84,20 +87,8 @@ header {
 .div-usuario a {
   list-style-type: none;
   text-decoration: none;
-  color: #333;
+  color: var(--fondo-usuario);
 }
-.login {
-  width: 9rem;
-  height: 2.5rem;
-  font-size: 16px;
-  color: var(--fuente-productos-azul);
-  background-color: white;
-  border: 2px solid var(--fuente-productos-azul);
-}
-
-/* .contenido_container {
-
-} */
 
 .banner {
   display: flex;
@@ -110,6 +101,7 @@ header {
 }
 
 .texto h1 {
+  font-size: 3rem;
   font-weight: 700;
   color: var(--fuente-banner);
   margin-top: 80px;
@@ -176,36 +168,6 @@ header {
   max-width: 25%;
 }
 
-.quienesSomos_parrafos {
-  font-weight: 400;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.hableConNosotros {
-  display: flex;
-  flex-direction: column;
-}
-
-.nombre {
-  width: 450px;
-  height: 50px;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  border: none;
-  border-radius: 3px;
-}
-
-.textarea {
-  width: 450px;
-  height: 100px;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  border: none;
-  border-radius: 3px;
-}
-
 .card-lista {
   margin: 2rem;
 }
@@ -215,23 +177,14 @@ header {
   overflow-y: auto; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--fuente-quienesSomos);
-  padding: 2rem;
-}
 /* menu desplegable */
 /* Estilos del botón de abrir el menú */
 #menuBtn {
-  /* position: fixed; 
-    left: 0; */
   position: absolute;
   width: 100vw;
   margin-left: 0rem;
   padding: 2rem;
   cursor: pointer;
-
   border: none;
 }
 
@@ -264,20 +217,6 @@ header {
   height: 70vh;
 }
 
-ul {
-  line-height: 5rem;
-  list-style-type: none; /* Quita los puntos de la lista */
-  padding: 0; /* Quita el espaciado interno */
-}
-
-ul li {
-  margin-bottom: 10px; /* Espaciado entre elementos de la lista */
-}
-
-ul li a {
-  text-decoration: none; /* Quita el subrayado de los enlaces */
-  color: #333; /* Color del texto */
-}
 .carrito-monto {
   text-decoration: none;
   color: #333;
@@ -386,21 +325,6 @@ ul li a {
   max-width: 20rem;
 }
 
-.button {
-  display: block;
-  background-color: #0071ea;
-  border-radius: 7px;
-  width: 100%;
-  margin-top: 1rem;
-  max-width: 20rem;
-  padding: 1.125rem;
-  box-sizing: border-box;
-  color: #fff;
-  font-size: 22px;
-  align-self: center;
-  text-align: center;
-}
-
 /*boton volver al principio*/
 
 .btn-volver {
@@ -422,6 +346,21 @@ ul li a {
   background: #fff;
   color: #000;
   text-decoration: none;
+}
+
+ul {
+  line-height: 5rem;
+  list-style-type: none; /* Quita los puntos de la lista */
+  padding: 0; /* Quita el espaciado interno */
+}
+
+ul li {
+  margin-bottom: 10px; /* Espaciado entre elementos de la lista */
+}
+
+ul li a {
+  text-decoration: none; /* Quita el subrayado de los enlaces */
+  color: #333; /* Color del texto */
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
@@ -451,37 +390,17 @@ ul li a {
   }
 
   .texto h1 {
-    font-size: 22px;
-    margin-left: 1rem;
+    font-size: 2rem;
   }
 
   .texto p {
-    font-size: 0.8rem;
-    margin-left: 1rem;
-  }
-
-  .login {
-    width: 6rem;
-  }
-
-  .consolas {
-    margin-left: 1rem;
-    width: 7rem;
-    height: 2rem;
-    font-size: 14px;
-    text-align: center;
+    font-size: 1rem;
   }
 
   .button-busqueda {
     display: none;
   }
 
-  .button-busqueda-login {
-    display: inline;
-    background-color: white;
-    border: none;
-    margin-left: 0.62rem;
-  }
   .cabecera_container {
     height: 8vh;
   }
@@ -499,32 +418,6 @@ ul li a {
   }
   .quienesSomos_logo {
     flex-direction: column;
-  }
-
-  .quienesSomos_parrafos {
-    position: absolute;
-    text-align: center;
-    font-weight: 200;
-    margin-top: 8rem;
-    margin-bottom: 0rem;
-  }
-
-  .hableConNosotros {
-    flex-direction: column;
-  }
-
-  .nombre {
-    border: none;
-    border-radius: 3px;
-  }
-
-  .textarea {
-    border: none;
-    border-radius: 3px;
-  }
-
-  .btn {
-    background-color: var(--fuente-productos-azul);
   }
 }
 
@@ -574,11 +467,6 @@ ul li a {
     margin-left: 1rem;
   }
 
-  .login {
-    width: 4rem;
-    margin-top: 1.5rem;
-  }
-
   .table-container {
     max-height: 10rem; /* Altura máxima del contenedor */
     overflow-y: auto; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
@@ -596,17 +484,9 @@ ul li a {
     display: none;
   }
 
-  .button-busqueda-login {
-    display: inline;
-    background-color: white;
-    border: none;
-    margin-left: 0.62rem;
-  }
-
   .cabecera_logo {
     width: 7.5rem;
     margin-left: 3rem;
-
     margin-top: 1.5rem;
   }
 
@@ -630,7 +510,6 @@ ul li a {
 
   #menu-mobile div:nth-child(1) {
     display: none;
-
     position: absolute;
     align-items: center;
     overflow: hidden;
@@ -639,49 +518,15 @@ ul li a {
     align-items: center;
     justify-content: space-around;
     background-color: #fff;
-    width: 100vw; /* Ajustar el ancho según sea necesario */
+    width: 100vw;
     height: 0vh;
-    left: 0; /* Alinear a la izquierda */
+    left: 0;
     transition: all 250ms ease-out;
   }
 
   #menu-mobile div.open:nth-child(1) {
     height: 15vh;
   }
-
-  ul {
-    line-height: 0;
-    margin-top: 1rem;
-    list-style-type: style type;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 2rem;
-  }
-
-  ul li {
-    font-size: 1.2rem;
-    text-align: center;
-    text-decoration: underline; /* Agregar subrayado */
-    text-decoration-line: underline; /* Indicar que queremos subrayar */
-    text-decoration-skip-ink: none; /* Evitar que el subrayado se omita alrededor de las letras */
-    text-underline-offset: 0.2em; /* Espacio entre el texto y el subrayado */
-    text-align: center;
-    width: calc(
-      5% - 20px
-    ); /* Ancho del 33.33% menos el espacio entre elementos */
-  }
-
-  ul li a {
-    text-decoration: none;
-    color: #333;
-  }
-
-  /* .modalVisor {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--fuente-quienesSomos);
-    padding: 0.5rem;
-  } */
 
   .quienesSomos {
     background-color: var(--fuente-quienesSomos);
@@ -698,31 +543,9 @@ ul li a {
     margin-bottom: 1rem;
   }
 
-  .quienesSomos_parrafos {
-    text-align: center;
-    font-weight: 200;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .hableConNosotros {
-    flex-direction: column;
-  }
-
-  .nombre {
-    width: 300px;
-    border: none;
-    border-radius: 3px;
-  }
-
-  .textarea {
-    width: 300px;
-    border: none;
-    border-radius: 3px;
-  }
-
   #login {
     margin-top: 1.5rem;
+    margin-right: 1rem;
   }
 
   p.help {
@@ -753,5 +576,32 @@ ul li a {
 
   .button-busqueda-login img {
     display: none;
+  }
+
+  ul {
+    line-height: 0;
+    margin-top: 1rem;
+    list-style-type: style type;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 2rem;
+  }
+
+  ul li {
+    font-size: 1.2rem;
+    text-align: center;
+    text-decoration: underline; /* Agregar subrayado */
+    text-decoration-line: underline; /* Indicar que queremos subrayar */
+    text-decoration-skip-ink: none; /* Evitar que el subrayado se omita alrededor de las letras */
+    text-underline-offset: 0.2em; /* Espacio entre el texto y el subrayado */
+    text-align: center;
+    width: calc(
+      5% - 20px
+    ); /* Ancho del 33.33% menos el espacio entre elementos */
+  }
+
+  ul li a {
+    text-decoration: none;
+    color: var(--fondo-usuario);
   }
 }

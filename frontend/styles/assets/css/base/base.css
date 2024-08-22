@@ -1,16 +1,12 @@
 @import url(reset.css);
 @import url(variables.css);
 
-@media (min-width: 800px) {
+@media (min-width: 768px) and (max-width: 1200px) {
   .container {
     padding-right: 2.5rem;
     padding-left: 2.5rem;
   }
 }
 
-@media (min-width: 1200px) {
-  .container {
-    padding-left: calc((100vw - 900px) / 2);
-    padding-right: calc((100vw - 900px) / 2);
-  }
+@media (min-width: 320px) and (max-width: 768px) {
 }

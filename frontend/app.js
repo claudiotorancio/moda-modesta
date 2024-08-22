@@ -3,6 +3,10 @@ import "./styles/assets/css/style.css";
 import "./styles/assets/css/productos.css";
 import "./styles/assets/css/components/inputs.css";
 import "./styles/assets/css/base/variables.css";
+// import "./styles/assets/css/base/base.css";
+
+import "./styles/assets/css/base/reset.css";
+
 import "./styles/assets/css/components/button.css";
 
 import "./styles/assets/css/components/modal.css";
@@ -15,7 +19,6 @@ import productForm from "./controllers/productForm.js";
 import { controllers } from "./controllers/productos_controllers.js";
 import productoServices from "./services/product_services.js";
 import { modalControllers } from "./modal/modal.js";
-import { baseURL } from "./services/product_services.js";
 
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
