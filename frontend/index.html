@@ -71,6 +71,77 @@
     </div>
     </div>
   </header>
+  <!-- formulario de envio -->
+  <div class="container mt-5">
+    <h2>Formulario de Envío</h2>
+    <form id="" action="/api/costoEnvio" enctype="multipart/form-data" method="POST">
+        <div class="form-group">
+            <label for="AltoCM">Alto (cm) *</label>
+            <input type="number" class="form-control" id="AltoCM" name="AltoCM" placeholder="25" required>
+        </div>
+        <div class="form-group">
+            <label for="CodigoPostalDestino">Código Postal Destino *</label>
+            <input type="text" class="form-control" id="CodigoPostalDestino" name="CodigoPostalDestino" placeholder="L6300" required>
+        </div>
+        <div class="form-group">
+            <label for="CodigoPostalOrigen">Código Postal Origen *</label>
+            <input type="text" class="form-control" id="CodigoPostalOrigen" name="CodigoPostalOrigen" placeholder="B7600" required>
+        </div>
+        
+        <!-- Select para IVA -->
+        <div class="form-group">
+            <label for="Iva">IVA *</label>
+            <div class="input-group">
+                <select class="form-control" id="Iva" name="Iva" required>
+                    <option value="1" selected>Precio con IVA</option>
+                    <option value="0">Precio sin IVA</option>
+                </select>
+                <input type="text" class="form-control ml-2" id="iva-input" placeholder="Selecciona una opción">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ProfundidadCM">Profundidad (cm) *</label>
+            <input type="number" class="form-control" id="ProfundidadCM" name="ProfundidadCM" placeholder="40" required>
+        </div>
+        <div class="form-group">
+            <label for="AnchoCM">Ancho (cm) *</label>
+            <input type="number" class="form-control" id="AnchoCM" name="AnchoCM" placeholder="30" required>
+        </div>
+        
+        <!-- Select para Entrega -->
+        <div class="form-group">
+            <label for="Entrega">Entrega *</label>
+            <div class="input-group">
+                <select class="form-control" id="Entrega" name="Entrega" required>
+                    <option value="D" selected>Domicilio</option>
+                    <option value="S">Sucursal</option>
+                </select>
+                <input type="text" class="form-control ml-2" id="entrega-input" placeholder="Selecciona una opción">
+            </div>
+        </div>
+
+        <!-- Select para Tipo de Envío -->
+        <div class="form-group">
+            <label for="Tipo">Tipo de Envío *</label>
+            <div class="input-group">
+                <select class="form-control" id="Tipo" name="Tipo" required>
+                    <option value="CP" selected>Envío Clásico</option>
+                    <option value="EP">Envío Expreso</option>
+                </select>
+                <input type="text" class="form-control ml-2" id="codigoPostal-input" placeholder="Selecciona una opción">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="PesoPaqueteKG">Peso del Paquete (kg) *</label>
+            <input type="number" step="0.01" class="form-control" id="PesoPaqueteKG" name="PesoPaqueteKG" placeholder="12.34" required>
+        </div>
+        <button type="submit" class="btn btn-primary" data-envio>Enviar</button>
+    </form>
+</div>
+
+<!-- fin de formulario -->
 </body>
 </html>
 

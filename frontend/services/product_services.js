@@ -52,30 +52,25 @@ class ProductService {
     return await this.fetchJSON(`${this.baseURL}/api/detailsProduct/${id}`);
   }
 
-
   async destacadosProducto() {
     try {
       const response = await fetch(`${this.baseURL}/api/renderDestacados`);
       if (!response.ok) {
-        throw new Error('Network response was not ok.');
+        throw new Error("Network response was not ok.");
       }
       const data = await response.json();
-    
+
       // Asegúrate de que la propiedad productosDestacados existe y es un array
       if (!Array.isArray(data.productosDestacados)) {
-        throw new Error('La propiedad productosDestacados no es un array.');
+        throw new Error("La propiedad productosDestacados no es un array.");
       }
-      
+
       return data.productosDestacados;
     } catch (error) {
-      console.error('Error al obtener productos destacados:', error);
+      console.error("Error al obtener productos destacados:", error);
       return []; // Devuelve un array vacío en caso de error
     }
   }
-  
-  
-
-
 
   async actualizarProducto(product, id) {
     try {

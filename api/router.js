@@ -28,8 +28,8 @@ import suscribeMail from "../backend/routes/nodeMailer/contactMail.js";
 import confirmMail from "../backend/routes/nodeMailer/confirmMail.js";
 import success from "../backend/routes/nodeMailer/success.js";
 import error from "../backend/routes/nodeMailer/error.js";
+import costoEnvio from "../backend/routes/Envios/costoEnvio.js";
 import path from "path";
-
 
 const router = Router();
 
@@ -92,8 +92,8 @@ router.get("/api/confirmMail", confirmMail);
 router.get("/success", success);
 router.get("/error", error);
 
-
-
+//rutas envio
+router.post("/api/costoEnvio", costoEnvio);
 
 // Rutas signin
 router.post("/api/signup", signup);

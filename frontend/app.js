@@ -3,11 +3,8 @@ import "./styles/assets/css/style.css";
 import "./styles/assets/css/productos.css";
 import "./styles/assets/css/components/inputs.css";
 import "./styles/assets/css/base/variables.css";
-
 import "./styles/assets/css/base/reset.css";
-
 import "./styles/assets/css/components/button.css";
-
 import "./styles/assets/css/components/modal.css";
 
 import { LoginServices } from "./services/login_services.js";
@@ -18,6 +15,7 @@ import productForm from "./controllers/productForm.js";
 import { controllers } from "./controllers/productos_controllers.js";
 import productoServices from "./services/product_services.js";
 import { modalControllers } from "./modal/modal.js";
+import { capturarDatosFormulario } from "./controllers/formEnvio.js";
 
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
@@ -105,5 +103,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     const loginServicesInstance = new LoginServices();
     loginServicesInstance.logout();
+  });
+
+  // Evento para iniciar sesión
+  const envio = document.querySelector("[data-envio]");
+  envio.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    capturarDatosFormulario();
   });
 });
