@@ -23,7 +23,7 @@ class ProductCard {
         </div>
         <div class="card-body">
           <a href="#" data-veradmin>ver producto</a>
-          <h3 class="card-title">${this.name}</h3>
+          <h4 class="card-title">${this.name}</h4>
           <p class="card-text">${"$" + this.price}</p>
           <a href="#form" class="btn btn-primary" id="${
             this.id
@@ -272,7 +272,7 @@ const mostrarProducto = async (
         </div>
         <div class="col-md-6 mx-auto d-flex flex-column">
           <div class="card-body">
-            <h3 class="card-title">${name}</h3>
+            <h4 class="card-title">${name}</h4>
             <br>
             <div class="card-text"  overflow-y: auto;">
               ${description}

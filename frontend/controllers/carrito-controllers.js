@@ -232,7 +232,7 @@ class Carrito {
           // Mostrar el formulario de datos personales pero mantener la barra de progreso
           const formularioDatosPersonales = `
           <div class="container main-container">
-              <h3>Datos personales</h3>
+              <h4>Datos personales</h4>
               <form id="personal-info-form" action="/api/sendmail" enctype="multipart/form-data" method="POST">
                <fieldset>
                   <div class="input-container">

@@ -1,9 +1,10 @@
 // Importar estilos y módulos necesarios
+import "./styles/assets/css/base/reset.css";
+import "./styles/assets/css/base/variables.css";
 import "./styles/assets/css/style.css";
 import "./styles/assets/css/productos.css";
 import "./styles/assets/css/components/inputs.css";
-import "./styles/assets/css/base/variables.css";
-import "./styles/assets/css/base/reset.css";
+
 import "./styles/assets/css/components/button.css";
 import "./styles/assets/css/components/modal.css";
 
@@ -106,10 +107,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Evento para iniciar sesión
-  const envio = document.querySelector("[data-envio]");
-  envio.addEventListener("click", (e) => {
-    e.preventDefault();
+  // const envio = document.querySelector("[data-envio]");
+  // envio.addEventListener("click", (e) => {
+  //   e.preventDefault();
 
-    capturarDatosFormulario();
-  });
+  //   capturarDatosFormulario();
+  // });
 });
