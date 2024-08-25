@@ -1,6 +1,6 @@
-import productoServices from "../services/product_services.js";
-import { ListaServices } from "../services/lista_services.js";
-import { modalControllers } from "../modal/modal.js";
+import productoServices from "../../services/product_services.js";
+import { ListaServices } from "../../services/lista_services.js";
+import { modalControllers } from "../../modal/modal.js";
 
 export class ListaControllers {
   constructor(tabla, titulo) {
@@ -138,9 +138,9 @@ export class ListaControllers {
   }
   //extraer datos de Users
   async getUsername(userId) {
-   // console.log(`getUsername id: ${userId}`);
+    // console.log(`getUsername id: ${userId}`);
     const user = await this.listaServicesInstance.getUser(userId);
-   // console.log(`getUsername: ${user}`);
+    // console.log(`getUsername: ${user}`);
     return user.username;
   }
   //extraer datos de Users
@@ -239,4 +239,3 @@ export class ListaControllers {
       });
   }
 }
-

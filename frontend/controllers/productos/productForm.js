@@ -1,5 +1,5 @@
-import { modalControllers } from "../modal/modal.js";
-import productoServices from "../services/product_services.js";
+import { modalControllers } from "../../modal/modal.js";
+import productoServices from "../../services/product_services.js";
 
 export class ProductForm {
   constructor() {

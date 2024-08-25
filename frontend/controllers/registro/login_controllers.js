@@ -1,5 +1,5 @@
-import { modalControllers } from "../modal/modal.js";
-import { LoginServices } from "../services/login_services.js";
+import { modalControllers } from "../../modal/modal.js";
+import { LoginServices } from "../../services/login_services.js";
 
 export class LoginControllers {
   constructor() {

@@ -1,4 +1,4 @@
-import { LoginControllers } from "../controllers/login_controllers.js";
+import { LoginControllers } from "../controllers/registro/login_controllers.js";
 import mailServices from "../services/mail_services.js";
 import productoServices from "../services/product_services.js";
 

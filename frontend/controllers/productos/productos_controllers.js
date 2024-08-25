@@ -1,6 +1,6 @@
-import { modalControllers } from "../modal/modal.js";
-import productoServices from "../services/product_services.js";
-import carrito from "./carrito-controllers.js";
+import { modalControllers } from "../../modal/modal.js";
+import productoServices from "../../services/product_services.js";
+import carrito from "../carrito/carrito-controllers.js";
 
 class ProductCard {
   constructor(name, price, imagePath, description, sizes, id, isFeatured) {

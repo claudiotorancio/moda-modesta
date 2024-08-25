@@ -1,6 +1,9 @@
-import { modalControllers } from "../modal/modal.js";
-import mailServices from "../services/mail_services.js";
-import { valida } from "../controllers/validaciones.js";
+import { modalControllers } from "../../modal/modal.js";
+import envioServices from "../../services/envio_services.js";
+import mailServices from "../../services/mail_services.js";
+import { capturarDatosEnvio } from "../envios/formEnvio.js";
+import { valida } from "./validaciones.js";
+import { generarOpcionesProvincias } from "./validaProvincias.js";
 
 class Carrito {
   constructor() {
@@ -66,11 +69,16 @@ class Carrito {
     this.mostrarCarrito();
   }
 
-  calcularTotal() {
-    return this.items.reduce(
+  calcularSubtotal() {
+    const totalCarrito = this.items.reduce(
       (total, producto) => total + producto.price * producto.cantidad,
       0
     );
+    return totalCarrito;
+  }
+
+  calcularTotal() {
+    return this.calcularSubtotal() + this.costoEnvio;
   }
 
   mostrarCarrito() {
@@ -114,7 +122,7 @@ class Carrito {
                         ${this.items
                           .map(
                             (item) => `
-                            <tr>
+                            <tr style= "display: inline-flex";>
                                 <td class="summary-img-wrap">
                                     <div class="col-md-6 mx-auto">
                                         <img class="card-img-top" alt="${
@@ -149,18 +157,35 @@ class Carrito {
                         <tbody>
                             <tr>
                                 <td>Subtotal</td>
-                                <td class="text-right"><span>$ ${this.calcularTotal().toFixed(
+                                <td class="text-right"><span>$ ${this.calcularSubtotal().toFixed(
                                   2
                                 )}</span></td>
                             </tr>
                             <tr>
-                                <td>Envío</td>
-                                <td class="text-right">
-                                    <select id="shipping-options" class="form-control">
-                                        <option value="standard">Seleccione</option>
-                                        <option value="express">Envío exprés - $4000 (interior de La Pampa)</option>
-                                        <option value="pickup">Retiro en tienda - Gratis</option>
-                                    </select>
+                                  <td>Envío</td>
+                              <td class="text-right">
+                              <div class="container mt-5">
+                                
+                              <div>
+                                <input type="checkbox" id="coordinar-vendedor" name="coordinarVendedor">
+                                <label for="coordinar-vendedor">Coordinar con vendedor</label>
+                              </div>
+                                
+                              <div>
+                                <p>Provincia *<p>
+                                <select class="form-control" id="provinciaDestino" name="provinciaDestino" data-tipo="provincia" required >   
+                                </select>
+                              </div>
+                              <div>
+                                  <p>Código Postal *<p>
+                                  <input type="number" class="form-control" id="cpDestino" name="cpDestino" placeholder="2000" required >
+                                  <button class="btn btn-secondary mt-2 mb-3" id="calcular-envio">Calcular envío</button> 
+                                  </div>
+
+                                    <div >
+                                    <p>Costo envio<p>
+                                     <input type="number" class="form-control" id="shipping-total" name="shipping-options" placeholder="0" required >
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -168,9 +193,7 @@ class Carrito {
                             <tr>
                                 <td class="table-price">Total</td>
                                 <td class="text-right table-price">
-                                    <span id="final-total">$ ${this.calcularTotal().toFixed(
-                                      2
-                                    )}</span>
+                                    <span id="final-total">$ 0,00</span>
                                 </td>
                             </tr>
                         </tfoot>
@@ -187,6 +210,105 @@ class Carrito {
       // Insertar el contenido del carrito y mantener la barra de progreso
       summaryDetails.insertAdjacentHTML("beforeend", carritoContent);
 
+      //validas provincia con codigo de referncia
+      const selectElement = document.querySelector("#provinciaDestino");
+
+      if (selectElement) {
+        generarOpcionesProvincias(selectElement);
+      } else {
+        console.error("Elemento select no encontrado.");
+      }
+
+      //calcular en API costo de envio
+      const calculoEnvio = document.getElementById("calcular-envio");
+      calculoEnvio.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const cpOrigen = 6300;
+        const cpDestino = parseFloat(
+          document.getElementById("cpDestino").value
+        );
+        const provinciaOrigen = "AR-L";
+        const provinciaDestino =
+          document.getElementById("provinciaDestino").value;
+        const peso = 5;
+
+        const datosEnvio = {
+          cpOrigen,
+          cpDestino,
+          provinciaOrigen,
+          provinciaDestino,
+          peso,
+        };
+
+        try {
+          const data = await envioServices.calcularCostoEnvio(datosEnvio);
+          const valorEnvio = data.paqarClasico.aDomicilio;
+
+          const shippingTotalInput = document.getElementById("shipping-total");
+          shippingTotalInput.value = valorEnvio; // Asigna el valor al input
+
+          this.costoEnvio = parseFloat(valorEnvio); // Actualiza el costo de envío
+
+          // Actualiza el total del carrito
+          const totalCost = this.calcularTotal();
+          document.querySelector(
+            "#final-total"
+          ).textContent = `$${totalCost.toFixed(2)}`;
+
+          // Marca la casilla "Entrega" como completada
+          document
+            .querySelectorAll("#progreso-compra .paso")[1]
+            .classList.add("completado");
+
+          // Habilitar el botón "Siguiente"
+          const finalizeButton = document.querySelector("#finalize-purchase");
+          finalizeButton.disabled = false;
+        } catch (err) {
+          console.error("Error al calcular el costo de envío:", err);
+        }
+      });
+
+      //checked disbled
+      document
+        .querySelector("#coordinar-vendedor")
+        .addEventListener("input", (event) => {
+          const isChecked = event.target.checked;
+          const shippingFields = [
+            document.querySelector("#provinciaDestino"),
+            document.querySelector("#cpDestino"),
+            document.getElementById("calcular-envio"),
+            document.getElementById("shipping-total"),
+          ];
+
+          shippingFields.forEach((field) => {
+            field.disabled = isChecked;
+          });
+
+          // Actualizar el costo de envío y el total del carrito
+          if (isChecked) {
+            this.costoEnvio = 0;
+          } else {
+            this.costoEnvio = parseFloat(
+              document.querySelector("#shipping-total").value || 0
+            );
+          }
+
+          // Actualizar el total en la interfaz
+          const totalCost = this.calcularTotal();
+          document.querySelector(
+            "#final-total"
+          ).textContent = `$${totalCost.toFixed(2)}`;
+
+          const finalizeButton = document.querySelector("#finalize-purchase");
+          finalizeButton.disabled = !isChecked && this.costoEnvio === 0;
+          document
+            .querySelectorAll("#progreso-compra .paso")[1]
+            .classList.toggle(
+              "completado",
+              isChecked || (!isChecked && this.costoEnvio > 0)
+            );
+        });
+
       // Evento para el botón "Eliminar" en el carrito
       summaryDetails.querySelectorAll(".btn-danger").forEach((button) => {
         button.addEventListener("click", (event) => {
@@ -195,32 +317,6 @@ class Carrito {
           this.eliminarProducto(itemId, itemSize);
         });
       });
-
-      // Evento para activar la casilla "Entrega" cuando se selecciona un modo de envío
-      const finalizeButton = document.querySelector("#finalize-purchase");
-      document
-        .querySelector("#shipping-options")
-        .addEventListener("change", (event) => {
-          const shippingCost = {
-            standard: 0.0,
-            express: 4000,
-            pickup: 0.0,
-          }[event.target.value];
-
-          this.costoEnvio = shippingCost; // Almacenar el costo de envío seleccionado
-
-          const totalCost = this.calcularTotal() + this.costoEnvio;
-          document.querySelector(
-            "#final-total"
-          ).textContent = `$${totalCost.toFixed(2)}`;
-
-          // Marcar la casilla "Entrega" como completada
-          const pasos = document.querySelectorAll("#progreso-compra .paso");
-          pasos[1].classList.add("completado"); // Activa la casilla "Entrega"
-
-          // Activar botón "Siguiente" solo si se ha seleccionado un modo de envío
-          finalizeButton.disabled = !event.target.value;
-        });
 
       document
         .querySelector("#finalize-purchase")
@@ -251,9 +347,10 @@ class Carrito {
                         <span class="input-message-error">Este campo no es valido</span>
                   </div>
                 </fieldset>
-                 <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; vertical-align: baseline;">
-                        Al dar finalizado se enviarán los datos para el pago al correo ingresado. Por favor, asegúrese de que estén correctos, Muchas gracias!
-                      </em>
+                <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; vertical-align: baseline;">
+  Al dar finalizado se enviarán los datos para el pago al correo ingresado. Por favor, asegúrese de que estén correctos, Muchas gracias!
+</em>
+
                   <div>
                      
                       <button type="submit" class="btn btn-primary" id="finalize-order">Finalizar compra</button>
@@ -285,6 +382,7 @@ class Carrito {
               event.preventDefault();
 
               let formularioValido = true;
+              const inputs = document.querySelectorAll("input");
               inputs.forEach((input) => {
                 valida(input);
                 if (!input.validity.valid) {
@@ -293,16 +391,13 @@ class Carrito {
               });
 
               if (!formularioValido) {
-                // Detener el envío si hay campos inválidos
                 return;
               }
 
-              // Recopilar datos personales del formulario
               const nombre = document.querySelector("#name").value;
               const email = document.querySelector("#email").value;
               const telefono = document.querySelector("#phoneNumber").value;
 
-              // Recopilar los productos del carrito
               const productos = this.items.map((item) => ({
                 id: item._id,
                 name: item.name,
@@ -312,17 +407,15 @@ class Carrito {
                 hash: item._id,
               }));
 
-              // Crear el objeto con toda la información
               const datosCompra = {
                 nombre,
                 email,
                 telefono,
                 productos,
-                total: this.calcularTotal() + this.costoEnvio, // Incluir el costo de envío en el total
-                costoEnvio: this.costoEnvio, // Incluir el costo de envío como un campo separado
+                total: this.calcularTotal(),
+                costoEnvio: this.costoEnvio,
               };
 
-              // Intentar enviar el correo
               try {
                 await mailServices.sendMail(datosCompra);
                 modalControllers.modalCompraOk();
@@ -339,9 +432,9 @@ class Carrito {
       document
         .querySelector("#progreso-compra")
         .addEventListener("click", (event) => {
+          console.log("Evento Click Disparado", event.target.dataset.step); // Verifica que el evento se esté disparando
           if (event.target.dataset.step === "1") {
-            this.mostrarCarrito(); // Vuelve a mostrar la sección de entrega
-            this.activarPaso(1); // Marca la casilla "Entrega" como incompleta
+            this.mostrarCarrito();
           }
         });
 

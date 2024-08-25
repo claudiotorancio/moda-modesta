@@ -9,14 +9,14 @@ import "./styles/assets/css/components/button.css";
 import "./styles/assets/css/components/modal.css";
 
 import { LoginServices } from "./services/login_services.js";
-import { LoginControllers } from "./controllers/login_controllers.js";
-import { ListaControllers } from "./controllers/lista.controllers.js";
-import { productosInicio } from "./controllers/controllers_inicio.js";
-import productForm from "./controllers/productForm.js";
-import { controllers } from "./controllers/productos_controllers.js";
+import { LoginControllers } from "./controllers/registro/login_controllers.js";
+import { ListaControllers } from "./controllers/ListaUsuarios/lista.controllers.js";
+import { productosInicio } from "./controllers/productos/controllers_inicio.js";
+import productForm from "./controllers/productos/productForm.js";
+import { controllers } from "./controllers/productos/productos_controllers.js";
 import productoServices from "./services/product_services.js";
 import { modalControllers } from "./modal/modal.js";
-import { capturarDatosFormulario } from "./controllers/formEnvio.js";
+import { capturarDatosFormulario } from "./controllers/envios/formEnvio.js";
 
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     loginServicesInstance.logout();
   });
 
-  // Evento para iniciar sesión
+  // Evento para consultar costo de envio
   // const envio = document.querySelector("[data-envio]");
   // envio.addEventListener("click", (e) => {
   //   e.preventDefault();

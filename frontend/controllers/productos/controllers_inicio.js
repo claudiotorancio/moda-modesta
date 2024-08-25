@@ -1,10 +1,10 @@
-import productoServices from "../services/product_services.js";
+import productoServices from "../../services/product_services.js";
 import { controllers } from "./productos_controllers.js";
 
 class ProductInit {
   constructor() {}
 
-  productoInicio(name, price, imagePath,description, sizes, id) {
+  productoInicio(name, price, imagePath, description, sizes, id) {
     const card = document.createElement("div");
     const contenido = `
       <div class="container mx-auto mt-4">
@@ -24,11 +24,18 @@ class ProductInit {
 
     card.querySelector("a").addEventListener("click", (e) => {
       e.preventDefault();
-            // Actualiza la URL con un hash que incluye el ID del producto
-            window.location.hash = `product-${id}`;
+      // Actualiza la URL con un hash que incluye el ID del producto
+      window.location.hash = `product-${id}`;
 
       try {
-        controllers.mostrarProducto(name, price, imagePath, sizes,  description, id);
+        controllers.mostrarProducto(
+          name,
+          price,
+          imagePath,
+          sizes,
+          description,
+          id
+        );
       } catch (err) {
         console.log(err);
       }
@@ -41,23 +48,23 @@ class ProductInit {
     try {
       // Renderizar productos destacados
       const productosDestacados = await productoServices.destacadosProducto();
-      const contenedorDestacados = document.querySelector('[data-destacados]');
-      
+      const contenedorDestacados = document.querySelector("[data-destacados]");
+
       if (Array.isArray(productosDestacados)) {
-        contenedorDestacados.innerHTML = ''; // Limpiar contenedor de destacados
+        contenedorDestacados.innerHTML = ""; // Limpiar contenedor de destacados
         for (const producto of productosDestacados) {
           const card = this.productoInicio(
             producto.name,
-          producto.price,
-          producto.imagePath,
-          producto.description,
-          producto.sizes,
-          producto._id
+            producto.price,
+            producto.imagePath,
+            producto.description,
+            producto.sizes,
+            producto._id
           );
           contenedorDestacados.appendChild(card);
         }
       } else {
-        console.error('Error: No se recibieron productos destacados.');
+        console.error("Error: No se recibieron productos destacados.");
       }
 
       // Renderizar otras categorías
@@ -82,14 +89,15 @@ class ProductInit {
         );
 
         // Renderizar el producto y adjuntar al contenedor adecuado
-        document.querySelector(`[data-${producto.section}]`).appendChild(productCard);
+        document
+          .querySelector(`[data-${producto.section}]`)
+          .appendChild(productCard);
       }
     } catch (error) {
       console.log(error);
     }
   }
 }
-
 
 document.querySelectorAll(".categoria").forEach((categoria) => {
   const categoriaBtn = categoria.querySelector("a");
@@ -145,7 +153,6 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
 
         // Desplazar la página hacia arriba
         window.scrollTo({ top: 330, behavior: "smooth" });
-
       } else {
         // Si ya se han mostrado todos los productos, redirigir a la página de inicio
         window.location.href = "index.html";
@@ -164,6 +171,5 @@ document.querySelectorAll(".ver-todos").forEach((enlace) => {
     contenedorProductos.classList.toggle("ver-todos-activado");
   });
 });
-
 
 export const productosInicio = new ProductInit();

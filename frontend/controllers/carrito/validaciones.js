@@ -1,5 +1,3 @@
-import envioServices from "../services/envio_services.js";
-
 export function valida(input) {
   const tipoDeInput = input.dataset.tipo;
   if (validadores[tipoDeInput]) {
