@@ -4,6 +4,16 @@ export function generarOpcionesProvincias(select) {
     return;
   }
 
+  // Crear la opción placeholder
+  const placeholderOption = document.createElement("option");
+  placeholderOption.value = "";
+  placeholderOption.textContent = "Selecciona una provincia";
+  placeholderOption.disabled = true;
+  placeholderOption.selected = true;
+
+  // Agregar el placeholder al select
+  select.appendChild(placeholderOption);
+
   const provincias = [
     { codigo: "AR-A", nombre: "Salta" },
     { codigo: "AR-B", nombre: "Buenos Aires" },

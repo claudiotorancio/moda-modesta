@@ -115,6 +115,7 @@ class Carrito {
 
       // Añadir los detalles del carrito
       const carritoContent = `
+       <form id="envio-form" action="/api/costoEnvio" enctype="multipart/form-data" method="POST">
         <div class="container main-container">
             <div class="summary-details panel p-none">
                 <table class="table table-scrollable">
@@ -162,6 +163,7 @@ class Carrito {
                                 )}</span></td>
                             </tr>
                             <tr>
+                          
                                   <td>Envío</td>
                               <td class="text-right">
                               <div class="container mt-5">
@@ -172,20 +174,27 @@ class Carrito {
                               </div>
                                 
                               <div>
-                                <p>Provincia *<p>
-                                <select class="form-control" id="provinciaDestino" name="provinciaDestino" data-tipo="provincia" required >   
+                                <p><p>
+                                <select class="input" id="provinciaDestino" name="provinciaDestino" placeholder="Codigo Postal" data-tipo="Provincia" required >   
                                 </select>
                               </div>
-                              <div>
-                                  <p>Código Postal *<p>
-                                  <input type="number" class="form-control" id="cpDestino" name="cpDestino" placeholder="2000" required >
-                                  <button class="btn btn-secondary mt-2 mb-3" id="calcular-envio">Calcular envío</button> 
+                
+                              <div class="input-container">
+                                  <input type="number" class="input" id="cpDestino" name="cpDestino" placeholder="Codigo Postal"  data-tipo="cpDestino" required >
+                                    <label class="input-label" for="cpDestino">Codigo Postal</label>
+                                   <span  class="input-message-error">Este campo no es valido</span>
+                                   </div>
+                                
+                                   <div>
+                                  <button type="submit" class="btn btn-secondary mt-2 mb-3" id="calcular-envio">Calcular envío</button> 
                                   </div>
-
+                               
                                     <div >
                                     <p>Costo envio<p>
-                                     <input type="number" class="form-control" id="shipping-total" name="shipping-options" placeholder="0" required >
+                                     <input type="number" class="form-control" id="shipping-total" name="shipping-options" placeholder="0" required readonly>
                                     </div>
+                             
+
                                 </td>
                             </tr>
                         </tbody>
@@ -205,6 +214,7 @@ class Carrito {
                 </div>
             </div>
         </div>
+    </form>
       `;
 
       // Insertar el contenido del carrito y mantener la barra de progreso
@@ -219,54 +229,93 @@ class Carrito {
         console.error("Elemento select no encontrado.");
       }
 
-      //calcular en API costo de envio
-      const calculoEnvio = document.getElementById("calcular-envio");
-      calculoEnvio.addEventListener("click", async (event) => {
-        event.preventDefault();
-        const cpOrigen = 6300;
-        const cpDestino = parseFloat(
-          document.getElementById("cpDestino").value
-        );
-        const provinciaOrigen = "AR-L";
-        const provinciaDestino =
-          document.getElementById("provinciaDestino").value;
-        const peso = 5;
-
-        const datosEnvio = {
-          cpOrigen,
-          cpDestino,
-          provinciaOrigen,
-          provinciaDestino,
-          peso,
-        };
-
-        try {
-          const data = await envioServices.calcularCostoEnvio(datosEnvio);
-          const valorEnvio = data.paqarClasico.aDomicilio;
-
-          const shippingTotalInput = document.getElementById("shipping-total");
-          shippingTotalInput.value = valorEnvio; // Asigna el valor al input
-
-          this.costoEnvio = parseFloat(valorEnvio); // Actualiza el costo de envío
-
-          // Actualiza el total del carrito
-          const totalCost = this.calcularTotal();
-          document.querySelector(
-            "#final-total"
-          ).textContent = `$${totalCost.toFixed(2)}`;
-
-          // Marca la casilla "Entrega" como completada
-          document
-            .querySelectorAll("#progreso-compra .paso")[1]
-            .classList.add("completado");
-
-          // Habilitar el botón "Siguiente"
-          const finalizeButton = document.querySelector("#finalize-purchase");
-          finalizeButton.disabled = false;
-        } catch (err) {
-          console.error("Error al calcular el costo de envío:", err);
-        }
+      // Validar inputs al perder el foco
+      const inputs = document.querySelectorAll("input, select");
+      inputs.forEach((input) => {
+        input.addEventListener("blur", (event) => {
+          valida(event.target);
+        });
       });
+
+      //calcular en API costo de envio
+      document
+        .getElementById("envio-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          // Primero, valida los campos del formulario
+          let formularioValido = true;
+          const inputs = document.querySelectorAll("input, select");
+
+          inputs.forEach((input) => {
+            valida(input);
+            if (!input.validity.valid) {
+              formularioValido = false;
+            }
+          });
+
+          if (!formularioValido) {
+            console.log("Formulario inválido. Verifica los campos.");
+            return; // Detener la ejecución si el formulario no es válido
+          }
+
+          // Solo si el formulario es válido, prepara los datos para la API
+          const cpOrigen = 6300;
+          const cpDestinoInput = document.getElementById("cpDestino");
+          const cpDestino = parseFloat(cpDestinoInput.value);
+          const provinciaOrigen = "AR-L";
+          const provinciaDestino =
+            document.getElementById("provinciaDestino").value;
+          const peso = 5;
+
+          const datosEnvio = {
+            cpOrigen,
+            cpDestino,
+            provinciaOrigen,
+            provinciaDestino,
+            peso,
+          };
+
+          try {
+            // Realiza la solicitud a la API
+            const data = await envioServices.calcularCostoEnvio(datosEnvio);
+            const valorEnvio = data.paqarClasico.aDomicilio;
+
+            const shippingTotalInput =
+              document.getElementById("shipping-total");
+            shippingTotalInput.value = valorEnvio; // Asigna el valor al input
+
+            this.costoEnvio = parseFloat(valorEnvio); // Actualiza el costo de envío
+
+            // Actualiza el total del carrito
+            const totalCost = this.calcularTotal();
+            document.querySelector(
+              "#final-total"
+            ).textContent = `$${totalCost.toFixed(2)}`;
+
+            // Marca la casilla "Entrega" como completada
+            document
+              .querySelectorAll("#progreso-compra .paso")[1]
+              .classList.add("completado");
+
+            // Habilitar el botón "Siguiente"
+            const finalizeButton = document.querySelector("#finalize-purchase");
+            finalizeButton.disabled = false;
+          } catch (err) {
+            console.error("Error al calcular el costo de envío:", err);
+
+            // Mostrar un mensaje de error para el cpDestino
+            cpDestinoInput.setCustomValidity(
+              `<a><i class="fa-solid fa-rotate-left"></i></a>"Código Postal no válido según el servidor." `
+            );
+            valida(cpDestinoInput); // Volver a validar para mostrar el mensaje
+
+            // Si el código postal es incorrecto, se asegura de que se mantenga el estado inválido
+            cpDestinoInput.parentElement.classList.add(
+              "input-container--invalid"
+            );
+          }
+        });
 
       //checked disbled
       document
@@ -327,9 +376,10 @@ class Carrito {
 
           // Mostrar el formulario de datos personales pero mantener la barra de progreso
           const formularioDatosPersonales = `
+            <form id="personal-info-form" action="/api/sendmail" enctype="multipart/form-data" method="POST">
           <div class="container main-container">
               <h4>Datos personales</h4>
-              <form id="personal-info-form" action="/api/sendmail" enctype="multipart/form-data" method="POST">
+            
                <fieldset>
                   <div class="input-container">
                       <input name="name" id="name" type="text" class="input" placeholder="Nombre" data-tipo="nombre">
@@ -355,8 +405,9 @@ class Carrito {
                      
                       <button type="submit" class="btn btn-primary" id="finalize-order">Finalizar compra</button>
                   </div>
-              </form>
+             
           </div>
+           </form>
         `;
 
           // Reemplazar el contenido del carrito con el formulario de datos personales pero mantener la barra de progreso
@@ -377,8 +428,8 @@ class Carrito {
 
           // Agregar evento para validar todo el formulario antes de enviar
           document
-            .querySelector("#finalize-order")
-            .addEventListener("click", async (event) => {
+            .getElementById("personal-info-form")
+            .addEventListener("submit", async (event) => {
               event.preventDefault();
 
               let formularioValido = true;

@@ -1,6 +1,10 @@
 export function valida(input) {
   const tipoDeInput = input.dataset.tipo;
-  if (validadores[tipoDeInput]) {
+
+  // Agregar validación para 'select'
+  if (tipoDeInput === "provincia") {
+    validarSelect(input);
+  } else if (validadores[tipoDeInput]) {
     validadores[tipoDeInput](input);
   }
 
@@ -24,6 +28,15 @@ export function valida(input) {
   }
 }
 
+// Función de validación para el select
+function validarSelect(select) {
+  if (select.value === "") {
+    select.setCustomValidity("Este campo no puede estar vacío");
+  } else {
+    select.setCustomValidity("");
+  }
+}
+
 const tipoDeErrores = [
   "valueMissing",
   "typeMismatch",
@@ -33,31 +46,39 @@ const tipoDeErrores = [
 
 const mensajeDeError = {
   nombre: {
-    valueMissing: "Este campo no puede estar vacio",
+    valueMissing: "Este campo no puede estar vacío",
   },
   email: {
-    valueMissing: "Este campo no puede estar vacio",
-    typeMismatch: "El correo no es valido",
+    valueMissing: "",
+    typeMismatch: "El correo no es válido",
   },
   numero: {
-    valueMissing: "Este campo no puede estar vacio",
-    patternMismatch: "El formato requerido es de 10 numeros",
+    valueMissing: "",
+    patternMismatch: "El formato requerido es de 10 números",
+  },
+  cpDestino: {
+    valueMissing: "",
+    customError: `Código Postal inválido - <a Href="https://www.correoargentino.com.ar/formularios/cpa"> Buscar CP <i class="fa-solid fa-arrow-right"></i></a>`,
   },
 };
 
 const validadores = {
-  nacimiento: (input) => validarNacimiento(input),
+  dato: (input) => validarDato(input),
+  provincia: (input) => validarSelect(input), // Agregar validación específica
+  cpDestino: (input) => validarCpDestino(input),
 };
 
 function mostrarMensajeDeError(tipoDeInput, input) {
   let mensaje = "";
   tipoDeErrores.forEach((error) => {
     if (input.validity[error]) {
-      console.log(tipoDeInput, error);
-      console.log(input.validity[error]);
-      console.log(mensajeDeError[tipoDeInput][error]);
       mensaje = mensajeDeError[tipoDeInput][error];
     }
   });
   return mensaje;
+}
+
+// Agregar validación específica para cpDestino
+function validarCpDestino(input) {
+  // Validación específica para el código postal, si es necesario
 }
