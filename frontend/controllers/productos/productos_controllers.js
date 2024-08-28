@@ -336,8 +336,11 @@ const mostrarProducto = async (
     });
 
   const compartirProducto = document.getElementById("compartir-producto");
+
   compartirProducto.addEventListener("click", () => {
     const productUrl = window.location.href; // Usar la URL actual con el hash
+
+    document.getElementById("og-url").content = productUrl;
 
     if (navigator.share) {
       navigator

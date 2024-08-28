@@ -7,8 +7,9 @@ import { generarOpcionesProvincias } from "./validaProvincias.js";
 
 class Carrito {
   constructor() {
-    this.items = JSON.parse(sessionStorage.getItem("carrito")) || [];
+    this.items = JSON.parse(localStorage.getItem("carrito")) || [];
     this.costoEnvio = 0; // Variable para almacenar el costo de envío seleccionado
+    this.envioExpiracion = null; // Variable para controlar la expiración del costo de envío
     this.inicializarEventos();
     this.mostrarCarrito();
   }
@@ -49,15 +50,15 @@ class Carrito {
       });
     }
 
-    // Guardar el carrito actualizado en sessionStorage
-    sessionStorage.setItem("carrito", JSON.stringify(this.items));
+    // Guardar el carrito actualizado en localStorage
+    localStorage.setItem("carrito", JSON.stringify(this.items));
     this.mostrarCarrito();
   }
 
   eliminarProducto(id) {
     this.items = this.items.filter((item) => item._id !== id);
     // Guardar el carrito actualizado en sessionStorage
-    sessionStorage.setItem("carrito", JSON.stringify(this.items));
+    localStorage.setItem("carrito", JSON.stringify(this.items));
     this.mostrarCarrito();
   }
 
@@ -288,6 +289,7 @@ class Carrito {
           try {
             // Realiza la solicitud a la API
             const data = await envioServices.calcularCostoEnvio(datosEnvio);
+
             const valorEnvio = data.paqarClasico.aDomicilio;
 
             const shippingTotalInput =

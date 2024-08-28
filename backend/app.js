@@ -1,4 +1,4 @@
-import express, {urlencoded} from "express";
+import express, { urlencoded } from "express";
 import { fileURLToPath } from "url";
 import path from "path";
 import morgan from "morgan";
@@ -14,8 +14,8 @@ const __dirname = path.dirname(__filename);
 const outputPath = path.join(__dirname, "../public");
 
 //middlewares
-app.use(urlencoded({extended:false}));
-app.use(express.json())
+app.use(urlencoded({ extended: false }));
+app.use(express.json());
 app.use(morgan("dev"));
 
 app.use(cors());
@@ -24,6 +24,13 @@ app.use(cors());
 app.use("/", indexRouter);
 
 //manejo de errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res
+    .status(500)
+    .send({ error: "Algo salió mal, inténtalo de nuevo más tarde." });
+});
+
 indexRouter.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({ error: "Error interno del servidor" });
