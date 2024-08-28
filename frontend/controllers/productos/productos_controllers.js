@@ -340,13 +340,9 @@ const mostrarProducto = async (
   compartirProducto.addEventListener("click", () => {
     const productUrl = window.location.href; // Usar la URL actual con el hash
 
-    document.getElementById("og-image").content = imagePath;
-
     if (navigator.share) {
       navigator
         .share({
-          image: imagePath,
-          title: name,
           text: `¡Mira este producto! ${name} por solo $${price}`,
           url: productUrl, // Aquí utilizas la URL específica del producto
         })
