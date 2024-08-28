@@ -340,12 +340,7 @@ const mostrarProducto = async (
   compartirProducto.addEventListener("click", () => {
     const productUrl = window.location.href; // Usar la URL actual con el hash
 
-    // document.getElementById("og-url").content = productUrl;
-
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
-      `¡Mira este producto! ${productUrl}`
-    )}`;
-    window.open(whatsappUrl, "_blank");
+    document.getElementById("og-url").content = productUrl;
 
     if (navigator.share) {
       navigator
