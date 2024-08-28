@@ -20,6 +20,7 @@ import { capturarDatosFormulario } from "./controllers/envios/formEnvio.js";
 
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
+  // modalControllers.modalSuscribe();
   // Obtener usuario autenticado de la sesión
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 

@@ -115,110 +115,119 @@ class Carrito {
 
       // Añadir los detalles del carrito
       const carritoContent = `
-       <form id="envio-form" action="/api/costoEnvio" enctype="multipart/form-data" method="POST">
-        <div class="container main-container">
-            <div class="summary-details panel p-none">
-                <table class="table table-scrollable">
-                    <tbody>
-                        ${this.items
-                          .map(
-                            (item) => `
-                            <tr style= "display: inline-flex";>
-                                <td class="summary-img-wrap">
-                                    <div class="col-md-6 mx-auto">
-                                        <img class="card-img-top" alt="${
-                                          item.name
-                                        }" title="${item.name}" src="${
-                              item.imagePath
-                            }">
-                                    </div>
-                                </td>
-                                <td>${item.name} × ${
-                              item.cantidad
-                            } <br> <small>Talle: ${item.size}</small></td>
-                                <td class="table-price text-right">
-                                    <span>$ ${item.price.toFixed(2)}</span>
-                                </td>
-                                <td class="table-price text-right">
-                                    <button class="btn btn-danger" data-id="${
-                                      item._id
-                                    }" data-size="${
-                              item.size
-                            }"><i class="fa-solid fa-scissors"></i></button>
-                                </td>
-                            </tr>
-                        `
-                          )
-                          .join("")}
-                    </tbody>
-                </table>
-
-                <div class="table-subtotal">
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <td>Subtotal</td>
-                                <td class="text-right"><span>$ ${this.calcularSubtotal().toFixed(
-                                  2
-                                )}</span></td>
-                            </tr>
-                            <tr>
-                          
-                                  <td>Envío</td>
-                              <td class="text-right">
-                              <div class="container mt-5">
-                                
-                              <div>
-                                <input type="checkbox" id="coordinar-vendedor" name="coordinarVendedor">
-                                <label for="coordinar-vendedor">Coordinar con vendedor</label>
-                              </div>
-                                
-                              <div>
-                                <p><p>
-                                <select class="input" id="provinciaDestino" name="provinciaDestino" placeholder="Codigo Postal" data-tipo="Provincia" required >   
-                                </select>
-                              </div>
-                
-                              <div class="input-container">
-                                  <input type="number" class="input" id="cpDestino" name="cpDestino" placeholder="Codigo Postal"  data-tipo="cpDestino" required >
-                                    <label class="input-label" for="cpDestino">Codigo Postal</label>
-                                   <span  class="input-message-error">Este campo no es valido</span>
-                                   </div>
-                                
-                                   <div>
-                                  <button type="submit" class="btn btn-secondary mt-2 mb-3" id="calcular-envio">Calcular envío</button> 
+      <div class="container main-container">
+          <div class="summary-details panel p-none">
+              <table class="table table-scrollable">
+                  <tbody>
+                      ${this.items
+                        .map(
+                          (item) => `
+                          <tr style="display: inline-flex;">
+                              <td class="summary-img-wrap">
+                                  <div class="col-md-6 mx-auto">
+                                      <img class="card-img-top" alt="${
+                                        item.name
+                                      }" title="${item.name}" src="${
+                            item.imagePath
+                          }">
                                   </div>
-                               
-                                    <div >
-                                    <p>Costo envio<p>
-                                     <input type="number" class="form-control" id="shipping-total" name="shipping-options" placeholder="0" required readonly>
-                                    </div>
-                             
+                              </td>
+                              <td>${item.name} × ${item.cantidad} <br> <small>${
+                            item.size
+                          }</small></td>
+                              <td class="table-price text-right">
+                                  <span>$ ${item.price.toFixed(2)}</span>
+                              </td>
+                              <td class="table-price text-right">
+                                  <button class="btn btn-danger" data-id="${
+                                    item._id
+                                  }" data-size="${
+                            item.size
+                          }"><i class="fa-solid fa-scissors"></i></button>
+                              </td>
+                          </tr>
+                      `
+                        )
+                        .join("")}
+                  </tbody>
+              </table>
+  
+              <div class="table-subtotal">
+                  <table class="table">
+                      <tbody>
+                          <tr>
+                              <td>Subtotal</td>
+                              <td class="text-right"><span>$ ${this.calcularSubtotal().toFixed(
+                                2
+                              )}</span></td>
+                          </tr>
+                          <tr>
+                              <td>Envío
+                                  <button id="toggle-envio-form" class="btn btn-link">
+                                      <i class="fa-solid fa-chevron-down"></i>
+                                  </button>
+                              </td>
+                              <td class="text-right">
+                                  <div id="envio-form-container" class="collapse">
+                                      <form id="envio-form" action="/api/costoEnvio" enctype="multipart/form-data" method="POST">
+                                          <div class="input-container">
+                                              <input type="checkbox" id="coordinar-vendedor" name="coordinarVendedor">
+                                              <label for="coordinar-vendedor">Coordinar con vendedor</label>
+                                          </div>
+                                          <div class="input-container">
+                                              <select class="input" id="provinciaDestino" name="provinciaDestino" placeholder="Codigo Postal" data-tipo="Provincia" required>
+                                                  <!-- Options -->
+                                              </select>
+                                          </div>
+                                          <div class="input-container">
+                                              <input type="number" class="input" id="cpDestino" name="cpDestino" placeholder="Codigo Postal" data-tipo="cpDestino" required>
+                                              <label class="input-label" for="cpDestino">Codigo Postal</label>
+                                              <span class="input-message-error">Este campo no es válido</span>
+                                          </div>
+                                          <div class="input-container">
+                                              <button type="submit" class="btn btn-secondary mt-2 mb-3" id="calcular-envio">Calcular envío</button>
+                                          </div>
+                                      </form>
+                                      <div class="input-container">
+                                          <label for="shipping-total">Costo envío</label>
+                                          <input type="number" class="form-control" id="shipping-total" name="shipping-options" placeholder="0" required readonly>
+                                      </div>
+                                  </div>
+                              </td>
+                          </tr>
+                      </tbody>
+                      <tfoot class="table-footer">
+                          <tr>
+                              <td class="table-price">Total</td>
+                              <td class="text-right table-price">
+                                  <span id="final-total">$ 0,00</span>
+                              </td>
+                          </tr>
+                      </tfoot>
+                  </table>
+              </div>
+  
+              <div class="purchase-actions">
+                  <button class="btn btn-primary" id="finalize-purchase" disabled>Siguiente</button>
+              </div>
+          </div>
+      </div>
+  `;
 
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot class="table-footer">
-                            <tr>
-                                <td class="table-price">Total</td>
-                                <td class="text-right table-price">
-                                    <span id="final-total">$ 0,00</span>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-                <div class="purchase-actions">
-                    <button class="btn btn-primary" id="finalize-purchase" disabled>Siguiente</button>
-                </div>
-            </div>
-        </div>
-    </form>
-      `;
-
-      // Insertar el contenido del carrito y mantener la barra de progreso
       summaryDetails.insertAdjacentHTML("beforeend", carritoContent);
+
+      document
+        .getElementById("toggle-envio-form")
+        .addEventListener("click", () => {
+          const envioFormContainer = document.getElementById(
+            "envio-form-container"
+          );
+          envioFormContainer.classList.toggle("show");
+
+          const icon = document.querySelector("#toggle-envio-form i");
+          icon.classList.toggle("fa-chevron-down");
+          icon.classList.toggle("fa-chevron-up");
+        });
 
       //validas provincia con codigo de referncia
       const selectElement = document.querySelector("#provinciaDestino");
@@ -286,6 +295,8 @@ class Carrito {
             shippingTotalInput.value = valorEnvio; // Asigna el valor al input
 
             this.costoEnvio = parseFloat(valorEnvio); // Actualiza el costo de envío
+            this.provinciaDestino = provinciaDestino;
+            this.cpDestino = cpDestino;
 
             // Actualiza el total del carrito
             const totalCost = this.calcularTotal();
@@ -302,18 +313,38 @@ class Carrito {
             const finalizeButton = document.querySelector("#finalize-purchase");
             finalizeButton.disabled = false;
           } catch (err) {
+            // En tu bloque catch
             console.error("Error al calcular el costo de envío:", err);
 
-            // Mostrar un mensaje de error para el cpDestino
-            cpDestinoInput.setCustomValidity(
-              `<a><i class="fa-solid fa-rotate-left"></i></a>"Código Postal no válido según el servidor." `
-            );
-            valida(cpDestinoInput); // Volver a validar para mostrar el mensaje
+            const cpDestinoInput = document.getElementById("cpDestino");
 
-            // Si el código postal es incorrecto, se asegura de que se mantenga el estado inválido
+            // Establecer un mensaje de error personalizado
+            cpDestinoInput.setCustomValidity(
+              "Código Postal no válido según el servidor."
+            );
+
+            // Volver a validar el input para mostrar el mensaje
+            valida(cpDestinoInput);
+
+            // Asegurarse de que el campo no quede deshabilitado y esté habilitado para nuevas entradas
+            cpDestinoInput.disabled = false;
+
+            // Aplicar la clase de error
             cpDestinoInput.parentElement.classList.add(
               "input-container--invalid"
             );
+
+            // Agregar un event listener para limpiar el error cuando el usuario hace clic en el campo
+            cpDestinoInput.addEventListener("focus", function handleFocus() {
+              cpDestinoInput.setCustomValidity("");
+              valida(cpDestinoInput);
+              cpDestinoInput.parentElement.classList.remove(
+                "input-container--invalid"
+              );
+
+              // Elimina el event listener después de manejar el evento
+              cpDestinoInput.removeEventListener("focus", handleFocus);
+            });
           }
         });
 
@@ -328,6 +359,8 @@ class Carrito {
             document.getElementById("calcular-envio"),
             document.getElementById("shipping-total"),
           ];
+
+          this.isChecked = isChecked;
 
           shippingFields.forEach((field) => {
             field.disabled = isChecked;
@@ -465,6 +498,9 @@ class Carrito {
                 productos,
                 total: this.calcularTotal(),
                 costoEnvio: this.costoEnvio,
+                provincia: this.provinciaDestino,
+                codigoPostal: this.cpDestino,
+                checked: this.isChecked,
               };
 
               try {

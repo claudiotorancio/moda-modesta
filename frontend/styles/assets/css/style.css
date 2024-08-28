@@ -1,3 +1,7 @@
+html {
+  width: 100vw;
+}
+
 body {
   font-family: var(--font-family-body);
   font-size: 18px;
@@ -345,6 +349,14 @@ header {
   background: #fff;
   color: #000;
   text-decoration: none;
+}
+
+.collapse {
+  display: none;
+}
+
+.collapse.show {
+  display: block;
 }
 
 ul {

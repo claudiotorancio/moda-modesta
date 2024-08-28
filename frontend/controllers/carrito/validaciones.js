@@ -1,3 +1,4 @@
+//validacines.js
 export function valida(input) {
   const tipoDeInput = input.dataset.tipo;
 

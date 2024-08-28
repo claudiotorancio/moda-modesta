@@ -2,17 +2,29 @@ import nodemailer from "nodemailer";
 
 const sendMail = async (req, res) => {
   try {
-    const { nombre, email, telefono, productos, total, costoEnvio } = req.body;
-    console.log(req.body);
+    const {
+      nombre,
+      email,
+      telefono,
+      provincia,
+      codigoPostal,
+      productos,
+      total,
+      costoEnvio,
+      checked,
+    } = req.body;
 
     // Verificar que todos los campos requeridos están presentes
     if (
       !nombre ||
       !email ||
       !telefono ||
+      !provincia === undefined ||
+      !codigoPostal === undefined ||
       !productos ||
       !total ||
-      costoEnvio === undefined
+      costoEnvio === undefined ||
+      checked === undefined
     ) {
       return res
         .status(400)
@@ -43,8 +55,11 @@ const sendMail = async (req, res) => {
           <li><strong>Nombre:</strong> ${nombre}</li>
           <li><strong>Email:</strong> ${email}</li>
           <li><strong>Teléfono:</strong> ${telefono}</li>
+          <li><strong>Provincia:</strong> ${provincia}</li>
+          <li><strong>Código Postal:</strong> ${codigoPostal}</li>
           <li><strong>Total:</strong> $${total}</li>
           <li><strong>Costo de Envío:</strong> $${costoEnvio}</li>
+          <li><strong>Coordinar envio:</strong> ${checked ? "Sí" : "No"}</li>
         </ul>
         <h2>Productos</h2>
         <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">

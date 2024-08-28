@@ -7,7 +7,6 @@ export class MailServices {
   }
 
   async sendMail(datosCompra) {
-    console.log(datosCompra);
     try {
       const response = await fetch(`${this.baseURL}/api/sendMail`, {
         method: "POST",
@@ -28,11 +27,15 @@ export class MailServices {
       if (data.success) {
         this.limpiarCarrito();
       } else {
-        alert("Hubo un problema al finalizar la compra. Por favor, intente nuevamente.");
+        alert(
+          "Hubo un problema al finalizar la compra. Por favor, intente nuevamente."
+        );
       }
     } catch (err) {
       console.error("Error al enviar los datos de la compra:", err);
-      alert("Hubo un error al finalizar la compra. Por favor, intente nuevamente.");
+      alert(
+        "Hubo un error al finalizar la compra. Por favor, intente nuevamente."
+      );
     }
   }
 
@@ -55,9 +58,9 @@ export class MailServices {
       const data = await response.json();
 
       if (data.success) {
-        modalControllers.modalCorreoEnviado()
+        modalControllers.modalCorreoEnviado();
       } else {
-        modalControllers.modalCorreoNoenviado()
+        modalControllers.modalCorreoNoenviado();
       }
     } catch (err) {
       console.error("Error al enviar los datos de la suscripción:", err);
@@ -67,9 +70,8 @@ export class MailServices {
 
   limpiarCarrito() {
     this.items = [];
-    sessionStorage.removeItem('carrito');
+    sessionStorage.removeItem("carrito");
   }
-  
 }
 
 const mailServices = new MailServices();
