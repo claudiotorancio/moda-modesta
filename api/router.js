@@ -85,21 +85,6 @@ const upload = () =>
 export const uploadSingle = upload(process.env.BUCKET_AWS).single("image");
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
-router.get("/product-/:id", (req, res) => {
-  const productId = req.params.id;
-  // Recupera los detalles del producto desde la base de datos
-  const product = getProductById(productId);
-
-  // Renderiza la página con metadatos Open Graph dinámicos
-  res.render("product", {
-    title: product.name,
-    description: `¡Mira este producto! ${product.name} por solo $${product.price}`,
-    image: product.imagePath,
-    url: `https://tu-sitio.com/productos/${productId}`,
-    // Otros datos del producto para la página
-  });
-});
-
 // Rutas nodeMailer
 router.post("/api/sendMail", sendMail);
 router.post("/api/suscribeMail", suscribeMail);
