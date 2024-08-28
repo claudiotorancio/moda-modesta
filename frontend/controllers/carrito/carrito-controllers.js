@@ -179,17 +179,17 @@ class Carrito {
                                                   <!-- Options -->
                                               </select>
                                           </div>
-                                          <div class="input-container">
-                                              <input type="number" class="input" id="cpDestino" name="cpDestino" placeholder="Codigo Postal" data-tipo="cpDestino" required>
-                                              <label class="input-label" for="cpDestino">Codigo Postal</label>
-                                              <span class="input-message-error">Este campo no es válido</span>
-                                          </div>
-                                          <div class="input-container">
-                                              <button type="submit" class="btn btn-secondary mt-2 mb-3" id="calcular-envio">Calcular envío</button>
-                                          </div>
+                                         <div class="input-container">
+        <div class="postal-input-container">
+            <input type="number" class="input" id="cpDestino" name="cpDestino" placeholder="Codigo Postal" data-tipo="cpDestino" required>
+            <label class="input-label" for="cpDestino">Codigo Postal</label>
+            <span class="input-message-error">Este campo no es válido</span>
+            <!-- Flecha como ícono dentro del input -->
+            <i class="fa fa-arrow-right postal-arrow" id="calcular-envio"></i>
+        </div>
+    </div>
                                       </form>
                                       <div class="input-container">
-                                          <label for="shipping-total">Costo envío</label>
                                           <input type="number" class="form-control" id="shipping-total" name="shipping-options" placeholder="0" required readonly>
                                       </div>
                                   </div>
@@ -248,8 +248,8 @@ class Carrito {
 
       //calcular en API costo de envio
       document
-        .getElementById("envio-form")
-        .addEventListener("submit", async (event) => {
+        .getElementById("calcular-envio")
+        .addEventListener("click", async (event) => {
           event.preventDefault();
 
           // Primero, valida los campos del formulario

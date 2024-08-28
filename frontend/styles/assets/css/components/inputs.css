@@ -76,3 +76,54 @@
   margin-top: 0.5rem;
   padding-left: 0.5rem;
 }
+
+.postal-input-container {
+  position: relative; /* Contenedor relativo */
+}
+
+.input {
+  padding-right: 30px; /* Deja espacio para la flecha */
+}
+
+.postal-arrow {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Ajusta la posición dentro del contenedor */
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #333; /* Color de la flecha */
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .input {
+    box-sizing: border-box;
+    padding: 0.7rem 0.5rem 0.5rem;
+    height: 2.5rem;
+    width: 100%;
+    border: 1px solid #dee2e6;
+    border-radius: 7px;
+  }
+
+  .input-label {
+    position: absolute;
+    top: 1rem;
+    left: 0.5rem;
+    font-size: 1rem;
+
+    transition: all 0.25s;
+  }
+
+  .input:not(:placeholder-shown) + .input-label,
+  .input:focus + .input-label {
+    font-size: 0.6rem;
+    top: 0.25rem;
+    transition: all 0.25s;
+  }
+
+  .input-span {
+    box-sizing: border-box;
+    padding: 0.7rem 0.5rem 0.5rem;
+    height: 3.25rem;
+    width: 100%;
+  }
+}
