@@ -352,9 +352,10 @@ const mostrarProducto = async (
         })
         .catch((error) => console.log("Error sharing:", error));
     } else {
-      alert(
-        "La función de compartir no es compatible con tu navegador. Por favor, comparte el enlace manualmente."
-      );
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+        `¡Mira este producto! Nombre del Producto por solo $100 ${productUrl}`
+      )}`;
+      window.open(whatsappUrl, "_blank");
     }
   });
 };
