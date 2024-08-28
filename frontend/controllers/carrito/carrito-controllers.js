@@ -502,7 +502,7 @@ class Carrito {
                 codigoPostal: this.cpDestino,
                 checked: this.isChecked,
               };
-
+              console.log(datosCompra);
               try {
                 await mailServices.sendMail(datosCompra);
                 modalControllers.modalCompraOk();

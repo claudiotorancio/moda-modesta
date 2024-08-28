@@ -13,7 +13,7 @@ const sendMail = async (req, res) => {
       costoEnvio,
       checked,
     } = req.body;
-
+    console.log(req.body);
     // Verificar que todos los campos requeridos están presentes
     if (
       !nombre ||
@@ -23,8 +23,8 @@ const sendMail = async (req, res) => {
       !codigoPostal === undefined ||
       !productos ||
       !total ||
-      costoEnvio === undefined ||
-      checked === undefined
+      !costoEnvio === undefined ||
+      !checked === undefined
     ) {
       return res
         .status(400)
