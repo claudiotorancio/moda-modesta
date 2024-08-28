@@ -1,6 +1,3 @@
-@import url(../css/base/variables.css);
-@import url(../css/base/reset.css);
-
 .categoria {
   width: 100%;
   display: flex;
@@ -63,6 +60,7 @@
 }
 
 .productos.ver-todos-activado div {
+  justify-content: center;
   display: block;
 }
 
