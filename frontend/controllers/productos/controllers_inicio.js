@@ -1,5 +1,5 @@
 import productoServices from "../../services/product_services.js";
-import { controllers } from "./productos_controllers.js";
+import { mostrarProducto } from "./ProductViewer.js";
 
 class ProductInit {
   constructor() {}
@@ -28,14 +28,7 @@ class ProductInit {
       window.location.hash = `product-${id}`;
 
       try {
-        controllers.mostrarProducto(
-          name,
-          price,
-          imagePath,
-          sizes,
-          description,
-          id
-        );
+        mostrarProducto(name, price, imagePath, sizes, description, id);
       } catch (err) {
         console.log(err);
       }

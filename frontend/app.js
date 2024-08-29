@@ -12,7 +12,8 @@ import { LoginServices } from "./services/login_services.js";
 import { LoginControllers } from "./controllers/registro/login_controllers.js";
 import { ListaControllers } from "./controllers/ListaUsuarios/lista.controllers.js";
 import { productosInicio } from "./controllers/productos/controllers_inicio.js";
-import productForm from "./controllers/productos/productForm.js";
+import { mostrarProducto } from "./controllers/productos/ProductViewer.js";
+
 import { controllers } from "./controllers/productos/productos_controllers.js";
 import productoServices from "./services/product_services.js";
 import { modalControllers } from "./modal/modal.js";
@@ -64,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const productosArray = [producto];
 
         productosArray.forEach((p) => {
-          controllers.mostrarProducto(
+          mostrarProducto(
             p.name,
             p.price,
             p.imagePath,
