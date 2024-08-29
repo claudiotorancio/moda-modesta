@@ -2,14 +2,21 @@ import mongoose from "mongoose";
 import MONGODB_URI from "../../config.js";
 import Vista from "../../models/Vista.js";
 
+// Conectar a la base de datos al iniciar el servidor
+mongoose
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Conectado a la base de datos");
+  })
+  .catch((err) => {
+    console.error("Error al conectar a la base de datos:", err);
+  });
+
 const productoSimilar = async (req, res) => {
   try {
-    // Conectar a la base de datos mediante serverless function
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
     // Buscar producto con su id
     const productId = req.params.id;
     const productoBase = await Vista.findById(productId);

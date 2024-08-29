@@ -10,7 +10,62 @@ class ProductCard {
     this.description = description;
     this.sizes = sizes;
     this.id = id;
-    this.isFeatured = isFeatured; // Agregar este campo
+    this.isFeatured = isFeatured;
+  }
+
+  async cargarProductosSimilares(id) {
+    try {
+      const data = await productoServices.productoSimilar(id);
+      const similares = data;
+
+      const contenedorSimilares = document.getElementById(
+        "productos-similares"
+      );
+      if (!contenedorSimilares) {
+        console.error("Contenedor de productos similares no encontrado.");
+        return;
+      }
+
+      contenedorSimilares.innerHTML = ""; // Limpiar contenedor antes de agregar nuevos productos
+      similares.forEach((producto) => {
+        // Actualiza la URL con un hash que incluye el ID del producto
+        window.location.hash = `product-${id}`;
+
+        const productoHTML = `
+          <div class="producto-similar" data-id="${producto._id}" data-name="${
+          producto.name
+        }" data-price="${producto.price}" data-image="${
+          producto.imagePath
+        }" data-sizes='${JSON.stringify(producto.sizes)}' data-description="${
+          producto.description
+        }">
+            <a href="#">
+              <img src="${producto.imagePath}" alt="${
+          producto.name
+        }" class="img-thumbnail">
+              <p>${producto.name}</p>
+              <p>$ ${producto.price}</p>
+            </a>
+          </div>
+        `;
+        contenedorSimilares.innerHTML += productoHTML;
+      });
+
+      contenedorSimilares.addEventListener("click", (e) => {
+        const target = e.target.closest(".producto-similar");
+        if (target) {
+          const id = target.dataset.id;
+          const name = target.dataset.name;
+          const price = target.dataset.price;
+          const imagePath = [target.dataset.image];
+          const sizes = JSON.parse(target.dataset.sizes);
+          const description = target.dataset.description;
+          mostrarProducto(name, price, imagePath, sizes, description, id);
+        }
+      });
+    } catch (error) {
+      console.error("Error al cargar productos similares:", error);
+    }
   }
 
   render() {
@@ -27,7 +82,7 @@ class ProductCard {
           <p class="card-text">${"$" + this.price}</p>
           <a href="#form" class="btn btn-primary" id="${
             this.id
-          }" data-edit >Editar</a>
+          }" data-edit>Editar</a>
           <button class="btn btn-danger" type="button" id="${
             this.id
           }">Eliminar</button>
@@ -38,7 +93,6 @@ class ProductCard {
     // Manejar eventos
     card.querySelector("[data-veradmin]").addEventListener("click", (e) => {
       e.preventDefault();
-
       mostrarProducto(
         this.name,
         this.price,
@@ -255,15 +309,7 @@ const mostrarProducto = async (
   const modal = document.getElementById("modal");
   const mostrarProducto = modal.querySelector("[data-table]");
 
-  // Generar las opciones del select a partir del array sizes
-  const opcionesTalles = sizes
-    .map(
-      (size) => `
-    <option value="${size}">${size}</option>
-  `
-    )
-    .join("");
-
+  // Renderizar detalles del producto
   mostrarProducto.innerHTML = `
     <div class="contenido_container">
       <div class="row">
@@ -274,57 +320,43 @@ const mostrarProducto = async (
           <div class="card-body">
             <h4 class="card-title">${name}</h4>
             <br>
-            <div class="card-text"  overflow-y: auto;">
+            <div class="card-text" style="overflow-y: auto;">
               ${description}
             </div>
           </div>
-          
           <div class="mt-auto pt-3">
             <label for="variation_1">Talles disponibles</label>
             <select id="variation_1" class="form-select mb-3">
-            ${opcionesTalles}
+              ${sizes
+                .map((size) => `<option value="${size}">${size}</option>`)
+                .join("")}
             </select>
-
-        <div class="mx-auto text-center">
-    <!-- Icono para compartir -->
-    <a id="compartir-producto" title="Compartir" class="icono-compartir">
-        <i class="fa-solid fa-share-nodes"></i>
-        <p>Compartir</p>
-    </a>
-</div>
-
-
-           
+            <div class="mx-auto text-center">
+              <a id="compartir-producto" title="Compartir" class="icono-compartir">
+                <i class="fa-solid fa-share-nodes"></i>
+                <p>Compartir</p>
+              </a>
+            </div>
             <div class="form-row align-items-center">
               <div class="mx-auto">
-                <button type="button" class="btn btn-primary btn-block " data-carrito>Agregar al carrito</button>
+                <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>
               </div>
             </div>
-            
-            <div class="d-flex justify-content-between align-items-center mt-3">
-              <!--<span class="text-accent">10% de descuento, pagando con Transferencia o depósito bancario (Los datos te llegarán vía mail) *PLAZO MÁXIMO 2HS*</span> -->
-           
-            </div>
-        
-            <em  style="font-size: 10pt; font-family: Arial, sans-serif; font-style: italic; background-color: transparent; vertical-align: baseline;">
-            Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.
+            <div class="d-flex justify-content-between align-items-center mt-3"></div>
+            <em style="font-size: 10pt; font-family: Arial, sans-serif; font-style: italic; background-color: transparent; vertical-align: baseline;">
+              Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.
             </em>
-          
           </div>
         </div>
       </div>
-
-       <!-- Productos Similares -->
       <div class="row mt-4">
         <h5>Productos Similares</h5>
-        <div id="productos-similares" class="d-flex justify-content-between">
-          <!-- Aquí se insertarán los productos similares -->
-        </div>
+        <div id="productos-similares" class="d-flex justify-content-center align-items-center gap-3"></div>
       </div>
     </div>
   `;
 
-  // Lógica para agregar al carrito
+  // Manejar lógica para agregar al carrito
   const producto = {
     _id: id,
     name: name,
@@ -336,7 +368,6 @@ const mostrarProducto = async (
     .querySelector("[data-carrito]")
     .addEventListener("click", () => {
       const talleSeleccionado = document.getElementById("variation_1").value;
-
       carrito.agregarProducto({
         product: producto,
         size: talleSeleccionado,
@@ -344,15 +375,13 @@ const mostrarProducto = async (
     });
 
   const compartirProducto = document.getElementById("compartir-producto");
-
   compartirProducto.addEventListener("click", () => {
-    const productUrl = window.location.href; // Usar la URL actual con el hash
-
+    const productUrl = window.location.href;
     if (navigator.share) {
       navigator
         .share({
           text: `¡Mira este producto! ${name} por solo $${price}`,
-          url: productUrl, // Aquí utilizas la URL específica del producto
+          url: productUrl,
         })
         .catch((error) => console.log("Error sharing:", error));
     } else {
@@ -361,58 +390,17 @@ const mostrarProducto = async (
       );
     }
   });
-  cargarProductosSimilares(id);
-};
 
-const cargarProductosSimilares = async (id) => {
-  try {
-    const data = await productoServices.productoSimilar(id);
-    const similares = data;
-    console.log(similares);
-    const contenedorSimilares = document.getElementById("productos-similares");
-    // Actualiza la URL con un hash que incluye el ID del producto
-    window.location.hash = `product-${id}`;
-    // Generar HTML de productos similares
-    similares.forEach((producto) => {
-      console.log(producto);
-      const productoHTML = `
-        <div class="producto-similar" data-id="${producto._id}" data-name="${
-        producto.name
-      }" data-price="${producto.price}" data-image="${
-        producto.imagePath
-      }" data-sizes='${JSON.stringify(producto.sizes)}' data-description="${
-        producto.description
-      }">
-          <a href="#">
-            <img src="${producto.imagePath}" alt="${
-        producto.name
-      }" class="img-thumbnail">
-            <p>${producto.name}</p>
-          </a>
-        </div>
-      `;
-      contenedorSimilares.innerHTML += productoHTML;
-    });
-
-    // Delegar el evento click en el contenedor de productos similares
-    contenedorSimilares.addEventListener("click", (e) => {
-      const target = e.target.closest(".producto-similar");
-      console.log(target);
-
-      if (target) {
-        const id = target.dataset.id;
-        const name = target.dataset.name;
-        const price = target.dataset.price;
-        const imagePath = [target.dataset.image];
-        const sizes = JSON.parse(target.dataset.sizes); // Convertir de nuevo a un array
-        const description = target.dataset.description;
-
-        mostrarProducto(name, price, imagePath, sizes, description, id);
-      }
-    });
-  } catch (error) {
-    console.error("Error al cargar productos similares:", error);
-  }
+  // Crear una instancia de ProductCard para cargar productos similares
+  const productCard = new ProductCard(
+    name,
+    price,
+    imagePath,
+    description,
+    sizes,
+    id
+  );
+  productCard.cargarProductosSimilares(id); // Llamar a cargarProductosSimilares aquí
 };
 
 const renderProducts = async () => {
@@ -427,12 +415,18 @@ const renderProducts = async () => {
         producto.imagePath,
         producto.description,
         producto.sizes,
-        producto._id
+        producto._id,
+        producto.isFeatured
       );
       // Renderizar el producto y adjuntar al contenedor adecuado
-      document
-        .querySelector(`[data-${producto.section}]`)
-        .appendChild(productCard.render());
+      const container = document.querySelector(`[data-${producto.section}]`);
+      if (container) {
+        container.appendChild(productCard.render());
+      } else {
+        console.error(
+          `Contenedor para la sección "${producto.section}" no encontrado.`
+        );
+      }
     }
   } catch (error) {
     console.log(error);

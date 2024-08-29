@@ -6,7 +6,7 @@ const VistaSchema = new Schema(
   {
     role: { type: String },
     name: { type: String },
-    price: { type: String },
+    price: { type: Number },
     imagePath: { type: String },
     description: { type: String },
     section: { type: String },

@@ -106,6 +106,26 @@ div.card:hover {
   object-fit: cover;
 }
 
+#productos-similares {
+  width: auto;
+}
+
+.producto-similar {
+  text-align: center;
+  width: 100px; /* Ancho de cada contenedor de imagen */
+}
+
+.producto-similar img {
+  width: 70px; /* Tamaño de la imagen */
+  height: auto;
+  margin-bottom: 5px; /* Espacio entre imagen y nombre */
+}
+
+.producto-similar p {
+  font-size: 12px; /* Tamaño de la fuente para el nombre del producto */
+  margin: 0;
+}
+
 @media (min-width: 320px) and (max-width: 768px) {
   .card {
     transition: none;

@@ -88,17 +88,17 @@ class ProductService {
   }
 
   async productoSimilar(id) {
-    const response = await fetch(`${this.baseURL}/api/productoSimilar/${id}`);
-    if (!response.ok) {
-      throw new Error("Network response was not ok.");
+    try {
+      const response = await fetch(`${this.baseURL}/api/productoSimilar/${id}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      const data = await response.json();
+      return data.productosSimilares;
+    } catch (error) {
+      console.error("Error al obtener productos similares:", error);
+      return []; // Devuelve un array vacío en caso de error
     }
-    const data = await response.json();
-
-    return data.productosSimilares;
-  }
-  catch(error) {
-    console.error("Error al obtener productos destacados:", error);
-    return []; // Devuelve un array vacío en caso de error
   }
 }
 
