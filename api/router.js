@@ -29,6 +29,7 @@ import confirmMail from "../backend/routes/nodeMailer/confirmMail.js";
 import success from "../backend/routes/nodeMailer/success.js";
 import error from "../backend/routes/nodeMailer/error.js";
 import costoEnvio from "../backend/routes/Envios/costoEnvio.js";
+import productoSimilar from "../backend/routes/product/productoSimilar.js";
 import path from "path";
 
 const router = Router();
@@ -114,5 +115,6 @@ router.post("/api/createProduct", createProduct);
 router.delete("/api/deleteProduct/:id", deleteProduct);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put("/api/updateProduct/:id", uploadSingleUpdate, updateProduct);
+router.get("/api/productoSimilar/:id", productoSimilar);
 
 export default router;

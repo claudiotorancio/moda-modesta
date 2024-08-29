@@ -86,6 +86,20 @@ class ProductService {
       console.error(error);
     }
   }
+
+  async productoSimilar(id) {
+    const response = await fetch(`${this.baseURL}/api/productoSimilar/${id}`);
+    if (!response.ok) {
+      throw new Error("Network response was not ok.");
+    }
+    const data = await response.json();
+
+    return data.productosSimilares;
+  }
+  catch(error) {
+    console.error("Error al obtener productos destacados:", error);
+    return []; // Devuelve un array vacío en caso de error
+  }
 }
 
 // Configuración del modo

@@ -1,34 +1,31 @@
-import { fileURLToPath } from 'url';
-import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { fileURLToPath } from "url";
+import path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const output = path.join(__dirname, 'backend/public');
+const output = path.join(__dirname, "backend/public");
 
 export default {
-  entry: './frontend/app.js',
+  entry: "./frontend/app.js",
   output: {
     path: output,
-    filename: 'js/bundle.js',
+    filename: "js/bundle.js",
   },
-  mode: 'production',
+  mode: "production",
   module: {
     rules: [
       {
         test: /\.css/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
         test: /\.(png|gif|jpg)$/,
         use: [
           {
-            loader: 'file-loader',
-            options: { name: 'assets/[hash].[ext]' },
+            loader: "file-loader",
+            options: { name: "assets/[hash].[ext]" },
           },
         ],
       },
@@ -36,8 +33,8 @@ export default {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: './frontend/index.html',
+      filename: "index.html",
+      template: "./frontend/index.html",
       minify: {
         collapseWhitespace: true,
         removeComments: true,
@@ -48,8 +45,8 @@ export default {
       },
     }),
     new HtmlWebpackPlugin({
-      filename: 'success.html',
-      template: './frontend/success.html',
+      filename: "success.html",
+      template: "./frontend/success.html",
       minify: {
         collapseWhitespace: true,
         removeComments: true,
@@ -60,8 +57,8 @@ export default {
       },
     }),
     new HtmlWebpackPlugin({
-      filename: 'error.html',
-      template: './frontend/error.html',
+      filename: "error.html",
+      template: "./frontend/error.html",
       minify: {
         collapseWhitespace: true,
         removeComments: true,
@@ -72,8 +69,9 @@ export default {
       },
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/bundle.css',
+      filename: "css/bundle.css",
     }),
   ],
-  devtool: 'source-map',
+
+  devtool: "source-map",
 };

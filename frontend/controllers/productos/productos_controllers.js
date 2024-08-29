@@ -302,7 +302,7 @@ const mostrarProducto = async (
             </div>
             
             <div class="d-flex justify-content-between align-items-center mt-3">
-              <span class="text-accent">10% de descuento, pagando con Transferencia o depósito bancario (Los datos te llegarán vía mail) *PLAZO MÁXIMO 2HS*</span>
+              <!--<span class="text-accent">10% de descuento, pagando con Transferencia o depósito bancario (Los datos te llegarán vía mail) *PLAZO MÁXIMO 2HS*</span> -->
            
             </div>
         
@@ -311,6 +311,14 @@ const mostrarProducto = async (
             </em>
           
           </div>
+        </div>
+      </div>
+
+       <!-- Productos Similares -->
+      <div class="row mt-4">
+        <h5>Productos Similares</h5>
+        <div id="productos-similares" class="d-flex justify-content-between">
+          <!-- Aquí se insertarán los productos similares -->
         </div>
       </div>
     </div>
@@ -353,6 +361,58 @@ const mostrarProducto = async (
       );
     }
   });
+  cargarProductosSimilares(id);
+};
+
+const cargarProductosSimilares = async (id) => {
+  try {
+    const data = await productoServices.productoSimilar(id);
+    const similares = data;
+    console.log(similares);
+    const contenedorSimilares = document.getElementById("productos-similares");
+    // Actualiza la URL con un hash que incluye el ID del producto
+    window.location.hash = `product-${id}`;
+    // Generar HTML de productos similares
+    similares.forEach((producto) => {
+      console.log(producto);
+      const productoHTML = `
+        <div class="producto-similar" data-id="${producto._id}" data-name="${
+        producto.name
+      }" data-price="${producto.price}" data-image="${
+        producto.imagePath
+      }" data-sizes='${JSON.stringify(producto.sizes)}' data-description="${
+        producto.description
+      }">
+          <a href="#">
+            <img src="${producto.imagePath}" alt="${
+        producto.name
+      }" class="img-thumbnail">
+            <p>${producto.name}</p>
+          </a>
+        </div>
+      `;
+      contenedorSimilares.innerHTML += productoHTML;
+    });
+
+    // Delegar el evento click en el contenedor de productos similares
+    contenedorSimilares.addEventListener("click", (e) => {
+      const target = e.target.closest(".producto-similar");
+      console.log(target);
+
+      if (target) {
+        const id = target.dataset.id;
+        const name = target.dataset.name;
+        const price = target.dataset.price;
+        const imagePath = [target.dataset.image];
+        const sizes = JSON.parse(target.dataset.sizes); // Convertir de nuevo a un array
+        const description = target.dataset.description;
+
+        mostrarProducto(name, price, imagePath, sizes, description, id);
+      }
+    });
+  } catch (error) {
+    console.error("Error al cargar productos similares:", error);
+  }
 };
 
 const renderProducts = async () => {

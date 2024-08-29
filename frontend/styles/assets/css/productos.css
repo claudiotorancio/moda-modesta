@@ -66,8 +66,8 @@
 
 .allProducts {
   display: ruby;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  max-width: 90%;
+  margin: auto;
 }
 
 .allCard {
