@@ -35,6 +35,7 @@ export const mostrarProducto = async (
                 .map((size) => `<option value="${size}">${size}</option>`)
                 .join("")}
             </select>
+            
             <div class="mx-auto text-center">
               <a id="compartir-producto" title="Compartir" class="icono-compartir">
                 <i class="fa-solid fa-share-nodes"></i>
@@ -45,15 +46,7 @@ export const mostrarProducto = async (
               <div class="mx-auto">
                 <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>
               </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-3"></div>
-            <em style="font-size: 10pt; font-family: Arial, sans-serif; font-style: italic; background-color: transparent; vertical-align: baseline;">
-              Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.
-            </em>
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4">
+               <div class="row mt-4">
         <h5>Productos Similares</h5>
         <!-- Botón para mostrar/ocultar productos similares -->
         <button id="toggle-similares" class="btn btn-link">
@@ -63,6 +56,16 @@ export const mostrarProducto = async (
           <div id="productos-similares" class="d-flex justify-content-center align-items-center gap-3"></div>
         </div>
       </div>
+              
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-3"></div>
+            <em style="font-size: 10pt; font-family: Arial, sans-serif; font-style: italic; background-color: transparent; vertical-align: baseline;">
+              Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.
+            </em>
+          </div>
+        </div>
+      </div>
+     
     </div>
   `;
 

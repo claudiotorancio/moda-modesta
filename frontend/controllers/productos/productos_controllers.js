@@ -1,3 +1,107 @@
+import { ProductCard } from "../../controllers/productos/ProductCard.js"; // Asegúrate de ajustar la ruta según tu estructura de carpetas
+import productoServices from "../../services/product_services.js"; // Importa el servicio que obtiene los productos
+import { mostrarProducto } from "./ProductViewer.js";
+
+export const controllers = {
+  async renderProducts() {
+    try {
+      const listaProductos = await productoServices.listaProductos();
+      const { products } = listaProductos;
+
+      for (const producto of products) {
+        const productCard = new ProductCard(
+          producto.name,
+          producto.price,
+          producto.imagePath,
+          producto.description,
+          producto.sizes,
+          producto._id,
+          producto.isFeatured
+        );
+        // Renderizar el producto y adjuntar al contenedor adecuado
+        const container = document.querySelector(`[data-${producto.section}]`);
+        if (container) {
+          container.appendChild(productCard.render());
+        } else {
+          console.error(
+            `Contenedor para la sección "${producto.section}" no encontrado.`
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async cargarProductosSimilares(id) {
+    try {
+      const data = await productoServices.productoSimilar(id);
+      const similares = data;
+
+      const contenedorSimilares = document.getElementById(
+        "productos-similares"
+      );
+      if (!contenedorSimilares) {
+        console.error("Contenedor de productos similares no encontrado.");
+        return;
+      }
+
+      contenedorSimilares.innerHTML = ""; // Limpiar contenedor antes de agregar nuevos productos
+      similares.forEach((producto) => {
+        const productoHTML = `
+            <div class="producto-similar" data-id="${
+              producto._id
+            }" data-name="${producto.name}" data-price="${
+          producto.price
+        }" data-image="${producto.imagePath}" data-sizes='${JSON.stringify(
+          producto.sizes
+        )}' data-description="${producto.description}">
+              <a href="#">
+              
+                <img src="${producto.imagePath}" alt="${
+          producto.name
+        }" class="img-thumbnail">
+                <p>${producto.name}</p>
+                <p>$ ${producto.price}</p>
+              </a>
+            </div>
+          `;
+        contenedorSimilares.innerHTML += productoHTML;
+      });
+
+      // Selecciona todos los enlaces dentro del contenedor
+      const enlaces = contenedorSimilares.querySelectorAll("a");
+
+      // Itera sobre cada enlace y añade el manejador de eventos
+      enlaces.forEach((enlace) => {
+        enlace.addEventListener("click", (e) => {
+          e.preventDefault();
+          // Actualiza la URL con un hash que incluye el ID del producto
+          window.location.hash = `product-${id}`;
+        });
+      });
+
+      contenedorSimilares.addEventListener("click", (e) => {
+        const target = e.target.closest(".producto-similar");
+        if (target) {
+          const id = target.dataset.id;
+          const name = target.dataset.name;
+          const price = target.dataset.price;
+          const imagePath = [target.dataset.image];
+          const sizes = JSON.parse(target.dataset.sizes);
+          const description = target.dataset.description;
+
+          window.location.hash = `product-${id}`;
+
+          mostrarProducto(name, price, imagePath, sizes, description, id);
+        }
+      });
+    } catch (error) {
+      console.error("Error al cargar productos similares:", error);
+    }
+  },
+};
+
 // import { modalControllers } from "../../modal/modal.js";
 // import productoServices from "../../services/product_services.js";
 // import carrito from "../carrito/carrito-controllers.js";
@@ -425,109 +529,6 @@
 //   }
 // };
 
-import { ProductCard } from "../../controllers/productos/ProductCard.js"; // Asegúrate de ajustar la ruta según tu estructura de carpetas
-import productoServices from "../../services/product_services.js"; // Importa el servicio que obtiene los productos
-import { mostrarProducto } from "./ProductViewer.js";
-
-export const controllers = {
-  async renderProducts() {
-    try {
-      const listaProductos = await productoServices.listaProductos();
-      const { products } = listaProductos;
-
-      for (const producto of products) {
-        const productCard = new ProductCard(
-          producto.name,
-          producto.price,
-          producto.imagePath,
-          producto.description,
-          producto.sizes,
-          producto._id,
-          producto.isFeatured
-        );
-        // Renderizar el producto y adjuntar al contenedor adecuado
-        const container = document.querySelector(`[data-${producto.section}]`);
-        if (container) {
-          container.appendChild(productCard.render());
-        } else {
-          console.error(
-            `Contenedor para la sección "${producto.section}" no encontrado.`
-          );
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
-  async cargarProductosSimilares(id) {
-    try {
-      const data = await productoServices.productoSimilar(id);
-      const similares = data;
-
-      const contenedorSimilares = document.getElementById(
-        "productos-similares"
-      );
-      if (!contenedorSimilares) {
-        console.error("Contenedor de productos similares no encontrado.");
-        return;
-      }
-
-      contenedorSimilares.innerHTML = ""; // Limpiar contenedor antes de agregar nuevos productos
-      similares.forEach((producto) => {
-        const productoHTML = `
-            <div class="producto-similar" data-id="${
-              producto._id
-            }" data-name="${producto.name}" data-price="${
-          producto.price
-        }" data-image="${producto.imagePath}" data-sizes='${JSON.stringify(
-          producto.sizes
-        )}' data-description="${producto.description}">
-              <a href="#">
-              
-                <img src="${producto.imagePath}" alt="${
-          producto.name
-        }" class="img-thumbnail">
-                <p>${producto.name}</p>
-                <p>$ ${producto.price}</p>
-              </a>
-            </div>
-          `;
-        contenedorSimilares.innerHTML += productoHTML;
-      });
-
-      // Selecciona todos los enlaces dentro del contenedor
-      const enlaces = contenedorSimilares.querySelectorAll("a");
-
-      // Itera sobre cada enlace y añade el manejador de eventos
-      enlaces.forEach((enlace) => {
-        enlace.addEventListener("click", (e) => {
-          e.preventDefault();
-          // Actualiza la URL con un hash que incluye el ID del producto
-          window.location.hash = `product-${id}`;
-        });
-      });
-
-      contenedorSimilares.addEventListener("click", (e) => {
-        const target = e.target.closest(".producto-similar");
-        if (target) {
-          const id = target.dataset.id;
-          const name = target.dataset.name;
-          const price = target.dataset.price;
-          const imagePath = [target.dataset.image];
-          const sizes = JSON.parse(target.dataset.sizes);
-          const description = target.dataset.description;
-
-          window.location.hash = `product-${id}`;
-
-          mostrarProducto(name, price, imagePath, sizes, description, id);
-        }
-      });
-    } catch (error) {
-      console.error("Error al cargar productos similares:", error);
-    }
-  },
-};
 // export const controllers = {
 //   mostrarProducto,
 //   renderProducts,
