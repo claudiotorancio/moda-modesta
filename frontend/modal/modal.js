@@ -329,7 +329,7 @@ const modalSuscribe = () => {
       <div class="card-header">
         <h4>¡Ofertas y Novedades!</h4>
       </div>
-      <div class="card-body">
+      <div class="card-form">
         <p>¡Suscribite para no perderte las novedades y recibir descuentos exclusivos!</p>
         <form id="subscribe-form" action="/api/suscribeMail" enctype="multipart/form-data" method="POST">
           <div class="form-group">

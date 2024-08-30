@@ -61,7 +61,7 @@ export class LoginControllers {
                 <div class="card-header">
                     <h3>${title}</h3>
                 </div>
-                <div class="card-body">
+                <div class="card-form">
                     <form action="${action}" method="post" data-signin>
                         <div class="form-group mt-3">
                             <input type="text" id="username" name="username" placeholder="${usernamePlaceholder}" class="form-control" required autocomplete="current-password">

@@ -29,7 +29,7 @@ export class ProductForm {
       <div class="card-header">
         <p>Agregar producto</p>
       </div>
-      <div class="card-body">
+      <div class="card-form">
         <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
           <div class="form-group">
             <input class="form-control p-2" type="file" name="image" data-imageUrl required autofocus>
