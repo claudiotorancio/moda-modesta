@@ -1,5 +1,5 @@
 export function cargarReseñas() {
-  const reseñasContainer = document.querySelector("[data-reseñas]");
+  const reseñasContainer = document.querySelector("[data-opcion4]");
 
   // Ejemplo de datos de reseñas, podría ser una llamada a una API
   const reseñas = [
@@ -31,7 +31,7 @@ export function cargarReseñas() {
         <p class="nombre-cliente">${reseña.nombre}</p>
         <p class="calificacion">${"★".repeat(reseña.calificacion)}</p>
         <p class="comentario">${reseña.comentario}</p>
-        <p class="red-social">Reseña hecha en: ${reseña.redSocial}</p>
+        <p class="red-social">${reseña.redSocial}</p>
       `;
 
     reseñasContainer.appendChild(reseñaElement);
