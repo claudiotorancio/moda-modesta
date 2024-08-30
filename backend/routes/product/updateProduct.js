@@ -14,14 +14,13 @@ const s3 = new AWS.S3({
 
 const updateProduct = async (req, res) => {
   try {
-
     if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: 'Usuario no autenticado' });
+      return res.status(401).json({ error: "Usuario no autenticado" });
     }
     // Parametros del formulario
     const { id } = req.params;
-    const { name, price, description, oldImagePath, sizes, isFeatured } = req.body;
-
+    const { name, price, description, oldImagePath, sizes, isFeatured } =
+      req.body;
 
     // Verificar si se proporciona una nueva imagen en el formulario de edición
     let imagePath = oldImagePath;
@@ -35,7 +34,7 @@ const updateProduct = async (req, res) => {
       price,
       description,
       sizes: Array.isArray(sizes) ? sizes : [sizes],
-      isFeatured
+      isFeatured,
     };
 
     // Agregar la imagen al objeto de actualización solo si se proporciona una nueva imagen
@@ -50,7 +49,7 @@ const updateProduct = async (req, res) => {
     });
 
     let result;
-    if (req.user.role === 'admin') {
+    if (req.user.role === "admin") {
       result = await Vista.findByIdAndUpdate(id, updateProduct, { new: true });
     } else {
       result = await Product.findByIdAndUpdate(id, updateProduct, {

@@ -45,23 +45,23 @@ export class ProductEditor {
             <div class="form-group">
               <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" required data-description>${description}</textarea>
             </div>
-
+  
             <div class="form-group form-check mb-3">
               <input type="checkbox" class="form-check-input" id="isFeatured" name="isFeatured" ${
                 isFeatured ? "checked" : ""
               }>
               <label class="form-check-label" for="isFeatured">Destacar producto</label>
             </div>
-
+  
             <div class="mt-auto pt-3">
               <label for="variation_1">Talles actuales</label>
               <select id="variation_1" class="form-select mb-3">${opcionesTalles}</select>
             </div>
             <label for="variation_1">Modificar talles</label>
             <div class="form-group mb-4">
-              ${this.renderSizeOptions()}
+              ${this.renderSizeOptions(sizes)}
             </div>
-
+  
             <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
           </form>
         </div>
@@ -70,20 +70,27 @@ export class ProductEditor {
     this.productoEdicion.classList.add("modalVisor");
   }
 
-  renderSizeOptions() {
+  renderSizeOptions(selectedSizes = []) {
     const sizes = ["Talle 1", "Talle 2", "Talle 3", "Talle 4", "Talle 5"];
     return sizes
       .map(
         (size) => `
-        <div class="form-check-inline me-3">
-          <input class="form-check-input" type="checkbox" value="${size}" name="sizes" id="${size
-          .replace(" ", "")
-          .toLowerCase()}">
-          <label class="form-check-label" for="${size
-            .replace(" ", "")
-            .toLowerCase()}">${size}</label>
-        </div>
-      `
+          <div class="form-check-inline me-3">
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              value="${size}" 
+              name="sizes" 
+              id="${size.replace(" ", "").toLowerCase()}" 
+              ${selectedSizes.includes(size) ? "checked" : ""}
+            >
+            <label 
+              class="form-check-label" 
+              for="${size.replace(" ", "").toLowerCase()}">
+              ${size}
+            </label>
+          </div>
+        `
       )
       .join("");
   }
