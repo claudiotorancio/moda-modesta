@@ -12,7 +12,7 @@ body {
 }
 
 .fixed-top {
-  position: absolute;
+  position: relative;
 }
 
 header {
