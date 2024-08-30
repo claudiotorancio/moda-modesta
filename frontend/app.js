@@ -17,9 +17,11 @@ import productForm from "./controllers/productos/productForm.js";
 import { controllers } from "./controllers/productos/productos_controllers.js";
 import productoServices from "./services/product_services.js";
 import { modalControllers } from "./modal/modal.js";
+import { cargarReseñas } from "./controllers/productos/reseñas.js";
 
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
+  cargarReseñas();
   // modalControllers.modalSuscribe();
   // Obtener usuario autenticado de la sesión
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
