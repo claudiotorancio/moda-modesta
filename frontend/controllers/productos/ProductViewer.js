@@ -21,7 +21,7 @@ export const mostrarProducto = async (
           <img class="card-img-top" src="${imagePath}" alt="">
         </div>
         <div class="col-md-6 mx-auto d-flex flex-column">
-          <div class="card-body">
+          <div class="card-form">
             <h4 class="card-title">${name}</h4>
             <br>
             <div class="card-text" style="overflow-y: auto;">
