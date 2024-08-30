@@ -87,6 +87,9 @@ header {
   margin-top: 5px;
 }
 
+p.help a {
+  text-decoration: underline;
+}
 .div-usuario a {
   list-style-type: none;
   text-decoration: none;
