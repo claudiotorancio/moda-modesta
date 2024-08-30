@@ -35,16 +35,7 @@ export class ProductForm {
             <input class="form-control p-2" type="file" name="image" data-imageUrl required autofocus>
           </div>
           <div class="form-group">
-         <input
-  class="form-control mt-3 p-2"
-  type="text"
-  placeholder="Nombre del producto"
-  name="name"
-  required
-  pattern="^(\s*\S+)+(\s*\S+){0,19}$"
-  title="Debe tener entre 1 y 20 palabras."
-  data-name
-/>
+       <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
 
           </div>
           <div class="form-group">

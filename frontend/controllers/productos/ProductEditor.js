@@ -22,9 +22,6 @@ export class ProductEditor {
 
   renderEditor(name, price, imagePath, description, sizes, id, isFeatured) {
     modalControllers.baseModal();
-    const opcionesTalles = sizes
-      .map((size) => `<option value="${size}">${size}</option>`)
-      .join("");
 
     this.productoEdicion.innerHTML = `
       <div class="text-center">
@@ -52,12 +49,8 @@ export class ProductEditor {
               }>
               <label class="form-check-label" for="isFeatured">Destacar producto</label>
             </div>
-  
-            <div class="mt-auto pt-3">
-              <label for="variation_1">Talles actuales</label>
-              <select id="variation_1" class="form-select mb-3">${opcionesTalles}</select>
-            </div>
-            <label for="variation_1">Modificar talles</label>
+
+            <label for="sizes">Modificar talles</label>
             <div class="form-group mb-4">
               ${this.renderSizeOptions(sizes)}
             </div>
