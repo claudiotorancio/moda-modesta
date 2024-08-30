@@ -1,14 +1,14 @@
-import mongoose from 'mongoose';
-import jwt from 'jsonwebtoken';
-import Users from '../../models/User.js';
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import Users from "../../models/User.js";
 
 const confirmMail = async (req, res) => {
   const { token } = req.query;
 
-  console.log(token);
-
   if (!token) {
-    return res.status(400).send({ success: false, message: 'Token no proporcionado' });
+    return res
+      .status(400)
+      .send({ success: false, message: "Token no proporcionado" });
   }
 
   try {
@@ -25,22 +25,27 @@ const confirmMail = async (req, res) => {
     const user = await Users.findById(decoded._id);
 
     if (!user) {
-      return res.status(404).send({ success: false, message: 'Usuario no encontrado' });
+      return res
+        .status(404)
+        .send({ success: false, message: "Usuario no encontrado" });
     }
 
     // Verificar si el correo ya ha sido confirmado
     if (user.emailVerified) {
-      return res.send({ success: true, message: 'El correo ya está confirmado' });
+      return res.send({
+        success: true,
+        message: "El correo ya está confirmado",
+      });
     }
 
     // Actualizar el estado del correo electrónico del usuario
     user.emailVerified = true;
     await user.save();
 
-    res.redirect('/success.html');
+    res.redirect("/success.html");
   } catch (error) {
-    console.error('Error al confirmar el correo:', error.message);
-    res.redirect('/error.html');
+    console.error("Error al confirmar el correo:", error.message);
+    res.redirect("/error.html");
   }
 };
 

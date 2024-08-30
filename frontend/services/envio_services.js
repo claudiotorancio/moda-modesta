@@ -8,7 +8,7 @@ export class EnvioService {
   }
 
   async calcularCostoEnvio(datosEnvio) {
-    console.log(datosEnvio);
+    // console.log(datosEnvio);
     try {
       const response = await fetch(`${this.baseURL}/api/costoEnvio`, {
         method: "POST",

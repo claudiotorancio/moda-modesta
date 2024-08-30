@@ -1,23 +1,26 @@
-import nodemailer from 'nodemailer';
-import jwt from 'jsonwebtoken';
-import mongoose from 'mongoose';
-import Users from '../../models/User.js';
-import { baseURL } from '../../../frontend/services/product_services.js';
+import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import Users from "../../models/User.js";
+import { baseURL } from "../../../frontend/services/product_services.js";
 
 const suscribeMail = async (req, res) => {
   try {
     const { email, nombre } = req.body;
-    console.log(req.body);
 
     // Verificar que todos los campos requeridos están presentes
     if (!nombre || !email) {
-      return res.status(400).send({ error: 'Todos los campos son requeridos.' });
+      return res
+        .status(400)
+        .send({ error: "Todos los campos son requeridos." });
     }
 
     // Validar el formato del correo electrónico
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).send({ error: 'El correo electrónico proporcionado no es válido.' });
+      return res
+        .status(400)
+        .send({ error: "El correo electrónico proporcionado no es válido." });
     }
 
     // Conectar a la base de datos si es necesario
@@ -29,19 +32,21 @@ const suscribeMail = async (req, res) => {
     // Verificar si el usuario ya existe
     const existingUser = await Users.findOne({ username: email });
     if (existingUser) {
-      return res.status(400).send({ error: 'Este correo ya está registrado.' });
+      return res.status(400).send({ error: "Este correo ya está registrado." });
     }
 
     // Crear un nuevo usuario en la base de datos
     const newUser = new Users({
       username: email,
-      password: 'Temporal', // Asegúrate de reemplazar esto con un proceso seguro para la creación de contraseñas
+      password: "Temporal", // Asegúrate de reemplazar esto con un proceso seguro para la creación de contraseñas
     });
 
     await newUser.save();
 
     // Generar un token de confirmación con el _id del nuevo usuario
-    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     // Construir la URL de confirmación
     const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;
@@ -70,7 +75,7 @@ const suscribeMail = async (req, res) => {
       },
       tls: {
         rejectUnauthorized: false,
-      }
+      },
     });
 
     // Configurar el mensaje a enviar
@@ -84,12 +89,11 @@ const suscribeMail = async (req, res) => {
     // Enviar el correo
     const info = await transporter.sendMail(mailOptions);
 
-    console.log('Correo enviado:', info.messageId);
+    console.log("Correo enviado:", info.messageId);
     res.status(201).send({ success: true, messageId: info.messageId });
-
   } catch (error) {
-    console.error('Error al enviar el correo:', error.message);
-    res.status(500).send({ error: 'Error al enviar el correo.' });
+    console.error("Error al enviar el correo:", error.message);
+    res.status(500).send({ error: "Error al enviar el correo." });
   }
 };
 
