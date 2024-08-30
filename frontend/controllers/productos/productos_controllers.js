@@ -432,24 +432,31 @@ import { mostrarProducto } from "./ProductViewer.js";
 export const controllers = {
   async renderProducts() {
     try {
-      const productos = await productoServices.getProducts();
-      const productsContainer = document.querySelector("#product-container");
-      productsContainer.innerHTML = "";
+      const listaProductos = await productoServices.listaProductos();
+      const { products } = listaProductos;
 
-      productos.forEach((producto) => {
+      for (const producto of products) {
         const productCard = new ProductCard(
           producto.name,
           producto.price,
           producto.imagePath,
           producto.description,
           producto.sizes,
-          producto.id,
+          producto._id,
           producto.isFeatured
         );
-        productsContainer.innerHTML += productCard.render();
-      });
+        // Renderizar el producto y adjuntar al contenedor adecuado
+        const container = document.querySelector(`[data-${producto.section}]`);
+        if (container) {
+          container.appendChild(productCard.render());
+        } else {
+          console.error(
+            `Contenedor para la sección "${producto.section}" no encontrado.`
+          );
+        }
+      }
     } catch (error) {
-      console.error("Error al renderizar productos:", error);
+      console.log(error);
     }
   },
 
