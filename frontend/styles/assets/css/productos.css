@@ -46,11 +46,16 @@
   background-color: #fff;
 }
 
-.card-title {
-  font-size: 2vw;
-  font-weight: 600;
+.card-body {
+  width: 15rem;
 }
 
+.card-title {
+  font-size: 1.5vw;
+  font-weight: 600;
+  margin: 0; /* Asegura que no haya margen adicional */
+  overflow: hidden; /* Oculta el texto que excede el contenedor */
+}
 .productos {
   display: ruby;
 }

@@ -35,7 +35,7 @@ export class ProductForm {
             <input class="form-control p-2" type="file" name="image" data-imageUrl required autofocus>
           </div>
           <div class="form-group">
-            <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
+           <input  class="form-control mt-3 p-2"  type="text"  placeholder="Nombre del producto"  name="name"  required  pattern="^(\S+\s+){0,19}\S+$"  title="No puede contener más de 20 palabras."  data-name/>
           </div>
           <div class="form-group">
             <input class="form-control mt-3 mb-3 p-2" type="text" placeholder="Precio del producto" name="price" required data-price>

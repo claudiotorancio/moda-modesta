@@ -37,8 +37,8 @@ const modalEliminar = (id) => {
     `;
   eliminarProducto.classList.add("modalVisor");
   const botonEliminar = eliminarProducto.querySelector(".boton-eliminar");
-  botonEliminar.addEventListener("click", () => {
-    productoServices.eliminarProducto(id);
+  botonEliminar.addEventListener("click", async () => {
+    await productoServices.eliminarProducto(id);
     window.location.replace("/index.html");
   });
 

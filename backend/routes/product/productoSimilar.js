@@ -31,13 +31,18 @@ const productoSimilar = async (req, res) => {
 
     console.log(precioMin, precioMax);
 
-    // Búsqueda de productos similares aleatorios
+    // Dividir el nombre del producto base en palabras individuales
+    const palabrasNombreBase = productoBase.name.split(" ");
+
+    // Construir la consulta para encontrar productos que contengan al menos una de las palabras del nombre base
     const productosSimilares = await Vista.aggregate([
       {
         $match: {
           _id: { $ne: new mongoose.Types.ObjectId(productId) }, // Excluye el producto base
-          name: productoBase.name, // Filtra por nombre similar
           price: { $gte: precioMin, $lte: precioMax }, // Filtra por rango de precio similar
+          $or: palabrasNombreBase.map((palabra) => ({
+            name: { $regex: palabra, $options: "i" }, // Búsqueda parcial insensible a mayúsculas/minúsculas
+          })),
         },
       },
       { $sample: { size: 3 } }, // Selecciona 3 productos aleatorios
