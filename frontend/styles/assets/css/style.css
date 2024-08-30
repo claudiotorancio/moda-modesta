@@ -396,6 +396,16 @@ header {
   color: #666;
 }
 
+.reseña {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.25rem;
+  margin-bottom: 4rem;
+}
+
 ul {
   line-height: 5rem;
   list-style-type: none; /* Quita los puntos de la lista */
@@ -491,7 +501,7 @@ ul li a {
   }
 
   .fixed-top {
-    position: fixed;
+    position: absolute;
   }
 
   .busqueda {
@@ -626,8 +636,15 @@ ul li a {
     display: none;
   }
 
+  .reseña {
+    margin-bottom: 0;
+  }
+
   .reseñas-container {
     flex-direction: column;
+
+    gap: 15px;
+    padding: 0px;
   }
 
   ul {
