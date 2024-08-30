@@ -19,7 +19,7 @@ export function cargarReseñas() {
       nombre: "Maria Jose García",
       calificacion: 5,
       comentario: "La calidad es insuperable. Estoy muy satisfecha.",
-      redSocial: "Twitter",
+      redSocial: "Facebook",
     },
   ];
 
