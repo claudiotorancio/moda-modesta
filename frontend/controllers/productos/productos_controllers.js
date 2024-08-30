@@ -468,7 +468,6 @@ export const controllers = {
 
       contenedorSimilares.innerHTML = ""; // Limpiar contenedor antes de agregar nuevos productos
       similares.forEach((producto) => {
-        window.location.hash = `product-${id}`;
         const productoHTML = `
             <div class="producto-similar" data-id="${
               producto._id
@@ -490,10 +489,16 @@ export const controllers = {
         contenedorSimilares.innerHTML += productoHTML;
       });
 
-      contenedorSimilares.querySelector("a").addEventListener("click", (e) => {
-        e.preventDefault();
-        // Actualiza la URL con un hash que incluye el ID del producto
-        window.location.hash = `product-${id}`;
+      // Selecciona todos los enlaces dentro del contenedor
+      const enlaces = contenedorSimilares.querySelectorAll("a");
+
+      // Itera sobre cada enlace y añade el manejador de eventos
+      enlaces.forEach((enlace) => {
+        enlace.addEventListener("click", (e) => {
+          e.preventDefault();
+          // Actualiza la URL con un hash que incluye el ID del producto
+          window.location.hash = `product-${id}`;
+        });
       });
 
       contenedorSimilares.addEventListener("click", (e) => {
@@ -505,6 +510,9 @@ export const controllers = {
           const imagePath = [target.dataset.image];
           const sizes = JSON.parse(target.dataset.sizes);
           const description = target.dataset.description;
+
+          window.location.hash = `product-${id}`;
+
           mostrarProducto(name, price, imagePath, sizes, description, id);
         }
       });
