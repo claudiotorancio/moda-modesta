@@ -7,8 +7,7 @@ export class RenderHelpers {
     this.tabla = tabla;
     this.titulo = titulo;
     this.listaServicesHelpers = new ListaServices();
-    this.deleteButtonHandler = new EventHandlers();
-    this.updateButtonHandler = new EventHandlers();
+    this.buttonHandler = new EventHandlers();
   }
 
   async renderUsersList() {
@@ -93,10 +92,10 @@ export class RenderHelpers {
 
     card
       .querySelector("[data-userid]")
-      .addEventListener("click", this.deleteButtonHandler.bind(this));
+      .addEventListener("click", this.buttonHandler.deleteButtonHandler(id));
     card
       .querySelector("[data-userUp]")
-      .addEventListener("click", this.updateButtonHandler.bind(this));
+      .addEventListener("click", this.buttonHandler.updateButtonHandler(id));
 
     return card;
   }
