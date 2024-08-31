@@ -1,4 +1,5 @@
 import { ListaServices } from "../../services/lista_services.js";
+import { modalControllers } from "../../modal/modal.js";
 
 export class EventHandlers {
   constructor(tabla) {
