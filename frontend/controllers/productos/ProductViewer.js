@@ -1,6 +1,10 @@
+//ProductViewer,js
+
 import { controllers } from "./productos_controllers.js";
 import { modalControllers } from "../../modal/modal.js";
-import carrito from "../carrito/carrito-controllers.js";
+import Carrito from "../carrito/carrito.js";
+
+const carrito = new Carrito();
 
 export const mostrarProducto = async (
   name,
@@ -81,6 +85,7 @@ export const mostrarProducto = async (
     .querySelector("[data-carrito]")
     .addEventListener("click", () => {
       const talleSeleccionado = document.getElementById("variation_1").value;
+
       carrito.agregarProducto({
         product: producto,
         size: talleSeleccionado,

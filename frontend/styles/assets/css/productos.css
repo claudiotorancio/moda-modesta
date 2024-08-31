@@ -43,10 +43,16 @@
   margin: 2rem;
   transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   background-color: #fff;
+  overflow: hidden;
 }
 
 .card-body {
   width: 15rem;
+  height: 10rem;
+}
+
+.card-body a {
+  text-decoration: underline;
 }
 
 .card-title {
@@ -135,9 +141,11 @@ div.card:hover {
 
   .card-body {
     width: auto;
+    height: auto;
   }
 
   .card-title {
+    width: auto;
     font-size: 1.3rem;
   }
 
