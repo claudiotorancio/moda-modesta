@@ -38,8 +38,9 @@ export class RenderHelpers {
       listado.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
       for (const usuario of listado) {
-        const { totalProductos } =
-          await this.listaServicesHelpers.totalProductos(usuario._id);
+        const totalProductos = await this.obtenerTotalProductos(usuario._id)(
+          usuario._id
+        );
         const usuarioData = {
           username: usuario.username,
           created_at: usuario.created_at,
