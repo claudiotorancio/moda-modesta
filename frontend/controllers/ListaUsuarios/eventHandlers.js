@@ -17,9 +17,7 @@ export class EventHandlers {
       try {
         const role = await this.listaServicesHelpers.getRole(userId);
         if (role !== "admin") {
-          await this.listaServicesHelpers.listaServicesInstance.eliminarUser(
-            userId
-          );
+          await this.listaServicesHelpers.eliminarUser(userId);
           event.target.closest(".row").remove();
         } else {
           alert("No se puede eliminar un usuario administrador");
@@ -93,10 +91,7 @@ export class EventHandlers {
         }
 
         try {
-          await this.listaServicesHelpers.listaServicesInstance.updateUser(
-            jsonData,
-            id
-          );
+          await this.listaServicesHelpers.updateUser(jsonData, id);
           modalControllers.modalProductoEditado();
         } catch (error) {
           console.error(error);

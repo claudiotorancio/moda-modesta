@@ -10,7 +10,7 @@ export class RenderHelpers {
   async renderUsersList() {
     try {
       const { listado, usersCantidad } =
-        await this.listaServicesHelpers.listaServicesInstance.listaUsers();
+        await this.listaServicesHelpers.listaUsers();
       const { total } = await productoServices.listaProductos();
 
       const tituloTabla = `
