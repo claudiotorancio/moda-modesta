@@ -39,47 +39,46 @@ export function mostrarCarrito() {
     summaryDetails.appendChild(progresoCompra);
 
     const carritoContent = `
-      <div class="container main-container">
-        <div class="summary-details panel p-none">
-          <table class="table table-scrollable">
-            <tbody>
-              ${this.items
-                .map(
-                  (item) => `
-                <tr style="display: inline-flex;">
-                  <td class="summary-img-wrap">
-                    <div class="col-md-6 mx-auto">
-                      <img class="card-img-top" alt="${item.name}" title="${
-                    item.name
-                  }" src="${item.imagePath}">
-                    </div>
-                  </td>
-                  <td>${item.name} × ${item.cantidad} <br> <small>${
-                    item.size
-                  }</small></td>
-                  <td class="table-price text-right">
-                    <span>$ ${item.price.toFixed(2)}</span>
-                  </td>
-                  <td class="table-price text-right">
-                    <button class="btn btn-danger" data-id="${
-                      item._id
-                    }" data-size="${
-                    item.size
-                  }"><i class="fa-solid fa-scissors"></i></button>
-                  </td>
-                </tr>
-              `
-                )
-                .join("")}
-            </tbody>
-          </table>
+ <div class="container main-container">
+  <div class="summary-details panel p-none">
+    <table class="table table-scrollable">
+      <tbody>
+        ${this.items
+          .map(
+            (item) => `
+            <tr>
+              <td class="summary-img-wrap">
+                <img class="card-img-top" alt="${item.name}" title="${
+              item.name
+            }" src="${item.imagePath}">
+              </td>
+              <td>${item.name} × ${item.cantidad} <br> <small>${
+              item.size
+            }</small></td>
+              <td class="table-price">
+                <span>$ ${item.price.toFixed(2)}</span>
+              </td>
+              <td class="table-price">
+                <button class="btn btn-danger" data-id="${
+                  item._id
+                }" data-size="${item.size}">
+                  <i class="fa-solid fa-scissors"></i>
+                </button>
+              </td>
+            </tr>
+          `
+          )
+          .join("")}
+      </tbody>
+    </table>
 
-          <div class="table-subtotal">
+          <div class="table-subtotal mb-9">
             <table class="table">
               <tbody>
+              
                 <tr>
                   <td>Subtotal</td>
-                  <td class="text-right"><span>$ ${this.calcularSubtotal().toFixed(
+                  <td class="text-right mb-5"><span>$ ${this.calcularSubtotal().toFixed(
                     2
                   )}</span></td>
                 </tr>

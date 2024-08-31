@@ -399,6 +399,23 @@ p.help a {
   color: #666;
 }
 
+/* estilo de tabal carrito */
+
+div.table-subtotal td {
+  vertical-align: baseline;
+}
+
+.table td {
+  vertical-align: middle;
+  padding: 1rem; /* Ajusta el padding según sea necesario */
+}
+
+/* Alinea las imágenes y asegura que tengan el mismo tamaño */
+.summary-img-wrap img {
+  max-width: 100px; /* Ajusta el tamaño máximo según sea necesario */
+  height: auto; /* Mantiene la proporción de la imagen */
+}
+
 .reseña {
   width: 100%;
   display: flex;
@@ -407,6 +424,10 @@ p.help a {
   align-items: center;
   margin-top: 1.25rem;
   margin-bottom: 4rem;
+}
+
+span#final-total {
+  font-weight: 700;
 }
 
 ul {
@@ -648,6 +669,27 @@ ul li a {
 
     gap: 15px;
     padding: 0px;
+  }
+
+  /* estilo de tabal carrito */
+
+  div.table-subtotal tr {
+    margin-bottom: 2rem;
+  }
+
+  .table td {
+    font-size: 0.9rem;
+    padding: 0.35rem;
+  }
+
+  td.summary-img-wrap {
+    vertical-align: middle;
+  }
+
+  .summary-img-wrap img {
+    justify-content: center;
+    max-width: 100px; /* Ajusta el tamaño máximo según sea necesario */
+    height: auto; /* Mantiene la proporción de la imagen */
   }
 
   ul {
