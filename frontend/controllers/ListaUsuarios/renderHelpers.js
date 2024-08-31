@@ -89,13 +89,16 @@ export class RenderHelpers {
           </table>
         </div>
       </div>`;
-
     card
       .querySelector("[data-userid]")
-      .addEventListener("click", this.buttonHandler.deleteButtonHandler(id));
+      .addEventListener("click", (event) =>
+        this.buttonHandler.deleteButtonHandler(event)
+      );
     card
       .querySelector("[data-userUp]")
-      .addEventListener("click", this.buttonHandler.updateButtonHandler(id));
+      .addEventListener("click", (event) =>
+        this.buttonHandler.updateButtonHandler(event)
+      );
 
     return card;
   }
