@@ -1,11 +1,14 @@
 import { ListaServices } from "../../services/lista_services.js";
 import productoServices from "../../services/product_services.js";
+import { EventHandlers } from "./eventHandlers.js";
 
 export class RenderHelpers {
   constructor(tabla, titulo) {
     this.tabla = tabla;
     this.titulo = titulo;
     this.listaServicesHelpers = new ListaServices();
+    this.deleteButtonHandler = new EventHandlers();
+    this.updateButtonHandler = new EventHandlers();
   }
 
   async renderUsersList() {
@@ -87,6 +90,13 @@ export class RenderHelpers {
           </table>
         </div>
       </div>`;
+
+    card
+      .querySelector("[data-userid]")
+      .addEventListener("click", this.deleteButtonHandler.bind(this));
+    card
+      .querySelector("[data-userUp]")
+      .addEventListener("click", this.updateButtonHandler.bind(this));
 
     return card;
   }

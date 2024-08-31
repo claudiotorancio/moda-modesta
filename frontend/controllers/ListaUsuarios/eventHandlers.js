@@ -1,4 +1,5 @@
 import { ListaServices } from "../../services/lista_services.js";
+
 export class EventHandlers {
   constructor(tabla) {
     this.tabla = tabla;
