@@ -16,7 +16,7 @@ export class EventHandlers {
 
     if (confirmacion) {
       try {
-        const role = await this.listaServicesHelpers.getRole(userId);
+        const role = await this.getRole(userId);
         if (role !== "admin") {
           await this.listaServicesHelpers.eliminarUser(userId);
           event.target.closest(".row").remove();
@@ -33,10 +33,42 @@ export class EventHandlers {
     event.preventDefault();
     const userId = event.target.dataset.userup;
     try {
-      const username = await this.listaServicesHelpers.getUsername(userId);
+      const username = await this.getUsername(userId);
       this.editarLista(username, userId);
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  //extraer datos de Users
+  async getUsername(userId) {
+    // console.log(`getUsername id: ${userId}`);
+    const user = await this.listaServicesHelpers.getUser(userId);
+    // console.log(`getUsername: ${user}`);
+    return user.username;
+  }
+  //extraer datos de Users
+
+  async getAdmin() {
+    try {
+      const role = await this.listaServicesInstance.getAdmin();
+      //console.log(`getAdmin: ${role}`);
+      return role;
+    } catch (error) {
+      console.error("Error al obtener el rol del usuario:", error);
+      throw error;
+    }
+  }
+  //extraer datos de Users
+
+  async getRole(id) {
+    try {
+      const user = await this.listaServicesInstance.getUser(id);
+      //console.log(`getRole: ${user}`);
+      return user.role;
+    } catch (error) {
+      console.error("Error al obtener el rol del usuario:", error);
+      throw error;
     }
   }
 
