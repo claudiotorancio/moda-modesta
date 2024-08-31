@@ -1,4 +1,5 @@
 import { ListaServices } from "../../services/lista_services.js";
+import productoServices from "../../services/product_services.js";
 
 export class RenderHelpers {
   constructor(tabla, titulo) {
