@@ -64,7 +64,7 @@ export class EventHandlers {
 
   async getRole(id) {
     try {
-      const user = await this.listaServicesInstance.getUser(id);
+      const user = await this.listaServicesHelpers.getUser(id);
       //console.log(`getRole: ${user}`);
       return user.role;
     } catch (error) {
