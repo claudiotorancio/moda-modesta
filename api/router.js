@@ -89,7 +89,7 @@ export const uploadSingle = upload(process.env.BUCKET_AWS).single("image");
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
 //compras
-router.get("/api/listaOrder", requireAdmin, purchaseOrder);
+router.get("/api/listaOrder", purchaseOrder);
 
 // Rutas nodeMailer
 router.post("/api/sendMail", sendMail);
