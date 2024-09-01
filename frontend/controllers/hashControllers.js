@@ -1,4 +1,5 @@
 import productoServices from "../services/product_services.js";
+import { mostrarProducto } from "./productos/ProductViewer.js";
 
 export async function hashControllers() {
   try {
