@@ -38,18 +38,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Mostrar u ocultar elementos según si hay un usuario autenticado
   if (user) {
     controllers.renderProducts();
-    const tabla = document.querySelector("[data-lista]");
-    const titulo = document.querySelector("[data-titulo]");
-    const listaControllersInstance = new ListaControllers(tabla, titulo);
-    // const comprasInstance = new Compras(tabla, titulo);
 
-    listaControllersInstance.renderLista();
     // comprasInstance.renderLista();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
     contactUser.style.display = "none";
   } else {
+    const tabla = document.querySelector("[data-lista]");
+    const titulo = document.querySelector("[data-titulo]");
+    const listaControllersInstance = new ListaControllers(tabla, titulo);
+    // const comprasInstance = new Compras(tabla, titulo);
+
+    listaControllersInstance.renderLista();
+
     productosInicio.renderInit();
     divUsuario.style.display = "none";
     actualizarUsuario.style.display = "none";

@@ -5,9 +5,9 @@ import Users from "../../models/User.js";
 const listaAdmin = async (req, res) => {
   try {
     //  Verificar si el usuario está autenticado
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
+    // if (!req.isAuthenticated()) {
+    //   return res.status(401).json({ error: "Usuario no autenticado" });
+    // }
 
     // Conectar a la base de datos mediante serverless function
     await mongoose.connect(MONGODB_URI, {

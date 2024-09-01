@@ -7,9 +7,9 @@ const contadorProductos = async (req, res) => {
   try {
     //verifixar si esta autenticado
 
-    if (!req.isAuthenticated() && req.user.role === "admin") {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
+    // if (!req.isAuthenticated() && req.user.role === "admin") {
+    //   return res.status(401).json({ error: "Usuario no autenticado" });
+    // }
 
     // Conectar a la base de datos
     await mongoose.connect(MONGODB_URI, {

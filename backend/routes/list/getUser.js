@@ -5,9 +5,9 @@ import Users from "../../models/User.js";
 const getUser = async (req, res) => {
   try {
     //  Verificar si el usuario está autenticado
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
+    // if (!req.isAuthenticated()) {
+    //   return res.status(401).json({ error: "Usuario no autenticado" });
+    // }
 
     const userId = req.params.id;
 
