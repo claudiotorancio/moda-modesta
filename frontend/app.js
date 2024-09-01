@@ -35,13 +35,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const contactUser = document.querySelector("[data-contact]");
   const crearproducto = document.querySelector("[data-init]");
 
+  const tabla = document.querySelector("[data-lista]");
+  const titulo = document.querySelector("[data-titulo]");
+
+  const comprasInstance = new Compras(tabla, titulo);
+
   // Mostrar u ocultar elementos según si hay un usuario autenticado
   if (user) {
     controllers.renderProducts();
-    const tabla = document.querySelector("[data-lista]");
-    const titulo = document.querySelector("[data-titulo]");
     // const listaControllersInstance = new ListaControllers(tabla, titulo);
-    const comprasInstance = new Compras(tabla, titulo);
 
     // listaControllersInstance.renderLista();
     comprasInstance.renderLista();

@@ -86,7 +86,7 @@ export class RenderCompras {
       <td>${productos}</td>
       <td>${phoneNumber}</td>
       <td>${fechaFormateada}</td>
-      <td><button type="button" class="btn btn-danger" data-userid="">del</button></td>
+      <td><button type="button" class="btn btn-primary" data-userid="">del</button></td>
       <td><button type="button" class="btn btn-primary" id="button" data-userUp="">up</button></td>
     `;
 
