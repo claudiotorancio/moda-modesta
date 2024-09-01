@@ -23,8 +23,9 @@ import { hashControllers } from "./controllers/hashControllers.js";
 
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
+  const hash = window.location.hash;
   if (hash.startsWith("#product-")) {
-    await hashControllers(id);
+    await hashControllers();
   }
 
   cargarReseñas();
