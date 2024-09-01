@@ -21,7 +21,7 @@ import deleteUser from "../backend/routes/list/deleteUser.js";
 import contadorProductos from "../backend/routes/list/contadorProductos.js";
 import updateUser from "../backend/routes/list/updateUser.js";
 import getUser from "../backend/routes/list/getUser.js";
-import getAdmin from "../backend/routes/list/getAdmin.js";
+// import getAdmin from "../backend/routes/list/getAdmin.js";
 import destacadosProduct from "../backend/routes/product/destacados.js";
 import sendMail from "../backend/routes/nodeMailer/sendMail.js";
 import suscribeMail from "../backend/routes/nodeMailer/contactMail.js";
