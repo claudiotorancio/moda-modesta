@@ -2,6 +2,7 @@ import productoServices from "../services/product_services.js";
 
 export async function hashControllers() {
   try {
+    const hash = window.location.hash;
     const id = hash.replace("#product-", "");
     // Encapsular el producto en un array si es un solo objeto
     const response = await productoServices.detalleProducto(id);

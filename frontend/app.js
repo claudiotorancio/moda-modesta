@@ -25,7 +25,7 @@ import { hashControllers } from "./controllers/hashControllers.js";
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
   if (hash.startsWith("#product-")) {
-    hashControllers(id);
+    await hashControllers(id);
   }
 
   cargarReseñas();
