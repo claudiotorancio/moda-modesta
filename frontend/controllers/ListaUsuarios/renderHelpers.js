@@ -14,6 +14,7 @@ export class RenderHelpers {
     try {
       const { listado, usersCantidad } =
         await this.listaServicesHelpers.listaUsers();
+
       const { total } = await productoServices.listaProductos();
 
       const tituloTabla = `
@@ -23,12 +24,13 @@ export class RenderHelpers {
             <h2 class="card-header">Users</h2>
             <table class="table">
               <thead>
-                <tr>
-                  <th style="width: 25%;">Users (${usersCantidad})</th>
-                  <th style="width: 25%;">Create</th>
-                  <th style="width: 25%;">prod (${total})</th>
-                  <th style="width: 25%;">Rol</th>
-                  <th style="width: 25%;">Accion</th>
+                <tr >
+                  <th >User(${usersCantidad})</th>
+                  <th >Create</th>
+                  <th >prod(${total})</th>
+                  <th >Rol</th>
+                  <th >Eliminar</th>
+                  <th >Actualizar</th>
                 </tr>
               </thead>
             </table>
@@ -78,12 +80,12 @@ export class RenderHelpers {
           <table class="table">
             <tbody>
               <tr style="text-align: left;">
-                <td style="width: 25%;">${username}</td>
-                <td style="width: 25%;">${fechaFormateada}</td>
-                <td style="width: 25%;">${totalProductos}</td>
-                <td style="width: 25%;">${role}</td>
-                <td style="width: 15%;"><button type="button" class="btn btn-danger" data-userid="${id}">del</button></td>
-                <td style="width: 15%;"><button type="button" class="btn btn-primary" id="button" data-userUp="${id}">up</button></td>
+                <td >${username}</td>
+                <td>${fechaFormateada}</td>
+                <td >${totalProductos}</td>
+                <td >${role}</td>
+                <td ><button type="button" class="btn btn-danger" data-userid="${id}">del</button></td>
+                <td ><button type="button" class="btn btn-primary" id="button" data-userUp="${id}">up</button></td>
               </tr>
             </tbody>
           </table>

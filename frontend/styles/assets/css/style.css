@@ -180,7 +180,7 @@ p.help a {
 
 .table-container {
   max-height: 10rem; /* Altura máxima del contenedor */
-  overflow-y: auto; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
+  overflow-x: hidden; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
 }
 
 /* menu desplegable */
@@ -430,19 +430,33 @@ span#final-total {
   font-weight: 700;
 }
 
-ul {
-  line-height: 5rem;
-  list-style-type: none; /* Quita los puntos de la lista */
-  padding: 0; /* Quita el espaciado interno */
+/* tabla Users */
+
+div.card-lista div.col-md-12 th,
+div.card-lista div.col-md-12 td {
+  width: 100px; /* Ancho fijo para todas las celdas */
+  height: 50px; /* Altura fija para todas las celdas */
+  text-align: center; /* Centra el contenido horizontalmente */
+  vertical-align: middle; /* Centra el contenido verticalmente */
+  overflow: auto; /* Oculta cualquier desbordamiento */
+
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
 }
 
-ul li {
-  margin-bottom: 10px; /* Espaciado entre elementos de la lista */
+div.card-lista div.col-md-12 table {
+  table-layout: fixed; /* Hace que todas las columnas tengan el mismo ancho */
+  width: 100%; /* Asegura que la tabla ocupe todo el ancho disponible */
+  border-collapse: collapse; /* Elimina el espacio entre bordes de celdas */
+  margin-bottom: 0;
 }
 
-ul li a {
-  text-decoration: none; /* Quita el subrayado de los enlaces */
-  color: #333; /* Color del texto */
+div.card-lista div.col-md-12 th,
+div.card-lista div.col-md-12 td {
+  border: 1px solid #ddd; /* Añade un borde a las celdas */
+}
+
+div.card-lista div.col-md-12 th {
+  background-color: #f2f2f2; /* Color de fondo para las cabeceras */
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
@@ -692,30 +706,12 @@ ul li a {
     height: auto; /* Mantiene la proporción de la imagen */
   }
 
-  ul {
-    line-height: 0;
-    margin-top: 1rem;
-    list-style-type: style type;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 2rem;
-  }
+  /* tabla Users */
 
-  ul li {
-    font-size: 1.2rem;
-    text-align: center;
-    text-decoration: underline; /* Agregar subrayado */
-    text-decoration-line: underline; /* Indicar que queremos subrayar */
-    text-decoration-skip-ink: none; /* Evitar que el subrayado se omita alrededor de las letras */
-    text-underline-offset: 0.2em; /* Espacio entre el texto y el subrayado */
-    text-align: center;
-    width: calc(
-      5% - 20px
-    ); /* Ancho del 33.33% menos el espacio entre elementos */
-  }
-
-  ul li a {
-    text-decoration: none;
-    color: var(--fondo-usuario);
+  div.card-lista div.col-md-12 th,
+  div.card-lista div.col-md-12 td {
+    font-size: 0.8rem;
+    width: 60px;
+    height: 30px;
   }
 }

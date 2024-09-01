@@ -10,9 +10,9 @@ export class ListaServices {
     try {
       const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
       const data = await respuesta.json();
-      const role = data.role;
-      //console.log(`getAdmin role:`, role);
-      return role; // Simplificado para devolver solo el usuario
+
+      console.log("getAdmin role:", data);
+      return data; // Devuelve todo el objeto data, que incluye { ok: true/false, role: role }
     } catch (error) {
       console.error("Error al obtener usuario:", error);
       throw error;
@@ -20,7 +20,7 @@ export class ListaServices {
   };
 
   //extraer userId de Users
-  
+
   getUser = async (userId) => {
     //console.log(`getUser id:`, userId);
     try {

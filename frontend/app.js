@@ -18,6 +18,7 @@ import { controllers } from "./controllers/productos/productos_controllers.js";
 import productoServices from "./services/product_services.js";
 import { modalControllers } from "./modal/modal.js";
 import { cargarReseñas } from "./controllers/productos/reseñas.js";
+import { Compras } from "./controllers/compras/compras-controllers.js";
 
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
@@ -40,7 +41,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const tabla = document.querySelector("[data-lista]");
     const titulo = document.querySelector("[data-titulo]");
     const listaControllersInstance = new ListaControllers(tabla, titulo);
+    // const comprasInstance = new Compras(tabla, titulo);
+
     listaControllersInstance.renderLista();
+    // comprasInstance.renderLista();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";

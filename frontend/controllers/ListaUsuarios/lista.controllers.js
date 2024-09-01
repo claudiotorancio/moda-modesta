@@ -11,8 +11,15 @@ export class ListaControllers {
 
   async renderLista() {
     try {
-      const role = await this.renderHelpers.listaServicesHelpers.getAdmin();
-      if (role === "admin") await this.renderHelpers.renderUsersList();
+      const data = await this.renderHelpers.listaServicesHelpers.getAdmin();
+      if (data.ok && data.role === "admin") {
+        await this.renderHelpers.renderUsersList();
+      } else {
+        console.error(
+          "Usuario no autenticado o error:",
+          data.error || data.message
+        );
+      }
     } catch (error) {
       console.log(error);
     }
