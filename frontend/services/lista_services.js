@@ -4,20 +4,6 @@ export class ListaServices {
   constructor() {
     this.baseURL = baseURL;
   }
-  //validar admin en session
-
-  // getAdmin = async () => {
-  //   try {
-  //     const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
-  //     const data = await respuesta.json();
-
-  //     console.log("getAdmin role:", data);
-  //     return data; // Devuelve todo el objeto data, que incluye { ok: true/false, role: role }
-  //   } catch (error) {
-  //     console.error("Error al obtener usuario:", error);
-  //     throw error;
-  //   }
-  // };
 
   //extraer userId de Users
 

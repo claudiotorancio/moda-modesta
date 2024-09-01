@@ -7,9 +7,9 @@ const renderProducts = async (req, res) => {
   console.log(req.user);
   try {
     //Verificar si el usuario está autenticado
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
+    // if (!req.isAuthenticated()) {
+    //   return res.status(401).json({ error: "Usuario no autenticado" });
+    // }
 
     //Relacionar id de usuario con producto para visualizar solo sus productos
     const user_id = req.user._id;

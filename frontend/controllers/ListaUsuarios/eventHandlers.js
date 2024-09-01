@@ -9,22 +9,24 @@ export class EventHandlers {
 
   async deleteButtonHandler(event) {
     event.preventDefault();
-    try {
-      confirm("¿Estás seguro de que quieres eliminar esta tarjeta?");
+    const userId = event.target.dataset.userid;
 
-      event.target.dataset.userid;
+    const confirmacion = confirm(
+      "¿Estás seguro de que quieres eliminar esta tarjeta?"
+    );
 
-      // if (confirmacion) {
-      //
-      //     const role = await this.getRole(userId);
-      //     if (role !== "admin") {
-      //       await this.listaServicesHelpers.eliminarUser(userId);
-      //       event.target.closest(".row").remove();
-      //     } else {
-      //       alert("No se puede eliminar un usuario administrador");
-      //     }
-    } catch (error) {
-      console.error(error);
+    if (confirmacion) {
+      try {
+        const role = await this.getRole(userId);
+        if (role !== "admin") {
+          await this.listaServicesHelpers.eliminarUser(userId);
+          event.target.closest(".row").remove();
+        } else {
+          alert("No se puede eliminar un usuario administrador");
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -46,18 +48,7 @@ export class EventHandlers {
     // console.log(`getUsername: ${user}`);
     return user.username;
   }
-  //extraer datos de Users
 
-  // async getAdmin() {
-  //   try {
-  //     const role = await this.listaServicesInstance.getAdmin();
-  //     //console.log(`getAdmin: ${role}`);
-  //     return role;
-  //   } catch (error) {
-  //     console.error("Error al obtener el rol del usuario:", error);
-  //     throw error;
-  //   }
-  // }
   //extraer datos de Users
 
   async getRole(id) {
