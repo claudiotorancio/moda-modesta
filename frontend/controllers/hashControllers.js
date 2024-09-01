@@ -1,6 +1,8 @@
 import productoServices from "../services/product_services.js";
 
 export async function hashControllers() {
+  const id = hash.replace("#product-", "");
+
   try {
     const hash = window.location.hash;
     const id = hash.replace("#product-", "");
