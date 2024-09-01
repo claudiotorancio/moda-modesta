@@ -66,7 +66,7 @@
 
   .modal-content {
     max-width: 95vw;
-    max-height: 95vh;
+    max-height: 80vh;
     overflow-y: auto;
     font-size: 1rem;
   }
