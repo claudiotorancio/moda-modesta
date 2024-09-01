@@ -114,7 +114,7 @@ const sendMail = async (req, res) => {
         price: producto.price,
         quantity: producto.cantidad,
         size: producto.size,
-        hash: `https://moda-modesta.vercel.app/#product-${producto.hash}`,
+        hash: `https://moda-modesta.vercel.app/index.html#product-${producto.hash}`,
       })),
       totalAmount: total,
       shippingCost: costoEnvio,
