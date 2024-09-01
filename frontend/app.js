@@ -40,10 +40,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     controllers.renderProducts();
     const tabla = document.querySelector("[data-lista]");
     const titulo = document.querySelector("[data-titulo]");
-    const listaControllersInstance = new ListaControllers(tabla, titulo);
+    // const listaControllersInstance = new ListaControllers(tabla, titulo);
     const comprasInstance = new Compras(tabla, titulo);
 
-    listaControllersInstance.renderLista();
+    // listaControllersInstance.renderLista();
     comprasInstance.renderLista();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
