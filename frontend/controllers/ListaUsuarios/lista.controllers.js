@@ -11,15 +11,15 @@ export class ListaControllers {
 
   async renderLista() {
     try {
-      const data = await this.renderHelpers.listaServicesHelpers.getAdmin();
-      if (data.ok && data.role === "admin") {
-        await this.renderHelpers.renderUsersList();
-      } else {
-        console.error(
-          "Usuario no autenticado o error:",
-          data.error || data.message
-        );
-      }
+      // const data = await this.renderHelpers.listaServicesHelpers.getAdmin();
+      // if (data.ok && data.role === "admin") {
+      await this.renderHelpers.renderUsersList();
+      // } else {
+      //   console.error(
+      //     "Usuario no autenticado o error:",
+      //     data.error || data.message
+      //   );
+      // }
     } catch (error) {
       console.log(error);
     }
