@@ -77,16 +77,18 @@ export function mostrarCarrito() {
               <tbody>
               
                 <tr>
-                  <td>Subtotal</td>
+                  <td>SUBTOTAL</td>
                   <td class="text-right mb-5"><span>$ ${this.calcularSubtotal().toFixed(
                     2
                   )}</span></td>
                 </tr>
                 <tr>
-                  <td>Envío
+                  <td>ENVIO
+                  <div>
                     <button id="toggle-envio-form" class="btn btn-link">
                       <i class="fa-solid fa-chevron-down"></i>
                     </button>
+                    </div>
                   </td>
                   <td class="text-right">
                     <div id="envio-form-container" class="collapse">
@@ -118,7 +120,7 @@ export function mostrarCarrito() {
               </tbody>
               <tfoot class="table-footer">
                 <tr>
-                  <td class="table-price">Total</td>
+                  <td class="table-price">TOTAL</td>
                   <td class="text-right table-price">
                     <span id="final-total">$ 0,00</span>
                   </td>
