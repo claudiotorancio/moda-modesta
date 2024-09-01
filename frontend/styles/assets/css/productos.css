@@ -38,6 +38,12 @@
   height: 16px;
   padding-right: 0rem;
 }
+
+.logo_cabecera {
+  display: block;
+  width: 10rem;
+  margin-bottom: 1rem;
+}
 .card {
   justify-content: flex-start;
   margin: 2rem;

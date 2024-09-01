@@ -20,6 +20,7 @@ export const mostrarProducto = async (
 
   mostrarProducto.innerHTML = `
     <div class="contenido_container">
+     <img class="logo_cabecera" src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png" alt="modaModesta logo" />
       <div class="row">
         <div class="col-md-6 mx-auto">
           <img class="card-img-top" src="${imagePath}" alt="">
