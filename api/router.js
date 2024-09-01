@@ -30,6 +30,7 @@ import success from "../backend/routes/nodeMailer/success.js";
 import error from "../backend/routes/nodeMailer/error.js";
 import costoEnvio from "../backend/routes/Envios/costoEnvio.js";
 import productoSimilar from "../backend/routes/product/productoSimilar.js";
+import { requireAdmin } from "../backend/routes/requireAdmin.js";
 import path from "path";
 
 const router = Router();
@@ -101,7 +102,7 @@ router.post("/api/signup", signup);
 router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 // Rutas listado
-router.get("/api/getAdmin", getAdmin);
+router.get("/api/getAdmin", requireAdmin);
 router.get("/api/getUser/:id", getUser);
 router.get("/api/renderLista", listaAdmin);
 router.delete("/api/deleteUser/:id", deleteUser);
@@ -110,7 +111,7 @@ router.get("/api/contadorProductos/:id", contadorProductos);
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/renderInicio", renderInicio);
-router.get("/api/renderProducts", renderProducts);
+router.get("/api/renderProducts", requireAdmin, renderProducts);
 router.post("/api/createProduct", createProduct);
 router.delete("/api/deleteProduct/:id", deleteProduct);
 router.get("/api/detailsProduct/:id", detailsProduct);
