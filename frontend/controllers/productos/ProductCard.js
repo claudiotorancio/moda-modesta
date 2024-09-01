@@ -41,7 +41,7 @@ export class ProductCard {
   addEventListeners(card) {
     card.querySelector("[data-veradmin]").addEventListener("click", (e) => {
       e.preventDefault();
-      window.location.hash = `product-${id}`;
+      window.location.hash = `product-${this.id}`;
       mostrarProducto(
         this.name,
         this.price,
