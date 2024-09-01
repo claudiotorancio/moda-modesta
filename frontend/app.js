@@ -36,6 +36,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const crearproducto = document.querySelector("[data-init]");
 
   // Mostrar u ocultar elementos según si hay un usuario autenticado
+  const tabla = document.querySelector("[data-lista]");
+  const titulo = document.querySelector("[data-titulo]");
+  const listaControllersInstance = new ListaControllers(tabla, titulo);
+  // const comprasInstance = new Compras(tabla, titulo);
+
+  listaControllersInstance.renderLista();
   if (user) {
     controllers.renderProducts();
 
@@ -45,13 +51,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     userActive.style.display = "none";
     contactUser.style.display = "none";
   } else {
-    const tabla = document.querySelector("[data-lista]");
-    const titulo = document.querySelector("[data-titulo]");
-    const listaControllersInstance = new ListaControllers(tabla, titulo);
-    // const comprasInstance = new Compras(tabla, titulo);
-
-    listaControllersInstance.renderLista();
-
     productosInicio.renderInit();
     divUsuario.style.display = "none";
     actualizarUsuario.style.display = "none";
