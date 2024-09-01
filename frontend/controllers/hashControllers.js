@@ -1,6 +1,6 @@
 import productoServices from "../services/product_services.js";
 
-export async function hashControllers() {
+export async function hashControllers(id) {
   try {
     // Encapsular el producto en un array si es un solo objeto
     const response = await productoServices.detalleProducto(id);
