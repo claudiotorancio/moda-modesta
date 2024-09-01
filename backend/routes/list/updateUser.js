@@ -6,9 +6,9 @@ import helpers from "../../lib/helpers.js";
 const updateUser = async (req, res) => {
   try {
     // Verificar si el usuario está autenticado
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
+    // if (!req.isAuthenticated()) {
+    //   return res.status(401).json({ error: "Usuario no autenticado" });
+    // }
 
     //cuerpo del body
     const { newUsername, newPassword, newRole } = req.body;

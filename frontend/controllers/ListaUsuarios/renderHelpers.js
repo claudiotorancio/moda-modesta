@@ -43,7 +43,6 @@ export class RenderHelpers {
 
       for (const usuario of listado) {
         const totalProductos = await this.obtenerTotalProductos(usuario._id);
-        console.log(totalProductos);
         const usuarioData = {
           username: usuario.username,
           created_at: usuario.created_at,

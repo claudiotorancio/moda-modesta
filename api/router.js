@@ -102,12 +102,11 @@ router.post("/api/signup", signup);
 router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 // Rutas listado
-router.get("/api/getAdmin", requireAdmin);
-router.get("/api/getUser/:id", getUser);
-router.get("/api/renderLista", listaAdmin);
-router.delete("/api/deleteUser/:id", deleteUser);
-router.put("/api/updateUser/:id", updateUser);
-router.get("/api/contadorProductos/:id", contadorProductos);
+router.get("/api/getUser/:id", requireAdmin, getUser);
+router.get("/api/renderLista", requireAdmin, listaAdmin);
+router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);
+router.put("/api/updateUser/:id", requireAdmin, updateUser);
+router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/renderInicio", renderInicio);
