@@ -1,3 +1,5 @@
+import productoServices from "../services/product_services";
+
 export async function hashControllers() {
   const hash = window.location.hash;
   if (hash.startsWith("#product-")) {
