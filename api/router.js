@@ -31,6 +31,7 @@ import error from "../backend/routes/nodeMailer/error.js";
 import costoEnvio from "../backend/routes/Envios/costoEnvio.js";
 import productoSimilar from "../backend/routes/product/productoSimilar.js";
 import { requireAdmin } from "../backend/routes/requireAdmin.js";
+import purchaseOrder from "../backend/routes/purchase/purchase.js";
 import path from "path";
 
 const router = Router();
@@ -86,6 +87,9 @@ const upload = () =>
 
 export const uploadSingle = upload(process.env.BUCKET_AWS).single("image");
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
+
+//compras
+router.get("/api/listaOrder", requireAdmin, purchaseOrder);
 
 // Rutas nodeMailer
 router.post("/api/sendMail", sendMail);

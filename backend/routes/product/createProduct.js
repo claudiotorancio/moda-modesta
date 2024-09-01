@@ -6,10 +6,10 @@ import Vista from "../../models/Vista.js";
 
 const createProduct = async (req, res) => {
   try {
-    // // Verificar si el usuario está autenticado
-    // if (!req.isAuthenticated()) {
-    //     return res.status(401).json({ error: 'Usuario no autenticado' });
-    // }
+    // Verificar si el usuario está autenticado
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: "Usuario no autenticado" });
+    }
 
     // Llamar a uploadSingle para manejar la carga de la imagen
     uploadSingle(req, res, async (error) => {

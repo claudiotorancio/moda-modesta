@@ -175,12 +175,9 @@ p.help a {
 }
 
 .card-lista {
-  margin: 2rem;
-}
-
-.table-container {
-  max-height: 10rem; /* Altura máxima del contenedor */
-  overflow-x: hidden; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
+  max-height: 25rem; /* Altura máxima del contenedor */
+  overflow-x: hidden;
+  margin: 1rem;
 }
 
 /* menu desplegable */
@@ -447,7 +444,6 @@ div.card-lista div.col-md-12 table {
   table-layout: fixed; /* Hace que todas las columnas tengan el mismo ancho */
   width: 100%; /* Asegura que la tabla ocupe todo el ancho disponible */
   border-collapse: collapse; /* Elimina el espacio entre bordes de celdas */
-  margin-bottom: 0;
 }
 
 div.card-lista div.col-md-12 th,
@@ -710,7 +706,7 @@ div.card-lista div.col-md-12 th {
 
   div.card-lista div.col-md-12 th,
   div.card-lista div.col-md-12 td {
-    font-size: 0.8rem;
+    font-size: 1rem;
     width: 60px;
     height: 30px;
   }

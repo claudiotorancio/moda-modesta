@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import Order from "../../models/Order.js";
 
 const sendMail = async (req, res) => {
   try {
@@ -99,6 +100,34 @@ const sendMail = async (req, res) => {
       subject: `Nueva compra de ${nombre}`,
       html: contentHTML,
     };
+
+    // Guardar la orden en la base de datos
+    const newOrder = new Order({
+      customer: {
+        name: nombre,
+        email: email,
+        phoneNumber: telefono,
+      },
+      items: productos.map((producto) => ({
+        productId: producto.id, // Asegúrate de que este campo esté presente y coincida con el nombre del campo en el esquema
+        name: producto.name,
+        price: producto.price,
+        quantity: producto.cantidad,
+        size: producto.size,
+        hash: `https://moda-modesta.vercel.app/#product-${producto.hash}`,
+      })),
+      totalAmount: total,
+      shippingCost: costoEnvio,
+      destination: {
+        province: provincia,
+        postalCode: codigoPostal,
+      },
+      checked: checked,
+    });
+
+    console.log(newOrder);
+
+    await newOrder.save();
 
     // Enviar el correo
     const info = await transporter.sendMail(mailOptions);

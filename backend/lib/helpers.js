@@ -1,23 +1,20 @@
-import { genSalt, hash as _hash, compare } from 'bcrypt';
+import { genSalt, hash as _hash, compare } from "bcrypt";
 
 const helpers = {};
 
-helpers.encryptPassword =  async (password) => {
-    const salt = await genSalt(10)
-    const hash = await _hash(password, salt)
-    return hash;
-}
+helpers.encryptPassword = async (password) => {
+  const salt = await genSalt(10);
+  const hash = await _hash(password, salt);
+  return hash;
+};
 
 helpers.matchPassword = async (password, savedPassword) => {
-
-    try {
-        return await compare(password, savedPassword)
-        
-    }catch(e) {
-        console.log(e)
-    }
-    
-}
+  try {
+    return await compare(password, savedPassword);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 /*helpers.encryptPassword('12345')
     .then((data) => {
@@ -27,4 +24,4 @@ helpers.matchPassword = async (password, savedPassword) => {
         console.error(error);
     });*/
 
-export default helpers
+export default helpers;

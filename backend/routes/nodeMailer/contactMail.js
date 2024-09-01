@@ -3,8 +3,14 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import Users from "../../models/User.js";
 import { baseURL } from "../../../frontend/services/product_services.js";
+import helpers from "../../lib/helpers.js";
+import crypto from "crypto";
 
 const suscribeMail = async (req, res) => {
+  const generateRandomPassword = (length = 12) => {
+    return crypto.randomBytes(length).toString("hex").slice(0, length);
+  };
+
   try {
     const { email, nombre } = req.body;
 
@@ -35,10 +41,12 @@ const suscribeMail = async (req, res) => {
       return res.status(400).send({ error: "Este correo ya está registrado." });
     }
 
+    const plainPassword = generateRandomPassword();
+    const hashedPassword = await helpers.encryptPassword(plainPassword);
     // Crear un nuevo usuario en la base de datos
     const newUser = new Users({
       username: email,
-      password: "Temporal", // Asegúrate de reemplazar esto con un proceso seguro para la creación de contraseñas
+      password: hashedPassword,
     });
 
     await newUser.save();
