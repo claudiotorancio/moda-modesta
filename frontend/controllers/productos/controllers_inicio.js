@@ -3,7 +3,7 @@ import { mostrarProducto } from "./ProductViewer.js";
 
 class ProductInit {
   constructor() {
-    this.setupPopstatesListener;
+    this.setupPopstateListener();
   }
 
   setupPopstateListener() {
@@ -17,6 +17,32 @@ class ProductInit {
       ) {
         modal.style.display = "none"; // Cerrar el modal
         window.location.hash = ""; // Limpiar el hash
+      }
+
+      // Manejar la navegación hacia atrás para las categorías
+      const opcion = window.location.hash.replace("#", "");
+      if (opcion.startsWith("product-")) {
+        // No hay acción específica aquí ya que se manejará en la función `hashControllers`
+      } else {
+        // Volver a cargar el estado de las categorías
+        this.cargarEstadoCategorias(opcion);
+      }
+    });
+  }
+
+  cargarEstadoCategorias(opcion) {
+    // Aquí puedes re-renderizar las categorías según el estado
+    document.querySelectorAll(".categoria").forEach((categoria) => {
+      const categoriaBtn = categoria.querySelector("a");
+      const id = categoriaBtn.getAttribute("id");
+
+      if (id === opcion) {
+        categoriaBtn.textContent = "Volver";
+        categoria.querySelector(".productos").classList.add("allProducts");
+        // Otros ajustes si es necesario
+      } else {
+        categoriaBtn.textContent = "Ver más";
+        categoria.querySelector(".productos").innerHTML = "";
       }
     });
   }
@@ -47,7 +73,7 @@ class ProductInit {
       try {
         mostrarProducto(name, price, imagePath, sizes, description, id);
         // Empujar el estado al historial para que "Atrás" funcione correctamente
-        history.pushState(null, null, `#product-${id}`);
+        history.pushState({ id }, "", `#product-${id}`);
       } catch (err) {
         console.log(err);
       }
