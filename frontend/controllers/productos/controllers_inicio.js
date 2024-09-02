@@ -9,12 +9,6 @@ class ProductInit {
   productoInicio(name, price, imagePath, description, sizes, id) {
     const card = document.createElement("div");
     const contenido = `
-    <div id="modal" class="modal">
-          <div class="modal-content">
-            <div class="productoModal" data-table></div>
-            <button class="modal-close">Volver</button>
-          </div>
-        </div>
       <div class="container mx-auto mt-4">
         <div class="img-card" >
           <img class="card-img-top" src="${imagePath}" alt="">
