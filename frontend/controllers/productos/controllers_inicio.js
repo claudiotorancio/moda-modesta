@@ -2,7 +2,24 @@ import productoServices from "../../services/product_services.js";
 import { mostrarProducto } from "./ProductViewer.js";
 
 class ProductInit {
-  constructor() {}
+  constructor() {
+    this.setupPopstatesListener;
+  }
+
+  setupPopstateListener() {
+    window.addEventListener("popstate", (event) => {
+      const modal = document.getElementById("modal");
+
+      // Si hay un hash y el modal está abierto
+      if (
+        window.location.hash.startsWith("#product-") &&
+        modal.style.display === "block"
+      ) {
+        modal.style.display = "none"; // Cerrar el modal
+        window.location.hash = ""; // Limpiar el hash
+      }
+    });
+  }
 
   productoInicio(name, price, imagePath, description, sizes, id) {
     const card = document.createElement("div");
@@ -29,6 +46,8 @@ class ProductInit {
 
       try {
         mostrarProducto(name, price, imagePath, sizes, description, id);
+        // Empujar el estado al historial para que "Atrás" funcione correctamente
+        history.pushState(null, null, `#product-${id}`);
       } catch (err) {
         console.log(err);
       }
@@ -142,6 +161,9 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
         // Cambiar el texto del enlace a 'Volver'
         categoriaBtn.textContent = "Volver";
 
+        // Agregar estado al historial
+        history.pushState({ opcion }, "", `#${opcion}`);
+
         enInicio = true; // Cambiar el estado para volver
 
         // Desplazar la página hacia arriba
@@ -154,14 +176,6 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
       console.error("Error al obtener los productos:", error);
       // Manejar el error de manera adecuada
     }
-  });
-});
-
-document.querySelectorAll(".ver-todos").forEach((enlace) => {
-  enlace.addEventListener("click", function (event) {
-    event.preventDefault();
-    const contenedorProductos = this.parentElement.nextElementSibling;
-    contenedorProductos.classList.toggle("ver-todos-activado");
   });
 });
 

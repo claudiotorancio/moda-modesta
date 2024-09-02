@@ -11,26 +11,28 @@ const baseModal = () => {
 
   const modalClose = document.querySelector(".modal-close");
 
-  // Función para cerrar el modal y retroceder en el historial
+  // Función para cerrar el modal sin afectar el historial
   const closeModal = () => {
     modal.style.display = "none";
-    window.history.back(); // Retrocede un estado en el historial
   };
 
   // Escuchar el evento de clic en el botón de cierre
-  modalClose.addEventListener("click", closeModal);
+  modalClose.addEventListener("click", () => {
+    closeModal();
+    window.history.back(); // Solo retrocede en el historial al cerrar con el botón
+  });
 
   // Cerrar el modal si se hace clic fuera del contenido del modal
   modal.addEventListener("click", (e) => {
     if (e.target === modal) {
-      closeModal();
+      closeModal(); // Cierra el modal, pero no afecta el historial
     }
   });
 
   // Escuchar el evento 'popstate' para cerrar el modal si se presiona "Atrás"
   window.addEventListener("popstate", (event) => {
     if (modal.style.display === "block") {
-      closeModal();
+      closeModal(); // Cierra el modal sin modificar el historial
     }
   });
 };
