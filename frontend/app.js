@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
   if (hash.startsWith("#product-")) {
     await hashControllers();
-    initializeCategoryControls();
   }
 
   cargarReseñas();
