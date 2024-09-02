@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Evento para crear un producto
   if (user) {
-    crearproducto.addEventListener("click", () => {
+    document.querySelector("[data-init]").addEventListener("click", (e) => {
       productForm.render();
     });
   } else {
