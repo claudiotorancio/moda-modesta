@@ -54,7 +54,7 @@
 
 .card-body {
   width: 15rem;
-  height: 10rem;
+  height: auto;
 }
 
 .card-body a {
@@ -80,7 +80,7 @@
 
 .allProducts {
   display: ruby;
-  max-width: 90%;
+  max-width: 100%;
   margin: auto;
 }
 
@@ -161,9 +161,6 @@ div.card:hover {
   div.card:hover {
     transform: none;
     box-shadow: none;
-  }
-  .productos div:nth-child(n + 4) {
-    display: none;
   }
 
   .productos.ver-todos-activado div {

@@ -19,7 +19,7 @@ const baseModal = () => {
   // Escuchar el evento de clic en el botón de cierre
   modalClose.addEventListener("click", () => {
     closeModal();
-    window.history.back(); // Solo retrocede en el historial al cerrar con el botón
+    // window.history.back(); // Solo retrocede en el historial al cerrar con el botón
   });
 
   // Cerrar el modal si se hace clic fuera del contenido del modal

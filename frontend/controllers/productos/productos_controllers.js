@@ -1,6 +1,8 @@
 import { ProductCard } from "../../controllers/productos/ProductCard.js"; // Asegúrate de ajustar la ruta según tu estructura de carpetas
 import productoServices from "../../services/product_services.js"; // Importa el servicio que obtiene los productos
 import { mostrarProducto } from "./ProductViewer.js";
+import Carrito from "../carrito/carrito.js";
+const carrito = new Carrito();
 
 export const controllers = {
   async renderProducts() {
@@ -99,6 +101,21 @@ export const controllers = {
     } catch (error) {
       console.error("Error al cargar productos similares:", error);
     }
+  },
+
+  async comprarProducto(name, price, imagePath, id, talleSeleccionado) {
+    // Manejar lógica para agregar al carrito
+    const producto = {
+      _id: id,
+      name: name,
+      price: price,
+      imagePath: imagePath,
+    };
+
+    carrito.agregarProducto({
+      product: producto,
+      size: talleSeleccionado,
+    });
   },
 };
 

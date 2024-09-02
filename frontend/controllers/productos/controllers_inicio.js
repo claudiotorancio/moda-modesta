@@ -1,5 +1,7 @@
 import productoServices from "../../services/product_services.js";
 import { mostrarProducto } from "./ProductViewer.js";
+import { controllers } from "./productos_controllers.js";
+import { modalControllers } from "../../modal/modal.js";
 
 class ProductInit {
   constructor() {}
@@ -7,15 +9,28 @@ class ProductInit {
   productoInicio(name, price, imagePath, description, sizes, id) {
     const card = document.createElement("div");
     const contenido = `
+    <div id="modal" class="modal">
+          <div class="modal-content">
+            <div class="productoModal" data-table></div>
+            <button class="modal-close">Volver</button>
+          </div>
+        </div>
       <div class="container mx-auto mt-4">
-        <div class="img-card">
+        <div class="img-card" >
           <img class="card-img-top" src="${imagePath}" alt="">
         </div>
         <div class="card-body">
-          <a href="#">ver producto</a>
-          <h3 class="card-title">${name}</h3>
-          <p class="card-text">${"$" + price}</p>
+         
+          <h3 class="card-text text-center text-muted mb-3">${name}</h3>
+          <p class="card-title text-center font-weight-bold ">${"$" + price}</p>
+          <div class="d-flex justify-content-center">
+      <a href="#" >Ver Producto</a>
+    </div>
+           <div>
+        <button type="button" class="btn btn-primary btn-block mt-2" data-compra>Comprar</button>
+      </div>
         </div>
+        
       </div>
     `;
 
@@ -32,6 +47,38 @@ class ProductInit {
       } catch (err) {
         console.log(err);
       }
+    });
+
+    card.querySelector("[data-compra]").addEventListener("click", () => {
+      modalControllers.baseModal();
+      const modal = document.getElementById("modal");
+      const containerTalles = modal.querySelector("[data-table");
+
+      containerTalles.innerHTML = `
+<label for="variation_1" class="form-label">Talles disponibles</label>
+      <select id="variation_1" class="form-select mb-3">
+        ${sizes
+          .map((size) => `<option value="${size}">${size}</option>`)
+          .join("")}
+      </select>
+      <div class="text-center">
+        <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>
+      </div>
+      `;
+
+      containerTalles
+        .querySelector("[data-carrito]")
+        .addEventListener("click", () => {
+          const talleSeleccionado =
+            document.getElementById("variation_1").value;
+          controllers.comprarProducto(
+            name,
+            price,
+            imagePath,
+            id,
+            talleSeleccionado
+          );
+        });
     });
 
     return card;

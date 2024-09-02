@@ -2,13 +2,11 @@
 
 import { controllers } from "./productos_controllers.js";
 import { modalControllers } from "../../modal/modal.js";
-import Carrito from "../carrito/carrito.js";
+// import Carrito from "../carrito/carrito.js";
 import {
   handleEnvioFormProduct,
   handleEnvioFormSubmission,
 } from "../carrito/envioHandlers.js";
-
-const carrito = new Carrito();
 
 export const mostrarProducto = async (
   name,
@@ -101,14 +99,6 @@ export const mostrarProducto = async (
 
   `;
 
-  // Manejar lógica para agregar al carrito
-  const producto = {
-    _id: id,
-    name: name,
-    price: price,
-    imagePath: imagePath,
-  };
-
   document
     .getElementById("calcular-envio")
     .addEventListener("click", handleEnvioFormProduct.bind(this));
@@ -117,11 +107,13 @@ export const mostrarProducto = async (
     .querySelector("[data-carrito]")
     .addEventListener("click", () => {
       const talleSeleccionado = document.getElementById("variation_1").value;
-
-      carrito.agregarProducto({
-        product: producto,
-        size: talleSeleccionado,
-      });
+      controllers.comprarProducto(
+        name,
+        price,
+        imagePath,
+        id,
+        talleSeleccionado
+      );
     });
 
   const compartirProducto = document.getElementById("compartir-producto");
