@@ -45,6 +45,46 @@
   cursor: pointer;
 }
 
+.modal-alerts {
+  display: none;
+  position: fixed;
+
+  backdrop-filter: blur(5px);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-alerts p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-content-alerts {
+  position: relative;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  max-width: 45%;
+  text-align: center;
+}
+
+/* Estilos para el botón "Cerrar" del modal */
+.modal-close-alerts {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height: auto;
+  padding: 5px;
+  opacity: 0.5;
+  border: 0;
+  z-index: 100;
+}
+
 .productoMmodal {
   width: var(--cardWidth);
   height: var(--cardHeight);
@@ -80,5 +120,45 @@
 
   label {
     display: inline;
+  }
+
+  .modal-alerts {
+    display: none;
+    position: fixed;
+
+    backdrop-filter: blur(5px);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-alerts p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .modal-content-alerts {
+    position: relative;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    max-width: 45%;
+    text-align: center;
+  }
+
+  /* Estilos para el botón "Cerrar" del modal */
+  .modal-close-alerts {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: auto;
+    padding: 5px;
+    opacity: 0.5;
+    border: 0;
+    z-index: 100;
   }
 }

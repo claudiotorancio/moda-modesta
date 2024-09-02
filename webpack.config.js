@@ -44,6 +44,19 @@ export default {
         useShortDoctype: true,
       },
     }),
+
+    new HtmlWebpackPlugin({
+      filename: "allProducts.html",
+      template: "./frontend/allProducts.html",
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true,
+      },
+    }),
     new HtmlWebpackPlugin({
       filename: "success.html",
       template: "./frontend/success.html",

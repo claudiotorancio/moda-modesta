@@ -330,19 +330,23 @@ p.help a {
 
 /*boton volver al principio*/
 
-.btn-volver {
+/* styles.css o tu archivo CSS */
+#volverBtn {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: none;
-  background: #000;
-  color: #fff;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 50%;
-  font-size: 24px;
+  bottom: 10px; /* Ajusta la distancia desde el borde inferior */
+  right: 10px; /* Ajusta la distancia desde el borde derecho */
+  background-color: #007bff; /* Ajusta según sea necesario */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: none; /* Inicialmente oculto */
+  z-index: 1000; /* Asegúrate de que esté sobre otros elementos */
+}
+
+#volverBtn.show {
+  display: block; /* Mostrar cuando sea necesario */
 }
 
 .btn-volver:hover {
@@ -453,6 +457,10 @@ div.card-lista div.col-md-12 td {
 
 div.card-lista div.col-md-12 th {
   background-color: #f2f2f2; /* Color de fondo para las cabeceras */
+}
+
+.hidden {
+  display: none;
 }
 
 ul {
