@@ -142,11 +142,6 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
         // Cambiar el texto del enlace a 'Volver'
         categoriaBtn.textContent = "Volver";
 
-        // Escuchar el evento 'popstate' para cerrar el estadp
-        window.addEventListener("popstate", (event) => {
-          window.location.replace("/index.html");
-        });
-
         enInicio = true; // Cambiar el estado para volver
 
         // Desplazar la página hacia arriba
