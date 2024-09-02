@@ -2,50 +2,7 @@ import productoServices from "../../services/product_services.js";
 import { mostrarProducto } from "./ProductViewer.js";
 
 class ProductInit {
-  constructor() {
-    this.setupPopstateListener();
-  }
-
-  setupPopstateListener() {
-    window.addEventListener("popstate", (event) => {
-      const modal = document.getElementById("modal");
-
-      // Si hay un hash y el modal está abierto
-      if (
-        window.location.hash.startsWith("#product-") &&
-        modal.style.display === "block"
-      ) {
-        modal.style.display = "none"; // Cerrar el modal
-        window.location.hash = ""; // Limpiar el hash
-      }
-
-      // Manejar la navegación hacia atrás para las categorías
-      const opcion = window.location.hash.replace("#", "");
-      if (opcion.startsWith("product-")) {
-        // No hay acción específica aquí ya que se manejará en la función `hashControllers`
-      } else {
-        // Volver a cargar el estado de las categorías
-        this.cargarEstadoCategorias(opcion);
-      }
-    });
-  }
-
-  cargarEstadoCategorias(opcion) {
-    // Aquí puedes re-renderizar las categorías según el estado
-    document.querySelectorAll(".categoria").forEach((categoria) => {
-      const categoriaBtn = categoria.querySelector("a");
-      const id = categoriaBtn.getAttribute("id");
-
-      if (id === opcion) {
-        categoriaBtn.textContent = "Volver";
-        categoria.querySelector(".productos").classList.add("allProducts");
-        // Otros ajustes si es necesario
-      } else {
-        categoriaBtn.textContent = "Ver más";
-        categoria.querySelector(".productos").innerHTML = "";
-      }
-    });
-  }
+  constructor() {}
 
   productoInicio(name, price, imagePath, description, sizes, id) {
     const card = document.createElement("div");
@@ -72,8 +29,6 @@ class ProductInit {
 
       try {
         mostrarProducto(name, price, imagePath, sizes, description, id);
-        // Empujar el estado al historial para que "Atrás" funcione correctamente
-        history.pushState({ id }, "", `#product-${id}`);
       } catch (err) {
         console.log(err);
       }
@@ -187,8 +142,10 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
         // Cambiar el texto del enlace a 'Volver'
         categoriaBtn.textContent = "Volver";
 
-        // Agregar estado al historial
-        history.pushState({ opcion }, "", `#${opcion}`);
+        // Escuchar el evento 'popstate' para cerrar el estadp
+        window.addEventListener("popstate", (event) => {
+          window.location.replace("/index.html");
+        });
 
         enInicio = true; // Cambiar el estado para volver
 
@@ -202,6 +159,14 @@ document.querySelectorAll(".categoria").forEach((categoria) => {
       console.error("Error al obtener los productos:", error);
       // Manejar el error de manera adecuada
     }
+  });
+});
+
+document.querySelectorAll(".ver-todos").forEach((enlace) => {
+  enlace.addEventListener("click", function (event) {
+    event.preventDefault();
+    const contenedorProductos = this.parentElement.nextElementSibling;
+    contenedorProductos.classList.toggle("ver-todos-activado");
   });
 });
 
