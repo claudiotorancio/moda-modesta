@@ -111,7 +111,7 @@ export class ProductForm {
     const price = parseFloat(document.querySelector("[data-price]").value);
     const description = document.querySelector("[data-description]").value;
     const section = document.getElementById("miMenuDesplegable").value;
-
+    const images = document.querySelector('input[type="file"]').files;
     const isFeatured = document.getElementById("isFeatured").checked;
 
     // Verifica que los campos obligatorios no estén vacíos
@@ -119,7 +119,7 @@ export class ProductForm {
       console.error("Por favor completa todos los campos requeridos.");
       return;
     }
-    console.log(name, price, description, section, isFeatured);
+    console.log(name, price, description, section, images, isFeatured);
 
     // Captura todos los checkboxes seleccionados
     const selectedSizes = Array.from(
@@ -136,8 +136,6 @@ export class ProductForm {
 
     // Agrega los talles seleccionados al FormData
     selectedSizes.forEach((size) => productData.append("sizes[]", size));
-    const images = document.querySelector('input[type="file"]').files;
-    console.log(images);
 
     // Envía la solicitud
     try {
