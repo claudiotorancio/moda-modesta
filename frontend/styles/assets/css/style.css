@@ -463,6 +463,12 @@ div.card-lista div.col-md-12 th {
   display: none;
 }
 
+.carousel-item img {
+  width: 100%;
+  height: 400px; /* Ajusta la altura según tus necesidades */
+  object-fit: cover;
+}
+
 ul {
   line-height: 5rem;
   list-style-type: none; /* Quita los puntos de la lista */

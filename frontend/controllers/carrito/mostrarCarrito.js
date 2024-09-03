@@ -86,7 +86,7 @@ export function mostrarCarrito() {
                   <td>ENVIO
                   <div>
                     <button id="toggle-envio-form" class="btn btn-link">
-                      <i class="fa-solid fa-chevron-down"></i>
+                      <i class="fa-solid fa-chevron-down continuos-move"></i>
                     </button>
                     </div>
                   </td>
@@ -137,6 +137,21 @@ export function mostrarCarrito() {
     `;
 
     summaryDetails.insertAdjacentHTML("beforeend", carritoContent);
+
+    document
+      .getElementById("toggle-envio-form")
+      .addEventListener("click", function () {
+        const icon = this.querySelector("i");
+
+        // Alternar entre las clases 'icon-up' y 'icon-down'
+        if (icon.classList.contains("icon-down")) {
+          icon.classList.remove("icon-down");
+          icon.classList.add("icon-up");
+        } else {
+          icon.classList.remove("icon-up");
+          icon.classList.add("icon-down");
+        }
+      });
 
     // Attach event listeners
     document

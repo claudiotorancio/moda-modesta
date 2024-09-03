@@ -32,7 +32,7 @@ export class ProductForm {
       <div class="card-form">
         <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
           <div class="form-group">
-            <input class="form-control p-2" type="file" name="image" data-imageUrl required autofocus>
+            <input class="form-control p-2" type="file" name="image" data-imageUrls multiple required autofocus>
           </div>
           <div class="form-group">
        <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
@@ -110,7 +110,7 @@ export class ProductForm {
     const price = document.querySelector("[data-price]").value;
     const description = document.querySelector("[data-description]").value;
     const section = document.getElementById("miMenuDesplegable").value;
-    const image = document.querySelector("[data-imageUrl]").files[0];
+    const images = document.querySelector("[data-imageUrls]").files;
     const isFeatured = document.getElementById("isFeatured").checked;
 
     // Captura todos los checkboxes seleccionados
@@ -123,8 +123,12 @@ export class ProductForm {
     productData.append("price", price);
     productData.append("description", description);
     productData.append("section", section);
-    productData.append("image", image);
     productData.append("isFeatured", isFeatured);
+
+    // Agrega cada archivo de imagen al FormData
+    for (const image of images) {
+      productData.append("images[]", image);
+    }
 
     // Agrega los talles seleccionados al FormData
     selectedSizes.forEach((size) => productData.append("sizes[]", size));

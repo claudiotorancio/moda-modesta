@@ -26,9 +26,29 @@ export const mostrarProducto = async (
     <img class="logo_cabecera" src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png" alt="Moda Modesta Logo" >
     <h5 class="text-muted" style="margin-bottom: 0;">Tienda Virtual Sta Rosa - La Pampa</h5>
   </div>
-  <div class="col-md-6 mx-auto">
-    <img class="card-img-top" src="${imagePath}" alt="${name}" style="width:80%; border-radius: 0.5rem;">
-  </div>
+ <div class="col-md-6 mx-auto">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="${imagePath}" class="d-block w-100" alt="Imagen 1">
+        </div>
+        <div class="carousel-item">
+          <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png" class="d-block w-100" alt="Imagen 2">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+      </button>
+    </div>
 </div>
 
 <div class="row mt-4">
@@ -78,18 +98,19 @@ export const mostrarProducto = async (
                      
 
       <div class="mt-4">
-        <h5>Productos Similares</h5>
-        <button id="toggle-similares" class="btn btn-link">
-          <i class="fa-solid fa-chevron-down"></i>
-        </button>
-        <div id="similares-Container" class="collapse">
-          <div id="productos-similares" class="d-flex justify-content-center align-items-center gap-3"></div>
-        </div>
-      </div>
+  <h5>Productos Similares</h5>
+  <button id="toggle-similares" class="btn btn-link">
+    <i class="fa-solid fa-chevron-down icon-down continuos-move"></i>
+  </button>
+  <div id="similares-Container" class="collapse">
+    <div id="productos-similares" class="d-flex justify-content-center align-items-center gap-3"></div>
+  </div>
+</div>
+
 
       <div class="mt-4">
-        <em style="font-size: 10pt; font-family: Arial, sans-serif; font-style: italic;">
-          Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.
+        <!-- <em style="font-size: 10pt; font-family: Arial, sans-serif; font-style: italic;">
+          Se recomienda lavar la prenda a mano con jabón blanco o en lavarropas usando modo delicado sin centrifugado fuerte, utilizando productos que no contengan lavandina ni derivados que puedan dañarla.--!>
         </em>
       </div>
     </div>
@@ -98,6 +119,21 @@ export const mostrarProducto = async (
 
 
   `;
+
+  document
+    .getElementById("toggle-similares")
+    .addEventListener("click", function () {
+      const icon = this.querySelector("i");
+
+      // Alternar entre las clases 'icon-up' y 'icon-down'
+      if (icon.classList.contains("icon-down")) {
+        icon.classList.remove("icon-down");
+        icon.classList.add("icon-up");
+      } else {
+        icon.classList.remove("icon-up");
+        icon.classList.add("icon-down");
+      }
+    });
 
   document
     .getElementById("calcular-envio")

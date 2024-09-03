@@ -1,28 +1,44 @@
 import mongoose from "mongoose";
 import MONGODB_URI from "../../config.js";
 import Product from "../../models/Product.js";
-import { uploadSingle } from "../../../api/router.js";
+import { uploadMultiple } from "../../../api/router.js"; // Importa el nuevo middleware
 import Vista from "../../models/Vista.js";
 
 const createProduct = async (req, res) => {
   try {
-    // Verificar si el usuario está autenticado
+    // // Verificar si el usuario está autenticado
     if (!req.isAuthenticated()) {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
 
-    // Llamar a uploadSingle para manejar la carga de la imagen
-    uploadSingle(req, res, async (error) => {
+    // Llamar a uploadMultiple para manejar la carga de múltiples imágenes
+    uploadMultiple(req, res, async (error) => {
       if (error) {
-        console.error("Error al cargar la foto en S3:", error);
-        return res.status(500).json({ error: "Error al cargar la foto en S3" });
+        console.error("Error al cargar las fotos en S3:", error);
+        return res
+          .status(500)
+          .json({ error: "Error al cargar las fotos en S3" });
       }
 
       // Valores del formulario
       const { name, price, description, section, isFeatured, sizes } = req.body;
-      const imagePath = req.file.location;
+
+      const imagePaths = req.file.location; // Captura todas las ubicaciones de las imágenes
       const user_id = req.user._id;
-      console.log(req.body);
+
+      if (
+        !name === undefined ||
+        !price === undefined ||
+        !description === undefined ||
+        !section === undefined ||
+        !isFeatured === undefined ||
+        !imagePaths === undefined
+      ) {
+        return res
+          .status(400)
+          .send({ error: "Todos los campos son requeridos." });
+      }
+
       // Crear los datos del producto
       const createProductData = {
         name,
@@ -31,7 +47,7 @@ const createProduct = async (req, res) => {
         section,
         isFeatured,
         sizes: Array.isArray(sizes) ? sizes : [sizes],
-        imagePath,
+        imagePaths, // Almacena los paths de las imágenes
         user_id,
       };
 
@@ -48,10 +64,9 @@ const createProduct = async (req, res) => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
-
-      await newProduct.save();
-      res.json({ message: "Producto guardado" });
     });
+    await newProduct.save();
+    res.json({ message: "Producto guardado" });
   } catch (error) {
     console.error("Error al crear el producto:", error);
     res.status(500).json({ error: "Error al crear el producto" });

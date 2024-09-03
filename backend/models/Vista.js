@@ -1,5 +1,3 @@
-//modelo para productos
-
 import { Schema, model } from "mongoose";
 
 const VistaSchema = new Schema(
@@ -7,7 +5,7 @@ const VistaSchema = new Schema(
     role: { type: String },
     name: { type: String },
     price: { type: Number },
-    imagePath: { type: String },
+    imagePath: [{ type: String }], // Cambiado a un array de strings
     description: { type: String },
     section: { type: String },
     isFeatured: { type: Boolean, default: false },
