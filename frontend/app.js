@@ -1,5 +1,7 @@
 // Importar estilos y módulos necesarios
 import "./styles/assets/css/base/reset.css";
+import "./styles/assets/css/base/base.css";
+
 import "./styles/assets/css/base/variables.css";
 import "./styles/assets/css/style.css";
 import "./styles/assets/css/productos.css";
