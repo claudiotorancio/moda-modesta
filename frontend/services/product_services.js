@@ -24,6 +24,7 @@ class ProductService {
   }
 
   async crearProducto(product, images) {
+    console.log(product, images);
     try {
       // Crear una instancia de FormData
       const formData = new FormData();

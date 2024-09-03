@@ -32,7 +32,7 @@ export class ProductForm {
       <div class="card-form">
         <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
           <div class="form-group">
-            <input class="form-control p-2" type="files" name="images" data-imageUrls multiple required autofocus>
+            <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
           </div>
           <div class="form-group">
        <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
@@ -119,7 +119,7 @@ export class ProductForm {
       console.error("Por favor completa todos los campos requeridos.");
       return;
     }
-    console.log(name, price, description, section, images, isFeatured);
+    console.log(name, price, description, section, isFeatured);
 
     // Captura todos los checkboxes seleccionados
     const selectedSizes = Array.from(
@@ -137,6 +137,7 @@ export class ProductForm {
     // Agrega los talles seleccionados al FormData
     selectedSizes.forEach((size) => productData.append("sizes[]", size));
     const images = document.querySelector('input[type="file"]').files;
+    console.log(images);
 
     // Envía la solicitud
     try {
