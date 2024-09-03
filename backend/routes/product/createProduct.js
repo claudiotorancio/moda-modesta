@@ -15,7 +15,7 @@ const createProduct = async (req, res) => {
       }
 
       // Asegúrate de que req.files esté disponible
-      const imagePaths = req.files.map((file) => file.location);
+      const imagePaths = req.files.location;
       const { name, price, description, section, isFeatured, sizes } = req.body;
       console.log(imagePaths);
       console.log(req.body);
