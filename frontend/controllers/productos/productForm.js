@@ -33,7 +33,7 @@ export class ProductForm {
         <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
           <div class="form-group">
             <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
-            <p>agregar 2 imagenes</p>
+            <p>agregar 2 imagenes a la vez</p>
           </div>
           <div class="form-group">
        <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>

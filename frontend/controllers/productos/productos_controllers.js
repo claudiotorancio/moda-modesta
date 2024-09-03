@@ -83,7 +83,7 @@ export const controllers = {
         });
       });
 
-      contenedorSimilares.addEventListener("click", (e) => {
+      contenedorSimilares.addEventListener("click", async (e) => {
         const target = e.target.closest(".producto-similar");
         if (target) {
           const id = target.dataset.id;
@@ -95,7 +95,7 @@ export const controllers = {
 
           window.location.hash = `product-${id}`;
 
-          mostrarProducto(name, price, imagePath, sizes, description, id);
+          await mostrarProducto(name, price, imagePath, sizes, description, id);
         }
       });
     } catch (error) {
