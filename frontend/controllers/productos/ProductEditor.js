@@ -48,7 +48,7 @@ export class ProductEditor {
             <div class="form-group">
               <input type="checkbox" id="image1Check" class="form-check-input" name="image1Check" data-check-image1>
               <label for="image1Check" class="form-check-label">Actualizar Imagen 1</label>
-              <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath1" data-image1 disabled>
+              <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath1" data-image1 required disabled>
               <input type="hidden" class="oldImagePath" name="oldImagePath1" value="${
                 imagePath[0]
               }" data-oldPath1>
@@ -57,7 +57,7 @@ export class ProductEditor {
             <div class="form-group">
               <input type="checkbox" id="image2Check" class="form-check-input" name="image2Check" data-check-image2>
               <label for="image2Check" class="form-check-label">Actualizar Imagen 2</label>
-              <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath2" data-image2 disabled>
+              <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath2" data-image2 required disabled>
               <input type="hidden" class="oldImagePath" name="oldImagePath2" value="${
                 imagePath[1]
               }" data-oldPath2>
