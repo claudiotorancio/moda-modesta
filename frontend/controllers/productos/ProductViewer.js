@@ -21,18 +21,19 @@ export const mostrarProducto = async (
   const mostrarProducto = modal.querySelector("[data-table]");
 
   mostrarProducto.innerHTML = `
-   <div class="row">
+  <div class="row">
   <div class="col-md-6 mx-auto d-flex align-items-center">
-    <img class="logo_cabecera" src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png" alt="Moda Modesta Logo" >
+    <img class="logo_cabecera" src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png" alt="Moda Modesta Logo">
     <h5 class="text-muted" style="margin-bottom: 0;">Tienda Virtual Sta Rosa - La Pampa</h5>
   </div>
- <div class="col-md-6 mx-auto">
+  <div class="col-md-6 mx-auto">
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
       </div>
       <div class="carousel-inner">
+        <!-- Asegúrate de que imagePath tenga al menos dos elementos -->
         <div class="carousel-item active">
           <img src="${imagePath[0]}" class="d-block w-100" alt="Imagen 1">
         </div>
@@ -49,6 +50,7 @@ export const mostrarProducto = async (
         <span class="visually-hidden">Siguiente</span>
       </button>
     </div>
+  </div>
 </div>
 
 <div class="row mt-4">

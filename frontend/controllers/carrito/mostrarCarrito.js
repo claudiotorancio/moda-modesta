@@ -50,7 +50,7 @@ export function mostrarCarrito() {
               <td class="summary-img-wrap">
                 <img class="card-img-top" alt="${item.name}" title="${
               item.name
-            }" src="${item.imagePath}">
+            }" src="${item.imagePath[0]}">
               </td>
               <td>${item.name} × ${item.cantidad} <br> <small>${
               item.size
