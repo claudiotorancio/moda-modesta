@@ -159,45 +159,54 @@ export class ProductEditor {
 
   setupFormSubmitHandler(id) {
     const form = this.productoEdicion.querySelector("[data-forma]");
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const imagePath1 = document.querySelector("[data-image1]").files[0];
       const imagePath2 = document.querySelector("[data-image2]").files[0];
 
-      // // Validar si ambas imágenes están siendo reemplazadas
-      // if (imagePath1 && imagePath2) {
-      //   alert(
-      //     "Solo puedes reemplazar una imagen. Si necesitas reemplazar ambas, debes crear un nuevo producto."
-      //   );
-      //   return;
-      // }
+      // Validar si ambas imágenes están siendo reemplazadas
+      if (imagePath1 && imagePath2) {
+        alert(
+          "Solo puedes reemplazar una imagen. Si necesitas reemplazar ambas, debes crear un nuevo producto."
+        );
+        return;
+      }
 
-      // Resto del código para manejar la actualización de una imagen
+      // Obtener otros campos del formulario
       const name = document.querySelector("[data-nombre]").value;
       const price = document.querySelector("[data-precio]").value;
       const description = document.querySelector("[data-description]").value;
-      const oldImagePath = document.querySelector("[data-oldPath]").value;
       const isFeatured = document.querySelector("#isFeatured").checked;
-
       const selectedSizes = Array.from(
         document.querySelectorAll('input[name="sizes"]:checked')
       ).map((checkbox) => checkbox.value);
 
       const dataEdit = new FormData();
 
+      // Adjuntar la imagen correspondiente al FormData
       if (imagePath1) {
         dataEdit.append("imagePath", imagePath1);
+        dataEdit.append(
+          "oldImagePath",
+          document.querySelector("[data-oldPath1]").value
+        );
       } else if (imagePath2) {
         dataEdit.append("imagePath", imagePath2);
+        dataEdit.append(
+          "oldImagePath",
+          document.querySelector("[data-oldPath2]").value
+        );
       }
 
+      // Adjuntar los demás datos del formulario
       dataEdit.append("name", name);
       dataEdit.append("price", price);
       dataEdit.append("description", description);
-      dataEdit.append("oldImagePath", oldImagePath);
       dataEdit.append("isFeatured", isFeatured);
 
+      // Adjuntar los talles seleccionados
       selectedSizes.forEach((size) => dataEdit.append("sizes[]", size));
 
       try {
