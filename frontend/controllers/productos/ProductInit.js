@@ -3,37 +3,53 @@ import { mostrarProducto } from "./ProductViewer.js";
 import { controllers } from "./productos_controllers.js";
 import { modalControllers } from "../../modal/modal.js";
 
-class ProductInit {
+export class ProductInit {
   constructor() {}
 
   productoInicio(name, price, imagePath, description, sizes, id) {
     const card = document.createElement("div");
     const contenido = `
       <div class="container mx-auto mt-4">
-        <div class="img-card" >
-          <img class="card-img-top" src="${imagePath[0]}" alt="">
+        <div class="img-card">
+          <img class="card-img-top" src="${
+            imagePath[0]
+          }" alt="imagen del producto">
+          <!-- Ícono de lupa -->
+        <div class="overlay-icon">
+          <i class="fas fa-search-plus"></i>
+        </div>
         </div>
         <div class="card-body">
-         
           <h3 class="card-text text-center text-muted mb-3">${name}</h3>
-          <p class="card-title text-center font-weight-bold ">${"$" + price}</p>
+          <p class="card-title text-center font-weight-bold">${"$" + price}</p>
           <div class="d-flex justify-content-center">
-      <a href="#" >Ver Producto</a>
-    </div>
-           <div>
-        <button type="button" class="btn btn-primary btn-block mt-2" data-compra>Comprar</button>
-      </div>
+            <a href="#">Ver Producto</a>
+          </div>
+          <div>
+            <button type="button" class="btn btn-primary btn-block mt-2" data-compra>Comprar</button>
+          </div>
         </div>
-        
       </div>
     `;
 
     card.innerHTML = contenido;
     card.classList.add("card");
 
+    card.querySelector(".img-card img").addEventListener("click", async () => {
+      try {
+        modalControllers.baseModal();
+        const modal = document.getElementById("modal");
+        const zoomImage = modal.querySelector("[data-table]");
+        zoomImage.innerHTML = `
+           <img class="card-img-top" src="${imagePath[0]}" alt="imagen del producto">
+          `;
+      } catch (error) {
+        console.log(error);
+      }
+    });
+
     card.querySelector("a").addEventListener("click", async (e) => {
       e.preventDefault();
-      // Actualiza la URL con un hash que incluye el ID del producto
       window.location.hash = `product-${id}`;
 
       try {
@@ -46,18 +62,18 @@ class ProductInit {
     card.querySelector("[data-compra]").addEventListener("click", () => {
       modalControllers.baseModal();
       const modal = document.getElementById("modal");
-      const containerTalles = modal.querySelector("[data-table");
+      const containerTalles = modal.querySelector("[data-table]");
 
       containerTalles.innerHTML = `
-<label for="variation_1" class="form-label">Talles disponibles</label>
-      <select id="variation_1" class="form-select mb-3">
-        ${sizes
-          .map((size) => `<option value="${size}">${size}</option>`)
-          .join("")}
-      </select>
-      <div class="text-center">
-        <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>
-      </div>
+        <label for="variation_1" class="form-label">Talles disponibles</label>
+        <select id="variation_1" class="form-select mb-3">
+          ${sizes
+            .map((size) => `<option value="${size}">${size}</option>`)
+            .join("")}
+        </select>
+        <div class="text-center">
+          <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>
+        </div>
       `;
 
       containerTalles
@@ -80,12 +96,11 @@ class ProductInit {
 
   async renderInit() {
     try {
-      // Renderizar productos destacados
       const productosDestacados = await productoServices.destacadosProducto();
       const contenedorDestacados = document.querySelector("[data-destacados]");
 
       if (Array.isArray(productosDestacados)) {
-        contenedorDestacados.innerHTML = ""; // Limpiar contenedor de destacados
+        contenedorDestacados.innerHTML = "";
         for (const producto of productosDestacados) {
           const card = this.productoInicio(
             producto.name,
@@ -101,14 +116,12 @@ class ProductInit {
         console.error("Error: No se recibieron productos destacados.");
       }
 
-      // Renderizar otras categorías
       const listaProductos = await productoServices.renderInicio();
       const products = listaProductos;
 
-      // Limpiar todos los contenedores de categorías antes de renderizar
       document.querySelectorAll(".productos").forEach((contenedor) => {
         if (contenedor !== contenedorDestacados) {
-          contenedor.innerHTML = ""; // Limpiar contenido existente
+          contenedor.innerHTML = "";
         }
       });
 
@@ -121,8 +134,6 @@ class ProductInit {
           producto.sizes,
           producto._id
         );
-
-        // Renderizar el producto y adjuntar al contenedor adecuado
         document
           .querySelector(`[data-${producto.section}]`)
           .appendChild(productCard);

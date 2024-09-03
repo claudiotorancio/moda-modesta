@@ -1,4 +1,4 @@
-export function initializeCategoryControls() {
+export async function initializeCategoryControls() {
   const volverBtn = document.createElement("button");
   volverBtn.id = "volverBtn";
   volverBtn.textContent = "Volver";
@@ -65,7 +65,7 @@ export function initializeCategoryControls() {
   });
 
   document.querySelectorAll(".ver-todos").forEach((enlace) => {
-    enlace.addEventListener("click", function (event) {
+    enlace.addEventListener("click", async function (event) {
       event.preventDefault();
       const contenedorProductos = this.parentElement.nextElementSibling;
       contenedorProductos.classList.toggle("ver-todos-activado");
@@ -73,7 +73,7 @@ export function initializeCategoryControls() {
   });
 
   // Agregar un evento de clic al botón "Volver"
-  volverBtn.addEventListener("click", () => {
+  volverBtn.addEventListener("click", async () => {
     history.pushState({}, "", "index.html");
     window.location.href = "index.html";
   });

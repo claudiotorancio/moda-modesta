@@ -89,8 +89,6 @@ export const controllers = {
           const sizes = JSON.parse(target.dataset.sizes);
           const description = target.dataset.description;
 
-          console.log("Imagenes:", imagePath);
-
           window.location.hash = `product-${id}`;
           try {
             await mostrarProducto(

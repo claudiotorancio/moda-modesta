@@ -144,6 +144,17 @@ div.card:hover {
   margin: 0;
 }
 
+.overlay-icon {
+  position: absolute;
+  top: 50%;
+  left: 85%;
+  transform: translate(-50%, -50%);
+  font-size: 1.7rem; /* Tamaño del ícono */
+  color: white; /* Color del ícono */
+  opacity: 0.8; /* Transparencia del ícono */
+  pointer-events: none; /* Hace que el ícono no interfiera con los clics */
+}
+
 @media (min-width: 320px) and (max-width: 768px) {
   .card {
     transition: none;
@@ -221,5 +232,16 @@ div.card:hover {
 
   .icon-down {
     animation: moveDown 0.3s forwards;
+  }
+
+  .overlay-icon {
+    position: absolute;
+    top: 50%;
+    left: 82%;
+    transform: translate(-50%, -50%);
+    font-size: 1.3rem; /* Tamaño del ícono */
+    color: white; /* Color del ícono */
+    opacity: 0.8; /* Transparencia del ícono */
+    pointer-events: none; /* Hace que el ícono no interfiera con los clics */
   }
 }
