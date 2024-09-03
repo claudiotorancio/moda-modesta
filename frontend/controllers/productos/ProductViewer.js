@@ -37,7 +37,7 @@ export const mostrarProducto = async (
           <img src="${imagePath[0]}" class="d-block w-100" alt="Imagen 1">
         </div>
         <div class="carousel-item">
-          <img src="${imagePath[1]}g" class="d-block w-100" alt="Imagen 2">
+          <img src="${imagePath[1]}" class="d-block w-100" alt="Imagen 2">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
