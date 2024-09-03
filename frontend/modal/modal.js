@@ -2,40 +2,60 @@ import { LoginControllers } from "../controllers/registro/login_controllers.js";
 import mailServices from "../services/mail_services.js";
 import productoServices from "../services/product_services.js";
 
-const baseModal = () => {
+const baseModal = async () => {
   const modal = document.getElementById("modal");
-  modal.style.display = "block";
 
-  // Añadir un nuevo estado al historial cuando se abre el modal
-  window.history.pushState({ modalOpen: true }, "");
+  // Ejemplo de operación asíncrona antes de mostrar el modal
+  try {
+    // Supongamos que estás cargando datos de una API o realizando alguna tarea asíncrona
+    await fetchData(); // Ejemplo de función asíncrona
 
-  const modalClose = document.querySelector(".modal-close");
+    modal.style.display = "block";
 
-  // Función para cerrar el modal sin afectar el historial
-  const closeModal = () => {
-    modal.style.display = "none";
-  };
+    // Añadir un nuevo estado al historial cuando se abre el modal
+    window.history.pushState({ modalOpen: true }, "");
 
-  // Escuchar el evento de clic en el botón de cierre
-  modalClose.addEventListener("click", () => {
-    closeModal();
-    // window.history.back(); // Solo retrocede en el historial al cerrar con el botón
-  });
+    const modalClose = document.querySelector(".modal-close");
 
-  // Cerrar el modal si se hace clic fuera del contenido del modal
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      closeModal(); // Cierra el modal, pero no afecta el historial
-    }
-  });
+    // Función para cerrar el modal sin afectar el historial
+    const closeModal = () => {
+      modal.style.display = "none";
+    };
 
-  // Escuchar el evento 'popstate' para cerrar el modal si se presiona "Atrás"
-  window.addEventListener("popstate", (event) => {
-    if (modal.style.display === "block") {
-      closeModal(); // Cierra el modal sin modificar el historial
-    }
-  });
+    // Escuchar el evento de clic en el botón de cierre
+    modalClose.addEventListener("click", () => {
+      closeModal();
+      // window.history.back(); // Solo retrocede en el historial al cerrar con el botón
+    });
+
+    // Cerrar el modal si se hace clic fuera del contenido del modal
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeModal(); // Cierra el modal, pero no afecta el historial
+      }
+    });
+
+    // Escuchar el evento 'popstate' para cerrar el modal si se presiona "Atrás"
+    window.addEventListener("popstate", (event) => {
+      if (modal.style.display === "block") {
+        closeModal(); // Cierra el modal sin modificar el historial
+      }
+    });
+  } catch (error) {
+    console.error("Error al abrir el modal:", error);
+  }
 };
+
+// Ejemplo de función asíncrona que podrías usar en baseModal
+async function fetchData() {
+  // Simulación de una operación asíncrona, como una llamada a una API
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log("Datos cargados");
+      resolve();
+    }, 1000);
+  });
+}
 
 const modalEliminar = (id) => {
   baseModal();
