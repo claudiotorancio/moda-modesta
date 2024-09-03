@@ -23,16 +23,32 @@ class ProductService {
     return await this.fetchJSON(`${this.baseURL}/api/renderProducts`);
   }
 
-  async crearProducto(product) {
+  async crearProducto(product, images) {
     try {
+      // Crear una instancia de FormData
+      const formData = new FormData();
+
+      // Agregar los campos del producto al FormData
+      for (const key in product) {
+        formData.append(key, product[key]);
+      }
+
+      // Agregar las imágenes al FormData
+      for (const image of images) {
+        formData.append("images", image);
+      }
+
       const response = await fetch(`${this.baseURL}/api/createProduct`, {
         method: "POST",
-        body: product,
+        body: formData,
       });
+
       if (!response.ok) {
         throw new Error("No fue posible crear un producto");
       }
-      return response.body;
+
+      // La respuesta puede ser en formato JSON, usa .json() para obtener los datos
+      return await response.json();
     } catch (error) {
       console.error(error);
     }
