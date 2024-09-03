@@ -34,10 +34,10 @@ export const mostrarProducto = async (
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="${imagePath}" class="d-block w-100" alt="Imagen 1">
+          <img src="${imagePath[0]}" class="d-block w-100" alt="Imagen 1">
         </div>
         <div class="carousel-item">
-          <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png" class="d-block w-100" alt="Imagen 2">
+          <img src="${imagePath[1]}g" class="d-block w-100" alt="Imagen 2">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

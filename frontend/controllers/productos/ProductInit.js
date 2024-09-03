@@ -11,7 +11,7 @@ class ProductInit {
     const contenido = `
       <div class="container mx-auto mt-4">
         <div class="img-card" >
-          <img class="card-img-top" src="${imagePath}" alt="">
+          <img class="card-img-top" src="${imagePath[0]}" alt="">
         </div>
         <div class="card-body">
          
