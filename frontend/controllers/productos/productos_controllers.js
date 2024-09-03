@@ -55,12 +55,12 @@ export const controllers = {
               producto._id
             }" data-name="${producto.name}" data-price="${
           producto.price
-        }" data-image="${producto.imagePath}" data-sizes='${JSON.stringify(
+        }" data-image="${producto.imagePath[0]}" data-sizes='${JSON.stringify(
           producto.sizes
         )}' data-description="${producto.description}">
               <a href="#">
               
-                <img src="${producto.imagePath}" alt="${
+                <img src="${producto.imagePath[0]}" alt="${
           producto.name
         }" class="img-thumbnail">
                 <p>${producto.name}</p>
