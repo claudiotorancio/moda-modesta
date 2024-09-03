@@ -57,6 +57,10 @@
   height: auto;
 }
 
+div.card-header h3 {
+  font-size: 1.5rem;
+}
+
 .card-body a {
   text-decoration: underline;
 }
