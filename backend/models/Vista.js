@@ -5,7 +5,7 @@ const VistaSchema = new Schema(
     role: { type: String },
     name: { type: String },
     price: { type: Number },
-    imagePath: [{ type: String }], // Cambiado a un array de strings
+    imagePath: [String], // Cambiado a un array de strings
     description: { type: String },
     section: { type: String },
     isFeatured: { type: Boolean, default: false },

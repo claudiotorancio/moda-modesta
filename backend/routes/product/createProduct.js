@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import MONGODB_URI from "../../config.js";
 import Product from "../../models/Product.js";
-import { uploadMultiple } from "../../../api/router.js"; // Asegúrate de que uploadMultiple maneje múltiples imágenes
+import { uploadSingle } from "../../../api/router.js"; // Asegúrate de que uploadMultiple maneje múltiples imágenes
 import Vista from "../../models/Vista.js";
 
 const createProduct = async (req, res) => {
@@ -10,7 +10,7 @@ const createProduct = async (req, res) => {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
 
-    uploadMultiple(req, res, async (error) => {
+    uploadSingle(req, res, async (error) => {
       if (error) {
         console.error("Error al cargar las fotos en S3:", error);
         return res
@@ -19,7 +19,9 @@ const createProduct = async (req, res) => {
       }
 
       // Asegúrate de que req.files esté disponible
-      const imagePaths = req.files.map((file) => file.location);
+      const imagePaths = req.files
+        ? req.files.map((file) => file.location)
+        : [];
       const { name, price, description, section, isFeatured, sizes } = req.body;
       // console.log(imagePaths);
       // console.log(req.body);
@@ -44,7 +46,7 @@ const createProduct = async (req, res) => {
         section,
         isFeatured,
         sizes: Array.isArray(sizes) ? sizes : [sizes],
-        imagePaths,
+        imagePath: imagePaths,
         user_id: req.user._id,
       };
 

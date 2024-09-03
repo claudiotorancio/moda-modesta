@@ -85,12 +85,9 @@ const upload = () =>
     }),
   });
 
-export const uploadSingle = upload(process.env.BUCKET_AWS).single("image");
+export const uploadSingle = upload(process.env.BUCKET_AWS).array("images");
 // Exportar `uploadMultiple` para múltiples imágenes
-export const uploadMultiple = upload(process.env.BUCKET_AWS).array(
-  "images",
-  10
-); // 10 es el límite de imágenes, puedes ajustarlo según tus necesidades
+export const uploadMultiple = upload(process.env.BUCKET_AWS).array("images"); // 10 es el límite de imágenes, puedes ajustarlo según tus necesidades
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
 //compras
@@ -120,7 +117,7 @@ router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/renderInicio", renderInicio);
 router.get("/api/renderProducts", requireAdmin, renderProducts);
-router.post("/api/createProduct", uploadMultiple, createProduct);
+router.post("/api/createProduct", createProduct);
 router.delete("/api/deleteProduct/:id", deleteProduct);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put("/api/updateProduct/:id", uploadSingleUpdate, updateProduct);
