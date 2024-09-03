@@ -6,12 +6,6 @@ import Vista from "../../models/Vista.js";
 
 const createProduct = async (req, res) => {
   try {
-    // Verificar si el usuario está autenticado
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
-
-    // Llamar a uploadMultiple para manejar la carga de múltiples imágenes
     uploadMultiple(req, res, async (error) => {
       if (error) {
         console.error("Error al cargar las fotos en S3:", error);
@@ -20,18 +14,17 @@ const createProduct = async (req, res) => {
           .json({ error: "Error al cargar las fotos en S3" });
       }
 
-      // Valores del formulario
+      // Asegúrate de que req.files esté disponible
+      const imagePaths = req.files.map((file) => file.location);
       const { name, price, description, section, isFeatured, sizes } = req.body;
-      const imagePaths = req.files.map((file) => file.location); // Captura todas las ubicaciones de las imágenes
-      const user_id = req.user._id;
-
-      // Verificar que todos los campos requeridos estén presentes
+      console.log(imagePaths);
+      console.log(req.body);
       if (
         !name ||
         !price ||
         !description ||
         !section ||
-        isFeatured === undefined ||
+        !isFeatured ||
         !imagePaths.length
       ) {
         return res
@@ -47,8 +40,8 @@ const createProduct = async (req, res) => {
         section,
         isFeatured,
         sizes: Array.isArray(sizes) ? sizes : [sizes],
-        imagePaths, // Almacena los paths de las imágenes
-        user_id,
+        imagePaths,
+        user_id: req.user._id,
       };
 
       // Crear un nuevo producto
@@ -59,7 +52,12 @@ const createProduct = async (req, res) => {
         newProduct = new Product(createProductData);
       }
 
-      // Guardar el producto
+      // Conectar a la base de datos y guardar el producto
+      await mongoose.connect(MONGODB_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+
       await newProduct.save();
       res.json({ message: "Producto guardado" });
     });

@@ -120,7 +120,7 @@ router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/renderInicio", renderInicio);
 router.get("/api/renderProducts", requireAdmin, renderProducts);
-router.post("/api/createProduct", createProduct);
+router.post("/api/createProduct", uploadMultiple, createProduct);
 router.delete("/api/deleteProduct/:id", deleteProduct);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put("/api/updateProduct/:id", uploadSingleUpdate, updateProduct);
