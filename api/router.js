@@ -85,7 +85,7 @@ const upload = () =>
     }),
   });
 
-export const uploadSingle = upload(process.env.BUCKET_AWS).array("images");
+export const uploadSingle = upload(process.env.BUCKET_AWS).array("images", 3);
 // Exportar `uploadMultiple` para múltiples imágenes
 export const uploadMultiple = upload(process.env.BUCKET_AWS).array("images"); // 10 es el límite de imágenes, puedes ajustarlo según tus necesidades
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
