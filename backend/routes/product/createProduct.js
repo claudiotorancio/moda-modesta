@@ -23,8 +23,8 @@ const createProduct = async (req, res) => {
         ? req.files.map((file) => file.location)
         : [];
       const { name, price, description, section, isFeatured, sizes } = req.body;
-      console.log(imagePaths);
-      console.log(req.body);
+      console.log("Image Paths:", imagePaths);
+      console.log("Request Body:", req.body);
       if (
         !name ||
         !price ||
@@ -46,7 +46,7 @@ const createProduct = async (req, res) => {
         section,
         isFeatured,
         sizes: Array.isArray(sizes) ? sizes : [sizes],
-        imagePath: imagePaths,
+        imagePaths,
         user_id: req.user._id,
       };
 

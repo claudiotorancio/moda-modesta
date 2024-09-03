@@ -106,38 +106,32 @@ export class ProductForm {
 
   // Recopilar y enviar los datos
   async handleSubmit() {
-    // Captura los valores del formulario
     const name = document.querySelector("[data-name]").value;
     const price = parseFloat(document.querySelector("[data-price]").value);
     const description = document.querySelector("[data-description]").value;
     const section = document.getElementById("miMenuDesplegable").value;
-    const images = document.querySelector('input[type="file"]').files;
+    const images = document.querySelector("[data-imageUrls]").files;
     const isFeatured = document.getElementById("isFeatured").checked;
 
-    // Verifica que los campos obligatorios no estén vacíos
-    if (!name || isNaN(price) || !description || !section || !images.length) {
-      console.error("Por favor completa todos los campos requeridos.");
-      return;
-    }
-
-    // Captura todos los checkboxes seleccionados
     const selectedSizes = Array.from(
       document.querySelectorAll('input[name="sizes"]:checked')
     ).map((checkbox) => checkbox.value);
 
-    // Crea un nuevo FormData
     const productData = new FormData();
     productData.append("name", name);
     productData.append("price", price);
     productData.append("description", description);
     productData.append("section", section);
     productData.append("isFeatured", isFeatured);
-    productData.append("images", images);
+
+    // Agrega cada archivo de imagen al FormData
+    for (const image of images) {
+      productData.append("images[]", image);
+    }
 
     // Agrega los talles seleccionados al FormData
     selectedSizes.forEach((size) => productData.append("sizes[]", size));
 
-    // Envía la solicitud
     try {
       await productoServices.crearProducto(productData);
       modalControllers.modalProductoCreado();
