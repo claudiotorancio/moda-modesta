@@ -56,6 +56,8 @@ const updateProduct = async (req, res) => {
       imagePath: imagePath.length ? imagePath : undefined,
     };
 
+    console.log(updateData);
+
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
