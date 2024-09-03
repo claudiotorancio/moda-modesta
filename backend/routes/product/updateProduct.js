@@ -22,23 +22,42 @@ const updateProduct = async (req, res) => {
     const { name, price, description, oldImagePath, sizes, isFeatured } =
       req.body;
 
-    // Inicializamos imagePath como oldImagePath si no se sube una nueva imagen
+    // Inicializar imagePath como array si es necesario
     let imagePath = Array.isArray(oldImagePath) ? oldImagePath : [oldImagePath];
 
-    if (req.files && req.files.length > 0) {
-      imagePath = req.files.map((file) => file.location);
+    // Reemplazar imagen si se proporciona una nueva imagen
+    if (req.file) {
+      // Eliminar imagen antigua si existe
+      if (oldImagePath) {
+        oldImagePath.forEach(async (path) => {
+          const nombreDeArchivo = path.split("/").pop();
+          const params = {
+            Bucket: process.env.BUCKET_AWS,
+            Key: nombreDeArchivo,
+          };
+
+          s3.deleteObject(params, (err, data) => {
+            if (err) {
+              console.error("Error al eliminar la imagen en S3:", err);
+            } else {
+              console.log("Imagen anterior eliminada con éxito en S3:", data);
+            }
+          });
+        });
+      }
+
+      // Agregar la nueva imagen a imagePath
+      imagePath = req.files ? req.files.map((file) => file.location) : [];
     }
 
-    const updateProduct = {
+    const updateData = {
       name,
       price,
       description,
       sizes: Array.isArray(sizes) ? sizes : [sizes],
       isFeatured,
-      imagePath,
+      imagePath: imagePath.length ? imagePath : undefined,
     };
-
-    console.log(updateProduct);
 
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
@@ -46,31 +65,12 @@ const updateProduct = async (req, res) => {
     });
 
     const model = esAdministrador(req.user) ? Vista : Product;
-    const result = await model.findByIdAndUpdate(id, updateProduct, {
-      new: true,
-    });
-
-    if (req.files && oldImagePath && oldImagePath.length > 0) {
-      for (const oldPath of oldImagePath) {
-        const nombreDeArchivo = oldPath.split("/").pop();
-        const params = {
-          Bucket: process.env.BUCKET_AWS,
-          Key: nombreDeArchivo,
-        };
-
-        s3.deleteObject(params, (err, data) => {
-          if (err) {
-            console.error("Error al eliminar la imagen en S3:", err);
-          } else {
-            console.log("Imagen anterior eliminada con éxito en S3:", data);
-          }
-        });
-      }
-    }
+    const result = await model.findByIdAndUpdate(id, updateData, { new: true });
 
     if (!result) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
+
     res.json({ message: "Producto actualizado", updatedProduct: result });
   } catch (error) {
     console.error(error);
@@ -83,6 +83,7 @@ const esAdministrador = (user) => {
 };
 
 export default updateProduct;
+t;
 
 /*import mongoose from "mongoose";
 import MONGODB_URI from "../../config.js";
