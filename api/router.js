@@ -120,7 +120,7 @@ router.get("/api/renderProducts", requireAdmin, renderProducts);
 router.post("/api/createProduct", uploadSingle, createProduct);
 router.delete("/api/deleteProduct/:id", deleteProduct);
 router.get("/api/detailsProduct/:id", detailsProduct);
-router.put("/api/updateProduct/:id", uploadSingleUpdate, updateProduct);
+router.put("/api/updateProduct/:id", uploadSingle, updateProduct);
 router.get("/api/productoSimilar/:id", productoSimilar);
 
 export default router;

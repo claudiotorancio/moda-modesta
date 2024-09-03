@@ -17,77 +17,68 @@ const updateProduct = async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
-    // Parametros del formulario
+
     const { id } = req.params;
     const { name, price, description, oldImagePath, sizes, isFeatured } =
       req.body;
 
-    // Verificar si se proporciona una nueva imagen en el formulario de edición
-    let imagePath = oldImagePath;
-    if (req.file) {
-      imagePath = req.file.location;
+    // Inicializamos imagePath como oldImagePath si no se sube una nueva imagen
+    let imagePath = Array.isArray(oldImagePath) ? oldImagePath : [oldImagePath];
+
+    if (req.files && req.files.length > 0) {
+      imagePath = req.files.map((file) => file.location);
     }
 
-    // Construir el objeto de actualización del producto
     const updateProduct = {
       name,
       price,
       description,
       sizes: Array.isArray(sizes) ? sizes : [sizes],
       isFeatured,
+      imagePath,
     };
 
-    // Agregar la imagen al objeto de actualización solo si se proporciona una nueva imagen
-    if (req.file) {
-      updateProduct.imagePath = req.file.location;
-    }
+    console.log(updateProduct);
 
-    // Conectar a la base de datos
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
-    let result;
-    if (req.isAuthenticated() && req.user.role === "admin") {
-      result = await Vista.findByIdAndUpdate(id, updateProduct, { new: true });
-    } else {
-      result = await Product.findByIdAndUpdate(id, updateProduct, {
-        new: true,
-      });
+    const model = esAdministrador(req.user) ? Vista : Product;
+    const result = await model.findByIdAndUpdate(id, updateProduct, {
+      new: true,
+    });
+
+    if (req.files && oldImagePath && oldImagePath.length > 0) {
+      for (const oldPath of oldImagePath) {
+        const nombreDeArchivo = oldPath.split("/").pop();
+        const params = {
+          Bucket: process.env.BUCKET_AWS,
+          Key: nombreDeArchivo,
+        };
+
+        s3.deleteObject(params, (err, data) => {
+          if (err) {
+            console.error("Error al eliminar la imagen en S3:", err);
+          } else {
+            console.log("Imagen anterior eliminada con éxito en S3:", data);
+          }
+        });
+      }
     }
 
-    // Borrar oldImage en S3 solo si se proporciona una nueva imagen
-    if (req.file) {
-      const nombreDeArchivo = oldImagePath.split("/").pop();
-      const params = {
-        Bucket: process.env.BUCKET_AWS,
-        Key: nombreDeArchivo,
-      };
-
-      s3.deleteObject(params, (err, data) => {
-        if (err) {
-          console.error("Error al eliminar la imagen en S3:", err);
-        } else {
-          console.log("Imagen anterior eliminada con éxito en S3:", data);
-        }
-      });
-    }
-
-    // Manejar el resultado de la actualización
     if (!result) {
-      res.status(404).json({ message: "Product not found" });
-    } else {
-      res.json({ message: "Product updated", updatedProduct: result });
+      return res.status(404).json({ message: "Producto no encontrado" });
     }
+    res.json({ message: "Producto actualizado", updatedProduct: result });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
 const esAdministrador = (user) => {
-  // Implementa aquí la lógica para determinar si el usuario es administrador
   return user.role === "admin";
 };
 
