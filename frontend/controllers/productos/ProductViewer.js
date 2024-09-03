@@ -27,7 +27,7 @@ export const mostrarProducto = async (
     <h5 class="text-muted" style="margin-bottom: 0;">Tienda Virtual Sta Rosa - La Pampa</h5>
   </div>
   <div class="col-md-6 mx-auto">
-    <img class="card-img-top" src="${imagePath}" alt="${name}" style="width: 100%; border-radius: 0.5rem;">
+    <img class="card-img-top" src="${imagePath}" alt="${name}" style="width:60%; border-radius: 0.5rem;">
   </div>
 </div>
 

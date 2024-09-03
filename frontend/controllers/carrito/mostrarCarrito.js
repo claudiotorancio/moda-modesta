@@ -163,6 +163,6 @@ export function mostrarCarrito() {
       .querySelector("#finalize-purchase")
       .addEventListener("click", handleFinalizePurchase.bind(this));
   } else {
-    summaryDetails.innerHTML = "<div>Carrito vacío</div>";
+    summaryDetails.innerHTML = `<div style="font-size: 1.2rem">Carrito vacío</div>`;
   }
 }
