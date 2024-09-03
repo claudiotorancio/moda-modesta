@@ -28,23 +28,20 @@ const updateProduct = async (req, res) => {
     // Reemplazar imagen si se proporciona una nueva imagen
     if (req.file) {
       // Eliminar imagen antigua si existe
-      if (oldImagePath) {
-        oldImagePath.forEach(async (path) => {
-          const nombreDeArchivo = path.split("/").pop();
-          const params = {
-            Bucket: process.env.BUCKET_AWS,
-            Key: nombreDeArchivo,
-          };
 
-          s3.deleteObject(params, (err, data) => {
-            if (err) {
-              console.error("Error al eliminar la imagen en S3:", err);
-            } else {
-              console.log("Imagen anterior eliminada con éxito en S3:", data);
-            }
-          });
-        });
-      }
+      // borrar oldImage en s3
+      const nombreDeArchivo = oldImagePath.split("/").pop();
+      const params = {
+        Bucket: process.env.BUCKET_AWS,
+        Key: nombreDeArchivo,
+      };
+      s3.deleteObject(params, (err, data) => {
+        if (err) {
+          console.error("Error al eliminar la imagen en S3:", err);
+        } else {
+          console.log("Imagen anterior eliminada con éxito en S3:", data);
+        }
+      });
 
       // Agregar la nueva imagen a imagePath
       imagePath = req.files ? req.files.map((file) => file.location) : [];
