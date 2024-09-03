@@ -18,7 +18,7 @@ export class ProductCard {
     card.innerHTML = `
       <div class="container mx-auto mt-4">
         <div class="img-card">
-          <img class="card-img-top" src="${this.imagePath}" alt="">
+          <img class="card-img-top" src="${this.imagePath[0]}" alt="">
         </div>
         <div class="card-body">
           <a href="#" data-veradmin>ver producto</a>

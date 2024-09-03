@@ -49,7 +49,7 @@ const updateProduct = async (req, res) => {
     });
 
     let result;
-    if (req.user.role === "admin") {
+    if (req.isAuthenticated() && req.user.role === "admin") {
       result = await Vista.findByIdAndUpdate(id, updateProduct, { new: true });
     } else {
       result = await Product.findByIdAndUpdate(id, updateProduct, {

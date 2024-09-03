@@ -25,20 +25,52 @@ export class ProductEditor {
 
     this.productoEdicion.innerHTML = `
       <div class="text-center">
-        <div class="card-header">
-          <img class="img-card-top mx-auto" style="width: 10rem;" src="${imagePath}" alt="">
+  <div class="card-header d-flex justify-content-center">
+    <div class="me-4">
+      <img class="img-card-top" style="width: 10rem;" src="${
+        imagePath[0]
+      }" alt="Imagen 1">
+      <p class="text-muted">Imagen 1</p>
+    </div>
+    <div>
+      <img class="img-card-top" style="width: 10rem;" src="${
+        imagePath[1]
+      }" alt="Imagen 2">
+      <p class="text-muted">Imagen 2</p>
+    </div>
+  </div>
+</div>
+
+     
           <form action="/api/updateProduct/${id}" id="form" enctype="multipart/form-data" method="POST" data-forma>
             <p class="parrafo">Producto a editar</p>
+            
             <div class="form-group">
-              <input class="form-control p-2" placeholder="imageUrl" type="file" name="imagePath" data-image autofocus>
-              <input type="hidden" class="oldImagePath" name="oldImagePath" value="${imagePath}" data-oldPath>
+              <input type="checkbox" id="image1Check" class="form-check-input" name="image1Check" data-check-image1>
+              <label for="image1Check" class="form-check-label">Actualizar Imagen 1</label>
+              <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath1" data-image1 disabled>
+              <input type="hidden" class="oldImagePath" name="oldImagePath1" value="${
+                imagePath[0]
+              }" data-oldPath1>
             </div>
+            
+            <div class="form-group">
+              <input type="checkbox" id="image2Check" class="form-check-input" name="image2Check" data-check-image2>
+              <label for="image2Check" class="form-check-label">Actualizar Imagen 2</label>
+              <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath2" data-image2 disabled>
+              <input type="hidden" class="oldImagePath" name="oldImagePath2" value="${
+                imagePath[1]
+              }" data-oldPath2>
+            </div>
+            
             <div class="form-group">
               <input class="form-control mt-3 p-2" placeholder="nombre" type="text" value="${name}" required data-nombre>
             </div>
+            
             <div class="form-group">
               <input class="form-control mt-3 mb-3 p-2" placeholder="precio" type="text" value="${price}" required data-precio>
             </div>
+            
             <div class="form-group">
               <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" required data-description>${description}</textarea>
             </div>
@@ -61,6 +93,8 @@ export class ProductEditor {
       </div>
     `;
     this.productoEdicion.classList.add("modalVisor");
+
+    this.setupImageCheckListeners();
   }
 
   renderSizeOptions(selectedSizes = []) {
@@ -88,15 +122,61 @@ export class ProductEditor {
       .join("");
   }
 
+  setupImageCheckListeners() {
+    const image1Check = document.querySelector("[data-check-image1]");
+    const image2Check = document.querySelector("[data-check-image2]");
+    const image1Input = document.querySelector("[data-image1]");
+    const image2Input = document.querySelector("[data-image2]");
+
+    // Deshabilitar inputs inicialmente
+    image1Input.disabled = !image1Check.checked;
+    image2Input.disabled = !image2Check.checked;
+
+    image1Check.addEventListener("change", () => {
+      if (image1Check.checked && image2Check.checked) {
+        alert(
+          "Solo puedes reemplazar una imagen. Para reemplazar ambas, crea un nuevo producto."
+        );
+        image1Check.checked = false;
+        image1Input.disabled = true;
+      } else {
+        image1Input.disabled = !image1Check.checked;
+      }
+    });
+
+    image2Check.addEventListener("change", () => {
+      if (image2Check.checked && image1Check.checked) {
+        alert(
+          "Solo puedes reemplazar una imagen. Para reemplazar ambas, crea un nuevo producto y si es neceario elimina este."
+        );
+        image2Check.checked = false;
+        image2Input.disabled = true;
+      } else {
+        image2Input.disabled = !image2Check.checked;
+      }
+    });
+  }
+
   setupFormSubmitHandler(id) {
     const form = this.productoEdicion.querySelector("[data-forma]");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      const imagePath1 = document.querySelector("[data-image1]").files[0];
+      const imagePath2 = document.querySelector("[data-image2]").files[0];
+
+      // // Validar si ambas imágenes están siendo reemplazadas
+      // if (imagePath1 && imagePath2) {
+      //   alert(
+      //     "Solo puedes reemplazar una imagen. Si necesitas reemplazar ambas, debes crear un nuevo producto."
+      //   );
+      //   return;
+      // }
+
+      // Resto del código para manejar la actualización de una imagen
       const name = document.querySelector("[data-nombre]").value;
       const price = document.querySelector("[data-precio]").value;
       const description = document.querySelector("[data-description]").value;
-      const imagePath = document.querySelector("[data-image]").files[0];
       const oldImagePath = document.querySelector("[data-oldPath]").value;
       const isFeatured = document.querySelector("#isFeatured").checked;
 
@@ -105,9 +185,13 @@ export class ProductEditor {
       ).map((checkbox) => checkbox.value);
 
       const dataEdit = new FormData();
-      if (imagePath) {
-        dataEdit.append("imagePath", imagePath);
+
+      if (imagePath1) {
+        dataEdit.append("imagePath", imagePath1);
+      } else if (imagePath2) {
+        dataEdit.append("imagePath", imagePath2);
       }
+
       dataEdit.append("name", name);
       dataEdit.append("price", price);
       dataEdit.append("description", description);
