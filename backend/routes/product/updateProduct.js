@@ -83,7 +83,6 @@ const esAdministrador = (user) => {
 };
 
 export default updateProduct;
-t;
 
 /*import mongoose from "mongoose";
 import MONGODB_URI from "../../config.js";
