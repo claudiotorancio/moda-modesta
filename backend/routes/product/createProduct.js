@@ -64,9 +64,10 @@ const createProduct = async (req, res) => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
+
+      await newProduct.save();
+      res.json({ message: "Producto guardado" });
     });
-    await newProduct.save();
-    res.json({ message: "Producto guardado" });
   } catch (error) {
     console.error("Error al crear el producto:", error);
     res.status(500).json({ error: "Error al crear el producto" });
