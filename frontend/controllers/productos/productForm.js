@@ -32,7 +32,7 @@ export class ProductForm {
       <div class="card-form">
         <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
           <div class="form-group">
-            <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
+            <input class="form-control p-2" type="file" name="image" data-imageUrls multiple required autofocus>
           </div>
           <div class="form-group">
        <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
@@ -106,40 +106,38 @@ export class ProductForm {
 
   // Recopilar y enviar los datos
   async handleSubmit() {
-    document
-      .querySelector("form")
-      .addEventListener("submit", async function (event) {
-        event.preventDefault();
+    const name = document.querySelector("[data-name]").value;
+    const price = parseFloat(document.querySelector("[data-price]").value);
+    const description = document.querySelector("[data-description]").value;
+    const section = document.getElementById("miMenuDesplegable").value;
+    const images = document.querySelector("[data-imageUrl]").files[0];
+    const isFeatured = document.getElementById("isFeatured").checked;
 
-        // Obtén los datos del formulario
-        const productData = {
-          name: document.querySelector('input[name="name"]').value,
-          price: parseFloat(
-            document.querySelector('input[name="price"]').value
-          ),
-          description: document.querySelector('textarea[name="description"]')
-            .value,
-          section: document.querySelector('input[name="section"]').value,
-          isFeatured: document.querySelector('input[name="isFeatured"]')
-            .checked,
-          sizes: Array.from(
-            document.querySelectorAll('input[name="sizes[]"]:checked')
-          ).map((el) => el.value),
-        };
+    // Captura todos los checkboxes seleccionados
+    const selectedSizes = Array.from(
+      document.querySelectorAll('input[name="sizes"]:checked')
+    ).map((checkbox) => checkbox.value);
 
-        // Obtén los archivos de imagen
-        const images = document.querySelector('input[type="file"]').files;
+    const productData = new FormData();
+    productData.append("name", name);
+    productData.append("price", price);
+    productData.append("description", description);
+    productData.append("section", section);
+    productData.append("isFeatured", isFeatured);
 
-        try {
-          const result = await productService.crearProducto(
-            productData,
-            images
-          );
-          console.log("Producto creado:", result);
-        } catch (error) {
-          console.error("Error al crear el producto:", error);
-        }
-      });
+    for (const image of images) {
+      productData.append("images[]", image);
+    }
+    // Agrega los talles seleccionados al FormData
+    selectedSizes.forEach((size) => productData.append("sizes[]", size));
+
+    try {
+      await productoServices.crearProducto(productData);
+      console.log(productData);
+      modalControllers.modalProductoCreado();
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 

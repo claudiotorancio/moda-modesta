@@ -25,7 +25,8 @@ const createProduct = async (req, res) => {
 
       const imagePaths = req.file.location; // Captura todas las ubicaciones de las imágenes
       const user_id = req.user._id;
-
+      console.log(req.body);
+      console.log(imagePaths);
       if (
         !name === undefined ||
         !price === undefined ||
