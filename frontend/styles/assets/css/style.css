@@ -17,6 +17,7 @@ body {
 
 header {
   width: 100%;
+  height: 10rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -545,7 +546,6 @@ ul li a {
   }
 
   .header {
-    background-color: #fff;
     height: 10vh;
     display: flex;
     justify-content: space-between;

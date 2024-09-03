@@ -6,6 +6,7 @@ import "./styles/assets/css/base/variables.css";
 import "./styles/assets/css/style.css";
 import "./styles/assets/css/productos.css";
 import "./styles/assets/css/components/inputs.css";
+import "./styles/assets/css/components/header.css";
 
 import "./styles/assets/css/components/button.css";
 import "./styles/assets/css/components/modal.css";
