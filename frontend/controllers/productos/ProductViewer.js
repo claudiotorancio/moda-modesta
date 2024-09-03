@@ -137,6 +137,25 @@ export const mostrarProducto = async (
       }
     });
 
+  const toggleButton = document.getElementById("toggle-similares");
+  const similaresContainer = document.getElementById("similares-Container");
+
+  toggleButton.addEventListener("click", async () => {
+    similaresContainer.classList.toggle("show");
+
+    const icon = toggleButton.querySelector("i");
+    icon.classList.toggle("fa-chevron-down");
+    icon.classList.toggle("fa-chevron-up");
+
+    if (similaresContainer.classList.contains("show")) {
+      try {
+        await controllers.cargarProductosSimilares(id);
+      } catch (error) {
+        console.error("Error al cargar productos similares:", error);
+      }
+    }
+  });
+
   document
     .getElementById("calcular-envio")
     .addEventListener("click", handleEnvioFormProduct.bind(this));
@@ -168,25 +187,6 @@ export const mostrarProducto = async (
       alert(
         "La función de compartir no es compatible con tu navegador. Por favor, comparte el enlace manualmente."
       );
-    }
-  });
-
-  const toggleButton = document.getElementById("toggle-similares");
-  const similaresContainer = document.getElementById("similares-Container");
-
-  toggleButton.addEventListener("click", async () => {
-    similaresContainer.classList.toggle("show");
-
-    const icon = toggleButton.querySelector("i");
-    icon.classList.toggle("fa-chevron-down");
-    icon.classList.toggle("fa-chevron-up");
-
-    if (similaresContainer.classList.contains("show")) {
-      try {
-        await controllers.cargarProductosSimilares(id);
-      } catch (error) {
-        console.error("Error al cargar productos similares:", error);
-      }
     }
   });
 };

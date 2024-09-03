@@ -1,7 +1,8 @@
-import { ProductCard } from "../../controllers/productos/ProductCard.js"; // Asegúrate de ajustar la ruta según tu estructura de carpetas
+import { ProductCard } from "../../controllers/productos/ProductCard.js"; // Ajusta la ruta según tu estructura
 import productoServices from "../../services/product_services.js"; // Importa el servicio que obtiene los productos
 import { mostrarProducto } from "./ProductViewer.js";
 import Carrito from "../carrito/carrito.js";
+
 const carrito = new Carrito();
 
 export const controllers = {
@@ -20,7 +21,7 @@ export const controllers = {
           producto._id,
           producto.isFeatured
         );
-        // Renderizar el producto y adjuntar al contenedor adecuado
+        // Renderiza el producto y lo agrega al contenedor adecuado
         const container = document.querySelector(`[data-${producto.section}]`);
         if (container) {
           container.appendChild(productCard.render());
@@ -31,7 +32,7 @@ export const controllers = {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error al renderizar productos:", error);
     }
   },
 
@@ -50,25 +51,60 @@ export const controllers = {
 
       contenedorSimilares.innerHTML = ""; // Limpiar contenedor antes de agregar nuevos productos
       similares.forEach((producto) => {
+        const imagenesHTML = producto.imagePath
+          .map(
+            (img) =>
+              `<img src="${img}" alt="${producto.name}" class="img-thumbnail">`
+          )
+          .join("");
+
         const productoHTML = `
-            <div class="producto-similar" data-id="${
-              producto._id
-            }" data-name="${producto.name}" data-price="${
-          producto.price
-        }" data-image="${producto.imagePath[0]}" data-sizes='${JSON.stringify(
-          producto.sizes
-        )}' data-description="${producto.description}">
-              <a href="#">
-              
-                <img src="${producto.imagePath[0]}" alt="${
+          <div class="producto-similar" data-id="${producto._id}" data-name="${
+          producto.name
+        }" data-price="${producto.price}" data-image='${JSON.stringify(
+          producto.imagePath
+        )}' data-sizes='${JSON.stringify(producto.sizes)}' data-description="${
+          producto.description
+        }">
+            <a href="#">
+              <img src="${producto.imagePath[0]}" alt="${
           producto.name
         }" class="img-thumbnail">
-                <p>${producto.name}</p>
-                <p>$ ${producto.price}</p>
-              </a>
-            </div>
-          `;
+              <p>${producto.name}</p>
+              <p>$ ${producto.price}</p>
+            </a>
+          </div>
+        `;
+
         contenedorSimilares.innerHTML += productoHTML;
+      });
+
+      contenedorSimilares.addEventListener("click", async (e) => {
+        const target = e.target.closest(".producto-similar");
+        if (target) {
+          const id = target.dataset.id;
+          const name = target.dataset.name;
+          const price = target.dataset.price;
+          const imagePath = JSON.parse(target.dataset.image); // Asegúrate de que esto sea un array
+          const sizes = JSON.parse(target.dataset.sizes);
+          const description = target.dataset.description;
+
+          console.log("Imagenes:", imagePath);
+
+          window.location.hash = `product-${id}`;
+          try {
+            await mostrarProducto(
+              name,
+              price,
+              imagePath,
+              sizes,
+              description,
+              id
+            );
+          } catch (error) {
+            console.error("Error al mostrar producto:", error);
+          }
+        }
       });
 
       // Selecciona todos los enlaces dentro del contenedor
@@ -81,22 +117,6 @@ export const controllers = {
           // Actualiza la URL con un hash que incluye el ID del producto
           window.location.hash = `product-${id}`;
         });
-      });
-
-      contenedorSimilares.addEventListener("click", async (e) => {
-        const target = e.target.closest(".producto-similar");
-        if (target) {
-          const id = target.dataset.id;
-          const name = target.dataset.name;
-          const price = target.dataset.price;
-          const imagePath = [target.dataset.image];
-          const sizes = JSON.parse(target.dataset.sizes);
-          const description = target.dataset.description;
-
-          window.location.hash = `product-${id}`;
-
-          await mostrarProducto(name, price, imagePath, sizes, description, id);
-        }
       });
     } catch (error) {
       console.error("Error al cargar productos similares:", error);

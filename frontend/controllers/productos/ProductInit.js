@@ -31,13 +31,13 @@ class ProductInit {
     card.innerHTML = contenido;
     card.classList.add("card");
 
-    card.querySelector("a").addEventListener("click", (e) => {
+    card.querySelector("a").addEventListener("click", async (e) => {
       e.preventDefault();
       // Actualiza la URL con un hash que incluye el ID del producto
       window.location.hash = `product-${id}`;
 
       try {
-        mostrarProducto(name, price, imagePath, sizes, description, id);
+        await mostrarProducto(name, price, imagePath, sizes, description, id);
       } catch (err) {
         console.log(err);
       }
