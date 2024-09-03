@@ -106,39 +106,40 @@ export class ProductForm {
 
   // Recopilar y enviar los datos
   async handleSubmit() {
-    const name = document.querySelector("[data-name]").value;
-    const price = document.querySelector("[data-price]").value;
-    const description = document.querySelector("[data-description]").value;
-    const section = document.getElementById("miMenuDesplegable").value;
-    const images = document.querySelector("[data-imageUrls]").files;
-    const isFeatured = document.getElementById("isFeatured").checked;
+    document
+      .querySelector("form")
+      .addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-    // Captura todos los checkboxes seleccionados
-    const selectedSizes = Array.from(
-      document.querySelectorAll('input[name="sizes"]:checked')
-    ).map((checkbox) => checkbox.value);
+        // Obtén los datos del formulario
+        const productData = {
+          name: document.querySelector('input[name="name"]').value,
+          price: parseFloat(
+            document.querySelector('input[name="price"]').value
+          ),
+          description: document.querySelector('textarea[name="description"]')
+            .value,
+          section: document.querySelector('input[name="section"]').value,
+          isFeatured: document.querySelector('input[name="isFeatured"]')
+            .checked,
+          sizes: Array.from(
+            document.querySelectorAll('input[name="sizes[]"]:checked')
+          ).map((el) => el.value),
+        };
 
-    const productData = new FormData();
-    productData.append("name", name);
-    productData.append("price", price);
-    productData.append("description", description);
-    productData.append("section", section);
-    productData.append("isFeatured", isFeatured);
+        // Obtén los archivos de imagen
+        const images = document.querySelector('input[type="file"]').files;
 
-    // Agrega cada archivo de imagen al FormData
-    for (const image of images) {
-      productData.append("images[]", image);
-    }
-
-    // Agrega los talles seleccionados al FormData
-    selectedSizes.forEach((size) => productData.append("sizes[]", size));
-
-    try {
-      await productoServices.crearProducto(productData);
-      modalControllers.modalProductoCreado();
-    } catch (error) {
-      console.error(error);
-    }
+        try {
+          const result = await productService.crearProducto(
+            productData,
+            images
+          );
+          console.log("Producto creado:", result);
+        } catch (error) {
+          console.error("Error al crear el producto:", error);
+        }
+      });
   }
 }
 
