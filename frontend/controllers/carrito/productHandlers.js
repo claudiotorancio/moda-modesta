@@ -21,7 +21,6 @@ export function agregarProducto(product, size) {
 
 export function eliminarProducto(id) {
   this.items = this.items.filter((item) => item._id !== id);
-  console.log(this.items);
   sessionStorage.setItem("carrito", JSON.stringify(this.items));
   this.mostrarCarrito();
 }

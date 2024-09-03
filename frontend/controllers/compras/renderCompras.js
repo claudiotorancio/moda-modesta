@@ -37,7 +37,6 @@ export class RenderCompras {
       this.titulo.innerHTML = tituloTabla;
 
       const listado = await this.compraServicesHelpers.listaOrder();
-      console.log(listado);
 
       const tablaCuerpo = this.titulo.querySelector("#tabla-cuerpo");
 
@@ -49,7 +48,6 @@ export class RenderCompras {
           phoneNumber: order.customer.phoneNumber,
           items: order.items,
         };
-        console.log(orderData);
 
         tablaCuerpo.appendChild(this.nuevaTabla(orderData));
       }

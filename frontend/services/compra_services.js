@@ -28,7 +28,6 @@ export class CompraServices {
       const respuesta = await fetch(`${this.baseURL}/api/listaOrder`);
       const data = await respuesta.json();
       const listado = data.order;
-      console.log(listado);
       return listado;
     } catch (error) {
       console.error("Error al obtener la lista de usuarios:", error);
