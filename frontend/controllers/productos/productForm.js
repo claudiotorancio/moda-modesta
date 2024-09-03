@@ -110,7 +110,7 @@ export class ProductForm {
     const price = parseFloat(document.querySelector("[data-price]").value);
     const description = document.querySelector("[data-description]").value;
     const section = document.getElementById("miMenuDesplegable").value;
-    const images = document.querySelector("[data-imageUrls]").files[0];
+    const images = document.querySelector("[data-imageUrls]").files;
     const isFeatured = document.getElementById("isFeatured").checked;
 
     // Captura todos los checkboxes seleccionados
