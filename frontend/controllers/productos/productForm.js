@@ -32,7 +32,7 @@ export class ProductForm {
       <div class="card-form">
         <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
           <div class="form-group">
-            <input class="form-control p-2" type="file" name="image" data-imageUrls multiple required autofocus>
+            <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
           </div>
           <div class="form-group">
        <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
