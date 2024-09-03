@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 import MONGODB_URI from "../../config.js";
 import Product from "../../models/Product.js";
-import { uploadMultiple } from "../../../api/router.js"; // Importa el nuevo middleware
+import { uploadMultiple } from "../../../api/router.js"; // Asegúrate de que uploadMultiple maneje múltiples imágenes
 import Vista from "../../models/Vista.js";
 
 const createProduct = async (req, res) => {
   try {
-    // // Verificar si el usuario está autenticado
+    // Verificar si el usuario está autenticado
     if (!req.isAuthenticated()) {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
@@ -22,22 +22,21 @@ const createProduct = async (req, res) => {
 
       // Valores del formulario
       const { name, price, description, section, isFeatured, sizes } = req.body;
-
-      const imagePaths = req.file.location; // Captura todas las ubicaciones de las imágenes
+      const imagePaths = req.files.map((file) => file.location); // Captura todas las ubicaciones de las imágenes
       const user_id = req.user._id;
-      console.log(req.body);
-      console.log(imagePaths);
+
+      // Verificar que todos los campos requeridos estén presentes
       if (
-        !name === undefined ||
-        !price === undefined ||
-        !description === undefined ||
-        !section === undefined ||
-        !isFeatured === undefined ||
-        !imagePaths === undefined
+        !name ||
+        !price ||
+        !description ||
+        !section ||
+        isFeatured === undefined ||
+        !imagePaths.length
       ) {
         return res
           .status(400)
-          .send({ error: "Todos los campos son requeridos." });
+          .json({ error: "Todos los campos son requeridos." });
       }
 
       // Crear los datos del producto
@@ -60,12 +59,7 @@ const createProduct = async (req, res) => {
         newProduct = new Product(createProductData);
       }
 
-      // Conectar a la base de datos y guardar el producto
-      await mongoose.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-
+      // Guardar el producto
       await newProduct.save();
       res.json({ message: "Producto guardado" });
     });
