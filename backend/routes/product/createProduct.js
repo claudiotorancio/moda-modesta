@@ -46,7 +46,7 @@ const createProduct = async (req, res) => {
         section,
         isFeatured,
         sizes: Array.isArray(sizes) ? sizes : [sizes],
-        imagePaths,
+        imagePath: imagePaths,
         user_id: req.user._id,
       };
 
