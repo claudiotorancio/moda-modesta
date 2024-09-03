@@ -106,6 +106,7 @@ export class ProductForm {
 
   // Recopilar y enviar los datos
   async handleSubmit() {
+    // Captura los valores del formulario
     const name = document.querySelector("[data-name]").value;
     const price = parseFloat(document.querySelector("[data-price]").value);
     const description = document.querySelector("[data-description]").value;
@@ -113,11 +114,19 @@ export class ProductForm {
     const images = document.querySelector("[data-imageUrls]").files;
     const isFeatured = document.getElementById("isFeatured").checked;
 
+    // Verifica que los campos obligatorios no estén vacíos
+    if (!name || isNaN(price) || !description || !section || !images.length) {
+      console.error("Por favor completa todos los campos requeridos.");
+      return;
+    }
+    console.log(name, price, description, section, images, isFeatured);
+
     // Captura todos los checkboxes seleccionados
     const selectedSizes = Array.from(
       document.querySelectorAll('input[name="sizes"]:checked')
     ).map((checkbox) => checkbox.value);
 
+    // Crea un nuevo FormData
     const productData = new FormData();
     productData.append("name", name);
     productData.append("price", price);
@@ -125,18 +134,20 @@ export class ProductForm {
     productData.append("section", section);
     productData.append("isFeatured", isFeatured);
 
+    // Agrega cada archivo de imagen al FormData
     for (const image of images) {
       productData.append("images[]", image);
     }
+
     // Agrega los talles seleccionados al FormData
     selectedSizes.forEach((size) => productData.append("sizes[]", size));
 
+    // Envía la solicitud
     try {
       await productoServices.crearProducto(productData);
-      console.log(productData);
       modalControllers.modalProductoCreado();
     } catch (error) {
-      console.error(error);
+      console.error("Error al crear el producto:", error);
     }
   }
 }
