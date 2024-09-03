@@ -119,7 +119,6 @@ export class ProductForm {
       console.error("Por favor completa todos los campos requeridos.");
       return;
     }
-    console.log(name, price, description, section, images, isFeatured);
 
     // Captura todos los checkboxes seleccionados
     const selectedSizes = Array.from(
@@ -133,13 +132,14 @@ export class ProductForm {
     productData.append("description", description);
     productData.append("section", section);
     productData.append("isFeatured", isFeatured);
+    productData.append("images", images);
 
     // Agrega los talles seleccionados al FormData
     selectedSizes.forEach((size) => productData.append("sizes[]", size));
 
     // Envía la solicitud
     try {
-      await productoServices.crearProducto(productData, images);
+      await productoServices.crearProducto(productData);
       modalControllers.modalProductoCreado();
     } catch (error) {
       console.error("Error al crear el producto:", error);

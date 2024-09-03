@@ -23,8 +23,8 @@ const createProduct = async (req, res) => {
         ? req.files.map((file) => file.location)
         : [];
       const { name, price, description, section, isFeatured, sizes } = req.body;
-      // console.log(imagePaths);
-      // console.log(req.body);
+      console.log(imagePaths);
+      console.log(req.body);
       if (
         !name ||
         !price ||
