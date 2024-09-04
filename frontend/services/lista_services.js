@@ -11,7 +11,7 @@ export class ListaServices {
     try {
       const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
       const data = await respuesta.json();
-
+      console.log(data);
       if (data.ok) {
         return true; // El usuario es administrador
       } else {

@@ -469,6 +469,10 @@ div.card-lista div.col-md-12 th {
   object-fit: cover;
 }
 
+.admin-only {
+  display: none;
+}
+
 ul {
   line-height: 5rem;
   list-style-type: none; /* Quita los puntos de la lista */

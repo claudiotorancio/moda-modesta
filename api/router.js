@@ -21,7 +21,7 @@ import deleteUser from "../backend/routes/list/deleteUser.js";
 import contadorProductos from "../backend/routes/list/contadorProductos.js";
 import updateUser from "../backend/routes/list/updateUser.js";
 import getUser from "../backend/routes/list/getUser.js";
-// import getAdmin from "../backend/routes/list/getAdmin.js";
+import getAdmin from "../backend/routes/list/getAdmin.js";
 import destacadosProduct from "../backend/routes/product/destacados.js";
 import sendMail from "../backend/routes/nodeMailer/sendMail.js";
 import suscribeMail from "../backend/routes/nodeMailer/contactMail.js";
@@ -108,6 +108,7 @@ router.post("/api/signup", signup);
 router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 // Rutas listado
+router.get("/api/getAdmin", requireAdmin, getAdmin);
 router.get("/api/getUser/:id", requireAdmin, getUser);
 router.get("/api/renderLista", requireAdmin, listaAdmin);
 router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);

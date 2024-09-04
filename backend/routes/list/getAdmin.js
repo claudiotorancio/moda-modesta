@@ -2,23 +2,19 @@ const getAdmin = async (req, res) => {
   try {
     // Verificar si el usuario está autenticado
     if (!req.isAuthenticated()) {
-      return res
-        .status(401)
-        .json({ ok: false, error: "Usuario no autenticado" });
+      return res.status(401).json({ ok: false });
     }
 
     // Verificar si el usuario tiene el rol de "admin"
-    if (!req.isAuthenticated() && req.user.role !== "admin") {
-      return res.status(403).json({
-        ok: false,
-        error: "Acceso denegado: Solo usuarios administradores pueden acceder",
-      });
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ ok: false });
     }
 
+    // Si el usuario está autenticado y tiene el rol de "admin", devolver true
     res.json({ ok: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ ok: false, message: "Internal server error" });
+    res.status(500).json({ ok: false });
   }
 };
 
