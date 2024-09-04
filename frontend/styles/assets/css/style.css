@@ -563,7 +563,7 @@ ul li a {
   }
 
   .fixed-top {
-    position: absolute;
+    position: fixed;
   }
 
   .busqueda {

@@ -160,6 +160,10 @@ div.card:hover {
     transition: none;
   }
 
+  .img-card-top {
+    height: auto;
+  }
+
   .card-body {
     width: auto;
     height: auto;

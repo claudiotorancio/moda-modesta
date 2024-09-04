@@ -23,7 +23,7 @@ export class ProductInit {
           <h3 class="card-text text-center text-muted mb-3">${name}</h3>
           <p class="card-title text-center font-weight-bold">${"$" + price}</p>
           <div class="d-flex justify-content-center">
-            <a href="#">Ver Producto</a>
+            <a href="#">Ver Detalles</a>
           </div>
           <div>
             <button type="button" class="btn btn-primary btn-block mt-2" data-compra>Comprar</button>
@@ -40,6 +40,7 @@ export class ProductInit {
         modalControllers.baseModal();
         const modal = document.getElementById("modal");
         const zoomImage = modal.querySelector("[data-table]");
+        // Agregar una clase específica para este modal
         zoomImage.innerHTML = `
            <img class="card-img-top" src="${imagePath[0]}" alt="imagen del producto">
           `;
