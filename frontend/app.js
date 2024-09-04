@@ -61,6 +61,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       comprasInstance.renderLista();
     });
 
+    const crearProducto = document.querySelector("[data-crearProductos]");
+    crearProducto.addEventListener("click", (e) => {
+      e.preventDefault();
+      productForm.render();
+    });
     controllers.renderProducts();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
