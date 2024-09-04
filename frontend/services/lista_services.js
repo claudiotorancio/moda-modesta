@@ -5,6 +5,24 @@ export class ListaServices {
     this.baseURL = baseURL;
   }
 
+  //validar admin en session
+
+  getAdmin = async () => {
+    try {
+      const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
+      const data = await respuesta.json();
+
+      if (data.ok) {
+        return true; // El usuario es administrador
+      } else {
+        return false; // El usuario no es administrador
+      }
+    } catch (error) {
+      console.error("Error al obtener usuario:", error);
+      throw error;
+    }
+  };
+
   //extraer userId de Users
 
   getUser = async (userId) => {

@@ -24,6 +24,10 @@ import { cargarReseñas } from "./controllers/productos/reseñas.js";
 import { Compras } from "./controllers/compras/compras-controllers.js";
 import { hashControllers } from "./controllers/hashControllers.js";
 import { initializeCategoryControls } from "./controllers/productos/categoryControls.js";
+import { ListaServices } from "./services/lista_services.js";
+
+const listaServicesInstance = new ListaServices();
+const isAdmin = listaServicesInstance.getAdmin();
 
 // Función principal que se ejecuta cuando el DOM está listo
 document.addEventListener("DOMContentLoaded", async () => {
@@ -56,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const titulo = document.querySelector("[data-titulo]");
 
   // Mostrar u ocultar elementos según si hay un usuario autenticado
-  if (user) {
+  if (user && isAdmin()) {
     //Evento para consultar pedidos
     const envio = document.querySelector("[data-pedidos]");
     envio.addEventListener("click", (e) => {
@@ -87,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Evento para crear un producto
-  if (user) {
+  if (user && isAdmin()) {
     document.querySelector("[data-init]").addEventListener("click", (e) => {
       productForm.render();
     });
