@@ -40,16 +40,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const logoutUsuario = document.querySelector("[data-logOut]");
   const userActive = document.querySelector("[data-log]");
   const contactUser = document.querySelector("[data-contact]");
-  const crearproducto = document.querySelector("[data-init]");
-  const pedidos = document.querySelector("[data-pedidos]");
-  const resenas = document.querySelector("[data-resenas]");
-  const suscriptores = document.querySelector("[data-suscriptores]");
-  const ventas = document.querySelector("[data-ventas]");
+  // const crearProductos = document.querySelector("[data-crearProductos]");
+  // const pedidos = document.querySelector("[data-pedidos]");
+  // const resenas = document.querySelector("[data-resenas]");
+  // const suscriptores = document.querySelector("[data-suscriptores]");
+  // const ventas = document.querySelector("[data-ventas]");
   const tabla = document.querySelector("[data-lista]");
   const titulo = document.querySelector("[data-titulo]");
 
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
-  if (user && isAdmin) {
+  if (user) {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "block";
     });
@@ -73,15 +73,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     contactUser.style.display = "none";
   } else {
     productosInicio.renderInit();
-    pedidos.style.display = "none";
-    resenas.style.display = "none";
-    suscriptores.style.display = "none";
-    ventas.style.display = "none";
+    // crearProductos.style.display = "none";
+    // pedidos.style.display = "none";
+    // resenas.style.display = "none";
+    // suscriptores.style.display = "none";
+    // ventas.style.display = "none";
     divUsuario.style.display = "none";
     actualizarUsuario.style.display = "none";
     logoutUsuario.style.display = "none";
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
-    crearproducto.innerHTML = "Suscribite!";
   }
 
   const initButton = document.querySelector("[data-init]");
