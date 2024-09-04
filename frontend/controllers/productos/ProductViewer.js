@@ -22,10 +22,12 @@ export const mostrarProducto = async (
 
   mostrarProducto.innerHTML = `
   <div class="row">
-  <div class="col-md-6 mx-auto d-flex align-items-center">
-    <img class="logo_cabecera" src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png" alt="Moda Modesta Logo">
-    <h5 class="text-muted" style="margin-bottom: 0;">Tienda Virtual Sta Rosa - La Pampa</h5>
-  </div>
+
+ <div class="col-md-6 mx-auto d-flex flex-column justify-content-center align-items-center">
+  <img class="logo_cabecera" src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png">
+  <h5 class="text-muted" style="margin-bottom: 0;">Sta Rosa - La Pampa</h5>
+</div>
+
   <div class="col-md-6 mx-auto">
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
