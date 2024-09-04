@@ -17,7 +17,6 @@ const renderProducts = async (req, res) => {
 
     //Verificar si el usuario esta autenticado
 
-    const usuarioHaIniciadoSesion = req.isAuthenticated();
     const usuarioAdmin = req.user.role === "admin";
     console.log(usuarioAdmin);
 
@@ -31,14 +30,8 @@ const renderProducts = async (req, res) => {
       products = await Product.find({ user_id: user_id });
     }
 
-    const totalProduct = await Product.countDocuments();
-    const totalVista = await Vista.countDocuments();
-
     res.json({
-      usuarioAdmin,
-      usuarioHaIniciadoSesion,
       products,
-      total: totalProduct + totalVista,
     });
   } catch (error) {
     console.error("Error al cargar productos:", error);

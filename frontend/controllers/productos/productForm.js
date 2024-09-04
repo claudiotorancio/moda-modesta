@@ -2,8 +2,9 @@ import { modalControllers } from "../../modal/modal.js";
 import productoServices from "../../services/product_services.js";
 
 export class ProductForm {
-  constructor() {
-    this.initForm = document.querySelector("[data-table]");
+  constructor(tabla, titulo) {
+    this.initForm = tabla;
+    this.titulo = titulo;
   }
 
   // Mostrar formulario
@@ -17,79 +18,81 @@ export class ProductForm {
   // Vaciar contenido
   clearForm() {
     this.initForm.innerHTML = "";
+    this.titulo.innerHTML = "";
   }
 
   // Crear formulario dinámico
   createForm() {
-    modalControllers.baseModal();
     const card = document.createElement("div");
-    card.classList.add("modalVisor");
+    card.className = "d-flex justify-content-center align-items-center"; // Centrar el contenedor del formulario
+
     card.innerHTML = `
-    <div class="text-center">
-      <div class="card-header">
-        <p>Agregar producto</p>
-      </div>
-      <div class="card-form">
-        <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
-          <div class="form-group">
-            <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
-            <p>agregar 2 imagenes a la vez</p>
-          </div>
-          <div class="form-group">
-       <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
+    <div>
+      <div class="text-center">
+        <div class="card-header">
+          <p>Agregar producto</p>
+        </div>
+        <div class="card-body w-100">
+          <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
+            <div class="form-group">
+              <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
+              <p>Agregar 2 imágenes a la vez</p>
+            </div>
+            <div class="form-group">
+              <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
+            </div>
+            <div class="form-group">
+              <input class="form-control mt-3 mb-3 p-2" type="text" placeholder="Precio del producto" name="price" required data-price>
+            </div>
+            <div class="form-group">
+              <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" name="description" required data-description></textarea>
+            </div>
+            <p for="miMenuDesplegable">Sección</p>
+            <div class="form-group">
+              <select class="form-control mb-3 p-2" id="miMenuDesplegable" name="section">
+                <option value="opcion1">Vestidos</option>
+                <option value="opcion2">Polleras</option>
+                <option value="opcion3">Diversos</option>
+              </select>
+            </div>
+            <label for="variation_1">Talles disponibles</label>
+            <div class="form-group mb-4">
+              <!-- Checkbox de talles disponibles -->
+              <div class="form-check-inline me-3">
+                <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">
+                <label class="form-check-label" for="talle1">Talle 1</label>
+              </div>
+              <div class="form-check-inline me-3">
+                <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
+                <label class="form-check-label" for="talle2">Talle 2</label>
+              </div>
+              <div class="form-check-inline me-3">
+                <input class="form-check-input" type="checkbox" value="Talle 3" name="sizes" id="talle3">
+                <label class="form-check-label" for="talle3">Talle 3</label>
+              </div>
+              <div class="form-check-inline me-3">
+                <input class="form-check-input" type="checkbox" value="Talle 4" name="sizes" id="talle4">
+                <label class="form-check-label" for="talle4">Talle 4</label>
+              </div>
+              <div class="form-check-inline me-3">
+                <input class="form-check-input" type="checkbox" value="Talle 5" name="sizes" id="talle5">
+                <label class="form-check-label" for="talle5">Talle 5</label>
+              </div>
+            </div>
 
-          </div>
-          <div class="form-group">
-            <input class="form-control mt-3 mb-3 p-2" type="text" placeholder="Precio del producto" name="price" required data-price>
-          </div>
-          <div class="form-group">
-            <textarea class="form-control mt-3 mb-3 p-2" type="text" placeholder="Descripción" name="description" required data-description></textarea>
-          </div>
-          <p for="miMenuDesplegable">Sección</p>
-          <div class="form-group">
-            <select class="form-control mb-3 p-2" id="miMenuDesplegable" name="section">
-              <option value="opcion1">Vestidos</option>
-              <option value="opcion2">Polleras</option>
-              <option value="opcion3">Diversos</option>
-            </select>
-          </div>
-          <label for="variation_1">Talles disponibles</label>
-          <div class="form-group mb-4">
-            <!-- Checkbox de talles disponibles -->
-            <div class="form-check-inline me-3">
-              <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">
-              <label class="form-check-label" for="talle1">Talle 1</label>
+            <!-- Checkbox para destacar producto -->
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="isFeatured" name="isFeatured">
+                <label class="form-check-label" for="isFeatured">
+                  Destacar producto
+                </label>
+              </div>
             </div>
-            <div class="form-check-inline me-3">
-              <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
-              <label class="form-check-label" for="talle2">Talle 2</label>
-            </div>
-            <div class="form-check-inline me-3">
-              <input class="form-check-input" type="checkbox" value="Talle 3" name="sizes" id="talle3">
-              <label class="form-check-label" for="talle3">Talle 3</label>
-            </div>
-            <div class="form-check-inline me-3">
-              <input class="form-check-input" type="checkbox" value="Talle 4" name="sizes" id="talle4">
-              <label class="form-check-label" for="talle4">Talle 4</label>
-            </div>
-            <div class="form-check-inline me-3">
-              <input class="form-check-input" type="checkbox" value="Talle 5" name="sizes" id="talle5">
-              <label class="form-check-label" for="talle5">Talle 5</label>
-            </div>
-          </div>
 
-          <!-- Checkbox para destacar producto -->
-          <div class="form-group">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="isFeatured" name="isFeatured">
-              <label class="form-check-label" for="isFeatured">
-                Destacar producto
-              </label>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-lg">Agregar</button>
-        </form>
+            <button type="submit" class="btn btn-primary btn-lg">Agregar</button>
+          </form>
+        </div>
       </div>
     </div>
   `;
@@ -141,7 +144,3 @@ export class ProductForm {
     }
   }
 }
-
-const productForm = new ProductForm();
-
-export default productForm;

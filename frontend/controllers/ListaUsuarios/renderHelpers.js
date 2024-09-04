@@ -1,5 +1,4 @@
 import { ListaServices } from "../../services/lista_services.js";
-import productoServices from "../../services/product_services.js";
 import { EventHandlers } from "./eventHandlers.js";
 
 export class RenderHelpers {
@@ -15,57 +14,53 @@ export class RenderHelpers {
       // Limpiar el contenedor antes de renderizar
       this.titulo.innerHTML = "";
       this.tabla.innerHTML = "";
+
       const { listado, usersCantidad } =
         await this.listaServicesHelpers.listaUsers();
-
-      const { total } = await productoServices.listaProductos();
 
       const tituloTabla = `
       <div>
         <div class="row">
           <div class="col-md-12">
-            <h2 class="card-header">Users</h2>
+            <h2 class="card-header text-center">SUSCRIPTORES</h2>
             <table class="table">
               <thead>
                 <tr >
-                  <th >User(${usersCantidad})</th>
-                  <th >Create</th>
-                  <th >prod(${total})</th>
+                  <th >Suscriptor(${usersCantidad})</th>
+                  <th >Creado</th>
+                  <th >emailVerificado</th>
                   <th >Rol</th>
                   <th >Eliminar</th>
                   <th >Actualizar</th>
                 </tr>
               </thead>
+                <tbody id="tabla-cuerpo">
+                    <!-- Aquí se agregará el cuerpo de la tabla -->
+                  </tbody>
             </table>
           </div>
         </div>
       </div>`;
       this.titulo.innerHTML = tituloTabla;
 
-      listado.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      const tablaCuerpo = this.titulo.querySelector("#tabla-cuerpo");
 
       for (const usuario of listado) {
-        const totalProductos = await this.obtenerTotalProductos(usuario._id);
         const usuarioData = {
           username: usuario.username,
           created_at: usuario.created_at,
+          emailVerified: usuario.emailVerified,
           role: usuario.role,
-          totalProductos: totalProductos,
           id: usuario._id,
         };
-        this.tabla.appendChild(this.nuevaLista(usuarioData));
+        tablaCuerpo.appendChild(this.nuevaLista(usuarioData));
       }
     } catch (error) {
       console.log(error);
     }
   }
 
-  async obtenerTotalProductos(userId) {
-    const { cantidad } = await this.listaServicesHelpers.totalProductos(userId);
-    return cantidad;
-  }
-
-  nuevaLista({ username, created_at, role, totalProductos, id }) {
+  nuevaLista({ username, created_at, role, emailVerified, id }) {
     const fechaCreacion = new Date(created_at);
     const fechaFormateada = `${fechaCreacion
       .getFullYear()
@@ -74,25 +69,19 @@ export class RenderHelpers {
       "0" + fechaCreacion.getDate()
     ).slice(-2)}`;
 
-    const card = document.createElement("div");
+    const verificacionEmail = emailVerified ? "Sí" : "No";
+
+    const card = document.createElement("tr");
 
     card.innerHTML = `
-      <div class="row">
-        <div class="col-md-12">
-          <table class="table">
-            <tbody>
-              <tr style="text-align: left;">
+     
                 <td >${username}</td>
                 <td>${fechaFormateada}</td>
-                <td >${totalProductos}</td>
+                <td >${verificacionEmail}</td>
                 <td >${role}</td>
                 <td ><button type="button" class="btn btn-danger" data-userid="${id}">del</button></td>
                 <td ><button type="button" class="btn btn-primary" id="button" data-userUp="${id}">up</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>`;
+          `;
     card
       .querySelector("[data-userid]")
       .addEventListener("click", (event) =>

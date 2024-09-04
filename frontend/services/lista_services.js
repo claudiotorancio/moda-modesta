@@ -44,7 +44,9 @@ export class ListaServices {
   listaUsers = async () => {
     try {
       const respuesta = await fetch(`${this.baseURL}/api/renderLista`);
-      return respuesta.json();
+      const data = await respuesta.json();
+      const listado = data;
+      return listado;
     } catch (error) {
       console.error("Error al obtener la lista de usuarios:", error);
       throw error;
@@ -80,15 +82,16 @@ export class ListaServices {
   };
   //extraer cantidad de productos de Products
 
-  totalProductos = async (id) => {
-    try {
-      const respuesta = await fetch(
-        `${this.baseURL}/api/contadorProductos/${id}`
-      );
-      return respuesta.json();
-    } catch (error) {
-      console.error("Error al obtener el total de productos:", error);
-      throw error;
-    }
-  };
+  // totalProductos = async (id) => {
+  //   try {
+  //     const respuesta = await fetch(
+  //       `${this.baseURL}/api/contadorProductos/${id}`
+  //     );
+  //     console.log(respuesta);
+  //     return respuesta.json();
+  //   } catch (error) {
+  //     console.error("Error al obtener el total de productos:", error);
+  //     throw error;
+  //   }
+  // };
 }

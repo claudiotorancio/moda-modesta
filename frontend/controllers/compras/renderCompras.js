@@ -1,8 +1,8 @@
 import { CompraServices } from "../../services/compra_services.js";
 
 export class RenderCompras {
-  constructor(tabla, titulo) {
-    this.tabla = tabla;
+  constructor(container, titulo) {
+    this.container = container;
     this.titulo = titulo;
     this.compraServicesHelpers = new CompraServices();
   }
@@ -11,38 +11,21 @@ export class RenderCompras {
     try {
       // Limpiar el contenedor antes de renderizar
       this.titulo.innerHTML = "";
-      this.tabla.innerHTML = "";
+      this.container.innerHTML = "";
 
-      const tituloTabla = `
-          <div>
-            <div class="row">
-              <div class="col-md-12">
-                <h2 class="card-header">COMPRAS</h2>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Nombre</th>
-                      <th>Email</th>
-                      <th>Producto</th>
-                      <th>Telefono</th>
-                      <th>Fecha de Creación</th>
-                      <th>AlertPrepare</th>
-                      <th>AlertEnCamino</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tabla-cuerpo">
-                    <!-- Aquí se agregará el cuerpo de la tabla -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
+      const tituloContenido = `
+        <div class="row">
+          <div class="col-md-12">
+            <h2 class="card-header text-center">COMPRAS</h2>
           </div>
-        `;
-      this.titulo.innerHTML = tituloTabla;
+        </div>
+      `;
+      this.titulo.innerHTML = tituloContenido;
 
       const listado = await this.compraServicesHelpers.listaOrder();
 
-      const tablaCuerpo = this.titulo.querySelector("#tabla-cuerpo");
+      const row = document.createElement("div");
+      row.className = "row"; // Contenedor para las columnas
 
       for (const order of listado) {
         const orderData = {
@@ -53,14 +36,22 @@ export class RenderCompras {
           items: order.items,
         };
 
-        tablaCuerpo.appendChild(this.nuevaTabla(orderData));
+        // Crear la tarjeta y añadirla a la fila
+        const cardCol = document.createElement("div");
+        cardCol.className = "col-md-4 mb-4"; // 3 columnas en pantallas medianas y más grandes
+        cardCol.appendChild(this.crearTarjeta(orderData));
+
+        row.appendChild(cardCol);
       }
+
+      // Añadir la fila al contenedor principal
+      this.container.appendChild(row);
     } catch (error) {
       console.log(error);
     }
   }
 
-  nuevaTabla({ name, email, phoneNumber, items, created_at }) {
+  crearTarjeta({ name, email, phoneNumber, items, created_at }) {
     const fechaCreacion = new Date(created_at);
     const fechaFormateada = `${fechaCreacion
       .getFullYear()
@@ -73,23 +64,29 @@ export class RenderCompras {
       .map(
         (item) =>
           `<div>
-       ${item.name} | Cantidad: ${item.quantity} | Talle: ${item.size} | <a Href=" ${item.hash}" target="blank">
-       ver producto
+       ${item.name} | Cantidad: ${item.quantity} | Talle: ${item.size} | <a href="${item.hash}" target="_blank">
+       Ver producto
         </a>
       </div>`
       )
-      .join("<br>"); // Concatenar los productos con salto de línea
+      .join("<br>");
 
-    const card = document.createElement("tr"); // Cambiado de "div" a "tr" para ser compatible con la tabla
+    const card = document.createElement("div");
+    card.className = "card"; // Clase Bootstrap para la tarjeta, con altura completa
 
     card.innerHTML = `
-      <td>${name}</td>
-      <td>${email}</td>
-      <td>${productos}</td>
-      <td>${phoneNumber}</td>
-      <td>${fechaFormateada}</td>
-      <td><button type="button" class="btn btn-primary" data-userid="">del</button></td>
-      <td><button type="button" class="btn btn-primary" id="button" data-userUp="">up</button></td>
+      <div class="card-body w-100">
+        <h5 class="card-title">Cliente: ${name}</h5>
+        <p class="card-text"><strong>Email:</strong> ${email}</p>
+        <p class="card-text"><strong>Teléfono:</strong> ${phoneNumber}</p>
+        <p class="card-text"><strong>Fecha de creación:</strong> ${fechaFormateada}</p>
+        <p class="card-text"><strong>Productos:</strong><br> ${productos}</p>
+      </div>
+      <div class="card-footer text-center">
+       <p class="card-text"> Alertas para Cliente</p>
+        <button type="button" class="btn btn-primary" data-userid="">en preparacion</button>
+        <button type="button" class="btn btn-secondary" id="button" data-userUp="">en camino</button>
+      </div>
     `;
 
     return card;

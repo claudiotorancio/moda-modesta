@@ -12,7 +12,7 @@ import "./styles/assets/css/components/modal.css";
 import { LoginServices } from "./services/login_services.js";
 import { LoginControllers } from "./controllers/registro/login_controllers.js";
 import { productosInicio } from "./controllers/productos/ProductInit.js";
-import productForm from "./controllers/productos/productForm.js";
+import { ProductForm } from "./controllers/productos/productForm.js";
 import { controllers } from "./controllers/productos/productos_controllers.js";
 import { modalControllers } from "./modal/modal.js";
 import { cargarReseñas } from "./controllers/productos/reseñas.js";
@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const crearProducto = document.querySelector("[data-crearProductos]");
     crearProducto.addEventListener("click", (e) => {
       e.preventDefault();
+      const productForm = new ProductForm(tabla, titulo);
       productForm.render();
     });
 

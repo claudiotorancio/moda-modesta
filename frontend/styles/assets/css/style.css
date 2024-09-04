@@ -178,7 +178,7 @@ p.help a {
 }
 
 .card-lista {
-  max-height: 25rem; /* Altura máxima del contenedor */
+  max-height: 50rem; /* Altura máxima del contenedor */
   overflow-x: hidden;
   margin: 1rem;
 }
@@ -595,7 +595,7 @@ ul li a {
     overflow-y: auto; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
   }
   .table-container {
-    max-height: 10rem; /* Altura máxima del contenedor */
+    max-height: 50rem; /* Altura máxima del contenedor */
     overflow-y: auto; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
   }
 
@@ -748,6 +748,13 @@ ul li a {
 
   div.table-subtotal td {
     font-weight: 600;
+  }
+  /* CSS para dispositivos móviles */
+
+  .admin-only {
+    font-size: 0.8rem;
+    padding: 0;
+    width: 17%;
   }
 
   ul {
