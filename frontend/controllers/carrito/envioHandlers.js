@@ -190,7 +190,7 @@ export async function handleEnvioFormProduct(event) {
         <span style="font-size: 0.8rem;">Correo Argentino: $${valorEnvio}. - 3 a 6 días hábiles. (despues del despacho)</span>
       </div>
       <div style="display: flex; align-items: center;">
-        <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/icono-plano-vectorial-ilustracion-escala-gris-adecuado-iconos-redes-sociales-protectores-pantalla-como-plantilla-x9xa_719432-1335.avif" 
+        <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/ubicacion.png" 
              alt="Retiro en tienda" 
              style="width: 4rem; flex-shrink: 0; margin-right: 0.5rem;">
         <span style="font-size: 0.8rem;">Retiro en Local: Gratis. Disponible en nuestro local.</span>
