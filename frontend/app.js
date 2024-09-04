@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const susxriptores = document.querySelector("[data-suscriptores]");
     susxriptores.addEventListener("click", async (e) => {
       e.preventDefault();
-      const ListaControllersInstamce = new ListaControllers(titulo, tabla);
+      const ListaControllersInstamce = new ListaControllers(tabla, titulo);
       await ListaControllersInstamce.renderLista();
     });
 
