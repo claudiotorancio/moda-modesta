@@ -47,25 +47,38 @@ document.addEventListener("DOMContentLoaded", async () => {
   const userActive = document.querySelector("[data-log]");
   const contactUser = document.querySelector("[data-contact]");
   const crearproducto = document.querySelector("[data-init]");
+  const pedidos = document.querySelector("[data-pedidos]");
+  const resenas = document.querySelector("[data-resenas]");
+  const suscriptores = document.querySelector("[data-suscriptores]");
+  const ventas = document.querySelector("[data-ventas]");
 
   const tabla = document.querySelector("[data-lista]");
   const titulo = document.querySelector("[data-titulo]");
 
-  const comprasInstance = new Compras(tabla, titulo);
-
   // Mostrar u ocultar elementos según si hay un usuario autenticado
   if (user) {
-    controllers.renderProducts();
-    // const listaControllersInstance = new ListaControllers(tabla, titulo);
+    //Evento para consultar pedidos
+    const envio = document.querySelector("[data-pedidos]");
+    envio.addEventListener("click", (e) => {
+      e.preventDefault();
+      const comprasInstance = new Compras(tabla, titulo);
+      comprasInstance.renderLista();
+    });
 
+    controllers.renderProducts();
+    // const listaControllersInstance = new ListaControllers(tabla, titulo)
     // listaControllersInstance.renderLista();
-    comprasInstance.renderLista();
+
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
     contactUser.style.display = "none";
   } else {
     productosInicio.renderInit();
+    pedidos.style.display = "none";
+    resenas.style.display = "none";
+    suscriptores.style.display = "none";
+    ventas.style.display = "none";
     divUsuario.style.display = "none";
     actualizarUsuario.style.display = "none";
     logoutUsuario.style.display = "none";
@@ -100,12 +113,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     const loginServicesInstance = new LoginServices();
     loginServicesInstance.logout();
   });
-
-  // Evento para consultar costo de envio
-  // const envio = document.querySelector("[data-envio]");
-  // envio.addEventListener("click", (e) => {
-  //   e.preventDefault();
-
-  //   capturarDatosFormulario();
-  // });
 });
