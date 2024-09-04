@@ -9,6 +9,10 @@ export class RenderCompras {
 
   async renderCompraLista() {
     try {
+      // Limpiar el contenedor antes de renderizar
+      this.titulo.innerHTML = "";
+      this.tabla.innerHTML = "";
+
       const tituloTabla = `
           <div>
             <div class="row">

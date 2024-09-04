@@ -12,6 +12,9 @@ export class RenderHelpers {
 
   async renderUsersList() {
     try {
+      // Limpiar el contenedor antes de renderizar
+      this.titulo.innerHTML = "";
+      this.tabla.innerHTML = "";
       const { listado, usersCantidad } =
         await this.listaServicesHelpers.listaUsers();
 
