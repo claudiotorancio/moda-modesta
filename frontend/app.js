@@ -23,12 +23,11 @@ import { ListaServices } from "./services/lista_services.js";
 import { ListaControllers } from "./controllers/ListaUsuarios/lista.controllers.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  initializeCategoryControls();
-
   const hash = window.location.hash;
   if (hash.startsWith("#product-")) {
     await hashControllers();
   }
+  initializeCategoryControls();
 
   cargarReseñas();
 
