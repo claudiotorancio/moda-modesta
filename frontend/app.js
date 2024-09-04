@@ -32,8 +32,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   cargarReseñas();
 
-  const ListaControllersInstamce = new ListaControllers();
-
   const listaServicesInstance = new ListaServices();
   const isAdmin = await listaServicesInstance.getAdmin();
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
@@ -78,6 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const susxriptores = document.querySelector("[data-suscriptores]");
     susxriptores.addEventListener("click", async (e) => {
       e.preventDefault();
+      const ListaControllersInstamce = new ListaControllers(titulo, tabla);
       await ListaControllersInstamce.renderLista();
     });
 
