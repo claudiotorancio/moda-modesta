@@ -13,6 +13,8 @@ const sendMail = async (req, res) => {
       total,
       costoEnvio,
       checked,
+      enCamino,
+      finalizado,
     } = req.body;
 
     // Verificar que todos los campos requeridos están presentes
@@ -25,7 +27,9 @@ const sendMail = async (req, res) => {
       !productos ||
       !total ||
       !costoEnvio === undefined ||
-      !checked === undefined
+      !checked === undefined ||
+      !enCamino === undefined ||
+      !finalizado
     ) {
       return res
         .status(400)
@@ -123,6 +127,8 @@ const sendMail = async (req, res) => {
         postalCode: codigoPostal,
       },
       checked: checked,
+      enCamino: enCamino,
+      finalizado: finalizado,
     });
 
     console.log(newOrder);
