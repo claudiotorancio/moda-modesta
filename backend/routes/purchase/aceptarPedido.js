@@ -16,7 +16,7 @@ const aceptarPedido = async (req, res) => {
     // Actualizar el estado del pedido (ejemplo: cambiar 'checked' a true para indicar que el pedido ha sido aceptado)
     const updatedProduct = await Order.findByIdAndUpdate(
       productId,
-      { checked: true }, // Aquí actualizamos el campo 'checked' a true
+      { aceptar: true }, // Aquí actualizamos el campo 'checked' a true
       { new: true } // Opción para devolver el documento actualizado
     );
     console.log(updatedProduct);

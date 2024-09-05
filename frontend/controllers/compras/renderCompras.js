@@ -42,15 +42,16 @@ export class RenderCompras {
           created_at: order.createdAt,
           email: order.customer.email,
           phoneNumber: order.customer.phoneNumber,
-          checked: order.checked,
+          // checked: order.checked,
+          aceptar: order.aceptar,
           enCamino: order.enCamino,
+          finalizado: order.finalizado,
           items: order.items,
           id: order._id,
-          finalizado: order.finalizado, // Asumimos que existe un campo 'finalizado' en el pedido
         };
 
         // Mostrar notificación de nuevo pedido
-        if (!order.checked) {
+        if (!order.aceptar) {
           alert(`Nuevo pedido de ${orderData.name} (${orderData.email})`);
         }
 
@@ -74,7 +75,8 @@ export class RenderCompras {
     email,
     phoneNumber,
     items,
-    checked,
+    // checked,
+    aceptar,
     enCamino,
     created_at,
     id,
@@ -114,7 +116,7 @@ export class RenderCompras {
       btnAceptarDisabled = true;
       btnEnCaminoDisabled = true;
       btnFinDisabled = false;
-    } else if (checked) {
+    } else if (aceptar) {
       estado = "aceptado y enviado correo (en preparacion)";
       btnAceptarDisabled = true;
       btnEnCaminoDisabled = false;

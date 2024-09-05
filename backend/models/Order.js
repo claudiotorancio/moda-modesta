@@ -28,6 +28,7 @@ const orderSchema = new mongoose.Schema(
       postalCode: { type: String, required: false },
     },
     checked: { type: Boolean, required: false },
+    aceptar: { type: Boolean, required: false },
     enCamino: { type: Boolean, required: false },
     finalizado: { type: Boolean, required: false },
   },
