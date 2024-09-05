@@ -23,6 +23,21 @@ export class ListaServices {
     }
   };
 
+  enviarPromocion = async (myContent) => {
+    try {
+      await fetch(`${this.baseURL}/api/enviarPromocion/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ myContent }),
+      });
+    } catch (error) {
+      console.error("Error al actualizar usuario:", error);
+      throw error;
+    }
+  };
+
   //extraer userId de Users
 
   getUser = async (userId) => {

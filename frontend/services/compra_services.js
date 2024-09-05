@@ -33,16 +33,16 @@ export class CompraServices {
   };
   //eliminar compra
 
-  // eliminarCompra = async (id) => {
-  //   try {
-  //     await fetch(`${this.baseURL}/api/deleteCompra/${id}`, {
-  //       method: "DELETE",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error al eliminar usuario:", error);
-  //     throw error;
-  //   }
-  // };
+  eliminarCompra = async (id) => {
+    try {
+      await fetch(`${this.baseURL}/api/deleteOrder/${id}`, {
+        method: "DELETE",
+      });
+    } catch (error) {
+      console.error("Error al eliminar usuario:", error);
+      throw error;
+    }
+  };
 
   //finalizar pedido
 

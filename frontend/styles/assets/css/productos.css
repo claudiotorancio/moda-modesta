@@ -155,6 +155,11 @@ div.card:hover {
   pointer-events: none; /* Hace que el ícono no interfiera con los clics */
 }
 
+.btn-close-black {
+  background-color: black;
+  opacity: 1;
+}
+
 @media (min-width: 320px) and (max-width: 768px) {
   .card {
     transition: none;

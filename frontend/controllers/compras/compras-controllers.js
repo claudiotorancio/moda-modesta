@@ -1,7 +1,5 @@
 //compras-controllers.js
-
 import { RenderCompras } from "./renderCompras.js";
-
 export class Compras {
   constructor(tabla, titulo) {
     this.tabla = tabla;

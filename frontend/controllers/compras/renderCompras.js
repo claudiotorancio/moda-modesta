@@ -1,7 +1,8 @@
 import { CompraServices } from "../../services/compra_services.js";
 import {
   finalizarPedidoHandler,
-  mensajePrepareHandlerCompra,
+  // mensajePrepareHandlerCompra,
+  eliminarPedido,
   mensajeEnCaminoHandlerCompra,
   aceptarPedidoHandler,
 } from "./eventsCompras.js";
@@ -14,6 +15,7 @@ export class RenderCompras {
     this.tabla = tabla;
     this.titulo = titulo;
     this.compraServicesHelpers = new CompraServices();
+    this.listado = []; // Almacenar listado completo
   }
 
   async renderCompraLista() {
@@ -24,50 +26,91 @@ export class RenderCompras {
 
       const tituloContenido = `
         <div class="row">
-          <div class="col-md-12">
-            <h2 class="card-header text-center">COMPRAS</h2>
+          <div class="col-md-12 text-center">
+            <h2 class="card-header">COMPRAS</h2>
+            <input  type="text" id="searchInput" placeholder="Buscar..." class="form-control mx-auto mt-2 w-50 ">
           </div>
         </div>
       `;
       this.titulo.innerHTML = tituloContenido;
 
-      const listado = await this.compraServicesHelpers.listaOrder();
+      const searchInput = this.titulo.querySelector("#searchInput");
+      searchInput.addEventListener("input", () => this.filtrarCompras());
 
-      const row = document.createElement("div");
-      row.className = "row"; // Contenedor para las columnas
-
-      for (const order of listado) {
-        const orderData = {
-          name: order.customer.name,
-          created_at: order.createdAt,
-          email: order.customer.email,
-          phoneNumber: order.customer.phoneNumber,
-          // checked: order.checked,
-          aceptar: order.aceptar,
-          enCamino: order.enCamino,
-          finalizado: order.finalizado,
-          items: order.items,
-          id: order._id,
-        };
-
-        // Mostrar notificación de nuevo pedido
-        if (!order.aceptar) {
-          alert(`Nuevo pedido de ${orderData.name} (${orderData.email})`);
-        }
-
-        // Crear la tarjeta y añadirla a la fila
-        const cardCol = document.createElement("div");
-        cardCol.className = "col-md-6 mb-4"; // 3 columnas en pantallas medianas y más grandes
-        cardCol.appendChild(this.crearTarjeta(orderData));
-
-        row.appendChild(cardCol);
-      }
-
-      // Añadir la fila al contenedor principal
-      this.tabla.appendChild(row);
+      this.listado = await this.compraServicesHelpers.listaOrder();
+      this.mostrarCompras(this.listado); // Mostrar todas las compras inicialmente
     } catch (error) {
       console.log(error);
     }
+  }
+
+  mostrarCompras(listado) {
+    const row = document.createElement("div");
+    row.className = "row"; // Contenedor para las columnas
+
+    for (const order of listado) {
+      const orderData = {
+        name: order.customer.name,
+        created_at: order.createdAt,
+        email: order.customer.email,
+        phoneNumber: order.customer.phoneNumber,
+        aceptar: order.aceptar,
+        enCamino: order.enCamino,
+        finalizado: order.finalizado,
+        items: order.items,
+        id: order._id,
+      };
+
+      // Mostrar notificación de nuevo pedido
+      if (!order.aceptar) {
+        alert(`Nuevo pedido de ${orderData.name} (${orderData.email})`);
+      }
+
+      const cardCol = document.createElement("div");
+      cardCol.className = "col-md-6 mb-4"; // 3 columnas en pantallas medianas y más grandes
+      cardCol.appendChild(this.crearTarjeta(orderData));
+
+      row.appendChild(cardCol);
+    }
+
+    // Añadir la fila al contenedor principal
+    this.tabla.innerHTML = ""; // Limpiar antes de añadir
+    this.tabla.appendChild(row);
+  }
+
+  filtrarCompras() {
+    const searchInput = this.titulo
+      .querySelector("#searchInput")
+      .value.toLowerCase();
+    const comprasFiltradas = this.listado.filter((order) => {
+      const {
+        customer: { name, email, phoneNumber },
+        items,
+        aceptar,
+        enCamino,
+        finalizado,
+      } = order;
+
+      const estado = finalizado
+        ? "compra finalizada"
+        : enCamino
+        ? "en proceso de entrega"
+        : aceptar
+        ? "aceptado y enviado correo (en preparación)"
+        : "en espera de aceptación";
+
+      const productos = items.map((item) => item.name).join(" ");
+
+      return (
+        name.toLowerCase().includes(searchInput) ||
+        email.toLowerCase().includes(searchInput) ||
+        phoneNumber.toLowerCase().includes(searchInput) ||
+        estado.toLowerCase().includes(searchInput) ||
+        productos.toLowerCase().includes(searchInput)
+      );
+    });
+
+    this.mostrarCompras(comprasFiltradas);
   }
 
   crearTarjeta({
@@ -75,7 +118,6 @@ export class RenderCompras {
     email,
     phoneNumber,
     items,
-    // checked,
     aceptar,
     enCamino,
     created_at,
@@ -132,27 +174,29 @@ export class RenderCompras {
     card.className = "card";
 
     card.innerHTML = `
-      <div class="card-body w-100">
-        <h5 class="card-title">Cliente: ${name}</h5>
-        <p class="card-text"><strong>Email:</strong> ${email}</p>
-        <p class="card-text"><strong>Teléfono:</strong> ${phoneNumber}</p>
-        <p class="card-text"><strong>Fecha de creación:</strong> ${fechaFormateada}</p>
-        <p class="card-text"><strong>Productos:</strong><br> ${producto}</p>
-          <p class="card-text"><strong>Estado:  <h5 class="card-title">${estado}</h5></p>
-      </div>
-      <div class="card-footer text-center">
-       <p class="card-text"> Alertas</p>
-        <button type="button" class="btn btn-primary" data-aceptarPedido="${id}" ${
+    <div class="card-body w-100">
+      <button type="button" class="btn-close btn-close-black position-absolute top-0 end-0" aria-label="Eliminar" data-eliminarPedido="${id}"></button>
+      <p class="card-text"><strong>Orden N°:</strong> ${id}</p>
+      <h5 class="card-title">Cliente: ${name}</h5>
+      <p class="card-text"><strong>Email:</strong> ${email}</p>
+      <p class="card-text"><strong>Teléfono:</strong> ${phoneNumber}</p>
+      <p class="card-text"><strong>Fecha de creación:</strong> ${fechaFormateada}</p>
+      <p class="card-text"><strong>Productos:</strong><br> ${producto}</p>
+      <p class="card-text"><strong>Estado:  <h5 class="card-title">${estado}</h5></p>
+    </div>
+    <div class="card-footer text-center">
+      <p class="card-text"> Alertas</p>
+      <button type="button" class="btn btn-primary" data-aceptarPedido="${id}" ${
       btnAceptarDisabled ? "disabled" : ""
     }>Aceptar Pedido</button>
-        <button type="button" class="btn btn-primary" data-compraEnCamino="${id}" ${
+      <button type="button" class="btn btn-primary" data-compraEnCamino="${id}" ${
       btnEnCaminoDisabled ? "disabled" : ""
     }>En camino</button>
-        <button type="button" class="btn btn-danger" data-compraFin="${id}" ${
+      <button type="button" class="btn btn-danger" data-compraFin="${id}" ${
       btnFinDisabled ? "disabled" : ""
     }>Fin</button>   
-      </div>
-    `;
+    </div>
+  `;
 
     card
       .querySelector("[data-compraFin]")
@@ -172,6 +216,14 @@ export class RenderCompras {
       .querySelector("[data-compraEnCamino]")
       .addEventListener("click", async () => {
         await mensajeEnCaminoHandlerCompra(email, name, producto, id);
+        await this.renderCompraLista(); // Vuelve a renderizar la lista de compras
+      });
+
+    card
+      .querySelector("[data-eliminarPedido]")
+      .addEventListener("click", async () => {
+        // Aquí puedes agregar la lógica para eliminar el pedido.
+        await eliminarPedido(id);
         await this.renderCompraLista(); // Vuelve a renderizar la lista de compras
       });
 

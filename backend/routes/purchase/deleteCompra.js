@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import MONGODB_URI from "../../config.js";
 import Order from "../../models/Order.js";
 
-const deleteCompra = async (req, res) => {
+const deleteOrder = async (req, res) => {
   try {
     // Conectar a la base de datos
     await mongoose.connect(MONGODB_URI, {
@@ -25,4 +25,4 @@ const deleteCompra = async (req, res) => {
   }
 };
 
-export default deleteCompra;
+export default deleteOrder;

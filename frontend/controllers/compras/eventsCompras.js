@@ -10,12 +10,6 @@ export async function finalizarPedidoHandler(id) {
     try {
       const compraServicesHelpers = new CompraServices();
       await compraServicesHelpers.finalizarPedido(id);
-      //   event.target.closest(".row").remove();
-      //   const renderComprasInstance = new RenderCompras(
-      //     document.querySelector("[data-lista]"), // Asegúrate de usar el ID correcto
-      //     document.querySelector("[data-titulo]") // Asegúrate de usar el ID correcto
-      //   );
-      //   await renderComprasInstance.renderCompraLista();
     } catch (error) {
       console.error(error);
     }
@@ -32,11 +26,6 @@ export async function mensajeEnCaminoHandlerCompra(email, name, producto, id) {
       await compraServicesHelpers.compraEnCamino(id);
       await compraServicesHelpers.correoEnCaminoe(email, name, producto);
       alert("Correo de notificación enviado con éxito.");
-      //   const renderComprasInstance = new RenderCompras(
-      //     document.querySelector("[data-lista]"), // Asegúrate de usar el ID correcto
-      //     document.querySelector("[data-titulo]") // Asegúrate de usar el ID correcto
-      //   );
-      //   await renderComprasInstance.renderCompraLista();
     } catch (error) {
       console.error(error);
     }
@@ -58,35 +47,27 @@ export async function aceptarPedidoHandler(email, name, producto, id) {
       );
       console.log(response);
       alert("Correo de notificación enviado con éxito.");
-      //   const renderComprasInstance = new RenderCompras(
-      //     document.querySelector("[data-lista]"), // Asegúrate de usar el ID correcto
-      //     document.querySelector("[data-titulo]") // Asegúrate de usar el ID correcto
-      //   );
-      //   await renderComprasInstance.renderCompraLista();
     }
   } catch (error) {
     console.error("Error al aceptar el pedido o enviar el mensaje:", error);
   }
 }
 
-// export async function mensajePrepareHandlerCompra(email, name, producto) {
-//   // Implementación para preparar pedido
-//   try {
-//     const confirmacion = confirm("¿Desea marcar este pedido como preparado?");
-//     if (confirmacion) {
-//       const compraServicesHelpers = new CompraServices();
-//       await compraServicesHelpers.compraPrepare(email, name, producto);
-//       alert("Correo de notificación enviado con éxito.");
-//       const renderComprasInstance = new RenderCompras(
-//         document.querySelector("[data-lista]"), // Asegúrate de usar el ID correcto
-//         document.querySelector("[data-titulo]") // Asegúrate de usar el ID correcto
-//       );
-//       await renderComprasInstance.renderCompraLista();
-//     }
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+export async function eliminarPedido(id) {
+  // Implementación para preparar pedido
+  try {
+    const confirmacion = confirm(
+      "¿Desea eliminar esta orden? (ACCION IRREVERSIBLE)?"
+    );
+    if (confirmacion) {
+      const compraServicesHelpers = new CompraServices();
+      await compraServicesHelpers.eliminarCompra(id);
+      alert("Orden eliminada con éxito.");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 //   mostrarNotificacion(mensaje) {
 //     // Implementación básica para mostrar una notificación en la UI
