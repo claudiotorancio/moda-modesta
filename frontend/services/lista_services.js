@@ -30,7 +30,7 @@ export class ListaServices {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ myContent }),
+        body: JSON.stringify(myContent),
       });
     } catch (error) {
       console.error("Error al actualizar usuario:", error);
