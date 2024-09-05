@@ -43,7 +43,7 @@ export class RenderHelpers {
             </table>
             <button type="button" class="btn btn-success" id="enviar-promociones">Enviar Promociones</button>
             <div class="form-group mt-3">
-              <textarea class="form-control" id="contenido-promocion" rows="20" placeholder="Escribe tu promoción aquí...">${contenidoEditor}</textarea>
+              <textarea class="form-control" id="contenido-promocion" rows="20" placeholder="Escribe tu promoción aquí..."></textarea>
             </div>
           </div>
         </div>
