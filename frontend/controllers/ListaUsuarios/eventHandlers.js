@@ -124,9 +124,6 @@ export class EventHandlers {
 
   // Método para enviar promociones
   async enviarPromociones(myContent) {
-    // Realiza la acción deseada con el contenido, como enviar una solicitud HTTP
-    console.log("Contenido de la promoción:", myContent);
-
     await this.listaServicesHelpers.enviarPromocion(myContent);
   }
 }
