@@ -13,8 +13,8 @@ const sendMail = async (req, res) => {
       total,
       costoEnvio,
       checked,
-      enCamino,
-      finalizado,
+      enCamino = false, // Valor predeterminado
+      finalizado = false, // Valor predeterminado
     } = req.body;
 
     // Verificar que todos los campos requeridos están presentes
@@ -22,14 +22,14 @@ const sendMail = async (req, res) => {
       !nombre ||
       !email ||
       !telefono ||
-      provincia === undefined ||
-      codigoPostal === undefined ||
+      !provincia === undefined ||
+      !codigoPostal === undefined ||
       !productos ||
       !total ||
-      costoEnvio === undefined ||
-      checked === undefined ||
-      enCamino === undefined ||
-      finalizado === undefined
+      !costoEnvio === undefined ||
+      !checked === undefined ||
+      !enCamino === undefined ||
+      !finalizado === undefined
     ) {
       return res
         .status(400)
@@ -127,8 +127,8 @@ const sendMail = async (req, res) => {
         postalCode: codigoPostal,
       },
       checked: checked,
-      enCamino: enCamino,
-      finalizado: finalizado,
+      enCamino,
+      finalizado,
     });
 
     console.log(newOrder);
