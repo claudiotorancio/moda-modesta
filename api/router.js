@@ -118,9 +118,9 @@ router.post("/api/enviarPromocion/", requireAdmin, enviarPromocion);
 router.post("/api/costoEnvio", costoEnvio);
 
 // Rutas signin
-router.post("/api/signup", requireAdmin, signup);
-router.post("/api/signin", requireAdmin, signin);
-router.delete("/api/logout", requireAdmin, logout);
+router.post("/api/signup", signup);
+router.post("/api/signin", signin);
+router.delete("/api/logout", logout);
 // Rutas listado
 router.get("/api/getAdmin", requireAdmin, getAdmin);
 router.get("/api/getUser/:id", requireAdmin, getUser);
