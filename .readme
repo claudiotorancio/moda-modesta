@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background-color: #007bff;
+        color: #ffffff;
+        padding: 10px;
+        text-align: center;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .content {
+        margin: 20px 0;
+      }
+      .dress-card {
+        margin-bottom: 20px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+      .dress-card img {
+        width: 100%;
+        height: auto;
+      }
+      .dress-card .details {
+        padding: 10px;
+      }
+      .dress-card .details h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .dress-card .details p {
+        margin: 10px 0;
+        color: #555555;
+      }
+      .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #ffffff;
+        background-color: #007bff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      .footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 12px;
+        color: #777777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Promoción Especial de Vestidos</h1>
+      </div>
+      <div class="content">
+        <div class="dress-card">
+          <img src="path/to/your-dress1.jpg" alt="Vestido Elegante" />
+          <div class="details">
+            <h2>Vestido Elegante</h2>
+            <p>
+              Vestido elegante para ocasiones especiales, con detalles en encaje
+              y una silueta ajustada.
+            </p>
+            <p><strong>Precio:</strong> $150.00</p>
+            <a href="path/to/your-site" class="btn">Ver Más</a>
+          </div>
+        </div>
+
+        <div class="dress-card">
+          <img src="path/to/your-dress2.jpg" alt="Vestido Casual" />
+          <div class="details">
+            <h2>Vestido Casual</h2>
+            <p>
+              Vestido casual perfecto para el día a día, cómodo y con un diseño
+              moderno.
+            </p>
+            <p><strong>Precio:</strong> $90.00</p>
+            <a href="path/to/your-site" class="btn">Ver Más</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <p>
+          Gracias por tu interés en nuestras promociones. Si tienes alguna
+          pregunta, no dudes en contactarnos.
+        </p>
+        <p>Moda Modesta | Calle Ejemplo 123, Ciudad, País</p>
+      </div>
+    </div>
+  </body>
+</html>

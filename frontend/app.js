@@ -42,9 +42,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const contactUser = document.querySelector("[data-contact]");
   // const crearProductos = document.querySelector("[data-crearProductos]");
   // const pedidos = document.querySelector("[data-pedidos]");
-  // const resenas = document.querySelector("[data-resenas]");
+  const resenas = document.querySelector("[data-resenas]");
   // const suscriptores = document.querySelector("[data-suscriptores]");
-  // const ventas = document.querySelector("[data-ventas]");
+  const ventas = document.querySelector("[data-ventas]");
   const tabla = document.querySelector("[data-lista]");
   const titulo = document.querySelector("[data-titulo]");
 
@@ -109,6 +109,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     const loginControllersInstance = new LoginControllers();
     loginControllersInstance.renderSignin();
+  });
+
+  resenas.addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("Seccion en Construccion");
+  });
+
+  ventas.addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("Seccion en Construccion");
   });
 
   const logOut = document.querySelector("[data-logOut]");
