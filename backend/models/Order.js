@@ -27,6 +27,8 @@ const orderSchema = new mongoose.Schema(
       province: { type: String, required: false },
       postalCode: { type: String, required: false },
     },
+    enCamino: { type: Boolean, required: false },
+    finalizado: { type: Boolean, required: false },
     checked: { type: Boolean, required: false },
   },
   { timestamps: true }

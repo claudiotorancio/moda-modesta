@@ -32,6 +32,12 @@ import costoEnvio from "../backend/routes/Envios/costoEnvio.js";
 import productoSimilar from "../backend/routes/product/productoSimilar.js";
 import { requireAdmin } from "../backend/routes/requireAdmin.js";
 import purchaseOrder from "../backend/routes/purchase/purchase.js";
+import deleteCompra from "../backend/routes/purchase/deleteCompra.js";
+import compraPrepare from "../backend/routes/purchase/compraPrepare.js";
+import compraEnCamino from "../backend/routes/purchase/compraEnCamino.js";
+import aceptarPedido from "../backend/routes/purchase/aceptarPedido.js";
+import correoEnCamino from "../backend/routes/purchase/correoEnCamino.js";
+import finalizarPedido from "../backend/routes/purchase/finalizarPedido.js";
 import path from "path";
 
 const router = Router();
@@ -92,6 +98,12 @@ const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
 //compras
 router.get("/api/listaOrder", purchaseOrder);
+router.delete("/api/deleteCompra/:id", deleteCompra);
+router.post("/api/compraPrepare", compraPrepare);
+router.put("/api/compraEnCamino/:id", compraEnCamino);
+router.put("/api/aceptarPedido/:id", aceptarPedido);
+router.post("/api/correoEnCamino", correoEnCamino);
+router.put("/api/finalizarPedido/:id", finalizarPedido);
 
 // Rutas nodeMailer
 router.post("/api/sendMail", sendMail);
@@ -119,7 +131,7 @@ router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/renderInicio", renderInicio);
 router.get("/api/renderProducts", requireAdmin, renderProducts);
 router.post("/api/createProduct", uploadSingle, createProduct);
-router.delete("/api/deleteProduct/:id", deleteProduct);
+router.delete("/api/deleteProduct/:id", requireAdmin, deleteProduct);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put("/api/updateProduct/:id", uploadSingleUpdate, updateProduct);
 router.get("/api/productoSimilar/:id", productoSimilar);

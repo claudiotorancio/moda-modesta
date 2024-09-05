@@ -11,7 +11,10 @@ export class Compras {
 
   async renderLista() {
     try {
-      await this.renderComprasInstance.renderCompraLista();
+      await this.renderComprasInstance.renderCompraLista(
+        this.tabla,
+        this.titulo
+      );
     } catch (error) {
       console.log(error);
     }
