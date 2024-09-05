@@ -31,7 +31,7 @@ const orderSchema = new mongoose.Schema(
     enCamino: { type: Boolean, required: false },
     finalizado: { type: Boolean, required: false },
   },
-  { timestamps: true }
+  { timestamps: true, strict: false }
 );
 
 export default mongoose.model("Order", orderSchema);
