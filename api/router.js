@@ -112,7 +112,7 @@ router.post("/api/suscribeMail", suscribeMail);
 router.get("/api/confirmMail", confirmMail);
 router.get("/success", success);
 router.get("/error", error);
-router.post("/api/enviarPromocion/", requireAdmin, enviarPromocion);
+router.post("/api/enviarPromocion/", enviarPromocion);
 
 //rutas envio
 router.post("/api/costoEnvio", costoEnvio);
