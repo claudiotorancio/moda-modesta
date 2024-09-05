@@ -97,13 +97,13 @@ export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 3);
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
 //compras
-router.get("/api/listaOrder", purchaseOrder);
-router.delete("/api/deleteCompra/:id", deleteCompra);
-router.post("/api/compraPrepare", compraPrepare);
-router.put("/api/compraEnCamino/:id", compraEnCamino);
-router.put("/api/aceptarPedido/:id", aceptarPedido);
-router.post("/api/correoEnCamino", correoEnCamino);
-router.put("/api/finalizarPedido/:id", finalizarPedido);
+router.get("/api/listaOrder", requireAdmin, purchaseOrder);
+router.delete("/api/deleteCompra/:id", requireAdmin, deleteCompra);
+router.post("/api/compraPrepare", requireAdmin, compraPrepare);
+router.put("/api/compraEnCamino/:id", requireAdmin, compraEnCamino);
+router.put("/api/aceptarPedido/:id", requireAdmin, aceptarPedido);
+router.post("/api/correoEnCamino", requireAdmin, correoEnCamino);
+router.put("/api/finalizarPedido/:id", requireAdmin, finalizarPedido);
 
 // Rutas nodeMailer
 router.post("/api/sendMail", sendMail);
@@ -120,9 +120,9 @@ router.post("/api/signup", signup);
 router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 // Rutas listado
-router.get("/api/getAdmin", getAdmin);
+router.get("/api/getAdmin", requireAdmin, getAdmin);
 router.get("/api/getUser/:id", getUser);
-router.get("/api/renderLista", listaAdmin);
+router.get("/api/renderLista", requireAdmin, listaAdmin);
 router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);
 router.put("/api/updateUser/:id", requireAdmin, updateUser);
 router.get("/api/contadorProductos/:id", contadorProductos);
