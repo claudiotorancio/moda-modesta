@@ -27,7 +27,10 @@ export class ListaServices {
     try {
       await fetch(`${this.baseURL}/api/enviarPromocion/`, {
         method: "POST",
-        body: myContent,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ myContent }),
       });
     } catch (error) {
       console.error("Error al actualizar usuario:", error);

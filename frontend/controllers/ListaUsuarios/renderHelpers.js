@@ -10,10 +10,10 @@ export class RenderHelpers {
   }
   async renderUsersList() {
     try {
-      // Obtener el contenido actual del editor antes de la renderización
-      const contenidoEditor = tinymce.activeEditor
-        ? tinymce.activeEditor.getContent()
-        : "";
+      // // Obtener el contenido actual del editor antes de la renderización
+      // const contenidoEditor = tinymce.activeEditor
+      //   ? tinymce.activeEditor.getContent()
+      //   : "";
 
       // Limpiar el contenedor antes de renderizar
       this.titulo.innerHTML = "";
@@ -63,76 +63,90 @@ export class RenderHelpers {
         tablaCuerpo.appendChild(this.nuevaLista(usuarioData));
       }
 
-      tinymce.init({
-        selector: "#contenido-promocion",
-        plugins: [
-          "anchor",
-          "autolink",
-          "charmap",
-          "codesample",
-          "emoticons",
-          "image",
-          "link",
-          "lists",
-          "media",
-          "searchreplace",
-          "table",
-          "visualblocks",
-          "wordcount",
-          "checklist",
-          "mediaembed",
-          "casechange",
-          "export",
-          "formatpainter",
-          "pageembed",
-          "a11ychecker",
-          "tinymcespellchecker",
-          "permanentpen",
-          "powerpaste",
-          "advtable",
-          "advcode",
-          "editimage",
-          "advtemplate",
-          "ai",
-          "mentions",
-          "tinycomments",
-          "tableofcontents",
-          "footnotes",
-          "mergetags",
-          "autocorrect",
-          "typography",
-          "inlinecss",
-          "markdown",
-        ],
-        toolbar:
-          "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
-        tinycomments_mode: "embedded",
-        tinycomments_author: "Author name",
-        mergetags_list: [
-          { value: "First.Name", title: "First Name" },
-          { value: "Email", title: "Email" },
-        ],
-        ai_request: (request, respondWith) =>
-          respondWith.string(() =>
-            Promise.reject("See docs to implement AI Assistant")
-          ),
-      });
+      // tinymce.init({
+      //   selector: "#contenido-promocion",
+      //   plugins: [
+      //     "anchor",
+      //     "autolink",
+      //     "charmap",
+      //     "codesample",
+      //     "emoticons",
+      //     "image",
+      //     "link",
+      //     "lists",
+      //     "media",
+      //     "searchreplace",
+      //     "table",
+      //     "visualblocks",
+      //     "wordcount",
+      //     "checklist",
+      //     "mediaembed",
+      //     "casechange",
+      //     "export",
+      //     "formatpainter",
+      //     "pageembed",
+      //     "a11ychecker",
+      //     "tinymcespellchecker",
+      //     "permanentpen",
+      //     "powerpaste",
+      //     "advtable",
+      //     "advcode",
+      //     "editimage",
+      //     "advtemplate",
+      //     "ai",
+      //     "mentions",
+      //     "tinycomments",
+      //     "tableofcontents",
+      //     "footnotes",
+      //     "mergetags",
+      //     "autocorrect",
+      //     "typography",
+      //     "inlinecss",
+      //     "markdown",
+      //   ],
+      //   toolbar:
+      //     "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
+      //   tinycomments_mode: "embedded",
+      //   tinycomments_author: "Author name",
+      //   mergetags_list: [
+      //     { value: "First.Name", title: "First Name" },
+      //     { value: "Email", title: "Email" },
+      //   ],
+      //   ai_request: (request, respondWith) =>
+      //     respondWith.string(() =>
+      //       Promise.reject("See docs to implement AI Assistant")
+      //     ),
+      // });
 
-      // Volver a establecer el contenido del editor después de la renderización
-      if (tinymce.activeEditor) {
-        tinymce.activeEditor.setContent(contenidoEditor);
-      }
+      // // Volver a establecer el contenido del editor después de la renderización
+      // if (tinymce.activeEditor) {
+      //   tinymce.activeEditor.setContent(contenidoEditor);
+      // }
 
       // Agregar event listener al botón de enviar promociones
       document
         .getElementById("enviar-promociones")
         .addEventListener("click", () => {
-          confirm(
-            "Esta a punto de enviar este contenido a todos los suscriptores"
+          // Confirmar la acción del usuario
+          const confirmation = confirm(
+            "Está a punto de enviar este contenido a todos los suscriptores. ¿Desea continuar?"
           );
-          const myContent = tinymce.activeEditor.getContent();
-          if (confirm) {
+
+          if (confirmation) {
+            // Obtener el contenido del textarea
+            const textarea = document.getElementById("contenido-promocion");
+            const myContent = textarea.value;
+
+            // Verificar que se ha capturado contenido
+            if (myContent.trim() === "") {
+              alert("El contenido de la promoción no puede estar vacío.");
+              return;
+            }
+
+            // Llamar a la función `enviarPromociones` con el contenido
             this.buttonHandler.enviarPromociones(myContent);
+
+            // Volver a renderizar la lista de usuarios (opcional)
             this.renderUsersList();
           }
         });
