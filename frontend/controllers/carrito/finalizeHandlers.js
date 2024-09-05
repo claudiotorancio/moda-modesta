@@ -110,8 +110,6 @@ Al dar finalizado se enviarán los datos para el pago al correo ingresado. Por f
         provincia: this.provinciaDestino,
         codigoPostal: this.cpDestino,
         checked: this.isChecked,
-        enCamino,
-        finalizado,
       };
 
       try {
