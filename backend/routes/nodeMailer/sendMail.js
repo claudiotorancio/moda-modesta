@@ -26,10 +26,10 @@ const sendMail = async (req, res) => {
       !codigoPostal === undefined ||
       !productos ||
       !total ||
-      !costoEnvio === undefined ||
-      !checked === undefined ||
-      !enCamino === undefined ||
-      !finalizado
+      costoEnvio === undefined ||
+      checked === undefined ||
+      enCamino === undefined ||
+      finalizado === undefined
     ) {
       return res
         .status(400)
