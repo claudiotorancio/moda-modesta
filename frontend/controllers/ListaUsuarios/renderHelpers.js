@@ -2,8 +2,7 @@ import { ListaServices } from "../../services/lista_services.js";
 import { EventHandlers } from "./eventHandlers.js";
 
 export class RenderHelpers {
-  constructor(tabla, titulo) {
-    this.tabla = tabla;
+  constructor(titulo) {
     this.titulo = titulo;
     this.listaServicesHelpers = new ListaServices();
     this.buttonHandler = new EventHandlers();
@@ -17,7 +16,6 @@ export class RenderHelpers {
 
       // Limpiar el contenedor antes de renderizar
       this.titulo.innerHTML = "";
-      this.tabla.innerHTML = "";
 
       const { listado, usersCantidad } =
         await this.listaServicesHelpers.listaUsers();

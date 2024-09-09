@@ -7,21 +7,21 @@ export class ListaServices {
 
   //validar admin en session
 
-  getAdmin = async () => {
-    try {
-      const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
-      const data = await respuesta.json();
-      console.log(data);
-      if (data.ok) {
-        return true; // El usuario es administrador
-      } else {
-        return false; // El usuario no es administrador
-      }
-    } catch (error) {
-      console.error("Error al obtener usuario:", error);
-      throw error;
-    }
-  };
+  // getAdmin = async () => {
+  //   try {
+  //     const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
+  //     const data = await respuesta.json();
+  //     console.log(data);
+  //     if (data.ok) {
+  //       return true; // El usuario es administrador
+  //     } else {
+  //       return false; // El usuario no es administrador
+  //     }
+  //   } catch (error) {
+  //     console.error("Error al obtener usuario:", error);
+  //     throw error;
+  //   }
+  // };
 
   enviarPromocion = async (myContent) => {
     try {

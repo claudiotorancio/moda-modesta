@@ -14,11 +14,16 @@ export function mostrarCarrito() {
   const carritoMonto = carritoContainer.querySelector(".carrito-monto");
   const summaryDetails = document.querySelector("[data-table]");
 
-  carritoNotificacion.textContent = this.items.reduce(
+  // Calcular cantidad total y monto total
+  const cantidadTotal = this.items.reduce(
     (acc, item) => acc + item.cantidad,
     0
   );
-  carritoMonto.textContent = `$${this.calcularTotal().toFixed(2)}`;
+  const subtotal = this.calcularSubtotal();
+  const total = this.calcularTotal();
+
+  carritoNotificacion.textContent = cantidadTotal;
+  carritoMonto.textContent = `$${total.toFixed(2)}`;
 
   if (this.items.length !== 0) {
     const progresoCompra = document.createElement("div");
@@ -39,55 +44,54 @@ export function mostrarCarrito() {
     summaryDetails.appendChild(progresoCompra);
 
     const carritoContent = `
- <div class="container main-container">
-  <div class="summary-details panel p-none">
-    <table class="table table-scrollable">
-      <tbody>
-        ${this.items
-          .map(
-            (item) => `
-            <tr>
-              <td class="summary-img-wrap">
-                <img class="card-img-top" alt="${item.name}" title="${
-              item.name
-            }" src="${item.imagePath[0]}">
-              </td>
-              <td>${item.name} × ${item.cantidad} <br> <small>${
-              item.size
-            }</small></td>
-              <td class="table-price">
-                <span>$ ${item.price.toFixed(2)}</span>
-              </td>
-              <td class="table-price">
-                <button class="btn btn-danger" data-id="${
-                  item._id
-                }" data-size="${item.size}">
-                  <i class="fa-solid fa-scissors"></i>
-                </button>
-              </td>
-            </tr>
-          `
-          )
-          .join("")}
-      </tbody>
-    </table>
+      <div class="container main-container">
+        <div class="summary-details panel p-none">
+          <table class="table table-scrollable">
+            <tbody>
+              ${this.items
+                .map(
+                  (item) => `
+                  <tr>
+                    <td class="summary-img-wrap">
+                      <img class="card-img-top" alt="${item.name}" title="${
+                    item.name
+                  }" src="${item.imagePath}">
+                    </td>
+                    <td>${item.name} × ${item.cantidad} <br> <small>${
+                    item.size
+                  }</small></td>
+                    <td class="table-price">
+                      <span>$ ${item.price.toFixed(2)}</span>
+                    </td>
+                    <td class="table-price">
+                      <button class="btn btn-danger" data-id="${
+                        item._id
+                      }" data-size="${item.size}">
+                        <i class="fa-solid fa-scissors"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `
+                )
+                .join("")}
+            </tbody>
+          </table>
 
           <div class="table-subtotal mb-9">
             <table class="table">
               <tbody>
-              
                 <tr>
                   <td>SUBTOTAL</td>
-                  <td class="text-right mb-5"><span>$ ${this.calcularSubtotal().toFixed(
+                  <td class="text-right mb-5"><span>$ ${subtotal.toFixed(
                     2
                   )}</span></td>
                 </tr>
                 <tr>
                   <td>ENVIO
-                  <div>
-                    <button id="toggle-envio-form" class="btn btn-link">
-                      <i class="fa-solid fa-chevron-down continuos-move"></i>
-                    </button>
+                    <div>
+                      <button id="toggle-envio-form" class="btn btn-link">
+                        <i class="fa-solid fa-chevron-down continuos-move"></i>
+                      </button>
                     </div>
                   </td>
                   <td class="text-right">
@@ -122,7 +126,7 @@ export function mostrarCarrito() {
                 <tr>
                   <td class="table-price">TOTAL</td>
                   <td class="text-right table-price">
-                    <span id="final-total">$ 0,00</span>
+                    <span id="final-total">$ ${total.toFixed(2)}</span>
                   </td>
                 </tr>
               </tfoot>
@@ -138,12 +142,11 @@ export function mostrarCarrito() {
 
     summaryDetails.insertAdjacentHTML("beforeend", carritoContent);
 
+    // Attach event listeners
     document
       .getElementById("toggle-envio-form")
       .addEventListener("click", function () {
         const icon = this.querySelector("i");
-
-        // Alternar entre las clases 'icon-up' y 'icon-down'
         if (icon.classList.contains("icon-down")) {
           icon.classList.remove("icon-down");
           icon.classList.add("icon-up");
@@ -153,7 +156,6 @@ export function mostrarCarrito() {
         }
       });
 
-    // Attach event listeners
     document
       .getElementById("toggle-envio-form")
       .addEventListener("click", handleEnvioFormToggle);
@@ -169,6 +171,7 @@ export function mostrarCarrito() {
     document
       .querySelector("#coordinar-vendedor")
       .addEventListener("input", handleCoordinarVendedorChange.bind(this));
+
     summaryDetails.querySelectorAll(".btn-danger").forEach((button) => {
       button.addEventListener("click", (event) => {
         this.eliminarProducto(event.target.dataset.id);

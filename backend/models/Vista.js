@@ -12,6 +12,7 @@ const VistaSchema = new Schema(
     user_id: { type: Schema.Types.ObjectId, ref: "Users" },
     created_at: { type: Date, default: Date.now },
     sizes: [String],
+    inCart: { type: Boolean, default: false },
   },
   {
     versionKey: false,

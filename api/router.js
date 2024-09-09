@@ -39,6 +39,11 @@ import aceptarPedido from "../backend/routes/purchase/aceptarPedido.js";
 import correoEnCamino from "../backend/routes/purchase/correoEnCamino.js";
 import finalizarPedido from "../backend/routes/purchase/finalizarPedido.js";
 import enviarPromocion from "../backend/routes/list/enviiarpromocion.js";
+import getProductsCart from "../backend/routes/carrito/getProductsCart.js";
+import addProductCart from "../backend/routes/carrito/addProductCart.js";
+import putProductCart from "../backend/routes/carrito/putProductCart.js";
+import deleteProductCart from "../backend/routes/carrito/deleteProductCart.js";
+
 import path from "path";
 
 const router = Router();
@@ -97,6 +102,13 @@ export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 3);
 // export const uploadMultiple = upload(process.env.BUCKET_AWS).array("images"); // 10 es el límite de imágenes, puedes ajustarlo según tus necesidades
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
+//carrito
+
+router.get("/api/getProductsCart", getProductsCart);
+router.post("/api/addProductCart", addProductCart);
+router.put("/api/putProductCart/:id", putProductCart);
+router.delete("/api/deleteProductCart/:id", deleteProductCart);
+
 //compras
 router.get("/api/listaOrder", requireAdmin, purchaseOrder);
 router.delete("/api/deleteOrder/:id", requireAdmin, deleteOrder);
@@ -112,7 +124,7 @@ router.post("/api/suscribeMail", suscribeMail);
 router.get("/api/confirmMail", confirmMail);
 router.get("/success", success);
 router.get("/error", error);
-router.post("/api/enviarPromocion/", enviarPromocion);
+router.post("/api/enviarPromocion/", requireAdmin, enviarPromocion);
 
 //rutas envio
 router.post("/api/costoEnvio", costoEnvio);
@@ -122,12 +134,12 @@ router.post("/api/signup", signup);
 router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 // Rutas listado
-router.get("/api/getAdmin", requireAdmin, getAdmin);
-router.get("/api/getUser/:id", requireAdmin, getUser);
-router.get("/api/renderLista", requireAdmin, listaAdmin);
-router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);
-router.put("/api/updateUser/:id", requireAdmin, updateUser);
-router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
+router.get("/api/getAdmin", getAdmin);
+router.get("/api/getUser/:id", getUser);
+router.get("/api/renderLista", listaAdmin);
+router.delete("/api/deleteUser/:id", deleteUser);
+router.put("/api/updateUser/:id", updateUser);
+router.get("/api/contadorProductos/:id", contadorProductos);
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/renderInicio", renderInicio);
@@ -135,7 +147,12 @@ router.get("/api/renderProducts", requireAdmin, renderProducts);
 router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
 router.delete("/api/deleteProduct/:id", requireAdmin, deleteProduct);
 router.get("/api/detailsProduct/:id", detailsProduct);
-router.put("/api/updateProduct/:id", uploadSingleUpdate, updateProduct);
+router.put(
+  "/api/updateProduct/:id",
+  requireAdmin,
+  uploadSingleUpdate,
+  updateProduct
+);
 router.get("/api/productoSimilar/:id", productoSimilar);
 
 export default router;

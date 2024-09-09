@@ -58,12 +58,23 @@ export const mostrarProducto = async (
 <div class="row mt-4">
   <div class="col-md-6 mx-auto">
     <div class="card-form">
-      <h4 class="card-title text-center">${name}</h4>
+      <div class="d-flex justify-content-between align-items-center">
+        <h4 class="card-title">${name}</h4>
+        <div class="text-center">
+          <a id="compartir-producto" title="Compartir" class="icono-compartir d-flex align-items-center">
+            <i class="fa-solid fa-share-nodes"></i>
+            <p style="margin: 0; margin-left: 5px;">Compartir</p>
+          </a>
+        </div>
+      </div>
       <hr>
-      <div class="card-text" style="max-height: 200px; overflow-y: auto;">
+      <div class="card-text" style="max-height: 200px;">
         ${description}
       </div>
     </div>
+  </div>
+</div>
+
     
     <div class="mt-auto pt-3">
       <label for="variation_1" class="form-label">Talles disponibles</label>
@@ -73,12 +84,7 @@ export const mostrarProducto = async (
           .join("")}
       </select>
 
-      <div class="text-center mb-3">
-        <a id="compartir-producto" title="Compartir" class="icono-compartir">
-          <i class="fa-solid fa-share-nodes"></i>
-          <p style="margin: 0;">Compartir</p>
-        </a>
-      </div>
+      
 
       <div class="text-center">
         <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>

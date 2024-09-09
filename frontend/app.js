@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   cargarReseñas();
 
   const listaServicesInstance = new ListaServices();
-  const isAdmin = await listaServicesInstance.getAdmin();
+  // const isAdmin = await listaServicesInstance.getAdmin();
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
   const divUsuario = document.querySelector(".rounded-circle");
@@ -45,11 +45,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const resenas = document.querySelector("[data-resenas]");
   // const suscriptores = document.querySelector("[data-suscriptores]");
   const ventas = document.querySelector("[data-ventas]");
-  const tabla = document.querySelector("[data-lista]");
+
   const titulo = document.querySelector("[data-titulo]");
 
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
-  if (user && isAdmin) {
+  if (user) {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "block";
     });
@@ -57,14 +57,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const envio = document.querySelector("[data-pedidos]");
     envio.addEventListener("click", (e) => {
       e.preventDefault();
-      const comprasInstance = new Compras(tabla, titulo);
+      const comprasInstance = new Compras(titulo);
       comprasInstance.renderLista();
     });
 
     const crearProducto = document.querySelector("[data-crearProductos]");
     crearProducto.addEventListener("click", (e) => {
       e.preventDefault();
-      const productForm = new ProductForm(tabla, titulo);
+      const productForm = new ProductForm(titulo);
       productForm.render();
     });
 
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const susxriptores = document.querySelector("[data-suscriptores]");
     susxriptores.addEventListener("click", async (e) => {
       e.preventDefault();
-      const ListaControllersInstamce = new ListaControllers(tabla, titulo);
+      const ListaControllersInstamce = new ListaControllers(titulo);
       await ListaControllersInstamce.renderLista();
     });
 

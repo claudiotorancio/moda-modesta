@@ -4,17 +4,14 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1.25rem;
-  margin-bottom: 4rem;
+
+  text-align: left;
 }
 
 .texto-categoria {
-  width: 85%;
-  height: 2.37rem;
-  display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 2rem;
+
   align-items: center;
 }
 
@@ -23,14 +20,16 @@
   height: 40vh;
 }
 
-.texto-categoria h2 {
-  font-size: 32px;
+.texto-categoria {
+  font-size: xx-large;
+
+  flex-direction: row;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .texto-categoria a {
-  margin-top: 1rem;
-  font-size: 16px;
-  color: var(--fuente-productos-azul);
 }
 
 .texto-categoria a img {
@@ -46,7 +45,7 @@
 }
 .card {
   justify-content: flex-start;
-  margin: 2rem;
+  margin: 1rem;
   transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   background-color: var(--background-cards);
   overflow: hidden;
@@ -161,6 +160,19 @@ div.card:hover {
 }
 
 @media (min-width: 320px) and (max-width: 768px) {
+  .categoria {
+    display: flex;
+  }
+  .texto-categoria {
+    margin-right: 10rem;
+    margin-bottom: 0rem;
+    align-items: center;
+    font-size: large;
+    text-align: left;
+    font-weight: bold;
+    display: flex;
+  }
+
   .card {
     transition: none;
   }
@@ -245,8 +257,19 @@ div.card:hover {
 
   .overlay-icon {
     position: absolute;
-    top: 48%;
-    left: 82%;
+    top: 85%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    font-size: 1.3rem; /* Tamaño del ícono */
+    color: white; /* Color del ícono */
+    opacity: 0.8; /* Transparencia del ícono */
+    pointer-events: none; /* Hace que el ícono no interfiera con los clics */
+  }
+
+  .overlay-icon1 {
+    position: absolute;
+    top: 12%;
+    left: 23%;
     transform: translate(-50%, -50%);
     font-size: 1.3rem; /* Tamaño del ícono */
     color: white; /* Color del ícono */

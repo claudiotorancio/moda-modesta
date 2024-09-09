@@ -2,8 +2,7 @@ import { modalControllers } from "../../modal/modal.js";
 import productoServices from "../../services/product_services.js";
 
 export class ProductForm {
-  constructor(tabla, titulo) {
-    this.initForm = tabla;
+  constructor(titulo) {
     this.titulo = titulo;
   }
 
@@ -11,13 +10,12 @@ export class ProductForm {
   render() {
     this.clearForm();
     const card = this.createForm();
-    this.initForm.appendChild(card);
+    this.titulo.appendChild(card);
     this.setupFormSubmitHandler();
   }
 
   // Vaciar contenido
   clearForm() {
-    this.initForm.innerHTML = "";
     this.titulo.innerHTML = "";
   }
 
@@ -101,7 +99,7 @@ export class ProductForm {
 
   // Capturar el evento submit
   setupFormSubmitHandler() {
-    const form = this.initForm.querySelector("[data-form]");
+    const form = this.titulo.querySelector("[data-form]");
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleSubmit();

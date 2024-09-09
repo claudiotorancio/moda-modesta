@@ -15,6 +15,8 @@ export function initializeCategoryControls() {
 
       try {
         const tarjetas = contenedorProductos.querySelectorAll(".card");
+        const containers = contenedorProductos.querySelectorAll(".container");
+        const lupas = contenedorProductos.querySelectorAll(".overlay-icon");
 
         if (tarjetas.length === 0) {
           contenedorProductos.innerHTML =
@@ -27,6 +29,14 @@ export function initializeCategoryControls() {
 
           tarjetas.forEach((tarjeta) => {
             tarjeta.classList.add("allCard");
+          });
+
+          containers.forEach((contenedor) => {
+            contenedor.style.display = "block";
+          });
+
+          lupas.forEach((lupa) => {
+            lupa.classList.add("overlay-icon1");
           });
 
           const imagen = contenedorProductos.querySelectorAll(".img-card");
@@ -48,7 +58,7 @@ export function initializeCategoryControls() {
             }
           });
 
-          categoriaBtn.textContent = "Volver";
+          categoriaBtn.innerHTML = `<i class="fa-solid fa-arrow-left"></i> Volver`;
           enInicio = true;
           volverBtn.classList.add("show"); // Mostrar el botón "Volver"
           window.scrollTo({ top: 330, behavior: "smooth" });
@@ -61,14 +71,6 @@ export function initializeCategoryControls() {
       } catch (error) {
         console.error("Error al obtener los productos:", error);
       }
-    });
-  });
-
-  document.querySelectorAll(".ver-todos").forEach((enlace) => {
-    enlace.addEventListener("click", function (event) {
-      event.preventDefault();
-      const contenedorProductos = this.parentElement.nextElementSibling;
-      contenedorProductos.classList.toggle("ver-todos-activado");
     });
   });
 

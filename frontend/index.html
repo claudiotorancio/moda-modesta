@@ -23,69 +23,53 @@
 </head>
 
 <body>
-  <header  class="header header fixed-top">
-    <div class="cabecera_container">
-      <img class="cabecera_logo" src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png" alt="modaModesta logo" />
-      <div class="busqueda">
-        <form action="">
-          <input type="search" class="busqueda_campo" placeholder="¿Qué deseas buscar?" name="search" />
-          <button class="button-busqueda">
-            <img src="https://myimagescnd.s3.us-east-2.amazonaws.com/lupa.png" alt="Icono Lupa" />
-          </button>
-        </form>
-      </div>
-      <div class="div-usuario bg-light p-2 rounded-circle">
-        <a href="#" class="d-flex align-items-center">
-            <div class="profile-notificacion mr-2">
-                <span class="data-user"></span>
-            </div>
-        </a>
-    </div>
-    <div class="carrito-link">
-      <a href="#" class="js-toggle-cart " data-modal-url="productoModalCarrito">
-          <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/carrito.png" alt="Carrito de compras">
-          <div class="carrito-notificacion">
-              <span class="carrito-cantidad">0</span>
+      <header  class="header header fixed-top">
+          <div class="cabecera_container">
+            <img class="cabecera_logo" src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png" alt="modaModesta logo" />
+              <div class="busqueda">
+                <form action="">
+                  <input type="search" class="busqueda_campo" placeholder="¿Qué deseas buscar?" name="search" />
+                  <button class="button-busqueda">
+                    <img src="https://myimagescnd.s3.us-east-2.amazonaws.com/lupa.png" alt="Icono Lupa" />
+                  </button>
+                </form>
+              </div>
+              <div class="div-usuario bg-light p-2 rounded-circle">
+                <a href="#" class="d-flex align-items-center">
+                    <div class="profile-notificacion mr-2">
+                        <span class="data-user"></span>
+                    </div>
+                </a>
+              </div>
+              <div class="carrito-link">
+                <a href="#" class="js-toggle-cart " data-modal-url="productoModalCarrito">
+                    <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/carrito.png" alt="Carrito de compras">
+                    <div class="carrito-notificacion">
+                        <span class="carrito-cantidad">0</span>
+                    </div>
+                    <span class="carrito-monto">$0.00</span>
+                </a>
+              </div>
+              <a href=""><button type="submit" id="login" class="btn btn-primary" data-log></button></a>
+              <a href=""><button type="submit" id="login" class="btn btn-secondary" data-logOut></button></a>
+              <button class="button-busqueda-login">
+                <img src="https://myimagescnd.s3.us-east-2.amazonaws.com/lupa-negro.png" alt="Icono lupa" />
+              </button>
           </div>
-          <span class="carrito-monto">$0.00</span>
-      </a>
-  </div>
-    
-  
-      <a href=""><button type="submit" id="login" class="btn btn-primary" data-log></button></a>
-      <a href=""><button type="submit" id="login" class="btn btn-secondary" data-logOut></button></a>
-      <button class="button-busqueda-login">
-        <img src="https://myimagescnd.s3.us-east-2.amazonaws.com/lupa-negro.png" alt="Icono lupa" />
-      </button>
-    </div>
-    <div id="menuBtn">
-      <div id="menu-mobile">&#9776;
-    <div >
-      <ul>
-       
-  <li><a href="#destacados">Destacados</a></li>
-        
-    <li><a href="#vestidos">Vestidos</a></li>
-      
-        <li><a href="#polleras">Polleras</a></li>
-       
-        <li><a href="#diversos">Diversos</a></li>
-
-        <li><a href="#contacto">Contacto</a></li>
-    
-    
-    </ul>
-    </div>
-    </div>
-    </div>
-  </header>
-  <!-- formulario de envio -->
-  
-
-
-<!-- fin de formulario -->
-</body>
-
+          <div id="menuBtn">
+            <div id="menu-mobile">&#9776;
+              <div >
+                <ul>            
+                    <li><a href="#destacados">Destacados</a></li>              
+                    <li><a href="#vestidos">Vestidos</a></li>            
+                    <li><a href="#polleras">Polleras</a></li>                      
+                    <li><a href="#diversos">Diversos</a></li>                
+                    <li><a href="#contacto">Contacto</a></li>     
+                </ul>
+              </div>
+            </div>
+          </div>        
+      </header>
 
     <main class="contenido_container">
       <section  class="contenido_container">
@@ -104,13 +88,6 @@
           <button class="btn btn-primary admin-only me-2" data-Ventas>Ventas</button>
         </div>
         <div class="card-lista" style="margin-bottom: 0" data-titulo></div>
-        <div
-          class="card-lista table-container"
-          style="margin-top: 0"
-          data-lista>
-        </div>
-        
-
 
         <div id="modal" class="modal">
           <button class="modal-close">
@@ -120,43 +97,33 @@
             <!-- Contenido del modal aquí -->
           </div>
         </div>
-        
-
-        <div id="no-padding-modal" class="modal">
-          <button class="modal-close">
-            <i class="fa fa-times"></i>
-          </button>
-          <div class="modal-content no-padding-modal" data-login>
-           
-          </div>
         </div>
       </section>
       <section class="categoria"   id="destacados" >
-        <div class="texto-categoria">
-          <h2>Destacados</h2>
-          <a href="index.html?section=destacados" id="destacados" class="ver-todos">Ver más <img src="https://myimagescnd.s3.us-east-2.amazonaws.com/Vector.png"></a>
+      
+          
+          <a href="index.html?section=destacados" id="destacados" class="texto-categoria">DESTACADOS Ver más <i class="fa-solid fa-arrow-right"></i></a>
         </div>
-        <div class="productos" data-destacados></div>
+        <div class="productos" data-destacados ></div>
       </section>
       <section class="categoria" id="vestidos">
-        <div class="texto-categoria">
-          <h2>Vestidos</h2>
-          <a href="#" id="opcion1" class="ver-todos">Ver mas <img  src="https://myimagescnd.s3.us-east-2.amazonaws.com/Vector.png"></a>
+      
+          <a href="#" id="opcion1" class="texto-categoria">VESTIDOS Ver mas<i class="fa-solid fa-arrow-right"></i></a>
         </div>
         <div  class="productos"  data-opcion1></div>
         <div class="preloader"></div>
       </section>
       <section class="categoria" id="polleras">
-        <div class="texto-categoria">
-          <h2>Polleras</h2>
-          <a href="#" id="opcion2" class="ver-todos">Ver mas <img src="https://myimagescnd.s3.us-east-2.amazonaws.com/Vector.png"></a>
+       
+      
+          <a href="#" id="opcion2" class="texto-categoria">POLLERAS Ver mas <i class="fa-solid fa-arrow-right"></a>
         </div>
         <div class="productos" data-opcion2></div>
       </section>
       <section class="categoria" id="diversos">
-        <div class="texto-categoria">
-          <h2>Diversos</h2>
-          <a href="#modal" id="opcion3" class="ver-todos">Ver mas <img  src="https://myimagescnd.s3.us-east-2.amazonaws.com/Vector.png"></a>
+   
+       
+          <a href="#modal" id="opcion3" class="texto-categoria">DIVERSOS Ver más <i class="fa-solid fa-arrow-right"></a>
         </div>
         <div class="productos" data-opcion3></div>
       </section>

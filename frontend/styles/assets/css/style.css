@@ -5,13 +5,8 @@ html {
 body {
   font-family: var(--font-family-body);
   font-size: 18px;
-  line-height: 1.5;
   font-weight: 400;
   box-sizing: border-box;
-}
-
-.fixed-top {
-  position: relative;
 }
 
 header {
@@ -20,6 +15,10 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.fixed-top {
+  position: relative;
 }
 
 .cabecera_container {
@@ -103,7 +102,6 @@ p.help a {
     center / cover no-repeat;
   position: static;
   justify-content: center;
-  margin-bottom: 2rem;
 }
 
 .texto h1 {
@@ -561,14 +559,6 @@ ul li a {
     padding-top: 1rem; /* Ajusta el padding según sea necesario */
   }
 
-  .banner {
-    margin-top: 6rem;
-  }
-
-  .fixed-top {
-    position: fixed;
-  }
-
   .busqueda {
     margin-right: 10%;
   }
@@ -580,6 +570,7 @@ ul li a {
   .carrito-link {
     margin-top: 2rem;
   }
+
   .texto h1 {
     font-size: 22px;
     margin-left: 1rem;

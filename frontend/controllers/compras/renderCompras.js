@@ -1,18 +1,13 @@
 import { CompraServices } from "../../services/compra_services.js";
 import {
   finalizarPedidoHandler,
-  // mensajePrepareHandlerCompra,
   eliminarPedido,
   mensajeEnCaminoHandlerCompra,
   aceptarPedidoHandler,
 } from "./eventsCompras.js";
 
 export class RenderCompras {
-  constructor(tabla, titulo) {
-    if (!tabla || !titulo) {
-      throw new Error("Elementos de tabla o título no definidos.");
-    }
-    this.tabla = tabla;
+  constructor(titulo) {
     this.titulo = titulo;
     this.compraServicesHelpers = new CompraServices();
     this.listado = []; // Almacenar listado completo
@@ -21,22 +16,23 @@ export class RenderCompras {
   async renderCompraLista() {
     try {
       // Limpiar el contenedor antes de renderizar
-      this.tabla.innerHTML = "";
       this.titulo.innerHTML = "";
 
+      // Agregar la estructura del título y el campo de búsqueda
       const tituloContenido = `
-        <div class="row">
-          <div class="col-md-12 text-center">
-            <h2 class="card-header">COMPRAS</h2>
-            <input  type="text" id="searchInput" placeholder="Buscar..." class="form-control mx-auto mt-2 w-50 ">
-          </div>
+        <div>
+          <h2 class="text-center">COMPRAS</h2>
+          <input type="text" id="searchInput" placeholder="Buscar..." class="form-control mx-auto mt-2 w-50">
         </div>
+        <div class="row"></div> <!-- Contenedor para las compras -->
       `;
       this.titulo.innerHTML = tituloContenido;
 
+      // Configurar el evento de búsqueda
       const searchInput = this.titulo.querySelector("#searchInput");
       searchInput.addEventListener("input", () => this.filtrarCompras());
 
+      // Obtener el listado completo de compras y mostrarlo
       this.listado = await this.compraServicesHelpers.listaOrder();
       this.mostrarCompras(this.listado); // Mostrar todas las compras inicialmente
     } catch (error) {
@@ -45,6 +41,9 @@ export class RenderCompras {
   }
 
   mostrarCompras(listado) {
+    // Limpiar el contenedor antes de renderizar
+    this.titulo.querySelector(".row").innerHTML = "";
+
     const row = document.createElement("div");
     row.className = "row"; // Contenedor para las columnas
 
@@ -74,8 +73,7 @@ export class RenderCompras {
     }
 
     // Añadir la fila al contenedor principal
-    this.tabla.innerHTML = ""; // Limpiar antes de añadir
-    this.tabla.appendChild(row);
+    this.titulo.querySelector(".row").appendChild(row);
   }
 
   filtrarCompras() {
