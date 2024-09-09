@@ -61,13 +61,13 @@ export function mostrarCarrito() {
                     item.size
                   }</small></td>
                     <td class="table-price">
-                      <span>$ ${item.price.toFixed(2)}</span>
+                      <span>$ ${(item.price * item.cantidad).toFixed(2)}</span>
                     </td>
                     <td class="table-price">
                       <button class="btn btn-danger" data-id="${
                         item._id
                       }" data-size="${item.size}">
-                        <i class="fa-solid fa-scissors"></i>
+                        Del
                       </button>
                     </td>
                   </tr>
@@ -147,36 +147,42 @@ export function mostrarCarrito() {
       .getElementById("toggle-envio-form")
       .addEventListener("click", function () {
         const icon = this.querySelector("i");
-        if (icon.classList.contains("icon-down")) {
-          icon.classList.remove("icon-down");
-          icon.classList.add("icon-up");
-        } else {
-          icon.classList.remove("icon-up");
-          icon.classList.add("icon-down");
-        }
+        icon.classList.toggle("icon-down");
+        icon.classList.toggle("icon-up");
       });
 
     document
       .getElementById("toggle-envio-form")
       .addEventListener("click", handleEnvioFormToggle);
+
     generarOpcionesProvincias(document.querySelector("#provinciaDestino"));
+
     document.querySelectorAll("input, select").forEach((input) => {
       input.addEventListener("blur", (event) => {
         valida(event.target);
       });
     });
+
     document
       .getElementById("calcular-envio")
       .addEventListener("click", handleEnvioFormSubmission.bind(this));
+
     document
       .querySelector("#coordinar-vendedor")
       .addEventListener("input", handleCoordinarVendedorChange.bind(this));
 
     summaryDetails.querySelectorAll(".btn-danger").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        this.eliminarProducto(event.target.dataset.id);
+      button.addEventListener("click", async (event) => {
+        const productId = event.target.dataset.id;
+        if (productId) {
+          await this.eliminarProducto(productId);
+          this.mostrarCarrito(); // Refresh the cart view
+        } else {
+          console.error("ID del producto no encontrado:", event.target);
+        }
       });
     });
+
     document
       .querySelector("#finalize-purchase")
       .addEventListener("click", handleFinalizePurchase.bind(this));

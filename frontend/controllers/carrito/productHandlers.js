@@ -3,22 +3,20 @@ import { CarritoServices } from "../../services/carrito_services.js";
 const carritoServices = new CarritoServices();
 
 export async function agregarProducto(product, size) {
+  console.log(product, size);
   try {
-    // Obtener productos del carrito
-    const productosCarrito = await carritoServices.getProductsCart();
-
-    // Buscar el producto en el carrito
-    const productoExistente = productosCarrito.find(
+    // Obtener productos del carrito desde el estado local
+    const productoExistente = this.items.find(
       (item) => item.productId === product._id && item.size === size
     );
 
     if (productoExistente) {
-      // Actualizar cantidad y recalcular el precio total
-      const nuevaCantidad = productoExistente.cantidad + 1;
+      // Actualizar la cantidad en el estado local del carrito
+      productoExistente.cantidad += 1;
 
-      // Actualizar el producto en el carrito
+      // Actualizar el producto en el carrito en el servidor
       await carritoServices.putProductCart(
-        { cantidad: nuevaCantidad },
+        { cantidad: productoExistente.cantidad },
         productoExistente._id
       );
     } else {
@@ -31,24 +29,33 @@ export async function agregarProducto(product, size) {
         imagePath: product.imagePath[0],
         productId: product._id,
       };
-      // Agregar el nuevo producto al carrito
+
+      console.log(productoNuevo);
+
+      // Agregar el nuevo producto al carrito en el servidor
       await carritoServices.addProductCart(productoNuevo);
+
+      // Agregar el nuevo producto al estado local del carrito
+      this.items.push(productoNuevo);
     }
 
     // Mostrar el carrito actualizado
-    this.mostrarCarrito(); // Asegúrate de que 'this' esté correctamente vinculado
+    this.mostrarCarrito();
   } catch (error) {
     console.error("Error al agregar producto:", error);
   }
 }
 
 export async function eliminarProducto(id) {
-  console.log(id);
   try {
-    // Eliminar producto del carrito
+    // Eliminar producto del carrito en el servidor
     await carritoServices.deleteProductCart(id);
+
+    // Eliminar el producto del estado local del carrito
+    this.items = this.items.filter((item) => item._id !== id);
+
     // Mostrar el carrito actualizado
-    this.mostrarCarrito(); // Asegúrate de que 'this' esté correctamente vinculado
+    this.mostrarCarrito();
   } catch (error) {
     console.error("Error al eliminar producto:", error);
   }
@@ -56,10 +63,17 @@ export async function eliminarProducto(id) {
 
 export async function actualizarCantidad(id, cantidad) {
   try {
-    // Actualizar la cantidad del producto en el carrito
+    // Actualizar la cantidad del producto en el carrito en el servidor
     await carritoServices.putProductCart({ cantidad }, id);
+
+    // Actualizar la cantidad en el estado local del carrito
+    const productoExistente = this.items.find((item) => item._id === id);
+    if (productoExistente) {
+      productoExistente.cantidad = cantidad;
+    }
+
     // Mostrar el carrito actualizado
-    this.mostrarCarrito(); // Asegúrate de que 'this' esté correctamente vinculado
+    this.mostrarCarrito();
   } catch (error) {
     console.error("Error al actualizar cantidad:", error);
   }

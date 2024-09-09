@@ -42,6 +42,7 @@ export class CarritoServices {
 
   // Eliminar producto del carrito
   deleteProductCart = async (id) => {
+    console.log(id);
     try {
       const respuesta = await fetch(
         `${this.baseURL}/api/deleteProductCart/${id}`,
