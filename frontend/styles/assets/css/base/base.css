@@ -34,15 +34,4 @@ body {
 }
 
 @media (min-width: 320px) and (max-width: 768px) {
-  .container {
-    display: flex;
-    padding-right: 1rem;
-    padding-left: 1rem;
-    padding-bottom: 1rem;
-  }
-  .container1 {
-    padding-right: 1rem;
-    padding-left: 1rem;
-    padding-bottom: 1rem;
-  }
 }
