@@ -521,6 +521,34 @@ container.addEventListener("click", (e) => {
   menu.classList.toggle("open");
 });
 
+const modalCarritoVacio = () => {
+  baseModal();
+  const modal = document.getElementById("modal");
+  const success = modal.querySelector("[data-table]");
+  success.innerHTML = `
+    <div class="text-center">
+    <div class="card-header">
+    <div>
+        <div>
+            <br>
+            <h4Tu carrito está vacío</h4> 
+            <button class="boton-eliminar btn btn-primary" data-index="">Ir a inicio</button>
+        </div>
+    </div>
+    </div>
+    </div>
+    `;
+  success.classList.add("open");
+
+  const botonEliminar = success.querySelector(".boton-eliminar");
+  botonEliminar.addEventListener("click", () => {
+    window.location.replace("/index.html");
+  });
+  setTimeout(() => {
+    window.location.replace("/index.html");
+  }, 3000);
+};
+
 export const modalControllers = {
   modalEliminar,
   baseModal,
@@ -537,4 +565,5 @@ export const modalControllers = {
   modalCorreoEnviado,
   modalCorreoNoenviado,
   modalCompraOk,
+  modalCarritoVacio,
 };
