@@ -1,9 +1,11 @@
 import { modalControllers } from "../modal/modal.js";
 import { baseURL } from "./product_services.js";
+import { CarritoServices } from "./carrito_services.js";
 
 export class MailServices {
   constructor() {
     this.baseURL = baseURL;
+    this.carritoServices = new CarritoServices(); // Instancia del servicio de carrito
   }
 
   async sendMail(datosCompra) {
@@ -16,7 +18,6 @@ export class MailServices {
         body: JSON.stringify(datosCompra),
       });
 
-      // Manejo de la respuesta
       if (!response.ok) {
         throw new Error(
           `Error en la solicitud: ${response.status} - ${response.statusText}`
@@ -25,7 +26,7 @@ export class MailServices {
       const data = await response.json();
 
       if (data.success) {
-        this.limpiarCarrito();
+        await this.carritoServices.limpiarCarrito();
       } else {
         alert(
           "Hubo un problema al finalizar la compra. Por favor, intente nuevamente."
@@ -49,7 +50,6 @@ export class MailServices {
         body: JSON.stringify(datos),
       });
 
-      // Manejo de la respuesta
       if (!response.ok) {
         throw new Error(
           `Error en la solicitud: ${response.status} - ${response.statusText}`
@@ -66,11 +66,6 @@ export class MailServices {
       console.error("Error al enviar los datos de la suscripción:", err);
       alert("Hubo un error al suscribirse. Por favor, intente nuevamente.");
     }
-  }
-
-  limpiarCarrito() {
-    this.items = [];
-    sessionStorage.removeItem("carrito");
   }
 }
 

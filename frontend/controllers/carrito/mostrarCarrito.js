@@ -6,7 +6,6 @@ import {
   handleCoordinarVendedorChange,
 } from "./envioHandlers.js";
 import { handleFinalizePurchase } from "./finalizeHandlers.js";
-import { modalControllers } from "../../modal/modal.js";
 
 export function mostrarCarrito() {
   const carritoContainer = document.querySelector(".carrito-link");
@@ -26,7 +25,7 @@ export function mostrarCarrito() {
   carritoNotificacion.textContent = cantidadTotal;
   carritoMonto.textContent = `$${total.toFixed(2)}`;
 
-  if (this.items.length !== 0) {
+  if (this.items.length > 0) {
     const progresoCompra = document.createElement("div");
     progresoCompra.id = "progreso-compra";
     progresoCompra.classList.add("barra-progreso");
@@ -188,13 +187,11 @@ export function mostrarCarrito() {
       .querySelector("#finalize-purchase")
       .addEventListener("click", handleFinalizePurchase.bind(this));
   } else {
-    if (this.items.length === 0) {
-      summaryDetails.innerHTML = `
+    summaryDetails.innerHTML = `
         <div class="empty-cart-message" style="padding: 20px; text-align: center; font-size: 1.5rem; color: #ff0000;">
           <p>Tu carrito está vacío.</p>
           <button class="btn btn-primary" onclick="window.location.href='index.html';">Volver a la tienda</button>
         </div>
       `;
-    }
   }
 }

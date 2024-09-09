@@ -49,7 +49,8 @@ export const controllers = {
         return;
       }
 
-      contenedorSimilares.innerHTML = ""; // Limpiar contenedor antes de agregar nuevos productos
+      // Construir HTML de productos similares
+      let productosHTML = "";
       similares.forEach((producto) => {
         const imagenesHTML = producto.imagePath
           .map(
@@ -58,7 +59,7 @@ export const controllers = {
           )
           .join("");
 
-        const productoHTML = `
+        productosHTML += `
           <div class="producto-similar" data-id="${producto._id}" data-name="${
           producto.name
         }" data-price="${producto.price}" data-image='${JSON.stringify(
@@ -75,10 +76,10 @@ export const controllers = {
             </a>
           </div>
         `;
-
-        contenedorSimilares.innerHTML += productoHTML;
       });
+      contenedorSimilares.innerHTML = productosHTML;
 
+      // Manejo de eventos para productos similares
       contenedorSimilares.addEventListener("click", async (e) => {
         const target = e.target.closest(".producto-similar");
         if (target) {
@@ -105,14 +106,11 @@ export const controllers = {
         }
       });
 
-      // Selecciona todos los enlaces dentro del contenedor
+      // Manejo de eventos para enlaces
       const enlaces = contenedorSimilares.querySelectorAll("a");
-
-      // Itera sobre cada enlace y añade el manejador de eventos
       enlaces.forEach((enlace) => {
         enlace.addEventListener("click", (e) => {
           e.preventDefault();
-          // Actualiza la URL con un hash que incluye el ID del producto
           window.location.hash = `product-${id}`;
         });
       });
@@ -120,7 +118,6 @@ export const controllers = {
       console.error("Error al cargar productos similares:", error);
     }
   },
-
   async comprarProducto(name, price, imagePath, id, talleSeleccionado) {
     // Manejar lógica para agregar al carrito
     const producto = {

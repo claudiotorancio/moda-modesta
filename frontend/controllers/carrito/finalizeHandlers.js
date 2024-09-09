@@ -121,6 +121,7 @@ Al dar finalizado se enviarán los datos para el pago al correo ingresado. Por f
           "Hubo un problema al procesar la compra. Por favor, intente nuevamente."
         );
       }
+      this.limpiarCarrito();
     });
 
   // Evento para navegar a la etapa de "Entrega" al hacer clic en el paso de "Entrega"

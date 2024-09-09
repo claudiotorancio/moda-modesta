@@ -5,6 +5,22 @@ export class CarritoServices {
     this.baseURL = baseURL;
   }
 
+  async limpiarCarrito() {
+    try {
+      const response = await fetch(`${this.baseURL}/api/limpiarCarrito`, {
+        method: "DELETE", // Asumiendo que DELETE es el método para limpiar el carrito en el backend
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al limpiar el carrito en la base de datos");
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error("Error al limpiar el carrito en la base de datos:", error);
+    }
+  }
+
   // Obtener productos del carrito
   getProductsCart = async () => {
     try {

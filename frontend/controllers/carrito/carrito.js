@@ -83,6 +83,14 @@ class Carrito {
   mostrarCarrito() {
     mostrarCarrito.call(this);
   }
+
+  // Limpia el carrito
+  limpiarCarrito() {
+    console.log("Carrito limpiado"); // Verifica si se llama a la función
+    this.items = [];
+    sessionStorage.removeItem("carrito");
+    this.carritoServices.limpiarCarrito();
+  }
 }
 
 export default Carrito;

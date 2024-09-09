@@ -43,7 +43,7 @@ import getProductsCart from "../backend/routes/carrito/getProductsCart.js";
 import addProductCart from "../backend/routes/carrito/addProductCart.js";
 import putProductCart from "../backend/routes/carrito/putProductCart.js";
 import deleteProductCart from "../backend/routes/carrito/deleteProductCart.js";
-
+import limpiarCarrito from "../backend/routes/carrito/limpiarCarrito.js";
 import path from "path";
 
 const router = Router();
@@ -108,6 +108,7 @@ router.get("/api/getProductsCart", getProductsCart);
 router.post("/api/addProductCart", addProductCart);
 router.put("/api/putProductCart/:id", putProductCart);
 router.delete("/api/deleteProductCart/:id", deleteProductCart);
+router.delete("/api/limpiarCarrito", limpiarCarrito);
 
 //compras
 router.get("/api/listaOrder", requireAdmin, purchaseOrder);
