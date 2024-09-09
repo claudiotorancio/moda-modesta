@@ -25,6 +25,12 @@ export function mostrarCarrito() {
   carritoNotificacion.textContent = cantidadTotal;
   carritoMonto.textContent = `$${total.toFixed(2)}`;
 
+  if (this.loading) {
+    // Si los productos aún se están cargando, no hacemos nada (puedes mostrar un spinner si quieres)
+    console.log("Cargando productos del carrito...");
+    return;
+  }
+
   if (this.items.length !== 0) {
     const progresoCompra = document.createElement("div");
     progresoCompra.id = "progreso-compra";
@@ -188,9 +194,8 @@ export function mostrarCarrito() {
       .addEventListener("click", handleFinalizePurchase.bind(this));
   } else {
     if (!this.items || this.items.length === 0) {
-      // Carrito está vacío
+      // Solo mostramos el mensaje si los productos ya están cargados y el carrito está vacío
       summaryDetails.innerHTML = `<div style="font-size: 1.2rem">Carrito vacío</div>`;
-      return;
     }
   }
 }

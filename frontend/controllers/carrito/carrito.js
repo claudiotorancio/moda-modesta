@@ -14,6 +14,7 @@ class Carrito {
     this.items = []; // Inicia con un array vacío
     this.costoEnvio = 0;
     this.envioExpiracion = null;
+    this.loading = true; // Agrega estado de carga
     this.inicializarEventos();
     this.cargarCarrito(); // Carga los productos al iniciar
   }
@@ -22,9 +23,11 @@ class Carrito {
     try {
       // Carga los productos del carrito desde la API
       this.items = await this.carritoServices.getProductsCart();
-      this.mostrarCarrito(); // Muestra el carrito una vez cargado
     } catch (error) {
       console.error("Error al cargar el carrito:", error);
+    } finally {
+      this.loading = false; // Cambia el estado de carga a false
+      this.mostrarCarrito(); // Muestra el carrito una vez cargado
     }
   }
 
@@ -81,6 +84,14 @@ class Carrito {
   }
 
   mostrarCarrito() {
+    // Verifica si los productos aún se están cargando
+    if (this.loading) {
+      // Mostrar un indicador de carga, o simplemente no hacer nada
+      console.log("Cargando productos del carrito...");
+      return;
+    }
+
+    // Mostrar los productos del carrito si están cargados
     mostrarCarrito.call(this);
   }
 }
