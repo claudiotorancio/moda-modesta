@@ -187,10 +187,6 @@ export function mostrarCarrito() {
       .querySelector("#finalize-purchase")
       .addEventListener("click", handleFinalizePurchase.bind(this));
   } else {
-    if (!this.items || this.items.length === 0) {
-      // Carrito está vacío
-      summaryDetails.innerHTML = `<div style="font-size: 1.2rem">Carrito vacío</div>`;
-      return;
-    }
+    summaryDetails.innerHTML = `<div style="font-size: 1.2rem">Carrito vacío</div>`;
   }
 }
