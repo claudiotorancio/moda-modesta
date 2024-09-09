@@ -8,6 +8,10 @@ import {
 import { handleFinalizePurchase } from "./finalizeHandlers.js";
 
 export function mostrarCarrito() {
+  const carritoContainer = document.querySelector(".carrito-link");
+  const carritoNotificacion =
+    carritoContainer.querySelector(".carrito-cantidad");
+  const carritoMonto = carritoContainer.querySelector(".carrito-monto");
   const summaryDetails = document.querySelector("[data-table]");
 
   // Calcular cantidad total y monto total
@@ -18,17 +22,10 @@ export function mostrarCarrito() {
   const subtotal = this.calcularSubtotal();
   const total = this.calcularTotal();
 
-  // Actualiza la notificación del carrito
-  const carritoContainer = document.querySelector(".carrito-link");
-  const carritoNotificacion =
-    carritoContainer.querySelector(".carrito-cantidad");
-  const carritoMonto = carritoContainer.querySelector(".carrito-monto");
-
   carritoNotificacion.textContent = cantidadTotal;
   carritoMonto.textContent = `$${total.toFixed(2)}`;
 
   if (this.items.length !== 0) {
-    // Construye el contenido del carrito
     const progresoCompra = document.createElement("div");
     progresoCompra.id = "progreso-compra";
     progresoCompra.classList.add("barra-progreso");
@@ -175,32 +172,26 @@ export function mostrarCarrito() {
       .addEventListener("input", handleCoordinarVendedorChange.bind(this));
 
     summaryDetails.querySelectorAll(".btn-danger").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        const id = event.target.getAttribute("data-id");
-        const size = event.target.getAttribute("data-size");
-        this.eliminarProducto(id, size);
+      button.addEventListener("click", async (event) => {
+        const productId = event.target.dataset.id;
+        if (productId) {
+          await this.eliminarProducto(productId);
+          this.mostrarCarrito(); // Refresh the cart view
+        } else {
+          console.error("ID del producto no encontrado:", event.target);
+        }
       });
     });
 
-    const finalizePurchaseButton = document.getElementById("finalize-purchase");
-    finalizePurchaseButton.addEventListener("click", () => {
-      window.location.href = "checkout.html";
-    });
-
-    // Actualización de la cantidad total y monto total en el carrito
-    carritoNotificacion.textContent = cantidadTotal;
-    carritoMonto.textContent = `$${total.toFixed(2)}`;
-
-    // Manejador de redirección
-    if (this.items.length === 0 && !this.redirected) {
-      this.redirected = true;
-      setTimeout(() => {
-        window.location.replace("index.html");
-      }, 3000); // Espera 3 segundos antes de redirigir
-    }
+    document
+      .querySelector("#finalize-purchase")
+      .addEventListener("click", handleFinalizePurchase.bind(this));
   } else {
-    if (summaryDetails) {
+    if (!this.items || this.items.length === 0) {
+      // Carrito está vacío
       summaryDetails.innerHTML = `<div style="font-size: 1.2rem">Carrito vacío</div>`;
+
+      return;
     }
   }
 }
