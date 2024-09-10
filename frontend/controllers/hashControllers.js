@@ -4,10 +4,24 @@ import { mostrarProducto } from "./productos/ProductViewer.js";
 export async function hashControllers() {
   try {
     const hash = window.location.hash;
-    const id = hash.replace("#product-", "");
-    // Encapsular el producto en un array si es un solo objeto
+    if (!hash.startsWith("#product-")) {
+      console.error("URL no válida para un producto.");
+      return;
+    }
+
+    const id = hash.replace("#product-", "").trim();
+    if (!id) {
+      console.error("ID del producto no encontrado en el hash.");
+      return;
+    }
+
     const response = await productoServices.detalleProducto(id);
     const producto = response.product; // Asumiendo que el objeto está dentro de 'product'
+
+    if (!producto) {
+      console.error("Producto no encontrado en la respuesta de la API.");
+      return;
+    }
 
     // Convertir en array si es necesario
     const productosArray = [producto];
