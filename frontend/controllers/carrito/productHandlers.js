@@ -3,33 +3,19 @@ import { CarritoServices } from "../../services/carrito_services.js";
 const carritoServices = new CarritoServices();
 
 export async function cargarCarritoDesdeStorage() {
-  const carritoGuardado = sessionStorage.getItem("carrito");
-
-  if (carritoGuardado) {
-    this.items = JSON.parse(carritoGuardado);
-  } else {
-    await cargarDatosCarrito();
-    sessionStorage.setItem("carrito", JSON.stringify(this.items));
-  }
-  actualizarNotificacionCarrito.call(this); // Actualizar notificación al cargar el carrito
-}
-
-async function cargarDatosCarrito() {
   try {
-    const response = await fetch("/api/carrito");
-
-    if (!response.ok) {
-      throw new Error("Error al cargar los datos del carrito");
-    }
-
-    this.items = await response.json();
+    const carrito = await carritoServices.getProductsCart();
+    this.items = carrito || [];
+    actualizarNotificacionCarrito.call(this);
   } catch (error) {
-    console.error("Error al cargar los datos del carrito:", error);
+    console.error("Error al cargar el carrito desde la base de datos:", error);
     this.items = [];
   }
 }
 
 function actualizarNotificacionCarrito() {
+  const items = this.items;
+
   const carritoContainer = document.querySelector(".carrito-link");
   if (!carritoContainer) {
     console.error("No se encontró el contenedor del carrito.");
@@ -40,16 +26,13 @@ function actualizarNotificacionCarrito() {
     carritoContainer.querySelector(".carrito-cantidad");
   const carritoMonto = carritoContainer.querySelector(".carrito-monto");
 
-  const cantidadTotal = this.items.reduce(
-    (acc, item) => acc + item.cantidad,
-    0
-  );
-  const total = this.items.reduce(
+  const cantidadTotal = items.reduce((acc, item) => acc + item.cantidad, 0);
+  const total = items.reduce(
     (acc, item) => acc + item.price * item.cantidad,
     0
   );
 
-  carritoNotificacion.textContent = cantidadTotal > 0 ? cantidadTotal : "";
+  carritoNotificacion.textContent = cantidadTotal > 0 ? cantidadTotal : "0";
   carritoMonto.textContent = total > 0 ? `$${total.toFixed(2)}` : "$0.00";
 }
 
@@ -83,9 +66,8 @@ export async function agregarProducto(product, size) {
       this.items.push(productoNuevo);
     }
 
-    sessionStorage.setItem("carrito", JSON.stringify(this.items));
     this.mostrarCarrito();
-    actualizarNotificacionCarrito.call(this); // Actualizar notificación al agregar producto
+    actualizarNotificacionCarrito.call(this);
   } catch (error) {
     console.error("Error al agregar producto:", error);
   }
@@ -100,9 +82,8 @@ export async function eliminarProducto(id) {
     await carritoServices.deleteProductCart(id);
     this.items = this.items.filter((item) => item._id !== id);
 
-    sessionStorage.setItem("carrito", JSON.stringify(this.items));
     this.mostrarCarrito();
-    actualizarNotificacionCarrito.call(this); // Actualizar notificación al eliminar producto
+    actualizarNotificacionCarrito.call(this);
   } catch (error) {
     console.error("Error al eliminar producto:", error);
   }
@@ -120,10 +101,14 @@ export async function actualizarCantidad(id, cantidad) {
       productoExistente.cantidad = cantidad;
     }
 
-    sessionStorage.setItem("carrito", JSON.stringify(this.items));
     this.mostrarCarrito();
-    actualizarNotificacionCarrito.call(this); // Actualizar notificación al actualizar cantidad
+    actualizarNotificacionCarrito.call(this);
   } catch (error) {
     console.error("Error al actualizar cantidad:", error);
   }
 }
+
+// Verificar si los datos del carrito están presentes al cargar la página
+window.addEventListener("load", async () => {
+  await cargarCarritoDesdeStorage.call({ items: [] });
+});
