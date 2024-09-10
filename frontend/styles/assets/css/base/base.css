@@ -6,6 +6,7 @@ body {
   color: var(--contrast-dark-color);
   font-family: var(--font-family-body);
   overflow-x: hidden;
+  padding-top: 6rem;
 }
 
 .container {
