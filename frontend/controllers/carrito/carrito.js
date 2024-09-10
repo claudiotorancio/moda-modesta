@@ -17,6 +17,16 @@ class Carrito {
     this.inicializarEventos();
   }
 
+  async cargarCarrito() {
+    try {
+      // Carga los productos del carrito desde la API
+      this.items = await this.carritoServices.getProductsCart();
+      this.mostrarCarrito(); // Muestra el carrito una vez cargado
+    } catch (error) {
+      console.error("Error al cargar el carrito:", error);
+    }
+  }
+
   inicializarEventos() {
     const toggleCart = document.querySelector(".js-toggle-cart");
     if (toggleCart) {
