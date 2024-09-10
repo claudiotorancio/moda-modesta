@@ -14,15 +14,21 @@ class Carrito {
     this.items = []; // Inicia con un array vacío
     this.costoEnvio = 0;
     this.envioExpiracion = null;
+    this.isCarritoLoaded = false; // Nueva bandera para controlar la carga del carrito
     this.inicializarEventos();
     this.cargarCarrito(); // Carga los productos al iniciar
   }
 
   async cargarCarrito() {
+    if (this.isCarritoLoaded) {
+      return; // Si el carrito ya está cargado, no hace nada
+    }
+
     try {
       // Carga los productos del carrito desde la API
       this.items = await this.carritoServices.getProductsCart();
       this.mostrarCarrito(); // Muestra el carrito una vez cargado
+      this.isCarritoLoaded = true; // Marca el carrito como cargado
     } catch (error) {
       console.error("Error al cargar el carrito:", error);
     }
@@ -90,6 +96,7 @@ class Carrito {
     this.items = [];
     sessionStorage.removeItem("carrito");
     this.carritoServices.limpiarCarrito();
+    this.isCarritoLoaded = false; // Marca el carrito como no cargado
   }
 }
 
