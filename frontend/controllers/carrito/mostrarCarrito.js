@@ -8,22 +8,10 @@ import {
 import { handleFinalizePurchase } from "./finalizeHandlers.js";
 
 export function mostrarCarrito() {
-  const carritoContainer = document.querySelector(".carrito-link");
-  const carritoNotificacion =
-    carritoContainer.querySelector(".carrito-cantidad");
-  const carritoMonto = carritoContainer.querySelector(".carrito-monto");
   const summaryDetails = document.querySelector("[data-table]");
 
-  // Calcular cantidad total y monto total
-  const cantidadTotal = this.items.reduce(
-    (acc, item) => acc + item.cantidad,
-    0
-  );
   const subtotal = this.calcularSubtotal();
   const total = this.calcularTotal();
-
-  carritoNotificacion.textContent = cantidadTotal;
-  carritoMonto.textContent = `$${total.toFixed(2)}`;
 
   if (this.items.length > 0) {
     const progresoCompra = document.createElement("div");
