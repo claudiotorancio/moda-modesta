@@ -25,7 +25,7 @@ export function mostrarCarrito() {
   carritoNotificacion.textContent = cantidadTotal;
   carritoMonto.textContent = `$${total.toFixed(2)}`;
 
-  if (this.items.length !== 0) {
+  if (this.items.length > 0) {
     const progresoCompra = document.createElement("div");
     progresoCompra.id = "progreso-compra";
     progresoCompra.classList.add("barra-progreso");

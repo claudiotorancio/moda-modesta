@@ -15,6 +15,7 @@ class Carrito {
     this.costoEnvio = 0;
     this.envioExpiracion = null;
     this.inicializarEventos();
+    this.cargarCarrito();
   }
 
   async cargarCarrito() {
@@ -30,9 +31,11 @@ class Carrito {
   inicializarEventos() {
     const toggleCart = document.querySelector(".js-toggle-cart");
     if (toggleCart) {
-      toggleCart.addEventListener("click", (event) => {
+      toggleCart.addEventListener("click", async (event) => {
         event.preventDefault();
+        // Cargar el carrito solo cuando el usuario interactúa con él
         modalControllers.baseModal();
+        await this.cargarCarrito();
         this.mostrarCarrito();
       });
     }
