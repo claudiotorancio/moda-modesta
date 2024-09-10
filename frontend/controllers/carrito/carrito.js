@@ -15,7 +15,6 @@ class Carrito {
     this.costoEnvio = 0;
     this.envioExpiracion = null;
     this.inicializarEventos();
-    this.cargarCarrito(); // Carga los productos al iniciar
   }
 
   async cargarCarrito() {
@@ -33,6 +32,7 @@ class Carrito {
     if (toggleCart) {
       toggleCart.addEventListener("click", (event) => {
         event.preventDefault();
+        this.cargarCarrito(); // Carga los productos al iniciar
         modalControllers.baseModal();
         this.mostrarCarrito();
       });
