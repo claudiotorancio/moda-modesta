@@ -145,40 +145,6 @@ export const mostrarProducto = async (
       }
     });
 
-  document
-    .getElementById("calcular-envio")
-    .addEventListener("click", handleEnvioFormProduct.bind(this));
-
-  // mostrarProducto
-  //   .querySelector("[data-carrito]")
-  //   .addEventListener("click", () => {
-  //     const talleSeleccionado = document.getElementById("variation_1").value;
-  //     controllers.comprarProducto(
-  //       name,
-  //       price,
-  //       imagePath,
-  //       id,
-  //       talleSeleccionado
-  //     );
-  //   });
-
-  const compartirProducto = document.getElementById("compartir-producto");
-  compartirProducto.addEventListener("click", () => {
-    const productUrl = window.location.href;
-    if (navigator.share) {
-      navigator
-        .share({
-          text: `¡Mira este producto! ${name} por solo $${price}`,
-          url: productUrl,
-        })
-        .catch((error) => console.log("Error sharing:", error));
-    } else {
-      alert(
-        "La función de compartir no es compatible con tu navegador. Por favor, comparte el enlace manualmente."
-      );
-    }
-  });
-
   const toggleButton = document.getElementById("toggle-similares");
   const similaresContainer = document.getElementById("similares-Container");
 
@@ -195,6 +161,40 @@ export const mostrarProducto = async (
       } catch (error) {
         console.error("Error al cargar productos similares:", error);
       }
+    }
+  });
+
+  document
+    .getElementById("calcular-envio")
+    .addEventListener("click", handleEnvioFormProduct.bind(this));
+
+  mostrarProducto
+    .querySelector("[data-carrito]")
+    .addEventListener("click", () => {
+      const talleSeleccionado = document.getElementById("variation_1").value;
+      controllers.comprarProducto(
+        name,
+        price,
+        imagePath,
+        id,
+        talleSeleccionado
+      );
+    });
+
+  const compartirProducto = document.getElementById("compartir-producto");
+  compartirProducto.addEventListener("click", () => {
+    const productUrl = window.location.href;
+    if (navigator.share) {
+      navigator
+        .share({
+          text: `¡Mira este producto! ${name} por solo $${price}`,
+          url: productUrl,
+        })
+        .catch((error) => console.log("Error sharing:", error));
+    } else {
+      alert(
+        "La función de compartir no es compatible con tu navegador. Por favor, comparte el enlace manualmente."
+      );
     }
   });
 };
