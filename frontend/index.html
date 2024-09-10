@@ -23,7 +23,7 @@
 </head>
 
 <body>
-      <header  class="header header fixed-top">
+      <header  class="header">
           <div class="cabecera_container">
             <img class="cabecera_logo" src="https://moda-modesta.s3.us-east-2.amazonaws.com/modesta_logo.png" alt="modaModesta logo" />
               <div class="busqueda">
@@ -34,7 +34,7 @@
                   </button>
                 </form>
               </div>
-              <div class="div-usuario bg-light p-2 rounded-circle">
+              <div class="div-usuario bg-light p-2 rounded-circle  admin-only">
                 <a href="#" class="d-flex align-items-center">
                     <div class="profile-notificacion mr-2">
                         <span class="data-user"></span>
@@ -51,7 +51,7 @@
                 </a>
               </div>
               <a href=""><button type="submit" id="login" class="btn btn-primary" data-log></button></a>
-              <a href=""><button type="submit" id="login" class="btn btn-secondary" data-logOut></button></a>
+              <a href=""><button type="submit" id="login" class="btn btn-secondary admin-only" data-logOut></button></a>
               <button class="button-busqueda-login">
                 <img src="https://myimagescnd.s3.us-east-2.amazonaws.com/lupa-negro.png" alt="Icono lupa" />
               </button>
@@ -104,6 +104,12 @@
           <h2>Destacados</h2>
           <a href="index.html?section=destacados" id="destacados" class="ver-todos">Ver más <img src="https://myimagescnd.s3.us-east-2.amazonaws.com/Vector.png"></a>
         </div>
+         <!-- Skeleton Loader -->
+  <div class="productos" data-destacados>
+    <div class="skeleton-card"></div>
+    <div class="skeleton-card"></div>
+    <div class="skeleton-card"></div>
+  </div>
         <div class="productos" data-destacados></div>
       </section>
       <section class="categoria" id="vestidos">

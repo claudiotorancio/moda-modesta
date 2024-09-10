@@ -1,5 +1,4 @@
 .categoria {
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -46,7 +45,7 @@
 }
 .card {
   justify-content: flex-start;
-  margin: 2rem;
+  margin: 1rem;
   transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   background-color: var(--background-cards);
   overflow: hidden;
@@ -160,13 +159,40 @@ div.card:hover {
   opacity: 1;
 }
 
+.skeleton-card {
+  width: 100%;
+  height: 200px; /* ajusta según sea necesario */
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f0f0f0;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+}
+
 @media (min-width: 320px) and (max-width: 768px) {
   .texto-categoria h2 {
     font-size: 25px;
   }
 
   .card {
+    margin: 5% auto;
+    max-width: 100%;
     transition: none;
+  }
+
+  .img-card {
+    width: 100%;
   }
 
   .img-card-top {
@@ -185,6 +211,8 @@ div.card:hover {
 
   .productos {
     display: block;
+    width: -webkit-fill-available;
+    margin: 0 5%;
   }
   div.card:hover {
     transform: none;
@@ -200,6 +228,7 @@ div.card:hover {
     flex-wrap: wrap;
     justify-content: center;
     width: inherit;
+    margin: 0;
   }
 
   .allCard {
@@ -209,6 +238,10 @@ div.card:hover {
 
   .img-allCard {
     width: auto;
+  }
+
+  .container-fluid .img-card {
+    width: 100%;
   }
 
   /* Define la animación para rotar hacia arriba */

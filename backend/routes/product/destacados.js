@@ -26,8 +26,6 @@ const destacadosProduct = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error al obtener productos destacados", error });
-  } finally {
-    mongoose.connection.close(); // Cerrar la conexión a la base de datos
   }
 };
 

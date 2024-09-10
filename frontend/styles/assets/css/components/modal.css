@@ -1,6 +1,5 @@
 .modal {
   display: none;
-  position: fixed;
   backdrop-filter: blur(8px);
   left: 0;
   top: 0;
@@ -67,7 +66,10 @@
 
 @media (min-width: 320px) and (max-width: 768px) {
   .modal-content {
-    max-width: 85%;
+    max-width: 90%;
+  }
+
+  .modal-content {
     padding: 1.5rem;
   }
 

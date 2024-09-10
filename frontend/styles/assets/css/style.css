@@ -30,7 +30,7 @@ header {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-top: 0.85rem;
+  padding-top: 1.5rem;
   padding-bottom: 0.85rem;
 }
 
@@ -560,10 +560,6 @@ ul li a {
     padding-top: 1rem; /* Ajusta el padding según sea necesario */
   }
 
-  .banner {
-    margin-top: 6rem;
-  }
-
   .fixed-top {
     position: fixed;
   }
@@ -590,7 +586,7 @@ ul li a {
   }
 
   .card-lista {
-    max-height: 10rem; /* Altura máxima del contenedor */
+    max-height: 50rem; /* Altura máxima del contenedor */
     overflow-y: auto; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
   }
   .table-container {
