@@ -195,6 +195,10 @@ div.card:hover {
     width: 100%;
   }
 
+  .img-fluid {
+    width: auto;
+  }
+
   .img-card-top {
     height: auto;
   }
@@ -281,13 +285,7 @@ div.card:hover {
   }
 
   .overlay-icon {
-    position: absolute;
-    top: 48%;
-    left: 82%;
-    transform: translate(-50%, -50%);
-    font-size: 1.3rem; /* Tamaño del ícono */
-    color: white; /* Color del ícono */
-    opacity: 0.8; /* Transparencia del ícono */
-    pointer-events: none; /* Hace que el ícono no interfiera con los clics */
+    top: 50%;
+    left: 80%;
   }
 }

@@ -470,7 +470,7 @@ div.card-lista div.col-md-12 th {
 
 .carousel-item img {
   width: 100%;
-  height: 400px; /* Ajusta la altura según tus necesidades */
+  height: 300px; /* Ajusta la altura según tus necesidades */
   object-fit: cover;
 }
 
@@ -579,7 +579,7 @@ ul li a {
     margin-top: 2rem;
   }
   .texto h1 {
-    font-size: 22px;
+    font-size: 28px;
     margin-left: 1rem;
   }
 
@@ -651,6 +651,10 @@ ul li a {
 
   #menu-mobile div.open:nth-child(1) {
     height: 15vh;
+  }
+
+  .carousel-item img {
+    height: 450px; /* Ajusta la altura según tus necesidades */
   }
 
   .quienesSomos {

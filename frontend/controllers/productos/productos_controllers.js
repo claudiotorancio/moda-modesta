@@ -39,7 +39,7 @@ export const controllers = {
   async cargarProductosSimilares(id) {
     try {
       const data = await productoServices.productoSimilar(id);
-      const similares = data;
+      const similares = data.slice(0, 3); // Limitar a los primeros 3 productos
 
       const contenedorSimilares = document.getElementById(
         "productos-similares"
@@ -49,6 +49,11 @@ export const controllers = {
         return;
       }
 
+      // Verificar si hay productos similares
+      if (similares.length === 0) {
+        contenedorSimilares.innerHTML = `<p>No se encontraron productos similares.</p>`;
+        return;
+      }
       // Construir HTML de productos similares
       let productosHTML = "";
       similares.forEach((producto) => {

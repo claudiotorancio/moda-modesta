@@ -6,6 +6,7 @@ export async function cargarCarritoDesdeStorage() {
   try {
     const carrito = await carritoServices.getProductsCart();
     this.items = carrito || [];
+    sessionStorage.setItem("carrito", JSON.stringify(this.items));
     actualizarNotificacionCarrito.call(this);
   } catch (error) {
     console.error("Error al cargar el carrito desde la base de datos:", error);
