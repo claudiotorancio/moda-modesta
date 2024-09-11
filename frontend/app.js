@@ -14,12 +14,13 @@ import { productosInicio } from "./controllers/productos/ProductInit.js";
 import { ProductForm } from "./controllers/productos/productForm.js";
 import { controllers } from "./controllers/productos/productos_controllers.js";
 import { modalControllers } from "./modal/modal.js";
-import { cargarReseñas } from "./controllers/productos/reseñas.js";
+import { cargarReseñas } from "./controllers/reseña/reseñas.js";
 import { Compras } from "./controllers/compras/compras-controllers.js";
 import { hashControllers } from "./controllers/hashControllers.js";
 import { initializeCategoryControls } from "./controllers/productos/categoryControls.js";
 import { ListaServices } from "./services/lista_services.js";
 import { ListaControllers } from "./controllers/ListaUsuarios/lista.controllers.js";
+import { FormResena } from "./controllers/reseña/formResena.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
@@ -102,7 +103,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   resenas.addEventListener("click", (e) => {
     e.preventDefault();
-    alert("Seccion en Construccion");
+    const formResena = new FormResena(titulo);
+    formResena.render();
   });
 
   ventas.addEventListener("click", (e) => {

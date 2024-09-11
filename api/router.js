@@ -44,6 +44,8 @@ import addProductCart from "../backend/routes/carrito/addProductCart.js";
 import putProductCart from "../backend/routes/carrito/putProductCart.js";
 import deleteProductCart from "../backend/routes/carrito/deleteProductCart.js";
 import limpiarCarrito from "../backend/routes/carrito/limpiarCarrito.js";
+import agregarResena from "../backend/routes/resena/agregarResena.js";
+import getResena from "../backend/routes/resena/getResena.js";
 import path from "path";
 
 const router = Router();
@@ -102,6 +104,10 @@ export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 3);
 // export const uploadMultiple = upload(process.env.BUCKET_AWS).array("images"); // 10 es el límite de imágenes, puedes ajustarlo según tus necesidades
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
+//reseñas
+router.post("/api/agregarResena", requireAdmin, agregarResena);
+router.get("/api/getResena", getResena);
+
 //carrito
 
 router.get("/api/getProductsCart", getProductsCart);
@@ -144,7 +150,7 @@ router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/renderInicio", renderInicio);
-router.get("/api/renderProducts", requireAdmin, renderProducts);
+router.get("/api/renderProducts", renderProducts);
 router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
 router.delete("/api/deleteProduct/:id", requireAdmin, deleteProduct);
 router.get("/api/detailsProduct/:id", detailsProduct);
