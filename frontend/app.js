@@ -1,6 +1,5 @@
 import "./styles/assets/css/base/reset.css";
 import "./styles/assets/css/base/base.css";
-
 import "./styles/assets/css/base/variables.css";
 import "./styles/assets/css/style.css";
 import "./styles/assets/css/productos.css";
@@ -28,7 +27,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     await hashControllers();
   }
   initializeCategoryControls();
-
   cargarReseñas();
 
   const listaServicesInstance = new ListaServices();
@@ -40,10 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const logoutUsuario = document.querySelector("[data-logOut]");
   const userActive = document.querySelector("[data-log]");
   const contactUser = document.querySelector("[data-contact]");
-  // const crearProductos = document.querySelector("[data-crearProductos]");
-  // const pedidos = document.querySelector("[data-pedidos]");
   const resenas = document.querySelector("[data-resenas]");
-  // const suscriptores = document.querySelector("[data-suscriptores]");
   const ventas = document.querySelector("[data-ventas]");
 
   const titulo = document.querySelector("[data-titulo]");
@@ -87,11 +82,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     contactUser.style.display = "none";
   } else {
     productosInicio.renderInit();
-    // crearProductos.style.display = "none";
-    // pedidos.style.display = "none";
-    // resenas.style.display = "none";
-    // suscriptores.style.display = "none";
-    // ventas.style.display = "none";
     divUsuario.style.display = "none";
     actualizarUsuario.style.display = "none";
     logoutUsuario.style.display = "none";
@@ -99,7 +89,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const initButton = document.querySelector("[data-init]");
-
   initButton.addEventListener("click", (e) => {
     modalControllers.modalSuscribe();
   });
@@ -128,3 +117,46 @@ document.addEventListener("DOMContentLoaded", async () => {
     loginServicesInstance.logout();
   });
 });
+
+document.getElementById("searchForm").addEventListener("submit", function (e) {
+  e.preventDefault(); // Evitar la recarga de la página
+  const query = document
+    .getElementById("searchInput")
+    .value.trim()
+    .toLowerCase();
+  searchProducts(query);
+});
+
+document.getElementById("searchInput").addEventListener("input", function () {
+  const query = this.value.trim().toLowerCase();
+  searchProducts(query);
+});
+
+function searchProducts(query) {
+  const products = document.querySelectorAll(".card"); // Asegúrate de que cada producto tenga esta clase
+  let found = false;
+
+  products.forEach((product) => {
+    const productName = product.querySelector("h3").textContent.toLowerCase();
+    if (productName.includes(query)) {
+      product.style.display = "block"; // Mostrar productos que coincidan
+      found = true;
+    } else {
+      product.style.display = "none"; // Ocultar productos que no coincidan
+    }
+  });
+
+  // Mostrar un mensaje si no se encontraron productos
+  const noResultsMessage = document.getElementById("no-results-message");
+  if (!found) {
+    noResultsMessage.style.display = "block";
+  } else {
+    noResultsMessage.style.display = "none";
+  }
+
+  // Mostrar todos los productos si la búsqueda está vacía
+  if (query === "") {
+    productosInicio.renderInit();
+    noResultsMessage.style.display = "none";
+  }
+}

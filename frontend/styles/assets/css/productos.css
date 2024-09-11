@@ -168,6 +168,13 @@ div.card:hover {
   animation: skeleton-loading 1.5s infinite;
 }
 
+.product-image {
+  max-width: 100%; /* La imagen no será más ancha que su contenedor */
+  height: auto; /* La altura se ajusta automáticamente para mantener la proporción */
+  display: block; /* Elimina los espacios en blanco alrededor de la imagen */
+  margin: 0 auto; /* Centra la imagen horizontalmente */
+}
+
 @keyframes skeleton-loading {
   0% {
     background-color: #e0e0e0;

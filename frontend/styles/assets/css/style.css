@@ -191,7 +191,7 @@ p.help a {
   position: absolute;
   width: 100vw;
   margin-left: 0rem;
-  padding: 2rem;
+  padding: 3rem;
   cursor: pointer;
   border: none;
 }
@@ -222,7 +222,7 @@ p.help a {
 
 #menu-mobile div.open:nth-child(1) {
   z-index: 1000;
-  height: 70vh;
+  height: 60vh;
 }
 
 .carrito-monto {

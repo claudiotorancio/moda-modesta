@@ -19,8 +19,8 @@ export class ProductInit {
           <i class="fas fa-search-plus"></i>
         </div>
         </div>
-        <div class="card-body">
-          <h3 class="card-text text-center text-muted mb-3">${name}</h3>
+        <div class="card-body text-center">
+          <h3  class="card-text text-muted mb-2">${name}</h3>
           <p class="card-title text-center font-weight-bold">${"$" + price}</p>
           <div class="d-flex justify-content-center">
             <a href="#">Ver Detalles</a>
@@ -43,7 +43,28 @@ export class ProductInit {
         // Agregar una clase específica para este modal
         zoomImage.innerHTML = `
            <img class="card-img-top" src="${imagePath[0]}" alt="imagen del producto">
+           <div class="d-flex justify-content-center">
+            <a href="#" type="button" class="btn btn-info btn-sm mt-2" >Ver Detalles</a>
+          </div>
           `;
+
+        zoomImage.querySelector("a").addEventListener("click", async (e) => {
+          e.preventDefault();
+          window.location.hash = `product-${id}`;
+
+          try {
+            await mostrarProducto(
+              name,
+              price,
+              imagePath,
+              sizes,
+              description,
+              id
+            );
+          } catch (err) {
+            console.log(err);
+          }
+        });
       } catch (error) {
         console.log(error);
       }
