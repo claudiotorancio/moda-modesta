@@ -24,6 +24,7 @@ import { initializeCategoryControls } from "./controllers/productos/categoryCont
 import { ListaServices } from "./services/lista_services.js";
 import { ListaControllers } from "./controllers/ListaUsuarios/lista.controllers.js";
 import { FormResena } from "./controllers/reseña/formResena.js";
+import { Estilos } from "./controllers/admin/Estilos.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
@@ -43,6 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const contactUser = document.querySelector("[data-contact]");
   const resenas = document.querySelector("[data-resenas]");
   const ventas = document.querySelector("[data-ventas]");
+  const estilosDiseno = document.querySelector("[data-estilosDiseno]");
 
   const titulo = document.querySelector("[data-titulo]");
 
@@ -68,9 +70,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       productForm.render();
     });
 
-    const listaResena = document.querySelector("[data-resenas]");
-    listaResena.addEventListener("click", (e) => {
+    resenas.addEventListener("click", (e) => {
       e.preventDefault();
+      const formResena = new FormResena(titulo);
+      formResena.render();
+    });
+
+    estilosDiseno.addEventListener("click", (e) => {
+      e.preventDefault();
+      const estilosInstance = new Estilos(titulo);
+      estilosInstance.render();
     });
 
     const susxriptores = document.querySelector("[data-suscriptores]");
@@ -104,12 +113,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     const loginControllersInstance = new LoginControllers();
     loginControllersInstance.renderSignin();
-  });
-
-  resenas.addEventListener("click", (e) => {
-    e.preventDefault();
-    const formResena = new FormResena(titulo);
-    formResena.render();
   });
 
   ventas.addEventListener("click", (e) => {

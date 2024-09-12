@@ -27,14 +27,15 @@ export class ProductForm {
     card.innerHTML = `
     <div>
       <div class="text-center">
-        <div class="card-header">
+        <div class="card-header mb-2">
           <p>Agregar producto</p>
         </div>
         <div class="card-body w-100">
           <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
             <div class="form-group">
               <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
-              <p>Agregar 2 imágenes a la vez</p>
+              <br>
+              <p>Hasta 2 imágenes</p>
             </div>
             <div class="form-group">
               <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
@@ -52,11 +53,11 @@ export class ProductForm {
                 <option value="opcion2">Polleras</option>
                 <option value="opcion3">Diversos</option>
               </select>
-            </div>
+            </div >
             <label for="variation_1">Talles disponibles</label>
             <div class="form-group mb-4">
               <!-- Checkbox de talles disponibles -->
-              <div class="form-check-inline me-3">
+              <div class="form-check-inline nt-2 me-3">
                 <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">
                 <label class="form-check-label" for="talle1">Talle 1</label>
               </div>

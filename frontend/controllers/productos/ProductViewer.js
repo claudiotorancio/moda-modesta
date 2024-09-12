@@ -58,9 +58,10 @@ export const mostrarProducto = async (
           </div>
         </div>
         <div class="col-md-6">
-          <h2 class="product-title">${name}</h2>
-          <h3 class="product-price text-primary">$${price}</h3>
-          <p class="product-description text-muted">${description}</p>
+         <h2 class="product-title-bold mt-2"  style="font-size: 1.3rem;">${name}</h2>
+<h3 class="product-price text-primary-bold mt-2" style="font-weight: bold; font-size: 1.25em;">$${price}</h3>
+<p class="product-description text-muted">${description}</p>
+
           
           <div class="product-options">
             <label for="variation_1" class="form-label">Talles disponibles</label>
