@@ -600,6 +600,12 @@ ul li a {
     display: none;
   }
 
+  .div-contenedor {
+    max-width: 30%;
+    margin-left: 3rem;
+    margin-top: 1.5rem;
+  }
+
   /* .cabecera_logo {
     width: 50%; 
     max-width: 8rem; 
@@ -608,9 +614,6 @@ ul li a {
   } */
 
   .cabecera_logo {
-    width: 30%;
-    margin-left: 3rem;
-    margin-top: 1.5rem;
   }
 
   /* CSS para la versión móvil */
@@ -618,7 +621,7 @@ ul li a {
   #menuBtn {
     width: 100vw;
     position: absolute;
-    z-index: 3;
+    z-index: 0;
     padding: 0.8rem;
   }
 
