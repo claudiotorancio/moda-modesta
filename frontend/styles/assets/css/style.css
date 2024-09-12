@@ -618,7 +618,7 @@ ul li a {
   #menuBtn {
     width: 100vw;
     position: absolute;
-    z-index: 0;
+    z-index: 3;
     padding: 0.8rem;
   }
 
