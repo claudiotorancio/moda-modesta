@@ -25,6 +25,13 @@ import { ListaServices } from "./services/lista_services.js";
 import { ListaControllers } from "./controllers/ListaUsuarios/lista.controllers.js";
 import { FormResena } from "./controllers/reseña/formResena.js";
 import { Estilos } from "./controllers/admin/Estilos.js";
+import {
+  loadBannerImage,
+  loadBannerText,
+  loadColorSettings,
+  loadColorSettingsCard,
+  loadLogoImage,
+} from "./controllers/admin/eventBanner.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
@@ -32,6 +39,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     await hashControllers();
   }
   initializeCategoryControls();
+
+  loadBannerText();
+  loadLogoImage();
+  loadBannerImage();
+  loadColorSettings();
+  loadColorSettingsCard();
 
   const listaServicesInstance = new ListaServices();
   const isAdmin = await listaServicesInstance.getAdmin();

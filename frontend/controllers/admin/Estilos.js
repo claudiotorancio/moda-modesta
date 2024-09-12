@@ -1,4 +1,11 @@
-import { putBanner } from "./eventBanner.js";
+import {
+  loadBannerText,
+  putBanner,
+  putColorSettings,
+  putColorSettingsCard,
+  putLogo,
+  putTitulo,
+} from "./eventBanner.js";
 
 export class Estilos {
   constructor(titulo) {
@@ -70,10 +77,32 @@ export class Estilos {
   }
 
   setupLogo() {
-    const logoButton = this.titulo.querySelector("[data-logo]");
+    const logoButton = document.querySelector("[data-logo]"); // Suponiendo que tienes un botón con data-logo para subir la imagen
     logoButton.addEventListener("click", (e) => {
       e.preventDefault();
-      alert("Estoy en el botón de logo");
+
+      // Verifica si ya existe un formulario, para evitar duplicados
+      const existingForm = this.titulo.querySelector("#uploadLogoForm");
+      if (existingForm) return;
+
+      // Crear y añadir el formulario para reemplazar la imagen del logo
+      const card = document.createElement("div");
+      card.className = "d-flex justify-content-center align-items-center";
+
+      card.innerHTML = `
+            <div class="form-container p-3 border rounded shadow-sm bg-light">
+                <form id="uploadLogoForm">
+                 <div class="mb-3">
+                        <label for="fileInput" class="form-label">Selecciona una nueva imagen:</label>
+                    <input type="file" class="form-control" id="logoFileInput" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Actualizar Logo</button>
+                </form>
+            </div>
+        `;
+
+      this.titulo.appendChild(card); // Agregar al body o al contenedor adecuado
+      putLogo();
     });
   }
 
@@ -81,7 +110,37 @@ export class Estilos {
     const tituloBannerButton = this.titulo.querySelector("[data-tituloBanner]");
     tituloBannerButton.addEventListener("click", (e) => {
       e.preventDefault();
-      alert("Estoy en el botón de título del banner");
+
+      // Verifica si ya existe un formulario, para evitar duplicados
+      const existingForm = this.titulo.querySelector("#textForm");
+      if (existingForm) return;
+
+      const card = document.createElement("div");
+      card.className = "d-flex justify-content-center align-items-center"; // Centrar el contenedor del formulario
+
+      card.innerHTML = `
+        <div class="form-container">
+          <form id="textForm">
+            <div class="mb-3">
+              <label for="titleInput" class="form-label">Nuevo Título</label>
+              <input type="text" id="titleInput" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="subtitleInput" class="form-label">Nuevo Subtítulo</label>
+              <input type="text" id="subtitleInput" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="colorInput" class="form-label">Color del Título</label>
+              <input type="color" id="colorInput" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar Texto</button>
+          </form>
+        </div>
+      `;
+
+      // Añadir el formulario debajo de los botones de reemplazo de imagen
+      this.titulo.appendChild(card);
+      putTitulo();
     });
   }
 
@@ -89,7 +148,28 @@ export class Estilos {
     const colorPaginaButton = this.titulo.querySelector("[data-colorBody]");
     colorPaginaButton.addEventListener("click", (e) => {
       e.preventDefault();
-      alert("Estoy en el botón de color de fondo de página");
+
+      // Crear y añadir el formulario para seleccionar el color de fondo de la página
+      const existingForm = this.titulo.querySelector("#colorPaginaForm");
+      if (existingForm) return;
+
+      const card = document.createElement("div");
+      card.className = "d-flex justify-content-center align-items-center my-4"; // Centrar el contenedor del formulario y añadir un margen
+
+      card.innerHTML = `
+            <div class="form-container p-3 border rounded shadow-sm bg-light">
+                <form id="colorPaginaForm">
+                    <div class="mb-3">
+                        <label for="colorPaginaInput" class="form-label">Selecciona el color de fondo de la página:</label>
+                        <input type="color" id="colorPaginaInput" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Aplicar Color</button>
+                </form>
+            </div>
+        `;
+
+      this.titulo.appendChild(card);
+      putColorSettings();
     });
   }
 
@@ -97,7 +177,28 @@ export class Estilos {
     const colorTarjetasButton = this.titulo.querySelector("[data-colorCard]");
     colorTarjetasButton.addEventListener("click", (e) => {
       e.preventDefault();
-      alert("Estoy en el botón de color de fondo de tarjetas");
+
+      // Crear y añadir el formulario para seleccionar el color de fondo de las tarjetas
+      const existingForm = this.titulo.querySelector("#colorTarjetasForm");
+      if (existingForm) return;
+
+      const card = document.createElement("div");
+      card.className = "d-flex justify-content-center align-items-center my-4"; // Centrar el contenedor del formulario y añadir un margen
+
+      card.innerHTML = `
+            <div class="form-container p-3 border rounded shadow-sm bg-light">
+                <form id="colorTarjetasForm">
+                    <div class="mb-3">
+                        <label for="colorTarjetasInput" class="form-label">Selecciona el color de fondo de las tarjetas:</label>
+                        <input type="color" id="colorTarjetasInput" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Aplicar Color</button>
+                </form>
+            </div>
+        `;
+
+      this.titulo.appendChild(card);
+      putColorSettingsCard();
     });
   }
 }

@@ -5,7 +5,7 @@
   z-index: 1000;
 }
 
-header {
+.header {
   width: 100%;
   height: 10rem;
   display: flex;
@@ -26,8 +26,10 @@ header {
 }
 
 .cabecera_logo {
-  width: 9.3rem;
-  margin-bottom: 2rem;
+  width: 50%; /* Ancho relativo al contenedor padre */
+  max-width: 8rem; /* Ancho máximo para evitar que sea demasiado grande */
+  height: auto; /* Mantiene la proporción del logo */
+  margin-bottom: 1rem;
 }
 
 .busqueda {
@@ -211,7 +213,7 @@ p.help a {
 
 #menu-mobile div.open:nth-child(1) {
   z-index: 1000;
-  height: 60vh;
+  height: 80vh;
 }
 
 .carrito-monto {
@@ -598,8 +600,15 @@ ul li a {
     display: none;
   }
 
+  /* .cabecera_logo {
+    width: 50%; 
+    max-width: 8rem; 
+    height: auto;
+    margin-bottom: 1rem;
+  } */
+
   .cabecera_logo {
-    width: 7.5rem;
+    width: 30%;
     margin-left: 3rem;
     margin-top: 1.5rem;
   }
