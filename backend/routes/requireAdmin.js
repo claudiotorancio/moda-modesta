@@ -1,12 +1,9 @@
 export const requireAdmin = (req, res, next) => {
   try {
     if (!req.isAuthenticated() || req.user.role !== "admin") {
-      return res
-        .status(403)
-        .json({
-          error:
-            "Acceso denegado: Solo usuarios administradores pueden acceder",
-        });
+      return res.status(403).json({
+        error: "Acceso denegado: Solo usuarios administradores pueden acceder",
+      });
     }
     next();
   } catch (error) {

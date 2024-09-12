@@ -46,6 +46,8 @@ import deleteProductCart from "../backend/routes/carrito/deleteProductCart.js";
 import limpiarCarrito from "../backend/routes/carrito/limpiarCarrito.js";
 import agregarResena from "../backend/routes/resena/agregarResena.js";
 import getResena from "../backend/routes/resena/getResena.js";
+import putResena from "../backend/routes/resena/putResena.js";
+import deleteResena from "../backend/routes/resena/deleteResena.js";
 import path from "path";
 
 const router = Router();
@@ -107,6 +109,8 @@ const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 //reseñas
 router.post("/api/agregarResena", requireAdmin, agregarResena);
 router.get("/api/getResena", getResena);
+router.put("/api/putResena/:id", requireAdmin, putResena);
+router.delete("/api/deleteResena/:id", requireAdmin, deleteResena);
 
 //carrito
 

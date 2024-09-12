@@ -39,6 +39,7 @@ header {
 
 .cabecera_logo {
   width: 9.3rem;
+  margin-bottom: 2rem;
 }
 
 .busqueda {
@@ -191,7 +192,7 @@ p.help a {
   position: absolute;
   width: 100vw;
   margin-left: 0rem;
-  padding: 3rem;
+  padding: 2rem;
   cursor: pointer;
   border: none;
 }
@@ -673,6 +674,8 @@ ul li a {
   }
 
   #login {
+    width: 2.5rem;
+    height: 2.5rem;
     margin-top: 1.5rem;
     margin-right: 1rem;
   }

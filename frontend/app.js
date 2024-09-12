@@ -14,7 +14,10 @@ import { productosInicio } from "./controllers/productos/ProductInit.js";
 import { ProductForm } from "./controllers/productos/productForm.js";
 import { controllers } from "./controllers/productos/productos_controllers.js";
 import { modalControllers } from "./modal/modal.js";
-import { cargarReseñas } from "./controllers/reseña/reseñas.js";
+import {
+  cargarReseñas,
+  cargarReseñasAdmin,
+} from "./controllers/reseña/reseñas.js";
 import { Compras } from "./controllers/compras/compras-controllers.js";
 import { hashControllers } from "./controllers/hashControllers.js";
 import { initializeCategoryControls } from "./controllers/productos/categoryControls.js";
@@ -28,7 +31,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     await hashControllers();
   }
   initializeCategoryControls();
-  cargarReseñas();
 
   const listaServicesInstance = new ListaServices();
   const isAdmin = await listaServicesInstance.getAdmin();
@@ -49,6 +51,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "block";
     });
+
+    cargarReseñasAdmin();
 
     const envio = document.querySelector("[data-pedidos]");
     envio.addEventListener("click", (e) => {
@@ -83,6 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     contactUser.style.display = "none";
   } else {
     productosInicio.renderInit();
+    cargarReseñas();
     divUsuario.style.display = "none";
     actualizarUsuario.style.display = "none";
     logoutUsuario.style.display = "none";

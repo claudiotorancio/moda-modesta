@@ -1,37 +1,21 @@
-import resenaServices from "../../services/resena_services.js";
 import { modalControllers } from "../../modal/modal.js";
+import resenaServices from "../../services/resena_services.js";
 
-export class FormResena {
-  constructor(titulo) {
-    this.titulo = titulo;
-  }
+export async function editarResena(resenaId) {
+  modalControllers.baseModal();
+  const modal = document.getElementById("modal");
+  const contenedorModal = modal.querySelector("[data-table]");
 
-  // Mostrar formulario
-  render() {
-    this.clearForm();
-    const card = this.createForm();
-    this.titulo.appendChild(card);
-    this.setupFormSubmitHandler();
-  }
+  contenedorModal.innerHTML = "";
 
-  // Vaciar contenido
-  clearForm() {
-    this.titulo.innerHTML = "";
-  }
-
-  // Crear formulario dinámico
-  createForm() {
-    const card = document.createElement("div");
-    card.className = "d-flex justify-content-center align-items-center"; // Centrar el contenedor del formulario
-
-    card.innerHTML = `
-      <div>
+  contenedorModal.innerHTML = `
+ <div>
         <div class="text-center">
           <div class="card-header">
-            <p>Cargar nueva Reseña</p>
+            <p>Editar Reseña</p>
           </div>
           <div class="card-body w-100">
-            <form id="form" action="/api/agregarResena" enctype="multipart/form-data" method="POST" data-form>
+            <form id="form" action="/api/putResena" enctype="multipart/form-data" method="PUT" data-form>
               <div class="form-group">
                 <input class="form-control mt-3 p-2" type="text" placeholder="Nombre " name="name" required data-name>
               </div>
@@ -50,27 +34,17 @@ export class FormResena {
                 </select>
               </div>
               <div class="submitResena">
-                <button type="submit" class="btn btn-primary btn-lg">Enviar Reseña</button>
+                <button type="submit" class="btn btn-primary btn-lg" data-resenaId="${resenaId}">Editar Reseña</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-    `;
-    return card;
-  }
-
-  // Capturar el evento submit
-  setupFormSubmitHandler() {
-    const form = this.titulo.querySelector("form[data-form]");
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      this.handleSubmit();
-    });
-  }
-
-  // Recopilar y enviar los datos
-  async handleSubmit() {
+  `;
+  // Manejar el evento de envío del formulario
+  const form = contenedorModal.querySelector("form");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
     const name = document.querySelector("[data-name]").value;
     const redSocial = document.querySelector("[data-redSocial]").value;
     const resena = document.querySelector("[data-resena]").value;
@@ -85,10 +59,25 @@ export class FormResena {
 
     try {
       // Agregar reseña a la lista
-      await resenaServices.agregarResena(nuevaResena);
+      await resenaServices.putResena(nuevaResena, resenaId);
+
       modalControllers.modalProductoCreado();
     } catch (error) {
       console.error("Error al agregar la reseña:", error);
     }
+  });
+}
+
+export async function eliminarReseña(resenaId) {
+  const confirmacion = confirm("¿Está seguro que desea eliminar esta reseña?");
+  if (confirmacion) {
+    resenaServices
+      .deleteResena(resenaId)
+      .then(() => {
+        console.log(`Reseña con ID ${resenaId} eliminada`);
+      })
+      .catch((error) => {
+        console.error("Error al eliminar la reseña:", error);
+      });
   }
 }

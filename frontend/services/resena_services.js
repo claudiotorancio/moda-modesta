@@ -15,10 +15,6 @@ class ResenaService {
     }
   }
 
-  async renderInicio() {
-    return await this.fetchJSON(`${this.baseURL}/api/renderInicio`);
-  }
-
   async getResena() {
     try {
       const response = await fetch(`${this.baseURL}/api/getResena`);
@@ -33,9 +29,9 @@ class ResenaService {
     }
   }
 
-  async eliminarProducto(id) {
+  async deleteResena(id) {
     try {
-      await fetch(`${this.baseURL}/api/deleteProduct/${id}`, {
+      await fetch(`${this.baseURL}/api/deleteResena/${id}`, {
         method: "DELETE",
       });
     } catch (error) {
@@ -43,18 +39,17 @@ class ResenaService {
     }
   }
 
-  async detalleProducto(id) {
-    return await this.fetchJSON(`${this.baseURL}/api/detailsProduct/${id}`);
-  }
-
-  async actualizarProducto(product, id) {
+  async putResena(resena, id) {
     try {
-      const response = await fetch(`${this.baseURL}/api/updateProduct/${id}`, {
+      const response = await fetch(`${this.baseURL}/api/putResena/${id}`, {
         method: "PUT",
-        body: product,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(resena),
       });
       if (!response.ok) {
-        throw new Error("No fue posible actualizar el producto");
+        throw new Error("No fue posible actualizar la reseña");
       }
       return response;
     } catch (error) {
