@@ -513,13 +513,15 @@ const modalCorreoNoenviado = () => {
   }, 3000);
 };
 
-// const container = document.querySelector("#menu-mobile");
-// const menu = document.querySelector("#menu-mobile div:nth-child(1)");
+const container = document.querySelector("#menu-mobile");
+const menu = document.querySelector(".main-menu");
+const checkBox = document.querySelector("#check");
 
-// container.addEventListener("click", (e) => {
-//   container.classList.toggle("active");
-//   menu.classList.toggle("open");
-// });
+document.addEventListener("click", (e) => {
+  if (!container.contains(e.target) && checkBox.checked) {
+    checkBox.checked = false; // Desmarca el checkbox para cerrar el menú
+  }
+});
 
 const modalCarritoVacio = () => {
   baseModal();

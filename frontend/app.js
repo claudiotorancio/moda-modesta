@@ -155,31 +155,31 @@ document.addEventListener("DOMContentLoaded", async () => {
 //   searchProducts(query);
 // });
 
-function searchProducts(query) {
-  const products = document.querySelectorAll(".card"); // Asegúrate de que cada producto tenga esta clase
-  let found = false;
+// function searchProducts(query) {
+//   const products = document.querySelectorAll(".card"); // Asegúrate de que cada producto tenga esta clase
+//   let found = false;
 
-  products.forEach((product) => {
-    const productName = product.querySelector("h3").textContent.toLowerCase();
-    if (productName.includes(query)) {
-      product.style.display = "block"; // Mostrar productos que coincidan
-      found = true;
-    } else {
-      product.style.display = "none"; // Ocultar productos que no coincidan
-    }
-  });
+//   products.forEach((product) => {
+//     const productName = product.querySelector("h3").textContent.toLowerCase();
+//     if (productName.includes(query)) {
+//       product.style.display = "block"; // Mostrar productos que coincidan
+//       found = true;
+//     } else {
+//       product.style.display = "none"; // Ocultar productos que no coincidan
+//     }
+//   });
 
-  // Mostrar un mensaje si no se encontraron productos
-  const noResultsMessage = document.getElementById("no-results-message");
-  if (!found) {
-    noResultsMessage.style.display = "block";
-  } else {
-    noResultsMessage.style.display = "none";
-  }
+//   // Mostrar un mensaje si no se encontraron productos
+//   const noResultsMessage = document.getElementById("no-results-message");
+//   if (!found) {
+//     noResultsMessage.style.display = "block";
+//   } else {
+//     noResultsMessage.style.display = "none";
+//   }
 
-  // Mostrar todos los productos si la búsqueda está vacía
-  if (query === "") {
-    productosInicio.renderInit();
-    noResultsMessage.style.display = "none";
-  }
-}
+//   // Mostrar todos los productos si la búsqueda está vacía
+//   if (query === "") {
+//     productosInicio.renderInit();
+//     noResultsMessage.style.display = "none";
+//   }
+// }

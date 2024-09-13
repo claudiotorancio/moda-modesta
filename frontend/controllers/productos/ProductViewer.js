@@ -89,7 +89,7 @@ export const mostrarProducto = async (
                              
                               <label class="input-label" for="cpDestino">Codigo Postal</label>
                               <span class="input-message-error">Este campo no es válido</span>
-                                <i class="fa fa-arrow-right postal-arrow" id="calcular-envio"></i>
+                                <i class="btn btn-secondary fa fa-arrow-right postal-arrow" id="calcular-envio"></i>
                               <div id="shipping-total">
                               </div>
                              
