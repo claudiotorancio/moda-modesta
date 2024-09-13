@@ -97,7 +97,7 @@ Al dar finalizado se enviarán los datos para el pago al correo ingresado. Por f
         price: item.price,
         cantidad: item.cantidad,
         size: item.size,
-        hash: item._id,
+        hash: item.productId,
       }));
 
       const datosCompra = {
