@@ -67,9 +67,6 @@ function handleCategorySelection(contenedorProductos, categoriaBtn, opcion) {
 
     categoriaBtn.innerHTML = `<i class="fa-solid fa-arrow-left"></i> Volver`;
     volverBtn.classList.add("show"); // Mostrar el botón "Volver"
-    document.querySelector(".busqueda").style.display = "block"; // Ocultar el buscador
-    document.querySelector("#searchInput").setAttribute("disabled", true); // Deshabilitar el input de búsqueda
-    document.querySelector(".button-busqueda").setAttribute("disabled", true); // Deshabilitar el botón de búsqueda
     window.scrollTo({ top: 200, behavior: "smooth" });
     history.pushState({ categoryId: opcion }, "", `#${opcion}`);
   } catch (error) {
@@ -79,9 +76,6 @@ function handleCategorySelection(contenedorProductos, categoriaBtn, opcion) {
 
 function handleReturn() {
   volverBtn.classList.remove("show"); // Ocultar el botón "Volver"
-  document.querySelector(".busqueda").style.display = "block"; // Mostrar el buscador
-  document.querySelector("#searchInput").removeAttribute("disabled"); // Habilitar el input de búsqueda
-  document.querySelector(".button-busqueda").removeAttribute("disabled"); // Habilitar el botón de búsqueda
   history.pushState({}, "", "index.html");
   window.location.href = "index.html";
 }
