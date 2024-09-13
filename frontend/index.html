@@ -18,7 +18,61 @@
   <title>ModaModesta</title>
 </head>
 <body>
-  <header class="header fixed-top">
+<header class="main-header">
+  
+  <div class="header-wrap">
+    <div class="wrap-logo-header">
+      <a href="/" class="logo-header">        
+        <img id="logo" class="cabecera_logo" src="https://moda-modesta.s3.us-east-2.amazonaws.com/1725390288892.jpg" alt="modaModesta logo" />
+        <span>Web de Modas Modesta</span>
+      </a>
+    </div>
+    
+    
+
+    <div class="wrap-nav-header">
+      <nav class="nav-header">
+        <input type="checkbox" id="check">
+        <label for="check" class="checkbtn">
+          <i class="toogle-menu fa-solid fa-bars"></i>
+        </label>
+
+        
+        <ul class="main-menu">
+          <li class="menu-item"><a href="#destacados">Destacados</a></li>
+          <li class="menu-item"><a href="#vestidos">Vestidos</a></li>
+          <li class="menu-item"><a href="#polleras">polleras</a></li>
+          <li class="menu-item"><a href="#diversos">Diversos</a></li>
+          <li class="menu-item" id="nav-main-contact"><a href="#contacto">Contacto</a</li>
+        </ul>
+      </nav>
+    </div>
+    <div class=" div-usuario bg-light p-2 rounded-circle admin-only">
+      <a href="#" class="d-flex align-items-center">
+        <div class="profile-notificacion mr-2">
+          <span class="data-user"></span>
+        </div>
+      </a>
+    </div>
+    <div class="carrito-link">
+      <a href="#" class="js-toggle-cart" data-modal-url="productoModalCarrito">
+        <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/carrito.png" alt="Carrito de compras">
+        <div class="carrito-notificacion">
+          <span class="carrito-cantidad">0</span>
+        </div>
+        <span class="carrito-monto">$0.00</span>
+      </a>
+    </div>
+    <a href="#"><button type="submit" id="login" class="btn btn-primary" data-log></button></a>
+    <a href="#"><button type="submit" id="login" class="admin-only" data-logOut></button></a>
+
+  </div>
+
+</header>
+
+<!-- <div class="hero"></div> -->
+
+  <!-- <header class="main-header">
     <div class="cabecera_container">
       <div class="div-contenedor">
         <img id="logo" class="cabecera_logo" src="https://moda-modesta.s3.us-east-2.amazonaws.com/1725390288892.jpg" alt="modaModesta logo" />
@@ -82,9 +136,9 @@
       </div>
     </nav>
     
-  </header>
+  </header> -->
 
-    <main class="contenido_container">
+    <main>
       
         <div class="banner" id="banner">
           <div class="texto">

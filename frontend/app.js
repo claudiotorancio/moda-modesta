@@ -141,19 +141,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-document.getElementById("searchForm").addEventListener("submit", function (e) {
-  e.preventDefault(); // Evitar la recarga de la página
-  const query = document
-    .getElementById("searchInput")
-    .value.trim()
-    .toLowerCase();
-  searchProducts(query);
-});
+// document.getElementById("searchForm").addEventListener("submit", function (e) {
+//   e.preventDefault(); // Evitar la recarga de la página
+//   const query = document
+//     .getElementById("searchInput")
+//     .value.trim()
+//     .toLowerCase();
+//   searchProducts(query);
+// });
 
-document.getElementById("searchInput").addEventListener("input", function () {
-  const query = this.value.trim().toLowerCase();
-  searchProducts(query);
-});
+// document.getElementById("searchInput").addEventListener("input", function () {
+//   const query = this.value.trim().toLowerCase();
+//   searchProducts(query);
+// });
 
 function searchProducts(query) {
   const products = document.querySelectorAll(".card"); // Asegúrate de que cada producto tenga esta clase

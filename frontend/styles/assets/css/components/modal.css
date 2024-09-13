@@ -71,9 +71,11 @@
 
   .modal-content {
     padding: 1.5rem;
+    margin: 20% auto;
   }
 
   .modal-close {
+    top: 6rem;
     font-size: 2rem;
     color: black;
   }

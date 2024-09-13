@@ -1,4 +1,4 @@
-.fixed-top {
+/* .fixed-top {
   position: fixed;
   top: 0;
   width: 100%;
@@ -26,10 +26,136 @@
 }
 
 .cabecera_logo {
-  width: 50%; /* Ancho relativo al contenedor padre */
-  max-width: 8rem; /* Ancho máximo para evitar que sea demasiado grande */
-  height: auto; /* Mantiene la proporción del logo */
+  width: 50%; padre 
+  max-width: 8rem; 
+  height: auto; 
   margin-bottom: 1rem;
+}*/
+/* .hero {
+  background: url(https://moda-modesta.s3.us-east-2.amazonaws.com/1725390288892.jpg)
+    center;
+  background-size: cover;
+  height: 100vh;
+} */
+
+/*menu Header */
+
+header.main-header {
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+.header-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #fff;
+  z-index: 9999;
+  height: 8rem;
+}
+
+.wrap-logo-header {
+  display: flex;
+  align-items: center;
+  flex-basis: 15%;
+}
+
+.logo-header {
+  font-weight: bold;
+  font: 1.5rem;
+  color: var(--contrast-dark-color);
+}
+
+.logo-header span {
+  display: none;
+}
+
+.cabecera_logo {
+  width: auto;
+  height: auto;
+  max-width: 5rem;
+}
+
+/* .logo-header {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #222;
+} */
+
+.nav-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-wrap-header {
+  display: flex;
+  flex-basis: 50%;
+}
+
+ul.main-menu {
+  display: flex;
+  width: 100%;
+  z-index: 99;
+  margin: 0;
+  padding: 0;
+  justify-content: space-between;
+  font-size: 1.1rem;
+}
+
+ul.main-menu-login {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  z-index: 99;
+  margin: 0;
+  padding: 0;
+  justify-content: space-between;
+  font-size: 1.1rem;
+}
+
+/* ul.main-menu #nav-main-contact {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #ffc300;
+  color: #fff;
+} */
+
+li.menu-item {
+  margin: 0.75rem;
+  display: flex;
+}
+
+li.menu-item a {
+  padding: 0.5rem 1rem;
+  color: #222;
+}
+
+li.menu-item a:hover {
+  color: #ffc300;
+}
+
+i.toogle-menu {
+  display: none;
+  background-color: #fff;
+  border: none;
+  z-index: 9999;
+}
+
+i.toogle-menu img {
+  width: 27px;
+  z-index: 99;
+}
+
+input#check {
+  display: none;
+}
+
+#login {
+  font-size: 1.2rem;
 }
 
 .busqueda {
@@ -89,7 +215,6 @@ p.help a {
   text-decoration: none;
   color: var(--fondo-usuario);
 }
-
 .banner {
   display: flex;
   flex-direction: column;
@@ -214,16 +339,6 @@ p.help a {
 #menu-mobile div.open:nth-child(1) {
   z-index: 1000;
   height: 80vh;
-}
-
-.carrito-monto {
-  text-decoration: none;
-  color: #333;
-}
-
-.carrito-cantidad {
-  text-decoration: none;
-  color: #333;
 }
 
 .js-toggle-cart {
@@ -539,19 +654,13 @@ ul li a {
 }
 
 @media (min-width: 320px) and (max-width: 768px) {
-  .cabecera_container {
-    z-index: 3;
-    height: 3vh;
-    width: 100%;
-    padding-bottom: 0;
-  }
-
-  .header {
+  /*
+   .header {
     height: 10vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 1rem; /* Ajusta el padding según sea necesario */
+    padding-top: 1rem; 
   }
 
   .fixed-top {
@@ -566,9 +675,15 @@ ul li a {
     display: none;
   }
 
-  .carrito-link {
+  
+
+  
+  */
+
+  /* .carrito-link {
     margin-top: 2rem;
-  }
+  } */
+
   .texto h1 {
     font-size: 28px;
     margin-left: 1rem;
@@ -577,6 +692,80 @@ ul li a {
   .texto p {
     font-size: 0.8rem;
     margin-left: 1rem;
+  }
+
+  header {
+    margin-bottom: 4rem;
+  }
+
+  .header-wrap {
+    position: fixed;
+    justify-content: end;
+    width: 100%;
+    background-color: #fff;
+    padding: 0;
+    top: 0;
+    z-index: 9999;
+    height: 80px;
+  }
+
+  .wrap-logo-header {
+    display: block;
+    margin-right: 3rem;
+    flex-basis: 38%;
+  }
+
+  .logo-header span {
+    display: block;
+    display: block;
+    margin-right: 3rem;
+  }
+
+  .logo-header img {
+    display: none;
+  }
+
+  i.toogle-menu {
+    display: flex;
+  }
+
+  ul.main-menu,
+  #nav-main.contact {
+    display: none;
+    left: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul.main-menu {
+    position: fixed;
+    background-color: #fff;
+  }
+
+  label.checkbtn {
+    position: fixed;
+    left: 3%;
+    /* top: 3%; */
+    z-index: 9990;
+  }
+
+  #check:checked ~ ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0rem;
+    z-index: 9;
+    line-height: 0;
+    margin-top: 4.5rem;
+    align-items: center;
+    padding: 0;
+    height: 12vh;
+    top: 0;
+    font-size: 2rem;
+    transition: all 250ms ease-out;
+  }
+
+  #check:checked ~ ul li {
+    font-size: 1.2rem;
   }
 
   .card-lista {
@@ -606,19 +795,13 @@ ul li a {
     margin-top: 1.5rem;
   }
 
-  /* .cabecera_logo {
-    width: 50%; 
-    max-width: 8rem; 
-    height: auto;
-    margin-bottom: 1rem;
-  } */
-
   .cabecera_logo {
+    max-width: 3.5rem;
   }
 
   /* CSS para la versión móvil */
 
-  #menuBtn {
+  /* #menuBtn {
     width: 100vw;
     position: absolute;
     z-index: 0;
@@ -652,7 +835,7 @@ ul li a {
 
   #menu-mobile div.open:nth-child(1) {
     height: 15vh;
-  }
+  } */
 
   .carousel-item img {
     height: 450px; /* Ajusta la altura según tus necesidades */
@@ -674,10 +857,8 @@ ul li a {
   }
 
   #login {
-    width: 2.5rem;
-    height: 2.5rem;
-    margin-top: 1.5rem;
     margin-right: 1rem;
+    margin-left: 1rem;
   }
 
   p.help {
@@ -685,32 +866,27 @@ ul li a {
   }
 
   .profile-notificacion {
-    width: 100%; /* Asegura que el texto ocupe todo el ancho del contenedor */
-    font-size: 14px;
-    margin: 0.3rem;
+    width: auto;
+    font-size: 1rem;
+    margin: auto;
   }
   .data-user {
-    font-weight: bold; /* Ajusta el peso de la fuente según sea necesario */
+    font-weight: bold;
   }
 
   .div-usuario {
-    margin-top: 1rem;
+    margin-right: 1rem;
   }
 
   .div-usuario a {
-    overflow: hidden;
-    list-style-type: none;
-    text-decoration: none;
-    color: #333;
     text-align: center;
-    width: 4rem;
+    width: auto;
   }
 
   .button-busqueda-login img {
     display: none;
   }
-
-  .reseña {
+  */ .reseña {
     margin-bottom: 0;
   }
 
@@ -762,26 +938,7 @@ ul li a {
     width: 17%;
   }
 
-  ul {
-    line-height: 0;
-    margin-top: 1rem;
-    list-style-type: style type;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 2rem;
-  }
-
   ul li {
-    font-size: 1.2rem;
-    text-align: center;
-    text-decoration: underline; /* Agregar subrayado */
-    text-decoration-line: underline; /* Indicar que queremos subrayar */
-    text-decoration-skip-ink: none; /* Evitar que el subrayado se omita alrededor de las letras */
-    text-underline-offset: 0.2em; /* Espacio entre el texto y el subrayado */
-    text-align: center;
-    width: calc(
-      5% - 20px
-    ); /* Ancho del 33.33% menos el espacio entre elementos */
   }
 
   ul li a {
