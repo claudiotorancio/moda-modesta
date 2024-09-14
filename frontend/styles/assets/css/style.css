@@ -712,6 +712,7 @@ ul li a {
     padding: 0;
     top: 0;
     z-index: 9999;
+    height: 4rem;
   }
 
   .wrap-logo-header {
@@ -812,7 +813,7 @@ ul li a {
   }
 
   .cabecera_logo {
-    max-width: 5rem;
+    max-width: 3rem;
   }
 
   /* CSS para la versión móvil */
