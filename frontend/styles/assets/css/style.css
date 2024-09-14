@@ -47,13 +47,15 @@ header.main-header {
 }
 
 .header-wrap {
+  overflow: hidden;
+  object-fit: cover;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
   background-color: #fff;
   z-index: 9999;
-  height: 8rem;
+  height: 6rem;
 }
 
 .wrap-logo-header {
@@ -63,6 +65,8 @@ header.main-header {
 }
 
 .logo-header {
+  overflow: hidden;
+  object-fit: cover;
   font-weight: bold;
   font: 1.5rem;
   color: var(--contrast-dark-color);
@@ -72,9 +76,11 @@ header.main-header {
   display: none;
 }
 
+.logo-header img {
+  border-radius: 50%;
+}
+
 .cabecera_logo {
-  width: auto;
-  height: auto;
   max-width: 5rem;
 }
 
@@ -695,18 +701,17 @@ ul li a {
   }
 
   header {
+    position: fixed;
     margin-bottom: 4rem;
   }
 
   .header-wrap {
-    position: fixed;
     justify-content: end;
     width: 100%;
     background-color: #fff;
     padding: 0;
     top: 0;
     z-index: 9999;
-    height: 80px;
   }
 
   .wrap-logo-header {
@@ -716,13 +721,19 @@ ul li a {
   }
 
   .logo-header span {
-    display: block;
-    display: block;
-    margin-right: 3rem;
+    position: fixed;
+    display: none;
+    left: 10%;
+    top: 3%;
+    width: 10rem;
   }
 
   .logo-header img {
-    display: none;
+    overflow: hidden;
+    position: fixed;
+    display: block;
+    left: 10%;
+    top: 1%;
   }
 
   i.toogle-menu {
@@ -769,6 +780,10 @@ ul li a {
     display: grid;
   }
 
+  .banner {
+    margin-top: 6rem;
+  }
+
   .card-lista {
     max-height: 50rem; /* Altura máxima del contenedor */
     overflow-y: auto; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
@@ -797,7 +812,7 @@ ul li a {
   }
 
   .cabecera_logo {
-    max-width: 3.5rem;
+    max-width: 5rem;
   }
 
   /* CSS para la versión móvil */
