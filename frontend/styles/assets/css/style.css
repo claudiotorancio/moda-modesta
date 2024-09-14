@@ -605,6 +605,7 @@ ul li a {
   li.menu-item a {
     padding: 0;
   }
+
   #menu-mobile {
     z-index: 1;
     font-size: 1.8vw;
@@ -776,6 +777,10 @@ ul li a {
     height: 12vh;
     top: 0;
     font-size: 1.2rem;
+  }
+
+  li.menu-item {
+    margin: 0;
   }
 
   /* Estado activado del menú */
