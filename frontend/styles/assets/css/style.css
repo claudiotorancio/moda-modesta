@@ -602,6 +602,9 @@ ul li a {
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
+  li.menu-item a {
+    padding: 0;
+  }
   #menu-mobile {
     z-index: 1;
     font-size: 1.8vw;
