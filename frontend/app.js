@@ -32,6 +32,7 @@ import {
   loadColorSettingsCard,
   loadLogoImage,
 } from "./controllers/admin/eventBanner.js";
+import { busacar } from "./controllers/buscador/buscador.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
@@ -50,11 +51,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const isAdmin = await listaServicesInstance.getAdmin();
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
-  const divUsuario = document.querySelector(".rounded-circle");
+  // const divUsuario = document.querySelector(".rounded-circle");
   const actualizarUsuario = document.querySelector(".data-user");
   const logoutUsuario = document.querySelector("[data-logOut]");
   const userActive = document.querySelector("[data-log]");
-  const contactUser = document.querySelector("[data-contact]");
+  // const contactUser = document.querySelector("[data-contact]");
   const resenas = document.querySelector("[data-resenas]");
   const ventas = document.querySelector("[data-ventas]");
   const estilosDiseno = document.querySelector("[data-estilosDiseno]");
@@ -62,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const titulo = document.querySelector("[data-titulo]");
 
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
-  if (user && isAdmin) {
+  if (user) {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "block";
     });
@@ -106,13 +107,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
-    contactUser.style.display = "none";
+    busacar();
   } else {
     productosInicio.renderInit();
     cargarReseñas();
-    divUsuario.style.display = "none";
-    actualizarUsuario.style.display = "none";
-    logoutUsuario.style.display = "none";
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   }
 
@@ -140,46 +138,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     loginServicesInstance.logout();
   });
 });
-
-document.getElementById("searchForm").addEventListener("submit", function (e) {
-  e.preventDefault(); // Evitar la recarga de la página
-  const query = document
-    .getElementById("searchInput")
-    .value.trim()
-    .toLowerCase();
-  searchProducts(query);
-});
-
-document.getElementById("searchInput").addEventListener("input", function () {
-  const query = this.value.trim().toLowerCase();
-  searchProducts(query);
-});
-
-function searchProducts(query) {
-  const products = document.querySelectorAll(".card"); // Asegúrate de que cada producto tenga esta clase
-  let found = false;
-
-  products.forEach((product) => {
-    const productName = product.querySelector("h3").textContent.toLowerCase();
-    if (productName.includes(query)) {
-      product.style.display = "block"; // Mostrar productos que coincidan
-      found = true;
-    } else {
-      product.style.display = "none"; // Ocultar productos que no coincidan
-    }
-  });
-
-  // Mostrar un mensaje si no se encontraron productos
-  const noResultsMessage = document.getElementById("no-results-message");
-  if (!found) {
-    noResultsMessage.style.display = "block";
-  } else {
-    noResultsMessage.style.display = "none";
-  }
-
-  // Mostrar todos los productos si la búsqueda está vacía
-  if (query === "") {
-    productosInicio.renderInit();
-    noResultsMessage.style.display = "none";
-  }
-}
