@@ -3,6 +3,8 @@ import productoServices from "../../services/product_services.js"; // Importa el
 import { mostrarProducto } from "./ProductViewer.js";
 import Carrito from "../carrito/carrito.js";
 
+const productCardInstance = new ProductCard();
+
 const carrito = new Carrito();
 
 export const controllers = {
@@ -14,7 +16,7 @@ export const controllers = {
       if (Array.isArray(productosDestacados)) {
         contenedorDestacados.innerHTML = "";
         for (const producto of productosDestacados) {
-          const card = new ProductCard(
+          const card = productCardInstance.render(
             producto.name,
             producto.price,
             producto.imagePath,
@@ -38,7 +40,7 @@ export const controllers = {
       });
 
       for (const producto of products) {
-        const productCard = new ProductCard(
+        const productCard = productCardInstance.render(
           producto.name,
           producto.price,
           producto.imagePath,
