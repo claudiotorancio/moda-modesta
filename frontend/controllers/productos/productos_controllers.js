@@ -11,21 +11,17 @@ export const controllers = {
       const productosDestacados = await productoServices.destacadosProducto();
       const contenedorDestacados = document.querySelector("[data-destacados]");
 
-      if (Array.isArray(productosDestacados)) {
-        contenedorDestacados.innerHTML = "";
-        for (const producto of productosDestacados) {
-          const card = this.productoInicio(
-            producto.name,
-            producto.price,
-            producto.imagePath,
-            producto.description,
-            producto.sizes,
-            producto._id
-          );
-          contenedorDestacados.appendChild(card);
-        }
-      } else {
-        console.error("Error: No se recibieron productos destacados.");
+      contenedorDestacados.innerHTML = "";
+      for (const producto of productosDestacados) {
+        const card = new ProductCard(
+          producto.name,
+          producto.price,
+          producto.imagePath,
+          producto.description,
+          producto.sizes,
+          producto._id
+        );
+        contenedorDestacados.appendChild(card);
       }
 
       const listaProductos = await productoServices.listaProductos();
