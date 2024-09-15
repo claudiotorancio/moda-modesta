@@ -28,15 +28,18 @@ export class ProductForm {
     <div>
       <div class="text-center">
         <div class="card-header mb-2">
-          <p>Agregar producto</p>
+          <h3 style="font-weight: bold;">Agregar producto</h3>
         </div>
+     
+              <p>Modo seleccion de imagenes:</p>
+              <p>a- Seleccionar una sola imagen</p>
+              <p>b- Selecionar varias imagenes de una vez para efecto carrousel.</p>
+                 <br>
         <div class="card-body w-100">
           <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
             <div class="form-group">
               <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
-              <br>
-              <p>Hasta 2 imágenes</p>
-            </div>
+               </div>
             <div class="form-group">
               <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
             </div>

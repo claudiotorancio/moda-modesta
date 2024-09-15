@@ -168,7 +168,7 @@ input#check {
   display: flex;
   align-items: center;
   flex-direction: row;
-  margin-right: 50%;
+  margin-right: 1rem;
 }
 
 .busqueda_campo {

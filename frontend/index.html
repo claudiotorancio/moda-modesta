@@ -38,6 +38,7 @@
             <li class="menu-item"><a href="#polleras">Polleras</a></li>
             <li class="menu-item"><a href="#diversos">Diversos</a></li>
             <li class="menu-item" id="nav-main-contact"><a href="#contacto">Contacto</a></li>
+            
         </ul>
     </nav>
     
@@ -74,7 +75,30 @@
             <button class="btn btn-primary consolas" data-init>Suscribite!</button>          
           </div>
         </div>
-        <div class="d-flex justify-content-center - mt-2">
+        <div class="d-flex justify-content-center mt-2">
+          <div class="busqueda admin-only">
+            <form  class="busqueda admin-only" id="searchForm">
+              <input
+                type="search"
+                class="busqueda_campo"
+                placeholder="Buscar productos.."
+                name="search"
+                id="searchInput"
+                autocomplete="off"
+              />
+              <button type="submit" class="button-busqueda">
+                <img
+                  src="https://myimagescnd.s3.us-east-2.amazonaws.com/lupa.png"
+                  alt="Icono Lupa"
+                />
+              </button>
+            </form>
+            
+            <div id="no-results-message" style="display: none; font-size: 0.8rem;">
+             <p>No hay productos que coincidan con tu búsqueda.</p> 
+            </div>
+                 
+          </div>
           <button class="btn btn-primary admin-only me-2" data-estilosDiseno>Estilos de diseño</button>
           <button class="btn btn-primary admin-only me-2" data-crearProductos>Crear productos</button>
           <button class="btn btn-primary admin-only me-2" data-pedidos>Pedidos</button>
