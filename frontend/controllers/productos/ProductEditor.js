@@ -24,74 +24,80 @@ export class ProductEditor {
     modalControllers.baseModal();
 
     this.productoEdicion.innerHTML = `
-      <div class="text-center">
-  <div class="card-header d-flex justify-content-center">
-    <div class="me-4">
-      <img class="img-card-top" style="width: 10rem;" src="${
-        imagePath[0]
-      }" alt="Imagen 1">
-      <p class="text-muted">Imagen 1</p>
-    </div>
-    <div>
-      <img class="img-card-top" style="width: 10rem;" src="${
-        imagePath[1]
-      }" alt="Imagen 2">
-      <p class="text-muted">Imagen 2</p>
-    </div>
-  </div>
-</div>
-
-     
-          <form action="/api/updateProduct/${id}" id="form" enctype="multipart/form-data" method="POST" data-forma>
-            <p class="parrafo">Producto a editar</p>
-            
-            <div class="form-group">
-              <input type="checkbox" id="image1Check" class="form-check-input" name="image1Check" data-check-image1>
-              <label for="image1Check" class="form-check-label">Actualizar Imagen 1</label>
-              <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath1" data-image1 required disabled>
-              <input type="hidden" class="oldImagePath" name="oldImagePath1" value="${
-                imagePath[0]
-              }" data-oldPath1>
-            </div>
-            
-            <div class="form-group">
-              <input type="checkbox" id="image2Check" class="form-check-input" name="image2Check" data-check-image2>
-              <label for="image2Check" class="form-check-label">Actualizar Imagen 2</label>
-              <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath2" data-image2 required disabled>
-              <input type="hidden" class="oldImagePath" name="oldImagePath2" value="${
-                imagePath[1]
-              }" data-oldPath2>
-            </div>
-            
-            <div class="form-group">
-              <input class="form-control mt-3 p-2" placeholder="nombre" type="text" value="${name}" required data-nombre>
-            </div>
-            
-            <div class="form-group">
-              <input class="form-control mt-3 mb-3 p-2" placeholder="precio" type="text" value="${price}" required data-precio>
-            </div>
-            
-            <div class="form-group">
-              <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" required data-description>${description}</textarea>
-            </div>
-  
-            <div class="form-group form-check mb-3">
-              <input type="checkbox" class="form-check-input" id="isFeatured" name="isFeatured" ${
-                isFeatured ? "checked" : ""
-              }>
-              <label class="form-check-label" for="isFeatured">Destacar producto</label>
-            </div>
-
-            <label for="sizes">Modificar talles</label>
-            <div class="form-group mb-4">
-              ${this.renderSizeOptions(sizes)}
-            </div>
-  
-            <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
-          </form>
-        </div>
+    <div class="text-center">
+      <div class="card-header d-flex justify-content-center">
+        ${imagePath
+          .map(
+            (path, index) => `
+          <div class="me-4">
+            <img class="img-card-top" style="width: 10rem;" src="${path}" alt="Imagen ${
+              index + 1
+            }">
+            <p class="text-muted">Imagen ${index + 1}</p>
+          </div>
+        `
+          )
+          .join("")}
       </div>
-    `;
+    </div>
+        
+    <form action="/api/updateProduct/${id}" id="form" enctype="multipart/form-data" method="POST" data-forma>
+      <p class="parrafo">Producto a editar</p>
+      
+      ${imagePath
+        .map(
+          (path, index) => `
+        <div class="form-group">
+          <input type="checkbox" id="image${
+            index + 1
+          }Check" class="form-check-input" name="image${
+            index + 1
+          }Check" data-check-image${index + 1}>
+          <label for="image${
+            index + 1
+          }Check" class="form-check-label">Actualizar Imagen ${
+            index + 1
+          }</label>
+          <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath${
+            index + 1
+          }" data-image${index + 1} required disabled>
+          <input type="hidden" class="oldImagePath" name="oldImagePath${
+            index + 1
+          }" value="${path}" data-oldPath${index + 1}>
+        </div>
+      `
+        )
+        .join("")}
+      
+      <div class="form-group">
+        <input class="form-control mt-3 p-2" placeholder="nombre" type="text" value="${name}" required data-nombre>
+      </div>
+      
+      <div class="form-group">
+        <input class="form-control mt-3 mb-3 p-2" placeholder="precio" type="text" value="${price}" required data-precio>
+      </div>
+      
+      <div class="form-group">
+        <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" required data-description>${description}</textarea>
+      </div>
+  
+      <div class="form-group form-check mb-3">
+        <input type="checkbox" class="form-check-input" id="isFeatured" name="isFeatured" ${
+          isFeatured ? "checked" : ""
+        }>
+        <label class="form-check-label" for="isFeatured">Destacar producto</label>
+      </div>
+  
+      <label for="sizes">Modificar talles</label>
+      <div class="form-group mb-4">
+        ${this.renderSizeOptions(sizes)}
+      </div>
+  
+      <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
+    </form>
+  </div>
+  `;
+
     this.productoEdicion.classList.add("modalVisor");
 
     this.setupImageCheckListeners();
