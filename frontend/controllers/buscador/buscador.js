@@ -1,5 +1,3 @@
-//buscador
-
 import { controllers } from "../productos/productos_controllers.js";
 
 export function buscar() {
@@ -24,8 +22,20 @@ export function buscar() {
     let found = false;
 
     products.forEach((product) => {
-      const productName = product.querySelector("h3").textContent.toLowerCase();
-      if (productName.includes(query)) {
+      // Obtener el nombre y el precio del producto
+      const productNameElement = product.querySelector("h3");
+      const productPriceElement = product.querySelector(".card-text");
+
+      // Manejar productos sin nombre o precio
+      const productName = productNameElement
+        ? productNameElement.textContent.toLowerCase()
+        : "";
+      const productPrice = productPriceElement
+        ? productPriceElement.textContent.toLowerCase()
+        : "";
+
+      // Comprobar si la consulta coincide con el nombre o el precio del producto
+      if (productName.includes(query) || productPrice.includes(query)) {
         product.style.display = "block"; // Mostrar productos que coincidan
         found = true;
       } else {
