@@ -24,6 +24,7 @@ export const controllers = {
         // Renderiza el producto y lo agrega al contenedor adecuado
         const container = document.querySelector(`[data-${producto.section}]`);
         if (container) {
+          container.innerHTML = "";
           container.appendChild(productCard.render());
         } else {
           console.error(

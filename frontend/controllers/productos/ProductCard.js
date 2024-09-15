@@ -16,8 +16,6 @@ export class ProductCard {
     const card = document.createElement("div");
     card.classList.add("card");
 
-    card.innerHTML = "";
-
     card.innerHTML = `
       <div class="container mx-auto mt-4">
         <div class="img-card">
