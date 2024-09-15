@@ -22,7 +22,7 @@ export class ProductCard {
         </div>
         <div class="card-body">
           <a href="#" data-veradmin>ver producto</a>
-          <h4 class="card-title">${this.name}</h4>
+          <h3 class="card-title">${this.name}</h3>
           <p class="card-text">${"$" + this.price}</p>
           <a href="#form" class="btn btn-primary" id="${
             this.id

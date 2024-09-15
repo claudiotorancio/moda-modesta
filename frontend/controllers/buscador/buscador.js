@@ -2,7 +2,7 @@
 
 import { controllers } from "../productos/productos_controllers.js";
 
-export function busacar() {
+export function buscar() {
   document
     .getElementById("searchForm")
     .addEventListener("submit", function (e) {
@@ -21,10 +21,12 @@ export function busacar() {
 
   function searchProducts(query) {
     const products = document.querySelectorAll(".card"); // Asegúrate de que cada producto tenga esta clase
+    console.log(products);
     let found = false;
 
     products.forEach((product) => {
       const productName = product.querySelector("h3").textContent.toLowerCase();
+      console.log(productName);
       if (productName.includes(query)) {
         product.style.display = "block"; // Mostrar productos que coincidan
         found = true;
