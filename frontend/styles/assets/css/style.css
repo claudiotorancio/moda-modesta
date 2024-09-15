@@ -161,7 +161,7 @@ input#check {
 }
 
 #login {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .busqueda {
@@ -541,7 +541,6 @@ div.table-subtotal td {
   justify-content: space-between;
   align-items: center;
   margin-top: 1.25rem;
-  margin-bottom: 4rem;
 }
 
 span#final-total {
@@ -602,10 +601,6 @@ ul li a {
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
-  li.menu-item a {
-    padding: 0;
-  }
-
   #menu-mobile {
     z-index: 1;
     font-size: 1.8vw;

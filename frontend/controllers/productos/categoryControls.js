@@ -23,15 +23,6 @@ export function initializeCategoryControls() {
     });
   });
 
-  document.querySelectorAll(".ver-todos").forEach((enlace) => {
-    enlace.addEventListener("click", function (event) {
-      event.preventDefault();
-      this.parentElement.nextElementSibling.classList.toggle(
-        "ver-todos-activado"
-      );
-    });
-  });
-
   volverBtn.addEventListener("click", () => {
     handleReturn();
   });
@@ -40,18 +31,43 @@ export function initializeCategoryControls() {
 function handleCategorySelection(contenedorProductos, categoriaBtn, opcion) {
   try {
     const tarjetas = contenedorProductos.querySelectorAll(".card");
+    const tarjetasPorPagina = 8; // Número de tarjetas que se mostrarán inicialmente
+    let tarjetasMostradas = 0;
 
     if (tarjetas.length === 0) {
       contenedorProductos.innerHTML = "<p>No hay productos para mostrar</p>";
       return;
     }
 
+    // Mostrar las primeras tarjetas
+    mostrarTarjetas(tarjetas, tarjetasMostradas, tarjetasPorPagina);
+    tarjetasMostradas += tarjetasPorPagina;
+
+    // Escuchar el evento de scroll para cargar más tarjetas
+    const cargarMasTarjetas = () => {
+      // Verifica si estamos cerca del final de la página
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 200
+      ) {
+        mostrarTarjetas(tarjetas, tarjetasMostradas, tarjetasPorPagina);
+        tarjetasMostradas += tarjetasPorPagina;
+
+        // Si no hay más tarjetas para mostrar, elimina el listener del scroll
+        if (tarjetasMostradas >= tarjetas.length) {
+          window.removeEventListener("scroll", cargarMasTarjetas);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", cargarMasTarjetas);
+
     contenedorProductos.classList.add("allProducts");
-    tarjetas.forEach((tarjeta) => tarjeta.classList.add("allCard"));
 
-    const imagen = contenedorProductos.querySelectorAll(".img-card");
-    imagen.forEach((tarjeta) => tarjeta.classList.add("img-allCard"));
+    // Aplicar estilo visual a todas las tarjetas iniciales
+    aplicarEstiloTarjetas(tarjetas);
 
+    // Ocultar otras categorías
     document.querySelectorAll(".productos").forEach((contenedor) => {
       if (contenedor !== contenedorProductos) {
         contenedor.innerHTML = "";
@@ -72,6 +88,23 @@ function handleCategorySelection(contenedorProductos, categoriaBtn, opcion) {
   } catch (error) {
     console.error("Error al obtener los productos:", error);
   }
+}
+
+function mostrarTarjetas(tarjetas, inicio, limite) {
+  for (let i = inicio; i < inicio + limite && i < tarjetas.length; i++) {
+    tarjetas[i].classList.add("show");
+    tarjetas[i].style.display = "block"; // Asegura que las tarjetas sean visibles
+  }
+}
+
+function aplicarEstiloTarjetas(tarjetas) {
+  tarjetas.forEach((tarjeta) => {
+    tarjeta.classList.add("allCard"); // Asegúrate de que tengan las mismas clases de estilo
+    const imagen = tarjeta.querySelector(".img-card");
+    if (imagen) {
+      imagen.classList.add("img-allCard");
+    }
+  });
 }
 
 function handleReturn() {
