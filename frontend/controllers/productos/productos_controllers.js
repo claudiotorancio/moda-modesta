@@ -20,6 +20,7 @@ export const controllers = {
             producto.imagePath,
             producto.description,
             producto.sizes,
+            producto.isFeatured,
             producto._id
           );
           contenedorDestacados.appendChild(card.render());
@@ -44,6 +45,7 @@ export const controllers = {
           producto.imagePath,
           producto.description,
           producto.sizes,
+          producto.isFeatured,
           producto._id
         );
         document
