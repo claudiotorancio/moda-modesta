@@ -8,38 +8,49 @@ const carrito = new Carrito();
 export const controllers = {
   async renderProducts() {
     try {
-      const productosDestacados = await productoServices.destacadosProducto();
-      const contenedorDestacados = document.querySelector("[data-destacados]");
-
-      contenedorDestacados.innerHTML = "";
-      for (const producto of productosDestacados) {
-        const card = new ProductCard(
-          producto.name,
-          producto.price,
-          producto.imagePath,
-          producto.description,
-          producto.sizes,
-          producto._id
-        );
-        contenedorDestacados.appendChild(card);
-      }
-
+      // Cargar la lista de productos
       const listaProductos = await productoServices.listaProductos();
       const { products } = listaProductos;
+
+      // Separar productos destacados y no destacados
+      const productosDestacados = products.filter(
+        (producto) => producto.isFeatured
+      );
+      const productosNoDestacados = products.filter(
+        (producto) => !producto.isFeatured
+      );
+
+      // Renderizar productos destacados
+      const contenedorDestacados = document.querySelector("[data-destacados]");
+      if (Array.isArray(productosDestacados)) {
+        contenedorDestacados.innerHTML = "";
+        for (const producto of productosDestacados) {
+          const card = new ProductCard(
+            producto.name,
+            producto.price,
+            producto.imagePath,
+            producto.description,
+            producto.sizes,
+            producto._id
+          );
+          contenedorDestacados.appendChild(card.render());
+        }
+      } else {
+        console.error("Error: No se recibieron productos destacados.");
+      }
 
       // Utiliza un objeto para almacenar los contenedores por sección
       const containers = {};
 
-      // Recorre la lista de productos y organiza los productos por sección
-      for (const producto of products) {
+      // Recorre la lista de productos no destacados y organiza los productos por sección
+      for (const producto of productosNoDestacados) {
         const productCard = new ProductCard(
           producto.name,
           producto.price,
           producto.imagePath,
           producto.description,
           producto.sizes,
-          producto._id,
-          producto.isFeatured
+          producto._id
         );
 
         // Selecciona el contenedor adecuado para el producto
