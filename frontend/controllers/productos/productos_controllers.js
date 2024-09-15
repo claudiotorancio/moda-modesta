@@ -20,11 +20,11 @@ export const controllers = {
         (producto) => !producto.isFeatured
       );
 
-      // Renderizar productos destacados
+      // Limpiar y renderizar productos destacados
       const contenedorDestacados = document.querySelector("[data-destacados]");
-      if (Array.isArray(productosDestacados)) {
-        contenedorDestacados.innerHTML = ""; // Limpiar el contenedor antes de agregar los productos
-        for (const producto of productosDestacados) {
+      if (contenedorDestacados) {
+        contenedorDestacados.innerHTML = ""; // Limpiar el contenedor
+        productosDestacados.forEach((producto) => {
           const card = new ProductCard(
             producto.name,
             producto.price,
@@ -34,13 +34,13 @@ export const controllers = {
             producto._id
           );
           contenedorDestacados.appendChild(card.render());
-        }
+        });
       } else {
-        console.error("Error: No se recibieron productos destacados.");
+        console.error("Contenedor de productos destacados no encontrado.");
       }
 
-      // Utiliza un objeto para almacenar los contenedores por sección
-      const containers = {};
+      // Limpiar y renderizar productos no destacados por sección
+      const containers = {}; // Para almacenar los contenedores por sección
 
       // Inicializar contenedores para las secciones
       productosNoDestacados.forEach((producto) => {
@@ -55,7 +55,7 @@ export const controllers = {
       });
 
       // Recorre la lista de productos no destacados y organiza los productos por sección
-      for (const producto of productosNoDestacados) {
+      productosNoDestacados.forEach((producto) => {
         const productCard = new ProductCard(
           producto.name,
           producto.price,
@@ -77,7 +77,7 @@ export const controllers = {
             `Contenedor para la sección "${producto.section}" no encontrado.`
           );
         }
-      }
+      });
     } catch (error) {
       console.error("Error al renderizar productos:", error);
     }
