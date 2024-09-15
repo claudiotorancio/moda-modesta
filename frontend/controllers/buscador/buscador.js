@@ -1,4 +1,6 @@
-import { controllers } from "../productos/productos_controllers.js";
+// import { controllers } from "../productos/productos_controllers.js";
+
+import { productosInicio } from "../productos/ProductInit.js";
 
 export function buscar() {
   document
@@ -53,7 +55,7 @@ export function buscar() {
 
     // Mostrar todos los productos si la búsqueda está vacía
     if (query === "") {
-      controllers.renderProducts();
+      productosInicio.renderInit();
       noResultsMessage.style.display = "none";
     }
   }
