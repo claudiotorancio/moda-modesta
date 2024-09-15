@@ -11,6 +11,10 @@ export const controllers = {
       const listaProductos = await productoServices.listaProductos();
       const { products } = listaProductos;
 
+      // Utiliza un objeto para almacenar los contenedores por sección
+      const containers = {};
+
+      // Recorre la lista de productos y organiza los productos por sección
       for (const producto of products) {
         const productCard = new ProductCard(
           producto.name,
@@ -21,11 +25,21 @@ export const controllers = {
           producto._id,
           producto.isFeatured
         );
-        // Renderiza el producto y lo agrega al contenedor adecuado
-        const container = document.querySelector(`[data-${producto.section}]`);
+
+        // Selecciona el contenedor adecuado para el producto
+        const containerSelector = `[data-${producto.section}]`;
+        const container = document.querySelector(containerSelector);
+
         if (container) {
-          container.innerHTML = "";
-          container.appendChild(productCard.render());
+          // Verifica si el contenedor ya ha sido agregado al objeto de contenedores
+          if (!containers[containerSelector]) {
+            // Marca el contenedor como utilizado y limpia su contenido
+            containers[containerSelector] = container;
+            container.innerHTML = "";
+          }
+
+          // Agrega el producto al contenedor
+          containers[containerSelector].appendChild(productCard.render());
         } else {
           console.error(
             `Contenedor para la sección "${producto.section}" no encontrado.`
