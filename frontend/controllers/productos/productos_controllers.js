@@ -3,20 +3,29 @@ import productoServices from "../../services/product_services.js"; // Importa el
 import { mostrarProducto } from "./ProductViewer.js";
 import Carrito from "../carrito/carrito.js";
 
-const productCardInstance = new ProductCard();
-
 const carrito = new Carrito();
 
 export const controllers = {
   async renderProducts() {
     try {
-      const productosDestacados = await productoServices.destacadosProducto();
-      const contenedorDestacados = document.querySelector("[data-destacados]");
+      // Cargar la lista de productos
+      const listaProductos = await productoServices.listaProductos();
+      const { products } = listaProductos;
 
+      // Separar productos destacados y no destacados
+      const productosDestacados = products.filter(
+        (producto) => producto.isFeatured
+      );
+      const productosNoDestacados = products.filter(
+        (producto) => !producto.isFeatured
+      );
+
+      // Renderizar productos destacados
+      const contenedorDestacados = document.querySelector("[data-destacados]");
       if (Array.isArray(productosDestacados)) {
-        contenedorDestacados.innerHTML = "";
+        contenedorDestacados.innerHTML = ""; // Limpiar el contenedor antes de agregar los productos
         for (const producto of productosDestacados) {
-          const card = productCardInstance.render(
+          const card = new ProductCard(
             producto.name,
             producto.price,
             producto.imagePath,
@@ -24,23 +33,30 @@ export const controllers = {
             producto.sizes,
             producto._id
           );
-          contenedorDestacados.appendChild(card);
+          contenedorDestacados.appendChild(card.render());
         }
       } else {
         console.error("Error: No se recibieron productos destacados.");
       }
 
-      const listaProductos = await productoServices.renderInicio();
-      const products = listaProductos;
+      // Utiliza un objeto para almacenar los contenedores por sección
+      const containers = {};
 
-      document.querySelectorAll(".productos").forEach((contenedor) => {
-        if (contenedor !== contenedorDestacados) {
-          contenedor.innerHTML = "";
+      // Inicializar contenedores para las secciones
+      productosNoDestacados.forEach((producto) => {
+        const containerSelector = `[data-${producto.section}]`;
+        let container = document.querySelector(containerSelector);
+
+        // Si el contenedor no ha sido inicializado, lo hacemos ahora
+        if (container && !containers[containerSelector]) {
+          containers[containerSelector] = container;
+          container.innerHTML = ""; // Limpiar el contenedor antes de agregar productos
         }
       });
 
-      for (const producto of products) {
-        const productCard = productCardInstance.render(
+      // Recorre la lista de productos no destacados y organiza los productos por sección
+      for (const producto of productosNoDestacados) {
+        const productCard = new ProductCard(
           producto.name,
           producto.price,
           producto.imagePath,
@@ -48,12 +64,22 @@ export const controllers = {
           producto.sizes,
           producto._id
         );
-        document
-          .querySelector(`[data-${producto.section}]`)
-          .appendChild(productCard);
+
+        // Selecciona el contenedor adecuado para el producto
+        const containerSelector = `[data-${producto.section}]`;
+        const container = containers[containerSelector];
+
+        if (container) {
+          // Agrega el producto al contenedor
+          container.appendChild(productCard.render());
+        } else {
+          console.error(
+            `Contenedor para la sección "${producto.section}" no encontrado.`
+          );
+        }
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error al renderizar productos:", error);
     }
   },
 
