@@ -8,23 +8,12 @@ const carrito = new Carrito();
 export const controllers = {
   async renderProducts() {
     try {
-      // Cargar la lista de productos
-      const listaProductos = await productoServices.listaProductos();
-      const { products } = listaProductos;
-
-      // Separar productos destacados y no destacados
-      const productosDestacados = products.filter(
-        (producto) => producto.isFeatured
-      );
-      const productosNoDestacados = products.filter(
-        (producto) => !producto.isFeatured
-      );
-
-      // Limpiar y renderizar productos destacados
+      const productosDestacados = await productoServices.destacadosProducto();
       const contenedorDestacados = document.querySelector("[data-destacados]");
-      if (contenedorDestacados) {
-        contenedorDestacados.innerHTML = ""; // Limpiar el contenedor
-        productosDestacados.forEach((producto) => {
+
+      if (Array.isArray(productosDestacados)) {
+        contenedorDestacados.innerHTML = "";
+        for (const producto of productosDestacados) {
           const card = new ProductCard(
             producto.name,
             producto.price,
@@ -34,28 +23,21 @@ export const controllers = {
             producto._id
           );
           contenedorDestacados.appendChild(card.render());
-        });
+        }
       } else {
-        console.error("Contenedor de productos destacados no encontrado.");
+        console.error("Error: No se recibieron productos destacados.");
       }
 
-      // Limpiar y renderizar productos no destacados por sección
-      const containers = {}; // Para almacenar los contenedores por sección
+      const listaProductos = await productoServices.renderInicio();
+      const products = listaProductos;
 
-      // Inicializar contenedores para las secciones
-      productosNoDestacados.forEach((producto) => {
-        const containerSelector = `[data-${producto.section}]`;
-        let container = document.querySelector(containerSelector);
-
-        // Si el contenedor no ha sido inicializado, lo hacemos ahora
-        if (container && !containers[containerSelector]) {
-          containers[containerSelector] = container;
-          container.innerHTML = ""; // Limpiar el contenedor antes de agregar productos
+      document.querySelectorAll(".productos").forEach((contenedor) => {
+        if (contenedor !== contenedorDestacados) {
+          contenedor.innerHTML = "";
         }
       });
 
-      // Recorre la lista de productos no destacados y organiza los productos por sección
-      productosNoDestacados.forEach((producto) => {
+      for (const producto of products) {
         const productCard = new ProductCard(
           producto.name,
           producto.price,
@@ -64,22 +46,12 @@ export const controllers = {
           producto.sizes,
           producto._id
         );
-
-        // Selecciona el contenedor adecuado para el producto
-        const containerSelector = `[data-${producto.section}]`;
-        const container = containers[containerSelector];
-
-        if (container) {
-          // Agrega el producto al contenedor
-          container.appendChild(productCard.render());
-        } else {
-          console.error(
-            `Contenedor para la sección "${producto.section}" no encontrado.`
-          );
-        }
-      });
+        document
+          .querySelector(`[data-${producto.section}]`)
+          .appendChild(productCard.render());
+      }
     } catch (error) {
-      console.error("Error al renderizar productos:", error);
+      console.log(error);
     }
   },
 
