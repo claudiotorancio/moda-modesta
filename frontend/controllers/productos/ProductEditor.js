@@ -129,37 +129,36 @@ export class ProductEditor {
   }
 
   setupImageCheckListeners() {
-    const image1Check = document.querySelector("[data-check-image1]");
-    const image2Check = document.querySelector("[data-check-image2]");
-    const image1Input = document.querySelector("[data-image1]");
-    const image2Input = document.querySelector("[data-image2]");
+    const imageChecks = document.querySelectorAll(
+      "[data-check-image1], [data-check-image2], [data-check-image3]"
+    );
+    const imageInputs = document.querySelectorAll(
+      "[data-image1], [data-image2], [data-image3]"
+    );
+    const maxSelectable = 2;
 
-    // Deshabilitar inputs inicialmente
-    image1Input.disabled = !image1Check.checked;
-    image2Input.disabled = !image2Check.checked;
-
-    image1Check.addEventListener("change", () => {
-      if (image1Check.checked && image2Check.checked) {
-        alert(
-          "Solo puedes reemplazar una imagen. Para reemplazar ambas, crea un nuevo producto."
-        );
-        image1Check.checked = false;
-        image1Input.disabled = true;
-      } else {
-        image1Input.disabled = !image1Check.checked;
-      }
+    // Deshabilitar los inputs de imagen inicialmente
+    imageInputs.forEach((input, index) => {
+      input.disabled = !imageChecks[index].checked;
     });
 
-    image2Check.addEventListener("change", () => {
-      if (image2Check.checked && image1Check.checked) {
-        alert(
-          "Solo puedes reemplazar una imagen. Para reemplazar ambas, crea un nuevo producto y si es neceario elimina este."
-        );
-        image2Check.checked = false;
-        image2Input.disabled = true;
-      } else {
-        image2Input.disabled = !image2Check.checked;
-      }
+    imageChecks.forEach((check, index) => {
+      check.addEventListener("change", () => {
+        // Contar cuántas imágenes han sido seleccionadas
+        const selectedImages = Array.from(imageChecks).filter(
+          (c) => c.checked
+        ).length;
+
+        if (selectedImages >= maxSelectable) {
+          alert(
+            "Solo puedes reemplazar una imagen. Para reemplazar ambas, crea un nuevo producto."
+          );
+          check.checked = false;
+        }
+
+        // Habilitar/deshabilitar el input de imagen correspondiente
+        imageInputs[index].disabled = !check.checked;
+      });
     });
   }
 
