@@ -90,7 +90,7 @@ export class ProductInit {
         <label for="variation_1" class="form-label">Talles disponibles</label>
         <select id="variation_1" class="form-select mb-3">
           ${sizes
-            .map((size) => `<option value="${size}">${size}</option>`)
+            .map((item) => `<option value="${item.size}">${item.size}</option>`)
             .join("")}
         </select>
         <div class="text-center">
