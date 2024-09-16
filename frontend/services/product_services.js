@@ -30,10 +30,14 @@ class ProductService {
         method: "POST",
         body: product,
       });
+
       if (!response.ok) {
         throw new Error("No fue posible crear un producto");
       }
-      return response.body;
+
+      // Obtén el contenido de la respuesta como JSON
+      const responseData = await response.json();
+      return responseData;
     } catch (error) {
       console.error(error);
     }

@@ -248,13 +248,8 @@ export class ProductForm {
     // Convierte `sizes` y `stock` a JSON y agrégalo al FormData
     productData.append("sizes", JSON.stringify(selectedSizes));
 
-    // Imprimir el contenido del FormData para depuración
-    for (let pair of productData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
-
     try {
-      const response = await productoServices.crearProducto(productData);
+      await productoServices.crearProducto(productData);
       modalControllers.modalProductoCreado();
     } catch (error) {
       console.error("Error al crear el producto:", error);
