@@ -246,11 +246,17 @@ export class ProductForm {
       productData.append("images[]", image);
     }
 
-    // Agrega talles y stock al FormData
-    selectedSizes.forEach((sizeData) => {
-      productData.append("sizes[]", sizeData.size);
-      productData.append(`stock[${sizeData.size}]`, sizeData.stock);
+    // Adjuntar los talles seleccionados y sus stocks
+    selectedSizes.forEach(({ size, stock }) => {
+      const normalizedSize = size.replace(" ", "_").toLowerCase();
+      productData.append("sizes[]", size);
+      productData.append(`stock_${normalizedSize}`, stock);
     });
+
+    // Imprimir el contenido del FormData para depuración
+    for (let pair of dataEdit.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
 
     try {
       await productoServices.crearProducto(productData);
