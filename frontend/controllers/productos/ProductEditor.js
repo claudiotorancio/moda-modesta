@@ -132,7 +132,7 @@ export class ProductEditor {
             <input 
               class="form-control mt-2" 
               type="number" 
-              placeholder="Sin stock" 
+              placeholder="Stock" 
               name="stock_${size.replace(" ", "").toLowerCase()}" 
               value="${
                 selectedSizes.find((s) => s.size === size)?.stock || stock

@@ -87,16 +87,25 @@ const updateProduct = async (req, res) => {
     const sizesWithStock = [];
     if (Array.isArray(sizes)) {
       sizes.forEach((size) => {
-        // Normalizar el tamaño para buscar el stock
         const normalizedSize = size.replace(" ", "_").toLowerCase();
         const stock = req.body[`stock_${normalizedSize}`];
-        console.log(`Size: ${size}, Stock: ${stock}`); // Debugging
-        sizesWithStock.push({ size, stock: Number(stock) || 0 });
+
+        // Aquí aseguras que el valor 0 se tome como válido
+        const parsedStock =
+          stock !== undefined && stock !== null ? Number(stock) : 0;
+
+        console.log(`Size: ${size}, Stock: ${parsedStock}`); // Debugging
+        sizesWithStock.push({ size, stock: parsedStock });
       });
     } else {
       const normalizedSize = sizes.replace(" ", "_").toLowerCase();
       const stock = req.body[`stock_${normalizedSize}`];
-      sizesWithStock.push({ size: sizes, stock: Number(stock) || 0 });
+
+      // Aseguramos que el valor 0 se tome como válido
+      const parsedStock =
+        stock !== undefined && stock !== null ? Number(stock) : 0;
+
+      sizesWithStock.push({ size: sizes, stock: parsedStock });
     }
 
     console.log(sizesWithStock);
