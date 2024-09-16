@@ -19,16 +19,14 @@ const updateProduct = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { name, price, description, oldImagePath, isFeatured, sizes } =
+    const { name, price, description, oldImagePath, sizes, isFeatured } =
       req.body;
 
-    // Conectar a la base de datos si no está ya conectada
-    if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-    }
+    // Conectar a la base de datos
+    await mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
     // Obtener el producto actual
     const model = esAdministrador(req.user) ? Vista : Product;
@@ -41,7 +39,7 @@ const updateProduct = async (req, res) => {
     // Eliminar la imagen antigua si es necesario
     let updatedImagePath = product.imagePath || [];
     if (Array.isArray(oldImagePath)) {
-      for (const path of oldImagePath) {
+      oldImagePath.forEach((path) => {
         updatedImagePath = updatedImagePath.filter((image) => image !== path);
 
         // Eliminar la imagen de S3
@@ -51,8 +49,14 @@ const updateProduct = async (req, res) => {
           Key: nombreDeArchivo,
         };
 
-        await s3.deleteObject(params).promise();
-      }
+        s3.deleteObject(params, (err, data) => {
+          if (err) {
+            console.error("Error al eliminar la imagen en S3:", err);
+          } else {
+            console.log("Imagen eliminada con éxito en S3:", data);
+          }
+        });
+      });
     } else if (oldImagePath) {
       updatedImagePath = updatedImagePath.filter(
         (image) => image !== oldImagePath
@@ -65,7 +69,13 @@ const updateProduct = async (req, res) => {
         Key: nombreDeArchivo,
       };
 
-      await s3.deleteObject(params).promise();
+      s3.deleteObject(params, (err, data) => {
+        if (err) {
+          console.error("Error al eliminar la imagen en S3:", err);
+        } else {
+          console.log("Imagen eliminada con éxito en S3:", data);
+        }
+      });
     }
 
     // Agregar la nueva imagen al array imagePath si se proporciona
@@ -74,34 +84,44 @@ const updateProduct = async (req, res) => {
       updatedImagePath.push(newImagePath);
     }
 
-    // Actualizar los talles y el stock solo si se proporciona
-    let updatedSizes = product.sizes;
-    if (sizes) {
-      const parsedSizes = JSON.parse(sizes); // Parsear el JSON de talles y stock
-      updatedSizes = parsedSizes;
+    const sizesWithStock = [];
+    if (Array.isArray(sizes)) {
+      sizes.forEach((size) => {
+        // Normalizar el tamaño para buscar el stock
+        const normalizedSize = size.replace(" ", "_").toLowerCase();
+        const stock = req.body[`stock_${normalizedSize}`];
+        console.log(`Size: ${size}, Stock: ${stock}`); // Debugging
+        sizesWithStock.push({ size, stock: Number(stock) || 0 });
+      });
+    } else {
+      const normalizedSize = sizes.replace(" ", "_").toLowerCase();
+      const stock = req.body[`stock_${normalizedSize}`];
+      sizesWithStock.push({ size: sizes, stock: Number(stock) || 0 });
     }
+
+    console.log(sizesWithStock);
 
     // Datos a actualizar
     const updateData = {
-      ...(name && { name }),
-      ...(price && { price }),
-      ...(description && { description }),
-      ...(isFeatured !== undefined && { isFeatured }),
-      ...(updatedSizes && { sizes: updatedSizes }),
-      ...(updatedImagePath.length ? { imagePath: updatedImagePath } : {}),
+      name,
+      price,
+      description,
+      sizes: sizesWithStock,
+      isFeatured,
+      imagePath: updatedImagePath.length ? updatedImagePath : undefined,
     };
 
     // Actualizar el producto en la base de datos
-    const updatedProduct = await model.findByIdAndUpdate(id, updateData, {
-      new: true,
-    });
+    const result = await model.findByIdAndUpdate(id, updateData, { new: true });
 
-    res
-      .status(200)
-      .json({ message: "Producto actualizado exitosamente", updatedProduct });
+    if (!result) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    res.json({ message: "Producto actualizado", updatedProduct: result });
   } catch (error) {
-    console.error("Error al actualizar el producto:", error);
-    res.status(500).json({ message: "Error al actualizar el producto" });
+    console.error(error);
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 

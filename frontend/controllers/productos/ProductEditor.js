@@ -184,7 +184,27 @@ export class ProductEditor {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // Obtener los campos del formulario
+      // Intentar obtener los elementos de entrada de imagen
+      const imageInput1 = document.querySelector("[data-image1]");
+      const imageInput2 = document.querySelector("[data-image2]");
+
+      if (!imageInput1 && !imageInput2) {
+        console.error("No se encontraron los elementos de entrada de imagen.");
+        return; // Salir si los elementos no están presentes
+      }
+
+      const imagePath1 = imageInput1 ? imageInput1.files[0] : null;
+      const imagePath2 = imageInput2 ? imageInput2.files[0] : null;
+
+      // Validar si ambas imágenes están siendo reemplazadas
+      if (imagePath1 && imagePath2) {
+        alert(
+          "Solo puedes reemplazar una imagen. Si necesitas reemplazar ambas, debes crear un nuevo producto."
+        );
+        return;
+      }
+
+      // Obtener otros campos del formulario
       const name = document.querySelector("[data-nombre]").value;
       const price = document.querySelector("[data-precio]").value;
       const description = document.querySelector("[data-description]").value;
@@ -198,17 +218,43 @@ export class ProductEditor {
         const stock = document.querySelector(
           `input[name="stock_${size.replace(" ", "").toLowerCase()}"]`
         ).value;
-        return { size, stock: parseInt(stock) }; // Asegúrate de que el stock sea un número
+        return { size, stock };
       });
 
-      // Crear un FormData para enviar
       const dataEdit = new FormData();
 
+      // Adjuntar la imagen correspondiente al FormData
+      if (imagePath1) {
+        dataEdit.append("imagePath", imagePath1);
+        dataEdit.append(
+          "oldImagePath",
+          document.querySelector("[data-oldPath1]").value
+        );
+      } else if (imagePath2) {
+        dataEdit.append("imagePath", imagePath2);
+        dataEdit.append(
+          "oldImagePath",
+          document.querySelector("[data-oldPath2]").value
+        );
+      }
+
+      // Adjuntar los demás datos del formulario
       dataEdit.append("name", name);
       dataEdit.append("price", price);
       dataEdit.append("description", description);
       dataEdit.append("isFeatured", isFeatured);
-      dataEdit.append("sizes", JSON.stringify(selectedSizes)); // Enviar los talles como JSON
+
+      // Adjuntar los talles seleccionados y sus stocks
+      selectedSizes.forEach(({ size, stock }) => {
+        const normalizedSize = size.replace(" ", "_").toLowerCase();
+        dataEdit.append("sizes[]", size);
+        dataEdit.append(`stock_${normalizedSize}`, stock);
+      });
+
+      // Imprimir el contenido del FormData para depuración
+      for (let pair of dataEdit.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
+      }
 
       try {
         await productoServices.actualizarProducto(dataEdit, id);
