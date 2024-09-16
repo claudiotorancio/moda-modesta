@@ -88,7 +88,7 @@ export class ProductEditor {
         <label class="form-check-label" for="isFeatured">Destacar producto</label>
       </div>
   
-      <label for="sizes">Modificar talles</label>
+      <label for="sizes">Modificar talles y stocks </label>
       <div class="form-group mb-4">
         ${this.renderSizeOptions(sizes)}
       </div>
@@ -104,10 +104,17 @@ export class ProductEditor {
   }
 
   renderSizeOptions(selectedSizes = []) {
-    const sizes = ["Talle 1", "Talle 2", "Talle 3", "Talle 4", "Talle 5"];
+    const sizes = [
+      { size: "Talle 1" },
+      { size: "Talle 2" },
+      { size: "Talle 3" },
+      { size: "Talle 4" },
+      { size: "Talle 5" },
+    ];
+
     return sizes
       .map(
-        (size) => `
+        ({ size, stock }) => `
           <div class="form-check-inline me-3">
             <input 
               class="form-check-input" 
@@ -115,13 +122,22 @@ export class ProductEditor {
               value="${size}" 
               name="sizes" 
               id="${size.replace(" ", "").toLowerCase()}" 
-              ${selectedSizes.includes(size) ? "checked" : ""}
+              ${selectedSizes.some((s) => s.size === size) ? "checked" : ""}
             >
             <label 
               class="form-check-label" 
               for="${size.replace(" ", "").toLowerCase()}">
               ${size}
             </label>
+            <input 
+              class="form-control mt-2" 
+              type="number" 
+              placeholder="Stock" 
+              name="stock_${size.replace(" ", "").toLowerCase()}" 
+              value="${
+                selectedSizes.find((s) => s.size === size)?.stock || stock
+              }" 
+            >
           </div>
         `
       )
@@ -184,9 +200,17 @@ export class ProductEditor {
       const price = document.querySelector("[data-precio]").value;
       const description = document.querySelector("[data-description]").value;
       const isFeatured = document.querySelector("#isFeatured").checked;
+
+      // Obtener los talles seleccionados
       const selectedSizes = Array.from(
         document.querySelectorAll('input[name="sizes"]:checked')
-      ).map((checkbox) => checkbox.value);
+      ).map((checkbox) => {
+        const size = checkbox.value;
+        const stock = document.querySelector(
+          `input[name="stock_${size.replace(" ", "").toLowerCase()}"]`
+        ).value;
+        return { size, stock };
+      });
 
       const dataEdit = new FormData();
 
@@ -211,8 +235,11 @@ export class ProductEditor {
       dataEdit.append("description", description);
       dataEdit.append("isFeatured", isFeatured);
 
-      // Adjuntar los talles seleccionados
-      selectedSizes.forEach((size) => dataEdit.append("sizes[]", size));
+      // Adjuntar los talles seleccionados y sus stocks
+      selectedSizes.forEach(({ size, stock }) => {
+        dataEdit.append("sizes[]", size);
+        dataEdit.append(`stock_${size}`, stock); // Adjuntar stock junto con cada talle
+      });
 
       try {
         await productoServices.actualizarProducto(dataEdit, id);

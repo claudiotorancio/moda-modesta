@@ -36,7 +36,7 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    // Eliminar la imagen antigua del array imagePath
+    // Eliminar la imagen antigua si es necesario
     let updatedImagePath = product.imagePath || [];
     if (Array.isArray(oldImagePath)) {
       oldImagePath.forEach((path) => {
@@ -84,11 +84,24 @@ const updateProduct = async (req, res) => {
       updatedImagePath.push(newImagePath);
     }
 
+    // Procesar los talles y stocks
+    const sizesWithStock = [];
+    if (Array.isArray(sizes)) {
+      sizes.forEach((size) => {
+        const stock = req.body[`stock_${size.replace(" ", "").toLowerCase()}`];
+        sizesWithStock.push({ size, stock: Number(stock) || 0 });
+      });
+    } else {
+      const stock = req.body[`stock_${sizes.replace(" ", "").toLowerCase()}`];
+      sizesWithStock.push({ size: sizes, stock: Number(stock) || 0 });
+    }
+
+    // Datos a actualizar
     const updateData = {
       name,
       price,
       description,
-      sizes: Array.isArray(sizes) ? sizes : [sizes],
+      sizes: sizesWithStock,
       isFeatured,
       imagePath: updatedImagePath.length ? updatedImagePath : undefined,
     };

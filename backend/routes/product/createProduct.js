@@ -20,7 +20,8 @@ const createProduct = async (req, res) => {
 
     // Asegúrate de que req.files esté disponible
     const imagePaths = req.files ? req.files.map((file) => file.location) : [];
-    const { name, price, description, section, isFeatured, sizes } = req.body;
+    const { name, price, description, section, isFeatured, sizes, stock } =
+      req.body;
     // console.log("Image Paths:", imagePaths);
     // console.log("Request Body:", req.body);
     if (
@@ -29,7 +30,8 @@ const createProduct = async (req, res) => {
       !description ||
       !section ||
       !isFeatured ||
-      !imagePaths.length
+      !imagePaths.length ||
+      !stock
     ) {
       return res
         .status(400)
@@ -46,6 +48,7 @@ const createProduct = async (req, res) => {
       sizes: Array.isArray(sizes) ? sizes : [sizes],
       imagePath: imagePaths,
       user_id: req.user._id,
+      stock: stock,
     };
 
     // Crear un nuevo producto
