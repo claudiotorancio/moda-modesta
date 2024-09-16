@@ -22,8 +22,6 @@ const updateProduct = async (req, res) => {
     const { name, price, description, oldImagePath, sizes, isFeatured } =
       req.body;
 
-    console.log(req.body);
-
     // Conectar a la base de datos
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,

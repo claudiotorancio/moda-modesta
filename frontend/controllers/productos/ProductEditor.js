@@ -184,8 +184,16 @@ export class ProductEditor {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const imagePath1 = document.querySelector("[data-image1]").files[0];
-      const imagePath2 = document.querySelector("[data-image2]").files[0];
+      const imageInput1 = document.querySelector("[data-image1]");
+      const imageInput2 = document.querySelector("[data-image2]");
+
+      if (!imageInput1 || !imageInput2) {
+        console.error("No se encontraron los elementos de entrada de imagen.");
+        return;
+      }
+
+      const imagePath1 = imageInput1.files[0] || null;
+      const imagePath2 = imageInput2.files[0] || null;
 
       // Validar si ambas imágenes están siendo reemplazadas
       if (imagePath1 && imagePath2) {
@@ -237,10 +245,9 @@ export class ProductEditor {
 
       // Adjuntar los talles seleccionados y sus stocks
       selectedSizes.forEach(({ size, stock }) => {
-        // Convertir el tamaño a minúsculas y reemplazar espacios por guiones bajos
         const normalizedSize = size.replace(" ", "_").toLowerCase();
         dataEdit.append("sizes[]", size);
-        dataEdit.append(`stock_${normalizedSize}`, stock); // Normaliza la clave aquí
+        dataEdit.append(`stock_${normalizedSize}`, stock);
       });
 
       // Imprimir el contenido del FormData para depuración
