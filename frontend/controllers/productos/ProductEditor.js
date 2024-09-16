@@ -244,8 +244,12 @@ export class ProductEditor {
       dataEdit.append("description", description);
       dataEdit.append("isFeatured", isFeatured);
 
-      // Convierte `sizes` y `stock` a JSON y agrégalo al FormData
-      dataEdit.append("sizes", JSON.stringify(selectedSizes));
+      // Adjuntar los talles seleccionados y sus stocks
+      selectedSizes.forEach(({ size, stock }) => {
+        const normalizedSize = size.replace(" ", "_").toLowerCase();
+        dataEdit.append("sizes[]", size);
+        dataEdit.append(`stock_${normalizedSize}`, stock);
+      });
 
       // Imprimir el contenido del FormData para depuración
       for (let pair of dataEdit.entries()) {
