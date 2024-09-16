@@ -90,15 +90,26 @@ const updateProduct = async (req, res) => {
     const sizesWithStock = [];
     if (Array.isArray(sizes)) {
       sizes.forEach((size) => {
-        // Asegurarse de que el tamaño esté bien formateado
+        // Formatear la clave para el stock
         const formattedSize = size.replace(" ", "").toLowerCase();
-        const stock = req.body[`stock_${formattedSize}`];
+        const stockKey = `stock_${formattedSize}`;
+
+        // Imprimir la clave para depuración
+        console.log(`Looking for stock with key: ${stockKey}`);
+
+        // Obtener el stock desde req.body
+        const stock = req.body[stockKey];
         console.log(`Size: ${size}, Stock: ${stock}`);
         sizesWithStock.push({ size, stock: Number(stock) || 0 });
       });
     } else {
       const formattedSize = sizes.replace(" ", "").toLowerCase();
-      const stock = req.body[`stock_${formattedSize}`];
+      const stockKey = `stock_${formattedSize}`;
+
+      // Imprimir la clave para depuración
+      console.log(`Looking for stock with key: ${stockKey}`);
+
+      const stock = req.body[stockKey];
       console.log(`Size: ${sizes}, Stock: ${stock}`);
       sizesWithStock.push({ size: sizes, stock: Number(stock) || 0 });
     }
