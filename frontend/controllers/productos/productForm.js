@@ -248,8 +248,9 @@ export class ProductForm {
     }
 
     // Agrega talles y stock al FormData
+    // Agrega talles y stock al FormData
     selectedSizes.forEach((sizeData) => {
-      productData.append(`sizes[${sizeData.size}]`, sizeData.size);
+      productData.append(`sizes[]`, sizeData.size);
       productData.append(`stock[${sizeData.size}]`, sizeData.stock);
     });
 
