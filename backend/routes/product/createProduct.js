@@ -16,6 +16,10 @@ const createProduct = async (req, res) => {
     const sizes = req.body["sizes[]"] || []; // Recoge los tamaños enviados como array
     const stock = req.body["stock"] || {}; // Recoge el stock enviado como objeto
 
+    // Imprime los datos recibidos para depuración
+    console.log("Image Paths:", imagePaths);
+    console.log("Request Body:", req.body);
+
     if (
       !name ||
       !price ||
@@ -39,7 +43,7 @@ const createProduct = async (req, res) => {
         }
       }
     }
-    console.log(sizesArray);
+
     const createProductData = {
       name,
       price,
@@ -51,7 +55,9 @@ const createProduct = async (req, res) => {
       sizes: sizesArray.map((size) => ({ size, stock: stock[size] || 0 })), // Mapea tamaños con stock
       stock: stockObject,
     };
+
     console.log(createProductData);
+
     let newProduct;
     if (esAdministrador(req.user)) {
       newProduct = new Vista(createProductData);

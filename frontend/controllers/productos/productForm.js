@@ -246,11 +246,10 @@ export class ProductForm {
       productData.append("images[]", image);
     }
 
-    // Adjuntar los talles seleccionados y sus stocks
-    selectedSizes.forEach(({ size, stock }) => {
-      const normalizedSize = size.replace(" ", "_").toLowerCase();
-      productData.append("sizes[]", size);
-      productData.append(`stock_${normalizedSize}`, stock);
+    // Agrega talles y stock al FormData
+    selectedSizes.forEach((sizeData) => {
+      productData.append("sizes[]", sizeData.size);
+      productData.append(`stock[${sizeData.size}]`, sizeData.stock);
     });
 
     // Imprimir el contenido del FormData para depuración
