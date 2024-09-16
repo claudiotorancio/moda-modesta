@@ -1,3 +1,17 @@
+import mongoose from "mongoose";
+import MONGODB_URI from "../../config.js";
+import Product from "../../models/Product.js";
+import Vista from "../../models/Vista.js";
+import AWS from "aws-sdk";
+
+const s3 = new AWS.S3({
+  region: process.env.S3_BUCKET_REGION,
+  credentials: {
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  },
+});
+
 const updateProduct = async (req, res) => {
   try {
     if (!req.isAuthenticated()) {
@@ -114,3 +128,5 @@ const updateProduct = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+
+export default updateProduct;
