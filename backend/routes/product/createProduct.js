@@ -10,48 +10,48 @@ const createProduct = async (req, res) => {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
 
-    // Obtén las rutas de las imágenes
-    const imagePaths = req.files ? req.files.map((file) => file.location) : [];
-    const { name, price, description, section, isFeatured } = req.body;
-    const sizes = req.body["sizes[]"] || []; // Recoge los tamaños enviados como array
-    const stock = req.body["stock"] || {}; // Recoge el stock enviado como objeto
+    // uploadSingle(req, res, async (error) => {
+    //   if (error) {
+    //     console.error("Error al cargar las fotos en S3:", error);
+    //     return res
+    //       .status(500)
+    //       .json({ error: "Error al cargar las fotos en S3" });
+    //   }
 
+    // Asegúrate de que req.files esté disponible
+    const imagePaths = req.files ? req.files.map((file) => file.location) : [];
+    const { name, price, description, section, isFeatured, sizes, stock } =
+      req.body;
+    // console.log("Image Paths:", imagePaths);
+    // console.log("Request Body:", req.body);
     if (
       !name ||
       !price ||
       !description ||
       !section ||
       !isFeatured ||
-      !imagePaths.length
+      !imagePaths.length ||
+      !stock
     ) {
       return res
         .status(400)
         .json({ error: "Todos los campos son requeridos." });
     }
 
-    // Asegúrate de que `sizes` y `stock` estén en el formato correcto
-    const sizesArray = Array.isArray(sizes) ? sizes : [sizes];
-    const stockObject = {};
-    if (typeof stock === "object") {
-      for (const [key, value] of Object.entries(stock)) {
-        if (value) {
-          stockObject[key] = parseInt(value);
-        }
-      }
-    }
-
+    // Crear los datos del producto
     const createProductData = {
       name,
       price,
       description,
       section,
       isFeatured,
+      sizes: Array.isArray(sizes) ? sizes : [sizes],
       imagePath: imagePaths,
       user_id: req.user._id,
-      sizes: sizesArray.map((size) => ({ size, stock: stock[size] || 0 })), // Mapea tamaños con stock
-      stock: stockObject,
+      stock: stock,
     };
 
+    // Crear un nuevo producto
     let newProduct;
     if (esAdministrador(req.user)) {
       newProduct = new Vista(createProductData);
@@ -59,6 +59,7 @@ const createProduct = async (req, res) => {
       newProduct = new Product(createProductData);
     }
 
+    // Conectar a la base de datos y guardar el producto
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -66,6 +67,7 @@ const createProduct = async (req, res) => {
 
     await newProduct.save();
     res.json({ message: "Producto guardado" });
+    // });
   } catch (error) {
     console.error("Error al crear el producto:", error);
     res.status(500).json({ error: "Error al crear el producto" });
