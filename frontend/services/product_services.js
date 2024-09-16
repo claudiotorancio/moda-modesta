@@ -74,6 +74,7 @@ class ProductService {
   }
 
   async actualizarProducto(product, id) {
+    console.log(product);
     try {
       const response = await fetch(`${this.baseURL}/api/updateProduct/${id}`, {
         method: "PUT",

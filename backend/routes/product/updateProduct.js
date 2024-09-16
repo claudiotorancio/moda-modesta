@@ -84,16 +84,30 @@ const updateProduct = async (req, res) => {
       updatedImagePath.push(newImagePath);
     }
 
-    // Procesar los talles y stocks
-    const sizesWithStock = [];
+    // Procesar los talles y preservar los stocks existentes
+    const updatedSizes = [];
+
     if (Array.isArray(sizes)) {
       sizes.forEach((size) => {
-        const stock = req.body[`stock_${size.replace(" ", "").toLowerCase()}`];
-        sizesWithStock.push({ size, stock: Number(stock) || 0 });
+        const existingSize = product.sizes.find((s) => s.size === size);
+        const newStock =
+          req.body[`stock_${size.replace(" ", "").toLowerCase()}`];
+
+        if (existingSize) {
+          // Si existe, actualizar el stock si se proporciona un nuevo valor
+          updatedSizes.push({
+            size,
+            stock:
+              newStock !== undefined ? Number(newStock) : existingSize.stock,
+          });
+        } else {
+          // Si no existe, agregar el nuevo tamaño con su stock
+          updatedSizes.push({
+            size,
+            stock: Number(newStock) || 0,
+          });
+        }
       });
-    } else {
-      const stock = req.body[`stock_${sizes.replace(" ", "").toLowerCase()}`];
-      sizesWithStock.push({ size: sizes, stock: Number(stock) || 0 });
     }
 
     // Datos a actualizar
@@ -101,7 +115,7 @@ const updateProduct = async (req, res) => {
       name,
       price,
       description,
-      sizes: sizesWithStock,
+      sizes: updatedSizes.length ? updatedSizes : product.sizes,
       isFeatured,
       imagePath: updatedImagePath.length ? updatedImagePath : undefined,
     };
