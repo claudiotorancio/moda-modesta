@@ -24,22 +24,22 @@ export class ProductEditor {
     modalControllers.baseModal();
 
     this.productoEdicion.innerHTML = `
-    <div class="text-center">
-      <div class="card-header d-flex justify-content-center w-30 h-30 ">
-        ${imagePath
-          .map(
-            (path, index) => `
-          <div class="me-4">
-            <img class="img-card-top" style="width: 10rem;" src="${path}" alt="Imagen ${
-              index + 1
-            }">
-            <p class="text-muted">Imagen ${index + 1}</p>
-          </div>
-        `
-          )
-          .join("")}
-      </div>
+ <div class="text-center">
+    <div class="card-header d-flex flex-wrap justify-content-center" style="max-width: 100%; overflow-x: auto;">
+      ${imagePath
+        .map(
+          (path, index) => `
+        <div class="me-4 text-center" style="flex: 0 0 auto;">
+          <img class="img-fluid" style="max-width: 10rem;" src="${path}" alt="Imagen ${
+            index + 1
+          }">
+          <p class="text-muted">Imagen ${index + 1}</p>
+        </div>
+      `
+        )
+        .join("")}
     </div>
+  </div>
         
     <form action="/api/updateProduct/${id}" id="form" enctype="multipart/form-data" method="POST" data-forma>
       <p class="parrafo">Producto a editar</p>
