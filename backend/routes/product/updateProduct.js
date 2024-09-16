@@ -19,13 +19,16 @@ const updateProduct = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { name, price, description, isFeatured, sizes } = req.body; // `sizes` es un JSON enviado desde el cliente
+    const { name, price, description, oldImagePath, isFeatured, sizes } =
+      req.body;
 
-    // Conectar a la base de datos
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    // Conectar a la base de datos si no está ya conectada
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(MONGODB_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+    }
 
     // Obtener el producto actual
     const model = esAdministrador(req.user) ? Vista : Product;
@@ -35,17 +38,10 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    // Actualizar los datos del producto
-    product.name = name;
-    product.price = price;
-    product.description = description;
-    product.isFeatured = isFeatured;
-
-    // Actualizar las imágenes (si es necesario) y eliminar las anteriores
     // Eliminar la imagen antigua si es necesario
     let updatedImagePath = product.imagePath || [];
     if (Array.isArray(oldImagePath)) {
-      oldImagePath.forEach((path) => {
+      for (const path of oldImagePath) {
         updatedImagePath = updatedImagePath.filter((image) => image !== path);
 
         // Eliminar la imagen de S3
@@ -55,14 +51,8 @@ const updateProduct = async (req, res) => {
           Key: nombreDeArchivo,
         };
 
-        s3.deleteObject(params, (err, data) => {
-          if (err) {
-            console.error("Error al eliminar la imagen en S3:", err);
-          } else {
-            console.log("Imagen eliminada con éxito en S3:", data);
-          }
-        });
-      });
+        await s3.deleteObject(params).promise();
+      }
     } else if (oldImagePath) {
       updatedImagePath = updatedImagePath.filter(
         (image) => image !== oldImagePath
@@ -75,25 +65,40 @@ const updateProduct = async (req, res) => {
         Key: nombreDeArchivo,
       };
 
-      s3.deleteObject(params, (err, data) => {
-        if (err) {
-          console.error("Error al eliminar la imagen en S3:", err);
-        } else {
-          console.log("Imagen eliminada con éxito en S3:", data);
-        }
-      });
+      await s3.deleteObject(params).promise();
     }
 
-    // Actualizar los talles y el stock
+    // Agregar la nueva imagen al array imagePath si se proporciona
+    if (req.file) {
+      const newImagePath = req.file.location;
+      updatedImagePath.push(newImagePath);
+    }
+
+    // Actualizar los talles y el stock solo si se proporciona
+    let updatedSizes = product.sizes;
     if (sizes) {
       const parsedSizes = JSON.parse(sizes); // Parsear el JSON de talles y stock
-      product.sizes = parsedSizes; // Asignar los nuevos talles y stock
+      updatedSizes = parsedSizes;
     }
 
-    // Guardar los cambios en la base de datos
-    await product.save();
+    // Datos a actualizar
+    const updateData = {
+      ...(name && { name }),
+      ...(price && { price }),
+      ...(description && { description }),
+      ...(isFeatured !== undefined && { isFeatured }),
+      ...(updatedSizes && { sizes: updatedSizes }),
+      ...(updatedImagePath.length ? { imagePath: updatedImagePath } : {}),
+    };
 
-    res.status(200).json({ message: "Producto actualizado exitosamente" });
+    // Actualizar el producto en la base de datos
+    const updatedProduct = await model.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+
+    res
+      .status(200)
+      .json({ message: "Producto actualizado exitosamente", updatedProduct });
   } catch (error) {
     console.error("Error al actualizar el producto:", error);
     res.status(500).json({ message: "Error al actualizar el producto" });
