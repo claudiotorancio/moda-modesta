@@ -252,16 +252,14 @@ export class ProductEditor {
         console.log(`${key}: ${value}`);
       }
 
-      const response = await fetch(`/api/updateProduct/${id}`, {
-        method: "POST",
-        body: dataEdit,
-      });
-
-      if (response.ok) {
-        console.log("Producto editado exitosamente.");
-        location.reload();
-      } else {
-        console.error("Error al editar el producto.");
+      try {
+        await productoServices.actualizarProducto(dataEdit, id);
+        modalControllers.modalProductoEditado();
+      } catch (err) {
+        console.error("Error al actualizar el producto:", err);
+        alert(
+          "Ocurrió un error al actualizar el producto. Por favor, intenta nuevamente."
+        );
       }
     });
   }
