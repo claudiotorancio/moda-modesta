@@ -1,3 +1,8 @@
+import productoServices from "../../services/product_services.js";
+import { mostrarProducto } from "./ProductViewer.js";
+import { controllers } from "./productos_controllers.js";
+import { modalControllers } from "../../modal/modal.js";
+
 export class ProductInit {
   constructor() {}
 
@@ -61,8 +66,7 @@ export class ProductInit {
               imagePath,
               sizes,
               description,
-              id,
-              hayStock // Paso la información de stock al modal
+              id
             );
           } catch (err) {
             console.log(err);
@@ -79,15 +83,7 @@ export class ProductInit {
       window.location.hash = `product-${id}`;
 
       try {
-        await mostrarProducto(
-          name,
-          price,
-          imagePath,
-          sizes,
-          description,
-          id,
-          hayStock
-        );
+        await mostrarProducto(name, price, imagePath, sizes, description, id);
       } catch (err) {
         console.log(err);
       }
@@ -183,3 +179,5 @@ export class ProductInit {
     }
   }
 }
+
+export const productosInicio = new ProductInit();
