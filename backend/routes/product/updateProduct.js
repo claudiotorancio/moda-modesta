@@ -19,8 +19,7 @@ const updateProduct = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { name, price, description, oldImagePath, sizes, isFeatured } =
-      req.body;
+    const { name, price, description, oldImagePath, isFeatured } = req.body;
 
     // Conectar a la base de datos
     await mongoose.connect(MONGODB_URI, {
@@ -84,19 +83,17 @@ const updateProduct = async (req, res) => {
       updatedImagePath.push(newImagePath);
     }
 
-    const sizesWithStock = [];
-    if (Array.isArray(sizes)) {
-      sizes.forEach((size) => {
-        // Normalizar el tamaño para buscar el stock
-        const normalizedSize = size.replace(" ", "_").toLowerCase();
-        const stock = req.body[`stock_${normalizedSize}`];
-        console.log(`Size: ${size}, Stock: ${stock}`); // Debugging
-        sizesWithStock.push({ size, stock: Number(stock) || 0 });
-      });
-    } else {
-      const normalizedSize = sizes.replace(" ", "_").toLowerCase();
-      const stock = req.body[`stock_${normalizedSize}`];
-      sizesWithStock.push({ size: sizes, stock: Number(stock) || 0 });
+    // Procesa los tamaños y el stock
+    const sizes = JSON.parse(req.body.sizes || "[]"); // Convierte el JSON de vuelta a un array
+    const stock = {};
+
+    // Procesa el stock si es un objeto
+    if (typeof req.body.stock === "object") {
+      for (const [key, value] of Object.entries(req.body.stock)) {
+        if (value) {
+          stock[key] = parseInt(value);
+        }
+      }
     }
 
     console.log(sizesWithStock);
@@ -106,9 +103,13 @@ const updateProduct = async (req, res) => {
       name,
       price,
       description,
-      sizes: sizesWithStock,
+      sizes: sizes.map((sizeData) => ({
+        size: sizeData.size,
+        stock: sizeData.stock,
+      })),
       isFeatured,
       imagePath: updatedImagePath.length ? updatedImagePath : undefined,
+      stock: stock,
     };
 
     // Actualizar el producto en la base de datos
