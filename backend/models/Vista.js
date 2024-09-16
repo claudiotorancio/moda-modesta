@@ -13,6 +13,7 @@ const VistaSchema = new Schema(
     created_at: { type: Date, default: Date.now },
     sizes: [String],
     inCart: { type: Boolean, default: false },
+    stock: { type: Number, required: true, default: 0 },
   },
   {
     versionKey: false,

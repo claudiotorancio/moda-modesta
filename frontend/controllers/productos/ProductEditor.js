@@ -25,7 +25,7 @@ export class ProductEditor {
 
     this.productoEdicion.innerHTML = `
     <div class="text-center">
-      <div class="card-header d-flex justify-content-center w-50">
+      <div class="card-header d-flex justify-content-center w-30 h-30 ">
         ${imagePath
           .map(
             (path, index) => `
