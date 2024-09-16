@@ -8,7 +8,8 @@ export const mostrarProducto = async (
   imagePath,
   sizes,
   description,
-  id
+  id,
+  inStock // Nuevo parámetro para indicar si hay stock
 ) => {
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
@@ -58,14 +59,17 @@ export const mostrarProducto = async (
           </div>
         </div>
         <div class="col-md-6">
-         <h2 class="product-title-bold mt-2"  style="font-size: 1.3rem;">${name}</h2>
-<h3 class="product-price text-primary-bold mt-2" style="font-weight: bold; font-size: 1.25em;">$${price}</h3>
-<p class="product-description text-muted">${description}</p>
+          <h2 class="product-title-bold mt-2"  style="font-size: 1.3rem;">${name}</h2>
+          <h3 class="product-price text-primary-bold mt-2" style="font-weight: bold; font-size: 1.25em;">$${price}</h3>
+          <p class="product-description text-muted">${description}</p>
 
+          ${inStock ? "" : '<div class="alert alert-warning">Sin stock</div>'}
           
           <div class="product-options">
             <label for="variation_1" class="form-label">Talles disponibles</label>
-            <select id="variation_1" class="form-select mb-3">
+            <select id="variation_1" class="form-select mb-3" ${
+              inStock ? "" : "disabled"
+            }>
               ${sizes
                 .map(
                   (item) => `<option value="${item.size}">${item.size}</option>`
@@ -75,7 +79,9 @@ export const mostrarProducto = async (
           </div>
           
           <div class="d-flex justify-content-between mt-3">
-            <button type="button" class="btn btn-primary me-2" data-carrito>Añadir carrito</button>
+            <button type="button" class="btn btn-primary me-2" data-carrito ${
+              inStock ? "" : "disabled"
+            }>Añadir carrito</button>
             <a id="compartir-producto" class="btn btn-outline-secondary">
               <i class="fa-solid fa-share-nodes"></i> Compartir
             </a>
