@@ -85,37 +85,41 @@ const updateProduct = async (req, res) => {
     }
 
     const sizesWithStock = [];
-    if (Array.isArray(sizes)) {
+
+    // Verificar si sizes es un array o un valor válido
+    if (Array.isArray(sizes) && sizes.length > 0) {
       sizes.forEach((size) => {
-        const normalizedSize = size.replace(" ", "_").toLowerCase();
-        const stock = req.body[`stock_${normalizedSize}`];
+        if (size) {
+          const normalizedSize = size.replace(" ", "_").toLowerCase();
+          const stock = req.body[`stock_${normalizedSize}`];
 
-        // Aquí aseguras que el valor 0 se tome como válido
-        const parsedStock =
-          stock !== undefined && stock !== null ? Number(stock) : 0;
+          // Verificar si el stock es un número válido (0 es válido)
+          const parsedStock =
+            stock !== undefined && stock !== null ? Number(stock) : 0;
 
-        console.log(`Size: ${size}, Stock: ${parsedStock}`); // Debugging
-        sizesWithStock.push({ size, stock: parsedStock });
+          sizesWithStock.push({ size, stock: parsedStock });
+        }
       });
-    } else {
+    } else if (sizes) {
+      // Si sizes es un valor único, procesarlo individualmente
       const normalizedSize = sizes.replace(" ", "_").toLowerCase();
       const stock = req.body[`stock_${normalizedSize}`];
 
-      // Aseguramos que el valor 0 se tome como válido
       const parsedStock =
         stock !== undefined && stock !== null ? Number(stock) : 0;
 
       sizesWithStock.push({ size: sizes, stock: parsedStock });
+    } else {
+      // Si no se envía `sizes`, dejarlo como array vacío
+      console.log("No se proporcionaron tamaños válidos, se mantendrá vacío.");
     }
-
-    console.log(sizesWithStock);
 
     // Datos a actualizar
     const updateData = {
       name,
       price,
       description,
-      sizes: sizesWithStock,
+      sizes: sizesWithStock.length > 0 ? sizesWithStock : [], // Si no hay talles, se guarda un array vacío
       isFeatured,
       imagePath: updatedImagePath.length ? updatedImagePath : undefined,
     };
