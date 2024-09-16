@@ -66,6 +66,7 @@ export class ProductInit {
               imagePath,
               sizes,
               description,
+              hayStock,
               id
             );
           } catch (err) {
