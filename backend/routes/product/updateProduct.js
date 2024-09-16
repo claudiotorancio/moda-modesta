@@ -19,15 +19,7 @@ const updateProduct = async (req, res) => {
     }
 
     const { id } = req.params;
-    const {
-      name,
-      price,
-      description,
-      oldImagePath,
-      isFeatured,
-      sizes: sizesJSON,
-      stock: stockJSON,
-    } = req.body;
+    const { name, price, description, isFeatured, sizes } = req.body; // `sizes` es un JSON enviado desde el cliente
 
     // Conectar a la base de datos
     await mongoose.connect(MONGODB_URI, {
@@ -43,6 +35,13 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
+    // Actualizar los datos del producto
+    product.name = name;
+    product.price = price;
+    product.description = description;
+    product.isFeatured = isFeatured;
+
+    // Actualizar las imágenes (si es necesario) y eliminar las anteriores
     // Eliminar la imagen antigua si es necesario
     let updatedImagePath = product.imagePath || [];
     if (Array.isArray(oldImagePath)) {
@@ -85,43 +84,19 @@ const updateProduct = async (req, res) => {
       });
     }
 
-    // Agregar la nueva imagen al array imagePath si se proporciona
-    if (req.file) {
-      const newImagePath = req.file.location;
-      updatedImagePath.push(newImagePath);
+    // Actualizar los talles y el stock
+    if (sizes) {
+      const parsedSizes = JSON.parse(sizes); // Parsear el JSON de talles y stock
+      product.sizes = parsedSizes; // Asignar los nuevos talles y stock
     }
 
-    // Procesar talles y stock
-    const sizes = JSON.parse(sizesJSON || "[]"); // Convertir el JSON de talles a un array
-    const stock = JSON.parse(stockJSON || "{}"); // Convertir el JSON de stock a un objeto
+    // Guardar los cambios en la base de datos
+    await product.save();
 
-    // Crear un array de talles con el stock correspondiente
-    const sizesWithStock = sizes.map((size) => ({
-      size: size.size,
-      stock: stock[size.size] || 0, // Si no hay stock proporcionado para un talle, asignar 0
-    }));
-
-    // Datos a actualizar
-    const updateData = {
-      name,
-      price,
-      description,
-      sizes: sizesWithStock,
-      isFeatured,
-      imagePath: updatedImagePath.length ? updatedImagePath : undefined,
-    };
-
-    // Actualizar el producto en la base de datos
-    const result = await model.findByIdAndUpdate(id, updateData, { new: true });
-
-    if (!result) {
-      return res.status(404).json({ message: "Producto no encontrado" });
-    }
-
-    res.json({ message: "Producto actualizado", updatedProduct: result });
+    res.status(200).json({ message: "Producto actualizado exitosamente" });
   } catch (error) {
     console.error("Error al actualizar el producto:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Error al actualizar el producto" });
   }
 };
 
