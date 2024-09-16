@@ -10,9 +10,11 @@ const createProduct = async (req, res) => {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
 
+    // Obtén las rutas de las imágenes
     const imagePaths = req.files ? req.files.map((file) => file.location) : [];
-    const { name, price, description, section, isFeatured, sizes, stock } =
-      req.body;
+    const { name, price, description, section, isFeatured } = req.body;
+    const sizes = req.body["sizes[]"] || []; // Recoge los tamaños enviados como array
+    const stock = req.body["stock"] || {}; // Recoge el stock enviado como objeto
 
     if (
       !name ||
@@ -27,6 +29,17 @@ const createProduct = async (req, res) => {
         .json({ error: "Todos los campos son requeridos." });
     }
 
+    // Asegúrate de que `sizes` y `stock` estén en el formato correcto
+    const sizesArray = Array.isArray(sizes) ? sizes : [sizes];
+    const stockObject = {};
+    if (typeof stock === "object") {
+      for (const [key, value] of Object.entries(stock)) {
+        if (value) {
+          stockObject[key] = parseInt(value);
+        }
+      }
+    }
+
     const createProductData = {
       name,
       price,
@@ -35,13 +48,8 @@ const createProduct = async (req, res) => {
       isFeatured,
       imagePath: imagePaths,
       user_id: req.user._id,
-      sizes: Array.isArray(sizes) ? sizes : [sizes],
-      stock: Array.isArray(stock)
-        ? stock.reduce((acc, size, index) => {
-            acc[size] = parseInt(stock[index]);
-            return acc;
-          }, {})
-        : {},
+      sizes: sizesArray.map((size) => ({ size, stock: stock[size] || 0 })), // Mapea tamaños con stock
+      stock: stockObject,
     };
 
     let newProduct;

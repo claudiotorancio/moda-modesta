@@ -214,7 +214,6 @@ export class ProductForm {
   }
 
   // Recopilar y enviar los datos
-  // Recopilar y enviar los datos
   async handleSubmit() {
     const name = document.querySelector("[data-name]").value;
     const price = parseFloat(document.querySelector("[data-price]").value);
@@ -248,9 +247,8 @@ export class ProductForm {
     }
 
     // Agrega talles y stock al FormData
-    // Agrega talles y stock al FormData
     selectedSizes.forEach((sizeData) => {
-      productData.append(`sizes[]`, sizeData.size);
+      productData.append("sizes[]", sizeData.size);
       productData.append(`stock[${sizeData.size}]`, sizeData.stock);
     });
 
