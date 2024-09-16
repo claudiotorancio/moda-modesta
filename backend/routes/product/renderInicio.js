@@ -10,12 +10,10 @@ const renderInicio = async (req, res) => {
       useUnifiedTopology: true,
     });
 
-    // Consultar productos con al menos un talle en stock
-    const products = await Vista.find({
-      "sizes.stock": { $gt: 0 }, // Solo productos con talles con stock mayor a 0
-    });
+    // consultar productos
+    const products = await Vista.find();
 
-    // Devolver productos
+    //Devolver productos
     res.json(products);
   } catch (error) {
     console.error("Error al cargar productos:", error);
