@@ -22,6 +22,8 @@ const updateProduct = async (req, res) => {
     const { name, price, description, oldImagePath, sizes, isFeatured } =
       req.body;
 
+    console.log(req.body);
+
     // Conectar a la base de datos
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
@@ -89,10 +91,12 @@ const updateProduct = async (req, res) => {
     if (Array.isArray(sizes)) {
       sizes.forEach((size) => {
         const stock = req.body[`stock_${size.replace(" ", "").toLowerCase()}`];
+        console.log(stock);
         sizesWithStock.push({ size, stock: Number(stock) || 0 });
       });
     } else {
       const stock = req.body[`stock_${sizes.replace(" ", "").toLowerCase()}`];
+
       sizesWithStock.push({ size: sizes, stock: Number(stock) || 0 });
     }
 
