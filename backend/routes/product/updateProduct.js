@@ -86,31 +86,18 @@ const updateProduct = async (req, res) => {
       updatedImagePath.push(newImagePath);
     }
 
-    // Procesar los talles y stocks
     const sizesWithStock = [];
     if (Array.isArray(sizes)) {
       sizes.forEach((size) => {
-        // Formatear la clave para el stock
-        const formattedSize = size.replace(" ", "").toLowerCase();
-        const stockKey = `stock_${formattedSize}`;
-
-        // Imprimir la clave para depuración
-        console.log(`Looking for stock with key: ${stockKey}`);
-
-        // Obtener el stock desde req.body
-        const stock = req.body[stockKey];
-        console.log(`Size: ${size}, Stock: ${stock}`);
+        // Normalizar el tamaño para buscar el stock
+        const normalizedSize = size.replace(" ", "_").toLowerCase();
+        const stock = req.body[`stock_${normalizedSize}`];
+        console.log(`Size: ${size}, Stock: ${stock}`); // Debugging
         sizesWithStock.push({ size, stock: Number(stock) || 0 });
       });
     } else {
-      const formattedSize = sizes.replace(" ", "").toLowerCase();
-      const stockKey = `stock_${formattedSize}`;
-
-      // Imprimir la clave para depuración
-      console.log(`Looking for stock with key: ${stockKey}`);
-
-      const stock = req.body[stockKey];
-      console.log(`Size: ${sizes}, Stock: ${stock}`);
+      const normalizedSize = sizes.replace(" ", "_").toLowerCase();
+      const stock = req.body[`stock_${normalizedSize}`];
       sizesWithStock.push({ size: sizes, stock: Number(stock) || 0 });
     }
 

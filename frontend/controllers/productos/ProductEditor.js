@@ -237,9 +237,16 @@ export class ProductEditor {
 
       // Adjuntar los talles seleccionados y sus stocks
       selectedSizes.forEach(({ size, stock }) => {
+        // Convertir el tamaño a minúsculas y reemplazar espacios por guiones bajos
+        const normalizedSize = size.replace(" ", "_").toLowerCase();
         dataEdit.append("sizes[]", size);
-        dataEdit.append(`stock_${size}`, stock); // Adjuntar stock junto con cada talle
+        dataEdit.append(`stock_${normalizedSize}`, stock); // Normaliza la clave aquí
       });
+
+      // Imprimir el contenido del FormData para depuración
+      for (let pair of dataEdit.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
+      }
 
       try {
         await productoServices.actualizarProducto(dataEdit, id);
