@@ -15,8 +15,17 @@ const createProduct = async (req, res) => {
     const { name, price, description, section, isFeatured } = req.body;
 
     // Procesa los tamaños y el stock
-    const sizes = req.body["sizes[]"] || [];
-    const stock = req.body["stock"] || {};
+    const sizes = JSON.parse(req.body.sizes || "[]"); // Convierte el JSON de vuelta a un array
+    const stock = {};
+
+    // Procesa el stock si es un objeto
+    if (typeof req.body.stock === "object") {
+      for (const [key, value] of Object.entries(req.body.stock)) {
+        if (value) {
+          stock[key] = parseInt(value);
+        }
+      }
+    }
 
     // Imprime los datos recibidos para depuración
     console.log("Image Paths:", imagePaths);
@@ -35,19 +44,6 @@ const createProduct = async (req, res) => {
         .json({ error: "Todos los campos son requeridos." });
     }
 
-    // Asegúrate de que `sizes` y `stock` estén en el formato correcto
-    const sizesArray = Array.isArray(sizes) ? sizes : [sizes];
-    const stockObject = {};
-
-    // Procesa el stock si es un objeto
-    if (typeof stock === "object") {
-      for (const [key, value] of Object.entries(stock)) {
-        if (value) {
-          stockObject[key] = parseInt(value);
-        }
-      }
-    }
-
     // Crear datos del producto
     const createProductData = {
       name,
@@ -57,8 +53,11 @@ const createProduct = async (req, res) => {
       isFeatured,
       imagePath: imagePaths,
       user_id: req.user._id,
-      sizes: sizesArray.map((size) => ({ size, stock: stock[size] || 0 })),
-      stock: stockObject,
+      sizes: sizes.map((sizeData) => ({
+        size: sizeData.size,
+        stock: sizeData.stock,
+      })),
+      stock: stock,
     };
 
     console.log(createProductData);

@@ -245,11 +245,8 @@ export class ProductForm {
       productData.append("images[]", image);
     }
 
-    // Agrega talles y stock al FormData
-    selectedSizes.forEach((sizeData) => {
-      productData.append("sizes[]", sizeData.size); // Envía el tamaño como un array
-      productData.append(`stock[${sizeData.size}]`, sizeData.stock); // Envía stock con clave tamaño
-    });
+    // Convierte `sizes` y `stock` a JSON y agrégalo al FormData
+    productData.append("sizes", JSON.stringify(selectedSizes));
 
     // Imprimir el contenido del FormData para depuración
     for (let pair of productData.entries()) {
