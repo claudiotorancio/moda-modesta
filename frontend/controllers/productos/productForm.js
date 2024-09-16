@@ -213,7 +213,6 @@ export class ProductForm {
     });
   }
 
-  // Recopilar y enviar los datos
   async handleSubmit() {
     const name = document.querySelector("[data-name]").value;
     const price = parseFloat(document.querySelector("[data-price]").value);
@@ -248,17 +247,12 @@ export class ProductForm {
 
     // Agrega talles y stock al FormData
     selectedSizes.forEach((sizeData) => {
-      productData.append("sizes[]", sizeData.size);
-      productData.append(`stock[${sizeData.size}]`, sizeData.stock);
+      productData.append("sizes[]", sizeData.size); // Envía el tamaño como un array
+      productData.append(`stock[${sizeData.size}]`, sizeData.stock); // Envía stock con clave tamaño
     });
 
-    // Imprimir el contenido del FormData para depuración
-    for (let pair of productData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
-
     try {
-      await productoServices.crearProducto(productData);
+      const response = await productoServices.crearProducto(productData);
       modalControllers.modalProductoCreado();
     } catch (error) {
       console.error("Error al crear el producto:", error);
