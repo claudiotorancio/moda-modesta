@@ -83,7 +83,16 @@ export class ProductInit {
       window.location.hash = `product-${id}`;
 
       try {
-        await mostrarProducto(name, price, imagePath, sizes, description, id);
+        await mostrarProducto(
+          name,
+          price,
+          imagePath,
+          sizes,
+          description,
+          hayStock,
+          id
+        );
+        console.log(hayStock);
       } catch (err) {
         console.log(err);
       }

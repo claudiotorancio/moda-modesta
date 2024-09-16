@@ -8,9 +8,10 @@ export const mostrarProducto = async (
   imagePath,
   sizes,
   description,
-  id,
-  inStock // Nuevo parámetro para indicar si hay stock
+  hayStock, // Nuevo parámetro para indicar si hay stock
+  id
 ) => {
+  console.log(hayStock);
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
   const mostrarProducto = modal.querySelector("[data-table]");
@@ -63,12 +64,12 @@ export const mostrarProducto = async (
           <h3 class="product-price text-primary-bold mt-2" style="font-weight: bold; font-size: 1.25em;">$${price}</h3>
           <p class="product-description text-muted">${description}</p>
 
-          ${inStock ? "" : '<div class="alert alert-warning">Sin stock</div>'}
+          ${hayStock ? "" : '<div class="alert alert-warning">Sin stock</div>'}
           
           <div class="product-options">
             <label for="variation_1" class="form-label">Talles disponibles</label>
             <select id="variation_1" class="form-select mb-3" ${
-              inStock ? "" : "disabled"
+              hayStock ? "" : "disabled"
             }>
               ${sizes
                 .map(
@@ -80,7 +81,7 @@ export const mostrarProducto = async (
           
           <div class="d-flex justify-content-between mt-3">
             <button type="button" class="btn btn-primary me-2" data-carrito ${
-              inStock ? "" : "disabled"
+              hayStock ? "" : "disabled"
             }>Añadir carrito</button>
             <a id="compartir-producto" class="btn btn-outline-secondary">
               <i class="fa-solid fa-share-nodes"></i> Compartir
