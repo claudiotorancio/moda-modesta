@@ -129,4 +129,8 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const esAdministrador = (user) => {
+  return user.role === "admin";
+};
+
 export default updateProduct;
