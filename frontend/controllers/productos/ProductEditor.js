@@ -184,16 +184,17 @@ export class ProductEditor {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      // Intentar obtener los elementos de entrada de imagen
       const imageInput1 = document.querySelector("[data-image1]");
       const imageInput2 = document.querySelector("[data-image2]");
 
-      if (!imageInput1 || !imageInput2) {
+      if (!imageInput1 && !imageInput2) {
         console.error("No se encontraron los elementos de entrada de imagen.");
-        return;
+        return; // Salir si los elementos no están presentes
       }
 
-      const imagePath1 = imageInput1.files[0] || null;
-      const imagePath2 = imageInput2.files[0] || null;
+      const imagePath1 = imageInput1 ? imageInput1.files[0] : null;
+      const imagePath2 = imageInput2 ? imageInput2.files[0] : null;
 
       // Validar si ambas imágenes están siendo reemplazadas
       if (imagePath1 && imagePath2) {
