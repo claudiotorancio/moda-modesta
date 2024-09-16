@@ -14,7 +14,7 @@ const createProduct = async (req, res) => {
     const imagePaths = req.files ? req.files.map((file) => file.location) : [];
     const { name, price, description, section, isFeatured } = req.body;
 
-    // Obtén los tamaños y stock desde req.body
+    // Procesa los tamaños y el stock
     const sizes = req.body["sizes[]"] || [];
     const stock = req.body["stock"] || {};
 
@@ -35,7 +35,7 @@ const createProduct = async (req, res) => {
         .json({ error: "Todos los campos son requeridos." });
     }
 
-    // Asegúrate de que `sizes` esté en el formato correcto
+    // Asegúrate de que `sizes` y `stock` estén en el formato correcto
     const sizesArray = Array.isArray(sizes) ? sizes : [sizes];
     const stockObject = {};
 

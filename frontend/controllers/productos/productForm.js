@@ -251,6 +251,11 @@ export class ProductForm {
       productData.append(`stock[${sizeData.size}]`, sizeData.stock); // Envía stock con clave tamaño
     });
 
+    // Imprimir el contenido del FormData para depuración
+    for (let pair of productData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+
     try {
       const response = await productoServices.crearProducto(productData);
       modalControllers.modalProductoCreado();
