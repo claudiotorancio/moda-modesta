@@ -19,15 +19,8 @@ const updateProduct = async (req, res) => {
     }
 
     const { id } = req.params;
-    const {
-      name,
-      price,
-      description,
-      oldImagePath,
-      sizes,
-      stocks,
-      isFeatured,
-    } = req.body;
+    const { name, price, description, oldImagePath, sizes, isFeatured } =
+      req.body;
 
     // Conectar a la base de datos
     await mongoose.connect(MONGODB_URI, {
@@ -91,40 +84,26 @@ const updateProduct = async (req, res) => {
       updatedImagePath.push(newImagePath);
     }
 
-    // Actualizar los tamaños y stocks
-    const updatedSizes = [];
-
-    // Si se envían los talles y stocks, actualizarlos
-    if (Array.isArray(sizes) && Array.isArray(stocks)) {
-      sizes.forEach((size, index) => {
-        const existingSize = product.sizes.find((s) => s.size === size);
-        const newStock = Number(stocks[index]); // Asegurarse de que el stock sea un número
-
-        if (existingSize) {
-          // Actualizar el stock del tamaño existente
-          updatedSizes.push({
-            size,
-            stock: newStock !== undefined ? newStock : existingSize.stock,
-          });
-        } else {
-          // Si no existe, agregar el nuevo tamaño con su stock
-          updatedSizes.push({
-            size,
-            stock: newStock || 0, // Si no se proporciona stock, usar 0
-          });
-        }
+    // Procesar los talles y stocks
+    const sizesWithStock = [];
+    if (Array.isArray(sizes)) {
+      sizes.forEach((size) => {
+        const stock = req.body[`stock_${size.replace(" ", "").toLowerCase()}`];
+        sizesWithStock.push({ size, stock: Number(stock) || 0 });
       });
     } else {
-      // Si no se proporcionan tallas y stocks, mantener los actuales
-      updatedSizes.push(...product.sizes);
+      const stock = req.body[`stock_${sizes.replace(" ", "").toLowerCase()}`];
+      sizesWithStock.push({ size: sizes, stock: Number(stock) || 0 });
     }
+
+    console.log(sizesWithStock);
 
     // Datos a actualizar
     const updateData = {
       name,
       price,
       description,
-      sizes: updatedSizes.length ? updatedSizes : product.sizes,
+      sizes: sizesWithStock,
       isFeatured,
       imagePath: updatedImagePath.length ? updatedImagePath : undefined,
     };
