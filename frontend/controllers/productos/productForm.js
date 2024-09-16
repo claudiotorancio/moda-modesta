@@ -254,7 +254,7 @@ export class ProductForm {
     });
 
     // Imprimir el contenido del FormData para depuración
-    for (let pair of dataEdit.entries()) {
+    for (let pair of productData.entries()) {
       console.log(`${pair[0]}: ${pair[1]}`);
     }
 
