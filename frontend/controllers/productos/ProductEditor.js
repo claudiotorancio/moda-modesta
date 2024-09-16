@@ -29,8 +29,8 @@ export class ProductEditor {
           ${imagePath
             .map(
               (path, index) => `
-            <div class="me-3 text-center" style="flex: 0 0 auto;">
-              <img class="img-fluid" style="max-width: 8rem;" src="${path}" alt="Imagen ${
+            <div class="me-4 text-center" style="flex: 0 0 auto;">
+              <img class="img-fluid" style="max-width: 10rem;" src="${path}" alt="Imagen ${
                 index + 1
               }">
               <p class="text-muted">Imagen ${index + 1}</p>
@@ -41,11 +41,11 @@ export class ProductEditor {
         </div>
       </div>
       <form action="/api/updateProduct/${id}" id="form" enctype="multipart/form-data" method="POST" data-forma>
-        <p class="parrafo">Editar Producto</p>
+        <p class="parrafo">Producto a editar</p>
         ${imagePath
           .map(
             (path, index) => `
-          <div class="form-group mb-2">
+          <div class="form-group">
             <input type="checkbox" id="image${
               index + 1
             }Check" class="form-check-input" name="image${
@@ -56,7 +56,7 @@ export class ProductEditor {
             }Check" class="form-check-label">Actualizar Imagen ${
               index + 1
             }</label>
-            <input class="form-control p-1 mt-1" type="file" name="imagePath${
+            <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath${
               index + 1
             }" data-image${index + 1} required disabled>
             <input type="hidden" class="oldImagePath" name="oldImagePath${
@@ -66,26 +66,26 @@ export class ProductEditor {
         `
           )
           .join("")}
-        <div class="form-group mb-2">
-          <input class="form-control p-1" placeholder="Nombre" type="text" value="${name}" required data-nombre>
+        <div class="form-group">
+          <input class="form-control mt-3 p-2" placeholder="nombre" type="text" value="${name}" required data-nombre>
         </div>
-        <div class="form-group mb-2">
-          <input class="form-control p-1" placeholder="Precio" type="text" value="${price}" required data-precio>
+        <div class="form-group">
+          <input class="form-control mt-3 mb-3 p-2" placeholder="precio" type="text" value="${price}" required data-precio>
         </div>
-        <div class="form-group mb-2">
-          <textarea class="form-control p-1" placeholder="Descripción" required data-description>${description}</textarea>
+        <div class="form-group">
+          <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" required data-description>${description}</textarea>
         </div>
-        <div class="form-group form-check mb-2">
+        <div class="form-group form-check mb-3">
           <input type="checkbox" class="form-check-input" id="isFeatured" name="isFeatured" ${
             isFeatured ? "checked" : ""
           }>
           <label class="form-check-label" for="isFeatured">Destacar producto</label>
         </div>
-        <label for="sizes">Modificar talles y stocks</label>
-        <div class="form-group mb-3">
+        <label for="sizes">Modificar talles y stocks </label>
+        <div class="form-group mb-4">
           ${this.renderSizeOptions(sizes)}
         </div>
-        <button type="submit" class="btn btn-primary btn-sm">Editar producto</button>
+        <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
       </form>
     `;
 
@@ -106,30 +106,30 @@ export class ProductEditor {
     return sizes
       .map(
         ({ size }) => `
-      <div class="form-check form-check-inline me-2">
-        <input 
-          class="form-check-input" 
-          type="checkbox" 
-          value="${size}" 
-          name="sizes" 
-          id="${size.replace(" ", "").toLowerCase()}" 
-          ${selectedSizes.some((s) => s.size === size) ? "checked" : ""}
-        >
-        <label 
-          class="form-check-label" 
-          for="${size.replace(" ", "").toLowerCase()}">
-          ${size}
-        </label>
-        <input 
-          class="form-control form-control-sm mt-1" 
-          type="number" 
-          placeholder="Sin stock" 
-          name="stock_${size.replace(" ", "").toLowerCase()}" 
-          value="${selectedSizes.find((s) => s.size === size)?.stock || 0}" 
-          disabled
-        >
-      </div>
-    `
+        <div class="form-check-inline me-3">
+          <input 
+            class="form-check-input" 
+            type="checkbox" 
+            value="${size}" 
+            name="sizes" 
+            id="${size.replace(" ", "").toLowerCase()}" 
+            ${selectedSizes.some((s) => s.size === size) ? "checked" : ""}
+          >
+          <label 
+            class="form-check-label" 
+            for="${size.replace(" ", "").toLowerCase()}">
+            ${size}
+          </label>
+          <input 
+            class="form-control mt-2" 
+            type="number" 
+            placeholder="Sin stock" 
+            name="stock_${size.replace(" ", "").toLowerCase()}" 
+            value="${selectedSizes.find((s) => s.size === size)?.stock || 0}" 
+            disabled
+          >
+        </div>
+      `
       )
       .join("");
   }
@@ -247,6 +247,10 @@ export class ProductEditor {
         dataEdit.append("sizes[]", size);
         dataEdit.append(`stock_${normalizedSize}`, stock);
       });
+
+      for (let [key, value] of dataEdit.entries()) {
+        console.log(`${key}: ${value}`);
+      }
 
       try {
         await productoServices.actualizarProducto(dataEdit, id);
