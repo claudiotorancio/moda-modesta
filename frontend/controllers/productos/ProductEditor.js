@@ -18,6 +18,7 @@ export class ProductEditor {
       isFeatured
     );
     this.setupFormSubmitHandler(id);
+    this.setupSizeCheckListeners();
   }
 
   renderEditor(name, price, imagePath, description, sizes, id, isFeatured) {
@@ -113,35 +114,60 @@ export class ProductEditor {
     ];
 
     return sizes
-      .map(
-        ({ size, stock }) => `
-          <div class="form-check-inline me-3">
-            <input 
-              class="form-check-input" 
-              type="checkbox" 
-              value="${size}" 
-              name="sizes" 
-              id="${size.replace(" ", "").toLowerCase()}" 
-              ${selectedSizes.some((s) => s.size === size) ? "checked" : ""}
-            >
-            <label 
-              class="form-check-label" 
-              for="${size.replace(" ", "").toLowerCase()}">
-              ${size}
-            </label>
-            <input 
-              class="form-control mt-2" 
-              type="number" 
-              placeholder="Stock" 
-              name="stock_${size.replace(" ", "").toLowerCase()}" 
-              value="${
-                selectedSizes.find((s) => s.size === size)?.stock || stock
-              }" 
-            >
-          </div>
-        `
-      )
+      .map(({ size }) => {
+        const isChecked = selectedSizes.some((s) => s.size === size);
+        const stockValue =
+          selectedSizes.find((s) => s.size === size)?.stock || "";
+        const sizeId = size.replace(" ", "").toLowerCase(); // Normaliza el id
+        return `
+            <div class="form-check-inline me-3">
+              <input 
+                class="form-check-input" 
+                type="checkbox" 
+                value="${size}" 
+                name="sizes" 
+                id="${sizeId}" 
+                ${isChecked ? "checked" : ""}
+              >
+              <label class="form-check-label" for="${sizeId}">
+                ${size}
+              </label>
+              <input 
+                class="form-control mt-2" 
+                type="number" 
+                placeholder="Stock" 
+                name="stock_${sizeId}" 
+                value="${stockValue}" 
+                ${
+                  isChecked ? "" : "disabled"
+                }  <!-- El campo stock se deshabilita si el checkbox no está marcado -->
+              >
+            </div>
+          `;
+      })
       .join("");
+  }
+
+  setupSizeCheckListeners() {
+    // Obtenemos todos los checkbox de los talles
+    const sizeCheckboxes = document.querySelectorAll('input[name="sizes"]');
+
+    sizeCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", (event) => {
+        const sizeId = event.target.id; // Obtenemos el id del checkbox
+        const stockInput = document.querySelector(
+          `input[name="stock_${sizeId}"]`
+        ); // Seleccionamos el input de stock correspondiente
+
+        // Habilitamos o deshabilitamos el input de stock dependiendo si el checkbox está marcado
+        if (event.target.checked) {
+          stockInput.disabled = false;
+        } else {
+          stockInput.disabled = true;
+          stockInput.value = ""; // Opcional: Limpiar el valor del campo stock si se deshabilita
+        }
+      });
+    });
   }
 
   setupImageCheckListeners() {
