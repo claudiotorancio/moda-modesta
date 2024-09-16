@@ -1,17 +1,3 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
-import Product from "../../models/Product.js";
-import Vista from "../../models/Vista.js";
-import AWS from "aws-sdk";
-
-const s3 = new AWS.S3({
-  region: process.env.S3_BUCKET_REGION,
-  credentials: {
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  },
-});
-
 const updateProduct = async (req, res) => {
   try {
     if (!req.isAuthenticated()) {
@@ -90,13 +76,16 @@ const updateProduct = async (req, res) => {
     const sizesWithStock = [];
     if (Array.isArray(sizes)) {
       sizes.forEach((size) => {
-        const stock = req.body[`stock_${size.replace(" ", "").toLowerCase()}`];
-        console.log(stock);
+        // Asegurarse de que el tamaño esté bien formateado
+        const formattedSize = size.replace(" ", "").toLowerCase();
+        const stock = req.body[`stock_${formattedSize}`];
+        console.log(`Size: ${size}, Stock: ${stock}`);
         sizesWithStock.push({ size, stock: Number(stock) || 0 });
       });
     } else {
-      const stock = req.body[`stock_${sizes.replace(" ", "").toLowerCase()}`];
-
+      const formattedSize = sizes.replace(" ", "").toLowerCase();
+      const stock = req.body[`stock_${formattedSize}`];
+      console.log(`Size: ${sizes}, Stock: ${stock}`);
       sizesWithStock.push({ size: sizes, stock: Number(stock) || 0 });
     }
 
@@ -125,9 +114,3 @@ const updateProduct = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
-
-const esAdministrador = (user) => {
-  return user.role === "admin";
-};
-
-export default updateProduct;
