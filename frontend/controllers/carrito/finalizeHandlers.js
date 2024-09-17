@@ -92,14 +92,14 @@ Al dar finalizado se enviarán los datos para el pago al correo ingresado. Por f
       const telefono = document.querySelector("#phoneNumber").value;
 
       const productos = this.items.map((item) => ({
-        id: item._id,
+        id: item.productId,
         name: item.name,
         price: item.price,
         cantidad: item.cantidad,
         size: item.size,
         hash: item.productId,
       }));
-
+      console.log(productos);
       const datosCompra = {
         nombre,
         email,

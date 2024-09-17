@@ -16,6 +16,21 @@ export async function finalizarPedidoHandler(id) {
   }
 }
 
+export async function cancelarPedidoHandler(id, productos) {
+  const confirmacion = confirm(
+    "¿Estás seguro de que quieres cancelar este pedido?"
+  );
+
+  if (confirmacion) {
+    try {
+      const compraServicesHelpers = new CompraServices();
+      await compraServicesHelpers.cancelarPedidoHandler(id, productos);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
 export async function mensajeEnCaminoHandlerCompra(email, name, producto, id) {
   const confirmacion = confirm(
     "¿Desea enviar la alerta de que el pedido está en camino?"

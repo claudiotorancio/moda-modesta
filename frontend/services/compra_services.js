@@ -63,6 +63,35 @@ export class CompraServices {
     }
   };
 
+  //finalizar pedido
+
+  cancelarPedidoHandler = async (id, productos) => {
+    try {
+      const response = await fetch(
+        `${this.baseURL}/api/compraCancelada/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json", // Indica que el cuerpo es JSON
+          },
+          body: JSON.stringify({ productos }), // Convierte el objeto a JSON
+        }
+      );
+
+      if (!response.ok) {
+        // Manejo de errores para respuestas no exitosas
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Error al procesar la solicitud.");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error al cancelar el pedido:", error);
+      throw error;
+    }
+  };
+
   //correo pedido en preparacion
 
   async compraPrepare(email, name, producto) {

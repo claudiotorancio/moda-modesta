@@ -13,7 +13,7 @@ export class ProductInit {
     const hayStock = sizes.some((item) => item.stock > 0);
     const mensajeStock = hayStock
       ? `<button type="button" class="btn btn-primary btn-block mt-2" data-compra>Comprar</button>`
-      : `<span class="text-danger font-weight-bold">Sin stock</span>`;
+      : `<span class="text-danger font-weight-bold ">Sin stock</span>`;
 
     const contenido = `
       <div class="container mx-auto mt-4">

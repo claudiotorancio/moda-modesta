@@ -31,6 +31,7 @@ const orderSchema = new mongoose.Schema(
     aceptar: { type: Boolean, required: false },
     enCamino: { type: Boolean, required: false },
     finalizado: { type: Boolean, required: false },
+    cancelado: { type: Boolean, required: false },
   },
   { timestamps: true }
 );

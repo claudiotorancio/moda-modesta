@@ -48,6 +48,7 @@ import agregarResena from "../backend/routes/resena/agregarResena.js";
 import getResena from "../backend/routes/resena/getResena.js";
 import putResena from "../backend/routes/resena/putResena.js";
 import deleteResena from "../backend/routes/resena/deleteResena.js";
+import { compraCancelada } from "../backend/routes/purchase/compraCancelada.js";
 import path from "path";
 
 const router = Router();
@@ -128,6 +129,7 @@ router.put("/api/compraEnCamino/:id", requireAdmin, compraEnCamino);
 router.put("/api/aceptarPedido/:id", requireAdmin, aceptarPedido);
 router.post("/api/correoEnCamino", requireAdmin, correoEnCamino);
 router.put("/api/finalizarPedido/:id", requireAdmin, finalizarPedido);
+router.put("/api/compraCancelada/:id", compraCancelada);
 
 // Rutas nodeMailer
 router.post("/api/sendMail", sendMail);

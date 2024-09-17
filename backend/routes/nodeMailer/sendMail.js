@@ -1,5 +1,8 @@
+import mongoose from "mongoose";
+import MONGODB_URI from "../../config.js";
 import nodemailer from "nodemailer";
 import Order from "../../models/Order.js";
+import Vista from "../../models/Vista.js";
 
 const sendMail = async (req, res) => {
   try {
@@ -107,6 +110,12 @@ const sendMail = async (req, res) => {
       html: contentHTML,
     };
 
+    // Conectar a la base de datos
+    await mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
     // Guardar la orden en la base de datos
     const newOrder = new Order({
       customer: {
@@ -137,6 +146,28 @@ const sendMail = async (req, res) => {
     console.log(newOrder);
 
     await newOrder.save();
+
+    // Actualizar el stock de los productos y tamaños
+    await Promise.all(
+      productos.map(async (producto) => {
+        const product = await Vista.findById(producto.id);
+        if (product) {
+          // Encuentra el tamaño correspondiente en el array de sizes
+          const size = product.sizes.find((s) => s.size === producto.size);
+          if (size) {
+            size.stock -= producto.cantidad; // Reducir el stock del tamaño
+            if (size.stock < 0) size.stock = 0; // Evitar stock negativo
+            await product.save();
+          } else {
+            console.warn(
+              `Tamaño ${producto.size} no encontrado para el producto con ID ${producto.id}.`
+            );
+          }
+        } else {
+          console.warn(`Producto con ID ${producto.id} no encontrado.`);
+        }
+      })
+    );
 
     // Enviar el correo
     const info = await transporter.sendMail(mailOptions);

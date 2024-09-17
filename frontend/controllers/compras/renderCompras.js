@@ -4,6 +4,7 @@ import {
   eliminarPedido,
   mensajeEnCaminoHandlerCompra,
   aceptarPedidoHandler,
+  cancelarPedidoHandler, // Asegúrate de importar esta función
 } from "./eventsCompras.js";
 
 export class RenderCompras {
@@ -56,12 +57,13 @@ export class RenderCompras {
         aceptar: order.aceptar,
         enCamino: order.enCamino,
         finalizado: order.finalizado,
+        cancelado: order.cancelado,
         items: order.items,
         id: order._id,
       };
 
       // Mostrar notificación de nuevo pedido
-      if (!order.aceptar) {
+      if (!order.aceptar && !order.cancelado) {
         alert(`Nuevo pedido de ${orderData.name} (${orderData.email})`);
       }
 
@@ -80,6 +82,14 @@ export class RenderCompras {
     const searchInput = this.titulo
       .querySelector("#searchInput")
       .value.toLowerCase();
+
+    // Si el campo de búsqueda está vacío, mostrar todo el listado
+    if (!searchInput) {
+      this.mostrarCompras(this.listado);
+      return;
+    }
+
+    // Filtrar las compras basándose en la entrada de búsqueda
     const comprasFiltradas = this.listado.filter((order) => {
       const {
         customer: { name, email, phoneNumber },
@@ -87,9 +97,12 @@ export class RenderCompras {
         aceptar,
         enCamino,
         finalizado,
+        cancelado,
       } = order;
 
       const estado = finalizado
+        ? "compra cancelada"
+        : cancelado
         ? "compra finalizada"
         : enCamino
         ? "en proceso de entrega"
@@ -121,6 +134,7 @@ export class RenderCompras {
     created_at,
     id,
     finalizado,
+    cancelado,
   }) {
     const fechaCreacion = new Date(created_at);
     const fechaFormateada = `${fechaCreacion
@@ -134,10 +148,10 @@ export class RenderCompras {
       .map(
         (item) =>
           `<div>
-       ${item.name} | Cantidad: ${item.quantity} | Talle: ${item.size} | <a href="${item.hash}" target="_blank">
-       Ver producto
-        </a>
-      </div>`
+     ${item.name} | Cantidad: ${item.quantity} | Talle: ${item.size} | <a href="${item.hash}" target="_blank">
+     Ver producto
+      </a>
+    </div>`
       )
       .join("<br>");
 
@@ -145,27 +159,38 @@ export class RenderCompras {
     let btnAceptarDisabled = false;
     let btnEnCaminoDisabled = true;
     let btnFinDisabled = true;
+    let btnCancelarDisabled = false;
 
-    if (finalizado) {
+    if (cancelado) {
+      estado = "Compra Cancelada";
+      btnAceptarDisabled = true;
+      btnEnCaminoDisabled = true;
+      btnFinDisabled = true;
+      btnCancelarDisabled = true;
+    } else if (finalizado) {
       estado = "Compra finalizada";
       btnAceptarDisabled = true;
       btnEnCaminoDisabled = true;
       btnFinDisabled = true;
+      btnCancelarDisabled = true;
     } else if (enCamino) {
       estado = "en proceso de entrega";
       btnAceptarDisabled = true;
       btnEnCaminoDisabled = true;
       btnFinDisabled = false;
+      btnCancelarDisabled = false;
     } else if (aceptar) {
-      estado = "aceptado y enviado correo (en preparacion)";
+      estado = "aceptado y enviado correo (en preparación)";
       btnAceptarDisabled = true;
       btnEnCaminoDisabled = false;
       btnFinDisabled = true;
+      btnCancelarDisabled = false;
     } else {
-      estado = "en espera de aceptacion";
+      estado = "en espera de aceptación";
       btnAceptarDisabled = false;
       btnEnCaminoDisabled = true;
       btnFinDisabled = true;
+      btnCancelarDisabled = false;
     }
 
     const card = document.createElement("div");
@@ -192,37 +217,53 @@ export class RenderCompras {
     }>En camino</button>
       <button type="button" class="btn btn-danger" data-compraFin="${id}" ${
       btnFinDisabled ? "disabled" : ""
-    }>Fin</button>   
+    }>Fin</button>
+      <button type="button" class="btn btn-warning" data-compraCancelada="${id}" ${
+      btnCancelarDisabled ? "disabled" : ""
+    }>Compra Cancelada</button>
     </div>
   `;
 
     card
       .querySelector("[data-compraFin]")
       .addEventListener("click", async () => {
-        await finalizarPedidoHandler(id); // Actualiza el estado en la base de datos
-        await this.renderCompraLista(); // Vuelve a renderizar la lista de compras
+        await finalizarPedidoHandler(id);
+        await this.renderCompraLista();
       });
 
     card
       .querySelector("[data-aceptarPedido]")
       .addEventListener("click", async () => {
         await aceptarPedidoHandler(email, name, producto, id);
-        await this.renderCompraLista(); // Vuelve a renderizar la lista de compras
+        await this.renderCompraLista();
       });
 
     card
       .querySelector("[data-compraEnCamino]")
       .addEventListener("click", async () => {
-        await mensajeEnCaminoHandlerCompra(email, name, producto, id);
+        await mensajeEnCaminoHandlerCompra(email, name, id);
+        await this.renderCompraLista();
+      });
+
+    card
+      .querySelector("[data-compraCancelada]")
+      .addEventListener("click", async () => {
+        const productos = items.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          size: item.size,
+        }));
+
+        console.log(productos);
+        await cancelarPedidoHandler(id, productos); // Maneja la lógica para cancelar la compra y devolver el producto al stock
         await this.renderCompraLista(); // Vuelve a renderizar la lista de compras
       });
 
     card
       .querySelector("[data-eliminarPedido]")
       .addEventListener("click", async () => {
-        // Aquí puedes agregar la lógica para eliminar el pedido.
         await eliminarPedido(id);
-        await this.renderCompraLista(); // Vuelve a renderizar la lista de compras
+        await this.renderCompraLista();
       });
 
     return card;
