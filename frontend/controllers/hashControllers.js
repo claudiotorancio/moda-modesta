@@ -22,7 +22,8 @@ export async function hashControllers() {
       console.error("Producto no encontrado en la respuesta de la API.");
       return;
     }
-
+    //verificar si hay stock
+    const hayStock = producto.stock > 0;
     // Convertir en array si es necesario
     const productosArray = [producto];
 
@@ -33,6 +34,7 @@ export async function hashControllers() {
         p.imagePath,
         p.sizes,
         p.description,
+        hayStock,
         p._id
       );
     });
