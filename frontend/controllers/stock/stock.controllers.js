@@ -1,4 +1,4 @@
-import { RenderStock } from "./eventHandlersStock.js";
+import { RenderStock } from "./RenderStock.js";
 
 export class StockControllers {
   constructor(titulo) {
