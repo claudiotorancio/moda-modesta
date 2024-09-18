@@ -129,7 +129,7 @@ router.put("/api/compraEnCamino/:id", requireAdmin, compraEnCamino);
 router.put("/api/aceptarPedido/:id", requireAdmin, aceptarPedido);
 router.post("/api/correoEnCamino", requireAdmin, correoEnCamino);
 router.put("/api/finalizarPedido/:id", requireAdmin, finalizarPedido);
-router.put("/api/compraCancelada/:id", compraCancelada);
+router.put("/api/compraCancelada/:id", requireAdmin, compraCancelada);
 
 // Rutas nodeMailer
 router.post("/api/sendMail", sendMail);

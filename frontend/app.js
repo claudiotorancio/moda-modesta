@@ -33,6 +33,7 @@ import {
   loadLogoImage,
 } from "./controllers/admin/eventBanner.js";
 import { buscar } from "./controllers/buscador/buscador.js";
+import { StockControllers } from "./controllers/stock/stock.controllers.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
@@ -59,6 +60,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const resenas = document.querySelector("[data-resenas]");
   const ventas = document.querySelector("[data-ventas]");
   const estilosDiseno = document.querySelector("[data-estilosDiseno]");
+  const susxriptores = document.querySelector("[data-suscriptores]");
+  const listaStock = document.querySelector("[data-stock]");
 
   const titulo = document.querySelector("[data-titulo]");
 
@@ -96,7 +99,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       estilosInstance.render();
     });
 
-    const susxriptores = document.querySelector("[data-suscriptores]");
+    listaStock.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const stockInstance = new StockControllers(titulo);
+      await stockInstance.render();
+    });
+
     susxriptores.addEventListener("click", async (e) => {
       e.preventDefault();
       const ListaControllersInstamce = new ListaControllers(titulo);

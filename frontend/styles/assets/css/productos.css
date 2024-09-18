@@ -187,6 +187,16 @@ div.card:hover {
   }
 }
 
+/* CSS para alertas de stock */
+.stock-bajo {
+  background-color: #ffeb3b; /* Color amarillo claro para stock bajo */
+}
+
+.sin-stock {
+  background-color: #f44336; /* Color rojo para sin stock */
+  color: #fff; /* Texto blanco para contraste */
+}
+
 @media (min-width: 320px) and (max-width: 768px) {
   .texto-categoria h2 {
     font-size: 25px;
