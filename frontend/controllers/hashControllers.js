@@ -22,9 +22,13 @@ export async function hashControllers() {
       console.error("Producto no encontrado en la respuesta de la API.");
       return;
     }
-    //verificar si hay stock
-    const hayStock = producto.stock > 0;
-    // Convertir en array si es necesario
+
+    // Verificar si hay stock en alguna de las tallas
+    const hayStock = producto.sizes.some((item) => item.stock > 0);
+
+    console.log(`Stock disponible: ${hayStock ? "Sí" : "No"}`);
+
+    // Convertir en array si es necesario (en caso de que quieras manejar varios productos)
     const productosArray = [producto];
 
     productosArray.forEach((p) => {
@@ -32,9 +36,9 @@ export async function hashControllers() {
         p.name,
         p.price,
         p.imagePath,
-        p.sizes,
+        p.sizes, // Pasar las tallas con su stock
         p.description,
-        hayStock,
+        hayStock, // Pasar si hay stock general o no
         p._id
       );
     });
