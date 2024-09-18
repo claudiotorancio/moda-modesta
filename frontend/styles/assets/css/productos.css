@@ -292,10 +292,6 @@ div.card:hover {
     }
   }
 
-  #productos-similares {
-    width: max-content;
-  }
-
   /* Clases que activan las animaciones */
   .icon-up {
     animation: moveUp 0.3s forwards;
