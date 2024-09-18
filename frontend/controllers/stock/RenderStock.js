@@ -159,7 +159,17 @@ export class RenderStock {
     botonesEliminar.forEach((boton) => {
       boton.addEventListener("click", async (event) => {
         const idProducto = event.target.dataset.id;
-        ProductEventHandler.handleDelete(idProducto);
+        const listaProducto = await productoServices.detalleProducto(
+          idProducto
+        );
+        const producto = listaProducto.product;
+        console.log(producto);
+
+        if (producto.inCart) {
+          alert("El producto está en el carrito y no se puede eliminar.");
+        } else {
+          ProductEventHandler.handleDelete(idProducto);
+        }
       });
     });
   }

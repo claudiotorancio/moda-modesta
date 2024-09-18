@@ -190,3 +190,135 @@ export function loadColorSettingsCard() {
     });
   }
 }
+
+export function saveStylesToFile() {
+  // Recuperar estilos desde localStorage
+  const styles = [
+    {
+      selector: "#banner",
+      styles: {
+        "background-image": localStorage.getItem("bannerImage") || "",
+      },
+    },
+    {
+      selector: "#logo",
+      styles: {
+        src: localStorage.getItem("logoImage") || "",
+      },
+    },
+    {
+      selector: "#bannerTitle",
+      styles: {
+        text: localStorage.getItem("bannerTitle") || "",
+      },
+    },
+    {
+      selector: "#bannerSubtitle",
+      styles: {
+        text: localStorage.getItem("bannerSubtitle") || "",
+      },
+    },
+    {
+      selector: "body",
+      styles: {
+        "background-color": localStorage.getItem("pageBackgroundColor") || "",
+      },
+    },
+    {
+      selector: ".card",
+      styles: {
+        "background-color": localStorage.getItem("cardBackgroundColor") || "",
+      },
+    },
+  ];
+
+  // Generar contenido para el archivo de estilos
+  let fileContent = styles
+    .map((style) => {
+      const stylesString = Object.entries(style.styles)
+        .map(([prop, value]) => `${prop}: ${value}`)
+        .join("; ");
+      return `${style.selector} { ${stylesString}; }`;
+    })
+    .join("\n");
+
+  // Crear y descargar el archivo de estilos
+  const blob = new Blob([fileContent], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "styles.txt";
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+  // Descargar las imágenes
+  const images = [
+    { key: "bannerImage", filename: "bannerImage.png" },
+    { key: "logoImage", filename: "logoImage.png" },
+  ];
+
+  images.forEach(({ key, filename }) => {
+    const base64Image = localStorage.getItem(key);
+    if (base64Image) {
+      const [metadata, data] = base64Image.split(",");
+      const mime = metadata.match(/:(.*?);/)[1];
+      const blob = new Blob(
+        [
+          new Uint8Array(
+            atob(data)
+              .split("")
+              .map((c) => c.charCodeAt(0))
+          ),
+        ],
+        { type: mime }
+      );
+      const imageUrl = URL.createObjectURL(blob);
+
+      const imgLink = document.createElement("a");
+      imgLink.href = imageUrl;
+      imgLink.download = filename;
+      imgLink.click();
+
+      URL.revokeObjectURL(imageUrl);
+    }
+  });
+
+  // Limpiar localStorage después de la descarga
+  localStorage.clear();
+}
+
+// export function loadStylesFromFile(file) {
+//   const reader = new FileReader();
+
+//   reader.onload = function (event) {
+//     const content = event.target.result;
+//     const styleBlocks = content.split("\n");
+
+//     styleBlocks.forEach((block) => {
+//       if (block.trim()) {
+//         const [selector, styles] = block.split("{");
+//         const styleRules = styles
+//           .replace("}", "")
+//           .trim()
+//           .split(";")
+//           .filter(Boolean);
+
+//         const element = document.querySelector(selector.trim());
+//         if (element) {
+//           styleRules.forEach((rule) => {
+//             const [property, value] = rule
+//               .split(":")
+//               .map((part) => part.trim());
+//             if (property && value) {
+//               element.style[property] = value;
+//             }
+//           });
+//         }
+//       }
+//     });
+//   };
+
+//   reader.readAsText(file);
+// }

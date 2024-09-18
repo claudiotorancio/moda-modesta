@@ -5,6 +5,7 @@ import {
   putColorSettingsCard,
   putLogo,
   putTitulo,
+  saveStylesToFile,
 } from "./eventBanner.js";
 
 export class Estilos {
@@ -21,6 +22,7 @@ export class Estilos {
     this.setupTituloBanner();
     this.setupColorPagina();
     this.setupColorTarjetas();
+    this.handleFileUpload();
   }
 
   // Vaciar contenido
@@ -39,6 +41,8 @@ export class Estilos {
         <button class="btn btn-primary mb-2" data-tituloBanner>Reemplazar título banner</button>
         <button class="btn btn-primary mb-2" data-colorBody>Reemplazar color de fondo página</button>
         <button class="btn btn-primary mb-2" data-colorCard>Reemplazar color fondo tarjetas</button>
+       <button class="btn btn-primary mb-2" data-salvarCambios>Guardar Estilos</button>
+
       </div>
     `;
 
@@ -170,6 +174,20 @@ export class Estilos {
 
       this.titulo.appendChild(card);
       putColorSettings();
+    });
+  }
+
+  handleFileUpload() {
+    const salvarCambios = this.titulo.querySelector("[data-salvarCambios]");
+    salvarCambios.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      // Crear y añadir el formulario para seleccionar el color de fondo de la página
+      const existingForm = this.titulo.querySelector("#colorPaginaForm");
+      if (existingForm) return;
+      alert("enviar el archivo y las imagenes al creador de la pagina ");
+      saveStylesToFile();
+      window.location.replace("/index.html");
     });
   }
 
