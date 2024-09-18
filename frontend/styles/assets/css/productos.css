@@ -124,7 +124,7 @@ div.card:hover {
 }
 
 #productos-similares {
-  width: max-content;
+  width: auto;
 }
 
 .producto-similar {
@@ -290,6 +290,10 @@ div.card:hover {
     to {
       transform: rotate(0deg);
     }
+  }
+
+  #productos-similares {
+    width: max-content;
   }
 
   /* Clases que activan las animaciones */
