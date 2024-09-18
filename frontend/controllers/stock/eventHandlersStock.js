@@ -94,40 +94,58 @@ export class RenderStock {
 
           let priceShown = false; // Para mostrar el precio solo una vez
 
-          sizes.forEach((size, index) => {
+          if (sizes.length === 0) {
+            // Mostrar producto con stock "Sin stock" si sizes está vacío
             const row = document.createElement("tr");
-
-            // Determinar la clase según el stock
-            let stockClass = "";
-            if (size.stock === 0) {
-              stockClass = "sin-stock"; // Sin stock
-            } else if (size.stock < 10) {
-              stockClass = "stock-bajo"; // Stock bajo
-            }
-
             row.innerHTML = `
-              <td>${index === 0 ? _id : ""}</td>
-              <td>${index === 0 ? name : ""}</td>
-              <td>${size.size}</td>
-              <td>${size.stock}</td>
-              <td>${!priceShown ? price : ""}</td>
-              <td class="${stockClass}">${
-              size.stock > 0
-                ? size.stock < 10
-                  ? "Bajo stock"
-                  : "En stock"
-                : "Sin stock"
-            }</td>
-              <td>${
-                index === 0
-                  ? `<button type="button" class="btn btn-info ver-detalles" data-id="${_id}">actualizar</button>`
-                  : ""
-              }</td>
+              <td>${_id}</td>
+              <td>${name}</td>
+              <td>N/A</td>
+              <td>N/A</td>
+              <td>${price}</td>
+              <td class="sin-stock">Sin stock</td>
+              <td>
+                <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Actualizar</button>
+              </td>
             `;
-
             tbody.appendChild(row);
-            priceShown = true; // Mostrar el precio solo en la primera fila
-          });
+          } else {
+            // Mostrar productos con tamaños y stock
+            sizes.forEach((size, index) => {
+              const row = document.createElement("tr");
+
+              // Determinar la clase según el stock
+              let stockClass = "";
+              if (size.stock === 0) {
+                stockClass = "sin-stock"; // Sin stock
+              } else if (size.stock < 10) {
+                stockClass = "stock-bajo"; // Stock bajo
+              }
+
+              row.innerHTML = `
+                <td>${index === 0 ? _id : ""}</td>
+                <td>${index === 0 ? name : ""}</td>
+                <td>${size.size}</td>
+                <td>${size.stock}</td>
+                <td>${!priceShown ? price : ""}</td>
+                <td class="${stockClass}">${
+                size.stock > 0
+                  ? size.stock < 10
+                    ? "Bajo stock"
+                    : "En stock"
+                  : "Sin stock"
+              }</td>
+                <td>${
+                  index === 0
+                    ? `<button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Actualizar</button>`
+                    : ""
+                }</td>
+              `;
+
+              tbody.appendChild(row);
+              priceShown = true; // Mostrar el precio solo en la primera fila
+            });
+          }
 
           productoTable.appendChild(thead);
           productoTable.appendChild(tbody);
@@ -176,11 +194,5 @@ export class RenderStock {
         }
       });
     });
-  }
-
-  mostrarDetalles(id) {
-    // Implementa la lógica para mostrar los detalles del producto
-    ProductEventHandler.handleEdit(id);
-    alert(`Mostrar detalles del producto con ID: ${id}`);
   }
 }
