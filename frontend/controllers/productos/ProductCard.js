@@ -1,5 +1,6 @@
 import { mostrarProducto } from "./ProductViewer.js";
 import { ProductEventHandler } from "./ProductEventHandler.js";
+import productoServices from "../../services/product_services.js";
 
 export class ProductCard {
   constructor(name, price, imagePath, description, sizes, id, isFeatured) {
@@ -54,9 +55,16 @@ export class ProductCard {
       );
     });
 
-    card.querySelector("button").addEventListener("click", (e) => {
+    card.querySelector("button").addEventListener("click", async (e) => {
       e.preventDefault();
-      ProductEventHandler.handleDelete(this.id);
+      const esteProducto = await productoServices.detalleProducto(this.id);
+      const producto = esteProducto.product;
+
+      if (producto.inCart) {
+        alert("El producto está en el carrito y no se puede eliminar.");
+      } else {
+        ProductEventHandler.handleDelete(this.id);
+      }
     });
 
     card.querySelector("[data-edit]").addEventListener("click", (e) => {
