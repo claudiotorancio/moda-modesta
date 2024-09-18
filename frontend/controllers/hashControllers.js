@@ -38,8 +38,8 @@ export async function hashControllers() {
         p.imagePath,
         p.sizes, // Pasar las tallas con su stock
         p.description,
-        hayStock, // Pasar si hay stock general o no
-        p._id
+        p._id,
+        hayStock // Pasar si hay stock general o no
       );
     });
   } catch (error) {

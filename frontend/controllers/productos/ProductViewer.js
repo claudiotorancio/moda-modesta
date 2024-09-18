@@ -8,10 +8,10 @@ export const mostrarProducto = async (
   imagePath,
   sizes,
   description,
-  hayStock, // Nuevo parámetro para indicar si hay stock
-  id
+  id,
+  hayStock // Nuevo parámetro para indicar si hay stock
 ) => {
-  console.log(hayStock);
+  console.log(id);
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
   const mostrarProducto = modal.querySelector("[data-table]");

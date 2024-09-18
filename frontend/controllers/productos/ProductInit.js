@@ -66,8 +66,8 @@ export class ProductInit {
               imagePath,
               sizes,
               description,
-              hayStock,
-              id
+              id,
+              hayStock
             );
           } catch (err) {
             console.log(err);
@@ -90,10 +90,10 @@ export class ProductInit {
           imagePath,
           sizes,
           description,
-          hayStock,
-          id
+          id,
+          hayStock
         );
-        console.log(hayStock);
+        console.log(hayStock, id);
       } catch (err) {
         console.log(err);
       }

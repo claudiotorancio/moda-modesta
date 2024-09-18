@@ -19,6 +19,7 @@ const productoSimilar = async (req, res) => {
   try {
     // Buscar producto con su id
     const productId = req.params.id;
+    // console.log(productId);
     const productoBase = await Vista.findById(productId);
     if (!productoBase) {
       return res.status(404).json({ message: "Producto no encontrado" });
