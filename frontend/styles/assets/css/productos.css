@@ -124,7 +124,7 @@ div.card:hover {
 }
 
 #productos-similares {
-  width: auto;
+  width: max-content;
 }
 
 .producto-similar {
