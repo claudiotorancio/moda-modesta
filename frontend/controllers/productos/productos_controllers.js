@@ -62,6 +62,17 @@ export const controllers = {
       const data = await productoServices.productoSimilar(id);
       const similares = data.slice(0, 3); // Limitar a los primeros 3 productos
 
+      const response = await productoServices.detalleProducto(id);
+      const producto = response.product; // Asumiendo que el objeto está dentro de 'product'
+
+      if (!producto) {
+        console.error("Producto no encontrado en la respuesta de la API.");
+        return;
+      }
+
+      // Verificar si hay stock en alguna de las tallas
+      const hayStock = producto.sizes.some((item) => item.stock > 0);
+
       const contenedorSimilares = document.getElementById(
         "productos-similares"
       );
@@ -124,7 +135,8 @@ export const controllers = {
               imagePath,
               sizes,
               description,
-              id
+              id,
+              hayStock
             );
           } catch (error) {
             console.error("Error al mostrar producto:", error);
