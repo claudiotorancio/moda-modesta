@@ -1,6 +1,7 @@
 import productoServices from "../../services/product_services.js";
 import { modalControllers } from "../../modal/modal.js";
 import { ProductEditor } from "./ProductEditor.js";
+import { RenderStock } from "../stock/RenderStock.js";
 
 export class ProductEventHandler {
   static async handleDesactivate(id) {

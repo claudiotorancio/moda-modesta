@@ -190,19 +190,31 @@ export class RenderStock {
     });
 
     const botonesDesactivar = document.querySelectorAll(".desactivar-producto");
+
     botonesDesactivar.forEach((boton) => {
       boton.addEventListener("click", async (event) => {
         const idProducto = event.target.dataset.id;
+
         try {
           const confirmacion = confirm("¿Desea desactivar el producto?");
 
-          if (confirmacion) {
-            // Esperar a que se complete la desactivación
-            await ProductEventHandler.handleDesactivate(idProducto);
-
-            // Recargar los productos después de desactivar
-            this.renderStock();
+          if (!confirmacion) {
+            return; // Si el usuario cancela, no hacer nada
           }
+
+          // Verificar detalles del producto antes de desactivarlo
+          const producto = await productoServices.detalleProducto(idProducto);
+
+          if (producto.inCart) {
+            alert("El producto está en el carrito y no se puede eliminar.");
+            return; // Salir si el producto está en el carrito
+          }
+
+          // Desactivar el producto
+          await ProductEventHandler.handleDesactivate(idProducto);
+
+          // Recargar los productos después de desactivar
+          this.renderStock(); // Asegúrate de que `this` se refiere a la instancia correcta
         } catch (error) {
           console.error("Error al desactivar el producto:", error);
           alert("Ocurrió un error al desactivar el producto.");
