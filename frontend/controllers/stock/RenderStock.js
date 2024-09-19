@@ -151,7 +151,30 @@ export class RenderStock {
     botonesDetalles.forEach((boton) => {
       boton.addEventListener("click", async (event) => {
         const idProducto = event.target.dataset.id;
-        ProductEventHandler.handleEdit(idProducto);
+        // Obtener los detalles del producto
+        try {
+          const response = await productoServices.detalleProducto(idProducto);
+          if (!response || !response.product) {
+            throw new Error("Datos del producto no disponibles");
+          }
+
+          const { name, price, imagePath, description, sizes, isFeatured } =
+            response.product;
+
+          // Llamar a ProductEventHandler.handleEdit con todos los parámetros
+          ProductEventHandler.handleEdit(
+            name,
+            price,
+            imagePath,
+            description,
+            sizes,
+            idProducto,
+            isFeatured
+          );
+        } catch (error) {
+          console.error("Error al obtener los detalles del producto:", error);
+          alert("Ocurrió un error al obtener los detalles del producto.");
+        }
       });
     });
 

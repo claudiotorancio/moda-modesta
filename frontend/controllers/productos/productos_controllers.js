@@ -58,12 +58,10 @@ export const controllers = {
   },
 
   async cargarProductosSimilares(id) {
-    console.log(id);
     try {
       const data = await productoServices.productoSimilar(id);
       const similares = data.slice(0, 3); // Limitar a los primeros 3 productos
 
-      console.log(data);
       const contenedorSimilares = document.getElementById(
         "productos-similares"
       );
@@ -117,8 +115,6 @@ export const controllers = {
           const imagePath = JSON.parse(target.dataset.image); // Asegúrate de que esto sea un array
           const sizes = JSON.parse(target.dataset.sizes);
           const description = target.dataset.description;
-
-          console.log(id);
 
           window.location.hash = `product-${id}`;
           try {

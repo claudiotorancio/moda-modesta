@@ -93,7 +93,6 @@ export class ProductInit {
           id,
           hayStock
         );
-        console.log(hayStock, id);
       } catch (err) {
         console.log(err);
       }

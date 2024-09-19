@@ -94,7 +94,6 @@ class ProductService {
   }
 
   async productoSimilar(id) {
-    console.log(id);
     try {
       const response = await fetch(`${this.baseURL}/api/productoSimilar/${id}`);
       if (!response.ok) {

@@ -26,8 +26,6 @@ export async function hashControllers() {
     // Verificar si hay stock en alguna de las tallas
     const hayStock = producto.sizes.some((item) => item.stock > 0);
 
-    console.log(`Stock disponible: ${hayStock ? "Sí" : "No"}`);
-
     // Convertir en array si es necesario (en caso de que quieras manejar varios productos)
     const productosArray = [producto];
 

@@ -11,7 +11,6 @@ export const mostrarProducto = async (
   id,
   hayStock // Nuevo parámetro para indicar si hay stock
 ) => {
-  console.log(id);
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
   const mostrarProducto = modal.querySelector("[data-table]");
@@ -180,7 +179,6 @@ export const mostrarProducto = async (
   if (compartirBtn) {
     compartirBtn.addEventListener("click", () => {
       // Lógica de compartir
-      console.log("Botón compartir presionado");
 
       compartirBtn.disabled = true; // Deshabilitar mientras se realiza la acción de compartir
       const productUrl = window.location.href;
