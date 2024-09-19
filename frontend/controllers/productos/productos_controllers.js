@@ -19,7 +19,7 @@ export const controllers = {
             producto.price,
             producto.imagePath,
             producto.description,
-            producto.sizes,
+            producto.sizes.some((item) => item.stock > 0),
             producto._id,
             producto.isFeatured
           );

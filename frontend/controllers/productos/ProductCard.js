@@ -75,7 +75,7 @@ export class ProductCard {
       const producto = await productoServices.detalleProducto(this.id);
 
       if (producto.inCart) {
-        alert("El producto está en el carrito y no se puede eliminar.");
+        alert("El producto está en el carrito y no se puede desactivar.");
       } else {
         ProductEventHandler.handleDesactivate(this.id);
       }
