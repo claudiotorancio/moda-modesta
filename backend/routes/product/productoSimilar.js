@@ -41,6 +41,7 @@ const productoSimilar = async (req, res) => {
           category: productoBase.category, // Coincidencia por categoría
           brand: productoBase.brand, // Opcional: coincidencia por marca si aplicable
           "sizes.stock": { $gte: 5 }, // Asegurar que haya suficiente stock (al menos 5 unidades)
+          isActive: true, // Asegurar que el producto esté activo
           $or: palabrasNombreBase.map((palabra) => ({
             name: { $regex: palabra, $options: "i" }, // Coincidencia parcial insensible a mayúsculas/minúsculas
           })),
