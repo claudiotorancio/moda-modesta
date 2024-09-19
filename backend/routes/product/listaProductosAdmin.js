@@ -3,8 +3,8 @@ import MONGODB_URI from "../../config.js";
 import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
 
-const renderProducts = async (req, res) => {
-  console.log(req.user);
+const listaProductosAdmin = async (req, res) => {
+  // console.log(req.user);
   try {
     //Relacionar id de usuario con producto para visualizar solo sus productos
     const user_id = req.user._id;
@@ -30,16 +30,14 @@ const renderProducts = async (req, res) => {
       products = await Product.find({ user_id: user_id });
     }
 
-    res.json({
-      products,
-    });
+    res.json(products);
   } catch (error) {
     console.error("Error al cargar productos:", error);
     res.status(500).json({ error: "Error al cargar productos" });
   }
 };
 
-export default renderProducts;
+export default listaProductosAdmin;
 
 // import mongoose from "mongoose";
 // import MONGODB_URI from "../../config.js";

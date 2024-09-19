@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import MONGODB_URI from "../../config.js";
 import Vista from "../../models/Vista.js";
 
-const renderInicio = async (req, res) => {
+const listaProductosUsuario = async (req, res) => {
   try {
     // Conectar a la base de datos mediante serverless function
     await mongoose.connect(MONGODB_URI, {
@@ -11,7 +11,7 @@ const renderInicio = async (req, res) => {
     });
 
     // consultar productos
-    const products = await Vista.find();
+    const products = await Vista.find({ isActive: true });
 
     //Devolver productos
     res.json(products);
@@ -21,4 +21,4 @@ const renderInicio = async (req, res) => {
   }
 };
 
-export default renderInicio;
+export default listaProductosUsuario;

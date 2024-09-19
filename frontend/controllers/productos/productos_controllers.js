@@ -29,8 +29,7 @@ export const controllers = {
         console.error("Error: No se recibieron productos destacados.");
       }
 
-      const listaProductos = await productoServices.renderInicio();
-      const products = listaProductos;
+      const products = await productoServices.listaProductosAdmin();
 
       document.querySelectorAll(".productos").forEach((contenedor) => {
         if (contenedor !== contenedorDestacados) {
@@ -46,7 +45,8 @@ export const controllers = {
           producto.description,
           producto.sizes,
           producto._id,
-          producto.isFeatured
+          producto.isFeatured,
+          producto.sizes.some((item) => item.stock > 0)
         );
         document
           .querySelector(`[data-${producto.section}]`)
@@ -118,8 +118,7 @@ export const controllers = {
 
           window.location.hash = `product-${id}`;
 
-          const response = await productoServices.detalleProducto(id);
-          const producto = response.product; // Asumiendo que el objeto está dentro de 'product'
+          const producto = await productoServices.detalleProducto(id);
 
           if (!producto) {
             console.error("Producto no encontrado en la respuesta de la API.");

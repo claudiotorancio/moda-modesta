@@ -58,9 +58,8 @@ const createProduct = async (req, res) => {
         stock: sizeData.stock,
       })),
       stock: stock,
+      isActive: true, // Agrego la propiedad isActive
     };
-
-    console.log(createProductData);
 
     // Crear y guardar el producto
     let newProduct;

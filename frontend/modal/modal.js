@@ -57,34 +57,7 @@ async function fetchData() {
   });
 }
 
-const modalEliminar = (id) => {
-  baseModal();
-  const modal = document.getElementById("modal");
-  const eliminarProducto = modal.querySelector("[data-table]");
-  eliminarProducto.innerHTML = `
-    <div class="text-center">
-    <div class="card-header">
-    <div>
-        <div>
-            <br>
-            <h4>Desea eliminar el Producto?</h4> 
-            <button class="boton-eliminar btn btn-danger" data-index="${id}">Eliminar</button>
-        </div>
-    </div>
-    </div>
-    </div>
-    `;
-  eliminarProducto.classList.add("modalVisor");
-  const botonEliminar = eliminarProducto.querySelector(".boton-eliminar");
-  botonEliminar.addEventListener("click", async () => {
-    await productoServices.eliminarProducto(id);
-    window.location.replace("/index.html");
-  });
-
-  /*setTimeout(() => {
-        window.location.href= '/index.html';
-       }, 2000);*/
-};
+//
 
 const modalSuccessSignIn = (username) => {
   baseModal();
@@ -552,7 +525,6 @@ const modalCarritoVacio = () => {
 };
 
 export const modalControllers = {
-  modalEliminar,
   baseModal,
   modalSuccessSignIn,
   modalErrorSignIn,

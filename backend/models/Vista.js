@@ -19,6 +19,7 @@ const VistaSchema = new Schema(
     created_at: { type: Date, default: Date.now },
     sizes: [SizeSchema], // Array de subdocumentos que contienen talla y stock
     inCart: { type: Boolean, default: false },
+    isActive: { type: Boolean, default: true }, // Campo para activar/desactivar
   },
   {
     versionKey: false,

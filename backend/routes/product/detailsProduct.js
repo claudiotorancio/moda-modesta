@@ -12,9 +12,9 @@ const detailsProduct = async (req, res) => {
       useUnifiedTopology: true,
     });
 
-    const product = await Vista.findById(productId);
+    const producto = await Vista.findById(productId);
 
-    res.json({ message: "Product finded", product });
+    res.json(producto);
   } catch (error) {
     console.error(error);
   }

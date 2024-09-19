@@ -1,3 +1,6 @@
+// RenderStock.js
+
+import { modalControllers } from "../../modal/modal.js";
 import productoServices from "../../services/product_services.js";
 import { ProductEventHandler } from "../productos/ProductEventHandler.js";
 
@@ -7,8 +10,7 @@ export class RenderStock {
   }
 
   async renderStock() {
-    const listaProductos = await productoServices.listaProductos();
-    const productos = listaProductos.products;
+    const productos = await productoServices.listaProductosAdmin();
 
     const categorias = {
       Vestidos: productos.filter((producto) => producto.section === "opcion1"),
@@ -37,34 +39,35 @@ export class RenderStock {
         });
 
         productosOrdenados.forEach((producto) => {
-          const { _id, name, sizes, price } = producto;
+          const { _id, name, sizes, price, isActive } = producto;
           const productoDiv = this.createProductElement(
             _id,
             name,
             sizes,
-            price
+            price,
+            isActive
           );
           productosContenedor.appendChild(productoDiv);
         });
       }
     }
 
-    // Añadir el event listener a los botones "Ver detalles"
+    // Añadir el event listener a los botones "Ver detalles" y "Desactivar/Activar"
     this.agregarEventListenerBotones();
   }
 
-  createProductElement(_id, name, sizes, price) {
+  createProductElement(_id, name, sizes, price, isActive) {
     const productoDiv = document.createElement("div");
     productoDiv.classList.add("table");
-    productoDiv.style.border = "2px solid #000"; // Borde exterior
+    productoDiv.style.border = "2px solid #000";
     productoDiv.style.padding = "10px";
     productoDiv.style.marginBottom = "10px";
-    productoDiv.style.backgroundColor = "#fff"; // Fondo blanco
+    productoDiv.style.backgroundColor = "#fff";
 
     const productoTable = document.createElement("table");
     productoTable.style.width = "100%";
     productoTable.style.borderCollapse = "collapse";
-    productoTable.style.backgroundColor = "#fff"; // Fondo blanco
+    productoTable.style.backgroundColor = "#fff";
 
     const thead = document.createElement("thead");
     thead.innerHTML = `
@@ -95,6 +98,16 @@ export class RenderStock {
     productoTable.appendChild(tbody);
     productoDiv.appendChild(productoTable);
 
+    // Añadir el botón de activar/desactivar
+    const estadoButton = isActive
+      ? `<button type="button" class="btn btn-warning desactivar-producto" data-id="${_id}">Desactivar</button>`
+      : `<button type="button" class="btn btn-success activar-producto" data-id="${_id}">Activar</button>`;
+
+    const accionesDiv = document.createElement("div");
+    accionesDiv.innerHTML = estadoButton;
+
+    productoDiv.appendChild(accionesDiv);
+
     return productoDiv;
   }
 
@@ -109,7 +122,6 @@ export class RenderStock {
       <td class="sin-stock">Sin stock</td>
       <td>
         <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">editar</button>
-        <button type="button" class="btn btn-danger eliminar-producto" data-id="${_id}">Del</button>
       </td>
     `;
     return row;
@@ -136,9 +148,8 @@ export class RenderStock {
       <td>
         ${
           index === 0
-            ? `
-          <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">editar</button>
-          <button type="button" class="btn btn-danger eliminar-producto" data-id="${_id}">del</button>`
+            ? ` 
+          <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">editar</button>`
             : ""
         }
       </td>
@@ -153,13 +164,13 @@ export class RenderStock {
         const idProducto = event.target.dataset.id;
         // Obtener los detalles del producto
         try {
-          const response = await productoServices.detalleProducto(idProducto);
-          if (!response || !response.product) {
+          const product = await productoServices.detalleProducto(idProducto);
+          if (!product) {
             throw new Error("Datos del producto no disponibles");
           }
 
           const { name, price, imagePath, description, sizes, isFeatured } =
-            response.product;
+            product;
 
           // Llamar a ProductEventHandler.handleEdit con todos los parámetros
           ProductEventHandler.handleEdit(
@@ -178,19 +189,44 @@ export class RenderStock {
       });
     });
 
-    const botonesEliminar = document.querySelectorAll(".eliminar-producto");
-    botonesEliminar.forEach((boton) => {
+    const botonesDesactivar = document.querySelectorAll(".desactivar-producto");
+    botonesDesactivar.forEach((boton) => {
       boton.addEventListener("click", async (event) => {
         const idProducto = event.target.dataset.id;
-        const listaProducto = await productoServices.detalleProducto(
-          idProducto
-        );
-        const producto = listaProducto.product;
+        try {
+          const confirmacion = confirm("¿Desea desactivar el producto?");
 
-        if (producto.inCart) {
-          alert("El producto está en el carrito y no se puede eliminar.");
-        } else {
-          ProductEventHandler.handleDelete(idProducto);
+          if (confirmacion) {
+            // Esperar a que se complete la desactivación
+            await ProductEventHandler.handleDesactivate(idProducto);
+
+            // Recargar los productos después de desactivar
+            this.renderStock();
+          }
+        } catch (error) {
+          console.error("Error al desactivar el producto:", error);
+          alert("Ocurrió un error al desactivar el producto.");
+        }
+      });
+    });
+
+    const botonesActivar = document.querySelectorAll(".activar-producto");
+    botonesActivar.forEach((boton) => {
+      boton.addEventListener("click", async (event) => {
+        const idProducto = event.target.dataset.id;
+        try {
+          const confirmacion = confirm("¿Desea activar el producto?");
+
+          if (confirmacion) {
+            // Esperar a que se complete la desactivación
+            await productoServices.activarProducto(idProducto);
+
+            // Recargar los productos después de desactivar
+            this.renderStock();
+          }
+        } catch (error) {
+          console.error("Error al activar el producto:", error);
+          alert("Ocurrió un error al activar el producto.");
         }
       });
     });

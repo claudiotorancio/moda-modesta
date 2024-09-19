@@ -161,8 +161,7 @@ export class ProductInit {
         console.error("Error: No se recibieron productos destacados.");
       }
 
-      const listaProductos = await productoServices.renderInicio();
-      const products = listaProductos;
+      const products = await productoServices.listaProductosUsuario();
 
       document.querySelectorAll(".productos").forEach((contenedor) => {
         if (contenedor !== contenedorDestacados) {

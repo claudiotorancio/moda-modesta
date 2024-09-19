@@ -15,12 +15,12 @@ class ProductService {
     }
   }
 
-  async renderInicio() {
-    return await this.fetchJSON(`${this.baseURL}/api/renderInicio`);
+  async listaProductosUsuario() {
+    return await this.fetchJSON(`${this.baseURL}/api/listaProductosUsuario`);
   }
 
-  async listaProductos() {
-    return await this.fetchJSON(`${this.baseURL}/api/renderProducts`);
+  async listaProductosAdmin() {
+    return await this.fetchJSON(`${this.baseURL}/api/listaProductosAdmin`);
   }
 
   async crearProducto(product) {
@@ -43,10 +43,20 @@ class ProductService {
     }
   }
 
-  async eliminarProducto(id) {
+  async desactivarProducto(id) {
     try {
-      await fetch(`${this.baseURL}/api/deleteProduct/${id}`, {
+      await fetch(`${this.baseURL}/api/desactivateProduct/${id}`, {
         method: "DELETE",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async activarProducto(id) {
+    try {
+      await fetch(`${this.baseURL}/api/activateProduct/${id}`, {
+        method: "PUT",
       });
     } catch (error) {
       console.error(error);

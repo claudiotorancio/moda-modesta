@@ -3,9 +3,9 @@ import { modalControllers } from "../../modal/modal.js";
 import { ProductEditor } from "./ProductEditor.js";
 
 export class ProductEventHandler {
-  static handleDelete(id) {
+  static async handleDesactivate(id) {
     try {
-      modalControllers.modalEliminar(id);
+      await productoServices.desactivarProducto(id);
     } catch (err) {
       console.log(err);
     }

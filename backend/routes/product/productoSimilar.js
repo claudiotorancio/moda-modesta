@@ -19,18 +19,15 @@ const productoSimilar = async (req, res) => {
   try {
     // Buscar producto con su id
     const productId = req.params.id;
-    // console.log(productId);
     const productoBase = await Vista.findById(productId);
     if (!productoBase) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    // Definir un rango de precios basado en un porcentaje del precio base (por ejemplo, ±20%)
-    const porcentajeRango = 0.2; // 20% de margen
+    // Definir un rango de precios basado en un porcentaje del precio base
+    const porcentajeRango = productoBase.price > 1000 ? 0.1 : 0.3; // Ajuste dinámico del porcentaje
     const precioMin = productoBase.price * (1 - porcentajeRango);
     const precioMax = productoBase.price * (1 + porcentajeRango);
-
-    console.log(precioMin, precioMax);
 
     // Dividir el nombre del producto base en palabras individuales
     const palabrasNombreBase = productoBase.name.split(" ");
@@ -39,14 +36,17 @@ const productoSimilar = async (req, res) => {
     const productosSimilares = await Vista.aggregate([
       {
         $match: {
-          _id: { $ne: new mongoose.Types.ObjectId(productId) }, // Excluye el producto base
-          price: { $gte: precioMin, $lte: precioMax }, // Filtra por rango de precio similar
+          _id: { $ne: new mongoose.Types.ObjectId(productId) }, // Excluir el producto base
+          price: { $gte: precioMin, $lte: precioMax }, // Filtrar por rango de precio
+          category: productoBase.category, // Coincidencia por categoría
+          brand: productoBase.brand, // Opcional: coincidencia por marca si aplicable
+          "sizes.stock": { $gte: 5 }, // Asegurar que haya suficiente stock (al menos 5 unidades)
           $or: palabrasNombreBase.map((palabra) => ({
-            name: { $regex: palabra, $options: "i" }, // Búsqueda parcial insensible a mayúsculas/minúsculas
+            name: { $regex: palabra, $options: "i" }, // Coincidencia parcial insensible a mayúsculas/minúsculas
           })),
         },
       },
-      { $sample: { size: 3 } }, // Selecciona 3 productos aleatorios
+      { $sample: { size: 3 } }, // Seleccionar 3 productos aleatorios
     ]);
 
     res.json({ message: "Productos encontrados", productosSimilares }); // Enviar los productos similares como respuesta

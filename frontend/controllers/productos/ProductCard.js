@@ -3,7 +3,16 @@ import { ProductEventHandler } from "./ProductEventHandler.js";
 import productoServices from "../../services/product_services.js";
 
 export class ProductCard {
-  constructor(name, price, imagePath, description, sizes, id, isFeatured) {
+  constructor(
+    name,
+    price,
+    imagePath,
+    description,
+    sizes,
+    id,
+    isFeatured,
+    hayStock
+  ) {
     this.name = name;
     this.price = price;
     this.imagePath = imagePath;
@@ -11,9 +20,11 @@ export class ProductCard {
     this.sizes = sizes;
     this.id = id;
     this.isFeatured = isFeatured;
+    this.hayStock = hayStock;
   }
 
   render() {
+    console.log(this.hayStock);
     const card = document.createElement("div");
     card.classList.add("card");
 
@@ -31,7 +42,7 @@ export class ProductCard {
           }" data-edit>Editar</a>
           <button class="btn btn-danger" type="button" id="${
             this.id
-          }">Eliminar</button>
+          }">Desactivar</button>
         </div>
       </div>
     `;
@@ -41,29 +52,32 @@ export class ProductCard {
   }
 
   addEventListeners(card) {
-    card.querySelector("[data-veradmin]").addEventListener("click", (e) => {
-      e.preventDefault();
-      window.location.hash = `product-${this.id}`;
-      mostrarProducto(
-        this.name,
-        this.price,
-        this.imagePath,
-        this.sizes,
-        this.description,
-        this.id,
-        this.isFeatured
-      );
-    });
+    card
+      .querySelector("[data-veradmin]")
+      .addEventListener("click", async (e) => {
+        e.preventDefault();
+        window.location.hash = `product-${this.id}`;
+
+        mostrarProducto(
+          this.name,
+          this.price,
+          this.imagePath,
+          this.sizes,
+          this.description,
+          this.id,
+          this.hayStock,
+          this.isFeatured
+        );
+      });
 
     card.querySelector("button").addEventListener("click", async (e) => {
       e.preventDefault();
-      const esteProducto = await productoServices.detalleProducto(this.id);
-      const producto = esteProducto.product;
+      const producto = await productoServices.detalleProducto(this.id);
 
       if (producto.inCart) {
         alert("El producto está en el carrito y no se puede eliminar.");
       } else {
-        ProductEventHandler.handleDelete(this.id);
+        ProductEventHandler.handleDesactivate(this.id);
       }
     });
 
