@@ -34,6 +34,7 @@ import {
 } from "./controllers/admin/eventBanner.js";
 import { buscar } from "./controllers/buscador/buscador.js";
 import { StockControllers } from "./controllers/stock/stock.controllers.js";
+import { ocultarProductos } from "./controllers/ocultarProductos/ocultarProductos.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
@@ -76,19 +77,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     const envio = document.querySelector("[data-pedidos]");
     envio.addEventListener("click", (e) => {
       e.preventDefault();
+      ocultarProductos();
       const comprasInstance = new Compras(titulo);
       comprasInstance.renderLista();
     });
 
     const crearProducto = document.querySelector("[data-crearProductos]");
-    crearProducto.addEventListener("click", (e) => {
+    crearProducto.addEventListener("click", async (e) => {
       e.preventDefault();
       const productForm = new ProductForm(titulo);
       productForm.render();
+      await controllers.renderProducts();
     });
 
     resenas.addEventListener("click", (e) => {
       e.preventDefault();
+      ocultarProductos();
       const formResena = new FormResena(titulo);
       formResena.render();
     });
@@ -101,12 +105,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     listaStock.addEventListener("click", async (e) => {
       e.preventDefault();
+      ocultarProductos();
       const stockInstance = new StockControllers(titulo);
       await stockInstance.render();
     });
 
     susxriptores.addEventListener("click", async (e) => {
       e.preventDefault();
+      ocultarProductos();
       const ListaControllersInstamce = new ListaControllers(titulo);
       await ListaControllersInstamce.renderLista();
     });

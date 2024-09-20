@@ -64,8 +64,8 @@ export class ProductInit {
               name,
               price,
               imagePath,
-              sizes,
               description,
+              sizes,
               id,
               hayStock
             );
@@ -88,8 +88,8 @@ export class ProductInit {
           name,
           price,
           imagePath,
-          sizes,
           description,
+          sizes,
           id,
           hayStock
         );

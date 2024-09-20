@@ -2,7 +2,9 @@
 
 import { modalControllers } from "../../modal/modal.js";
 import productoServices from "../../services/product_services.js";
+
 import { ProductEventHandler } from "../productos/ProductEventHandler.js";
+import { controllers } from "../productos/productos_controllers.js";
 
 export class RenderStock {
   constructor(titulo) {
@@ -196,23 +198,8 @@ export class RenderStock {
         const idProducto = event.target.dataset.id;
 
         try {
-          const confirmacion = confirm("¿Desea desactivar el producto?");
-
-          if (!confirmacion) {
-            return; // Si el usuario cancela, no hacer nada
-          }
-
-          // Verificar detalles del producto antes de desactivarlo
-          const producto = await productoServices.detalleProducto(idProducto);
-
-          if (producto.inCart) {
-            alert("El producto está en el carrito y no se puede eliminar.");
-            return; // Salir si el producto está en el carrito
-          }
-
           // Desactivar el producto
           await ProductEventHandler.handleDesactivate(idProducto);
-
           // Recargar los productos después de desactivar
           this.renderStock(); // Asegúrate de que `this` se refiere a la instancia correcta
         } catch (error) {
@@ -227,15 +214,11 @@ export class RenderStock {
       boton.addEventListener("click", async (event) => {
         const idProducto = event.target.dataset.id;
         try {
-          const confirmacion = confirm("¿Desea activar el producto?");
+          // Esperar a que se complete la desactivación
+          await ProductEventHandler.handleActivate(idProducto);
 
-          if (confirmacion) {
-            // Esperar a que se complete la desactivación
-            await productoServices.activarProducto(idProducto);
-
-            // Recargar los productos después de desactivar
-            this.renderStock();
-          }
+          // Recargar los productos después de desactivar
+          this.renderStock();
         } catch (error) {
           console.error("Error al activar el producto:", error);
           alert("Ocurrió un error al activar el producto.");

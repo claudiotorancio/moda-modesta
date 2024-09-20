@@ -14,10 +14,6 @@ import Vista from "../../models/Vista.js";
 
 const deactivateProduct = async (req, res) => {
   try {
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
-
     // Conectar a la base de datos mediante serverless function
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,

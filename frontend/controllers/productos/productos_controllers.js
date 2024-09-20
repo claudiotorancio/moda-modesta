@@ -7,28 +7,47 @@ const carrito = new Carrito();
 
 export const controllers = {
   async renderProducts() {
+    // Actualiza el texto de las categorías basadas en el atributo 'id' de cada botón.
+    // document.querySelectorAll(".categoria").forEach((categoria) => {
+    //   const categoriaBtn = categoria.querySelector("a");
+    //   const opcion = categoriaBtn.getAttribute("id");
+    //   console.log(opcion);
+    //   document.querySelectorAll(".categoria").forEach((categoria) => {
+    //     if (categoria.querySelector(`[data-${opcion}]`)) {
+    //       categoria.querySelector(".texto-categoria h2").textContent = opcion;
+    //     }
+    //   });
+    // });
+
     try {
+      // Carga los productos destacados
       const productosDestacados = await productoServices.destacadosProducto();
       const contenedorDestacados = document.querySelector("[data-destacados]");
 
-      if (Array.isArray(productosDestacados)) {
+      if (contenedorDestacados) {
         contenedorDestacados.innerHTML = "";
+        // Renderiza las tarjetas de los productos destacados
         for (const producto of productosDestacados) {
+          const hayStock = producto.sizes.some((item) => item.stock > 0);
+
           const card = new ProductCard(
             producto.name,
             producto.price,
             producto.imagePath,
             producto.description,
-            producto.sizes.some((item) => item.stock > 0),
+            producto.sizes,
             producto._id,
-            producto.isFeatured
+            hayStock,
+            producto.isFeatured,
+            producto.isActive,
+            producto.inCart,
+            producto.section
           );
           contenedorDestacados.appendChild(card.render());
         }
-      } else {
-        console.error("Error: No se recibieron productos destacados.");
       }
 
+      // Carga la lista de productos del admin
       const products = await productoServices.listaProductosAdmin();
 
       document.querySelectorAll(".productos").forEach((contenedor) => {
@@ -37,7 +56,10 @@ export const controllers = {
         }
       });
 
+      // Renderiza las tarjetas de productos en sus respectivas secciones
       for (const producto of products) {
+        const hayStock = producto.sizes.some((item) => item.stock > 0);
+
         const productCard = new ProductCard(
           producto.name,
           producto.price,
@@ -45,15 +67,22 @@ export const controllers = {
           producto.description,
           producto.sizes,
           producto._id,
+          hayStock,
           producto.isFeatured,
-          producto.sizes.some((item) => item.stock > 0)
+          producto.isActive,
+          producto.inCart,
+          producto.section
         );
-        document
-          .querySelector(`[data-${producto.section}]`)
-          .appendChild(productCard.render());
+
+        const contenedorSeccion = document.querySelector(
+          `[data-${producto.section}]`
+        );
+        if (contenedorSeccion) {
+          contenedorSeccion.appendChild(productCard.render());
+        }
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error al renderizar productos:", error);
     }
   },
 
@@ -133,8 +162,8 @@ export const controllers = {
               name,
               price,
               imagePath,
-              sizes,
               description,
+              sizes,
               id,
               hayStock
             );

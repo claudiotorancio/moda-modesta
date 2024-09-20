@@ -1,6 +1,15 @@
 import { controllers } from "../productos/productos_controllers.js";
 
-export function buscar() {
+export async function buscar() {
+  // Cargar los productos cuando se haga clic en el input de búsqueda
+  document
+    .getElementById("searchInput")
+    .addEventListener("focus", async function () {
+      await controllers.renderProducts();
+      const titulo = document.querySelector("[data-titulo]");
+      titulo.innerHTML = "";
+    });
+
   document
     .getElementById("searchForm")
     .addEventListener("submit", function (e) {
@@ -17,7 +26,7 @@ export function buscar() {
     searchProducts(query);
   });
 
-  function searchProducts(query) {
+  async function searchProducts(query) {
     const products = document.querySelectorAll(".card"); // Asegúrate de que cada producto tenga esta clase
     let found = false;
 
@@ -53,7 +62,7 @@ export function buscar() {
 
     // Mostrar todos los productos si la búsqueda está vacía
     if (query === "") {
-      controllers.renderProducts();
+      await controllers.renderProducts();
       noResultsMessage.style.display = "none";
     }
   }

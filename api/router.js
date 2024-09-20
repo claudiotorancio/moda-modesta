@@ -159,8 +159,8 @@ router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/listaProductosUsuario", listaProductosUsuario);
 router.get("/api/listaProductosAdmin", listaProductosAdmin);
 router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
-router.delete("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
-router.put("/api/activateProduct/:id", activarProducto);
+router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
+router.put("/api/activateProduct/:id", requireAdmin, activarProducto);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct/:id",

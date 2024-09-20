@@ -46,7 +46,7 @@ class ProductService {
   async desactivarProducto(id) {
     try {
       await fetch(`${this.baseURL}/api/desactivateProduct/${id}`, {
-        method: "DELETE",
+        method: "PUT",
       });
     } catch (error) {
       console.error(error);
@@ -75,12 +75,7 @@ class ProductService {
       }
       const data = await response.json();
 
-      // Asegúrate de que la propiedad productosDestacados existe y es un array
-      if (!Array.isArray(data.productosDestacados)) {
-        throw new Error("La propiedad productosDestacados no es un array.");
-      }
-
-      return data.productosDestacados;
+      return data;
     } catch (error) {
       console.error("Error al obtener productos destacados:", error);
       return []; // Devuelve un array vacío en caso de error

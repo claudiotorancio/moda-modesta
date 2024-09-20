@@ -1,6 +1,7 @@
 import { mostrarProducto } from "./ProductViewer.js";
 import { ProductEventHandler } from "./ProductEventHandler.js";
 import productoServices from "../../services/product_services.js";
+import { controllers } from "./productos_controllers.js";
 
 export class ProductCard {
   constructor(
@@ -10,8 +11,11 @@ export class ProductCard {
     description,
     sizes,
     id,
+    hayStock,
     isFeatured,
-    hayStock
+    isActive,
+    inCart,
+    section
   ) {
     this.name = name;
     this.price = price;
@@ -19,16 +23,19 @@ export class ProductCard {
     this.description = description;
     this.sizes = sizes;
     this.id = id;
-    this.isFeatured = isFeatured;
     this.hayStock = hayStock;
+    this.isFeatured = isFeatured;
+    this.isActive = isActive;
+    this.inCart = inCart;
+    this.secation = section;
   }
 
   render() {
-    console.log(this.hayStock);
     const card = document.createElement("div");
     card.classList.add("card");
 
     card.innerHTML = `
+    
       <div class="container mx-auto mt-4">
         <div class="img-card">
           <img class="card-img-top" src="${this.imagePath[0]}" alt="">
@@ -40,9 +47,11 @@ export class ProductCard {
           <a href="#form" class="btn btn-primary" id="${
             this.id
           }" data-edit>Editar</a>
-          <button class="btn btn-danger" type="button" id="${
-            this.id
-          }">Desactivar</button>
+           ${
+             this.isActive
+               ? `<button class="btn btn-danger desactivar-producto " type="button" id="${this.id}">Desactivar</button>`
+               : `<button class="btn btn-primary activar-producto" type="button" id="${this.id}">Activar</button>`
+           }
         </div>
       </div>
     `;
@@ -62,24 +71,47 @@ export class ProductCard {
           this.name,
           this.price,
           this.imagePath,
-          this.sizes,
           this.description,
+          this.sizes,
           this.id,
-          this.hayStock,
-          this.isFeatured
+          this.hayStock
         );
       });
 
-    card.querySelector("button").addEventListener("click", async (e) => {
-      e.preventDefault();
-      const producto = await productoServices.detalleProducto(this.id);
+    card
+      .querySelector(".desactivar-producto, .activar-producto")
+      .addEventListener("click", async (e) => {
+        e.preventDefault();
 
-      if (producto.inCart) {
-        alert("El producto está en el carrito y no se puede desactivar.");
+        try {
+          // Verificar si el producto está en el carrito
+          if (this.inCart) {
+            alert("El producto está en el carrito y no se puede desactivar.");
+            return;
+          }
+
+          // Determinar si se activa o desactiva el producto
+          if (this.isActive) {
+            await handleToggleProduct(this.id, false); // Desactivar producto
+          } else {
+            await handleToggleProduct(this.id, true); // Activar producto
+          }
+
+          // Actualizar los productos en el DOM (puedes optimizar esto si es necesario)
+          await controllers.renderProducts();
+        } catch (error) {
+          console.error("Error al activar/desactivar producto:", error);
+        }
+      });
+
+    // Función para manejar la activación/desactivación del producto
+    async function handleToggleProduct(productId, isActive) {
+      if (isActive) {
+        await ProductEventHandler.handleActivate(productId);
       } else {
-        ProductEventHandler.handleDesactivate(this.id);
+        await ProductEventHandler.handleDesactivate(productId);
       }
-    });
+    }
 
     card.querySelector("[data-edit]").addEventListener("click", (e) => {
       e.preventDefault();

@@ -1,14 +1,33 @@
 import productoServices from "../../services/product_services.js";
 import { modalControllers } from "../../modal/modal.js";
 import { ProductEditor } from "./ProductEditor.js";
-import { RenderStock } from "../stock/RenderStock.js";
 
 export class ProductEventHandler {
   static async handleDesactivate(id) {
     try {
-      await productoServices.desactivarProducto(id);
-    } catch (err) {
-      console.log(err);
+      const confirmacion = confirm("¿Desea desactivar el producto?");
+
+      if (confirmacion) {
+        // Esperar a que se complete la desactivación
+        await productoServices.desactivarProducto(id);
+      }
+    } catch (error) {
+      console.error("Error al desactivar el producto:", error);
+      alert("Ocurrió un error al desaactivar el producto.");
+    }
+  }
+
+  static async handleActivate(id) {
+    try {
+      const confirmacion = confirm("¿Desea activar el producto?");
+
+      if (confirmacion) {
+        // Esperar a que se complete la desactivación
+        await productoServices.activarProducto(id);
+      }
+    } catch (error) {
+      console.error("Error al activar el producto:", error);
+      alert("Ocurrió un error al activar el producto.");
     }
   }
 
