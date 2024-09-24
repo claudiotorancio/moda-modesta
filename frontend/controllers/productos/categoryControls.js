@@ -40,7 +40,7 @@ export async function initializeCategoryControls() {
   contenedorSeccion.innerHTML = "";
 
   // Variables para controlar la carga progresiva
-  const productosPorPagina = 8; // Mostramos 8 productos por bloque
+  const productosPorPagina = 4; // Mostramos 8 productos por bloque
   let paginaActual = 0;
 
   // **Crear botón de "Volver"**
@@ -82,6 +82,7 @@ export async function initializeCategoryControls() {
 
       contenedorSeccion.appendChild(tarjetaProducto);
       contenedorSeccion.classList.add("allProducts");
+      contenedorSeccion.classList.add("ver-todos-activado");
     }
 
     // Incrementamos la página actual para la siguiente carga
