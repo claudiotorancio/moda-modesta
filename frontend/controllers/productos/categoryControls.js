@@ -46,11 +46,11 @@ export async function initializeCategoryControls() {
   // **Crear botón de "Volver"**
   const volverBtn = document.createElement("button");
   volverBtn.id = "volverBtn";
-  volverBtn.textContent = "Volver";
+  volverBtn.textContent = "ir a inicio";
   volverBtn.classList.add("show");
   document.body.appendChild(volverBtn);
   volverBtn.onclick = () => {
-    history.back(); // O puedes usar window.location.href = "index.html";
+    window.location.href = "index.html"; // O puedes usar window.location.href = "index.html";
   };
 
   // Función para cargar productos en bloques
