@@ -10,7 +10,7 @@ export function ocultarProductos() {
     });
 
     document.querySelectorAll(".categoria").forEach((categoria) => {
-      if (!categoria.querySelector(`[data-${opcion}]`)) {
+      if (categoria.querySelector(`[data-${opcion}]`)) {
         categoria.querySelector(".texto-categoria").style.display = "none";
         categoria.querySelector(".productos").innerHTML = "";
       }

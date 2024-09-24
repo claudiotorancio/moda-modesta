@@ -2,23 +2,12 @@ import { ProductCard } from "../../controllers/productos/ProductCard.js"; // Aju
 import productoServices from "../../services/product_services.js"; // Importa el servicio que obtiene los productos
 import { mostrarProducto } from "./ProductViewer.js";
 import Carrito from "../carrito/carrito.js";
+import { ProductInit } from "./ProductInit.js";
 
 const carrito = new Carrito();
 
 export const controllers = {
   async renderProducts() {
-    // Actualiza el texto de las categorías basadas en el atributo 'id' de cada botón.
-    // document.querySelectorAll(".categoria").forEach((categoria) => {
-    //   const categoriaBtn = categoria.querySelector("a");
-    //   const opcion = categoriaBtn.getAttribute("id");
-    //   console.log(opcion);
-    //   document.querySelectorAll(".categoria").forEach((categoria) => {
-    //     if (categoria.querySelector(`[data-${opcion}]`)) {
-    //       categoria.querySelector(".texto-categoria h2").textContent = opcion;
-    //     }
-    //   });
-    // });
-
     try {
       // Carga los productos destacados
       const productosDestacados = await productoServices.destacadosProducto();
@@ -83,6 +72,60 @@ export const controllers = {
       }
     } catch (error) {
       console.log("Error al renderizar productos:", error);
+    }
+  },
+
+  async renderInit() {
+    try {
+      const productosDestacados = await productoServices.destacadosProducto();
+      const contenedorDestacados = document.querySelector("[data-destacados]");
+
+      contenedorDestacados.innerHTML = "";
+
+      for (const producto of productosDestacados) {
+        const hayStock = producto.sizes.some((item) => item.stock > 0);
+        const card = new ProductInit(
+          producto.name,
+          producto.price,
+          producto.imagePath,
+          producto.description,
+          producto.sizes,
+          producto._id,
+          hayStock
+        );
+        contenedorDestacados.appendChild(card.productoInicio());
+      }
+
+      const products = await productoServices.listaProductosUsuario();
+
+      document.querySelectorAll(".productos").forEach((contenedor) => {
+        if (contenedor !== contenedorDestacados) {
+          contenedor.innerHTML = "";
+        }
+      });
+
+      for (const producto of products) {
+        const hayStock = producto.sizes.some((item) => item.stock > 0);
+
+        const productCard = new ProductInit(
+          producto.name,
+          producto.price,
+          producto.imagePath,
+          producto.description,
+          producto.sizes,
+          producto._id,
+          hayStock
+        );
+
+        const contenedorSeccion = document.querySelector(
+          `[data-${producto.section}]`
+        );
+        if (contenedorSeccion) {
+          contenedorSeccion.appendChild(productCard.productoInicio());
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
   },
 
@@ -185,6 +228,7 @@ export const controllers = {
       console.error("Error al cargar productos similares:", error);
     }
   },
+
   async comprarProducto(name, price, imagePath, id, talleSeleccionado) {
     // Manejar lógica para agregar al carrito
     const producto = {
@@ -199,6 +243,145 @@ export const controllers = {
       size: talleSeleccionado,
     });
   },
+
+  // async initializeCategoryControls() {
+  //   const productos = await productoServices.listaProductosUsuario();
+  //   const opcion = localStorage.getItem("appName_selectedCategory");
+
+  //   if (!opcion) {
+  //     console.warn("No se ha seleccionado ninguna categoría.");
+  //     return; // Redirigir a la página principal si es necesario
+  //   }
+
+  //   // Ocultar otros contenedores
+  //   document.querySelectorAll(".categoria").forEach((categoria) => {
+  //     if (!categoria.querySelector(`[data-${opcion}]`)) {
+  //       categoria.querySelector(".texto-categoria h2").style.display = "none";
+  //       categoria.querySelector(".productos").innerHTML = "";
+  //     }
+  //   });
+
+  //   let productosFiltrados;
+
+  //   // Filtrar los productos por la categoría seleccionada
+  //   if (opcion === "destacados") {
+  //     productosFiltrados = await productoServices.destacadosProducto();
+  //   } else {
+  //     productosFiltrados = productos.filter(
+  //       (producto) => producto.section === opcion
+  //     );
+  //   }
+
+  //   // Variables para controlar la carga progresiva
+  //   const productosPorPagina = 8; // Mostramos 8 productos por bloque
+  //   let paginaActual = 0;
+
+  //   // Función para cargar productos en bloques
+  //   const cargarProductos = () => {
+  //     const inicio = paginaActual * productosPorPagina;
+  //     const fin = inicio + productosPorPagina;
+  //     const productosBloque = productosFiltrados.slice(inicio, fin);
+
+  //     for (const producto of productosBloque) {
+  //       const hayStock = producto.sizes.some((item) => item.stock > 0);
+  //       const productCategory = new ProductInit(
+  //         producto.name,
+  //         producto.price,
+  //         producto.imagePath,
+  //         producto.description,
+  //         producto.sizes,
+  //         producto._id,
+  //         hayStock
+  //       );
+
+  //       const contenedorSeccion = document.querySelector(`[data-${opcion}]`);
+  //       if (contenedorSeccion) {
+  //         const tarjetaProducto = productCategory.productoInicio(); // Crear la tarjeta del producto
+  //         tarjetaProducto.classList.add("allCard"); // Agregar clase allCard
+
+  //         // Agregar clase img-allCard a la imagen del producto
+  //         const imagenProducto = tarjetaProducto.querySelector(".img-card");
+  //         if (imagenProducto) {
+  //           imagenProducto.classList.add("img-allCard");
+  //         }
+
+  //         contenedorSeccion.appendChild(tarjetaProducto);
+  //         contenedorSeccion.classList.add("allProducts");
+  //       }
+  //     }
+
+  //     // Incrementamos la página actual para la siguiente carga
+  //     paginaActual++;
+  //   };
+
+  //   // Cargar los primeros productos inicialmente
+  //   cargarProductos();
+
+  //   // Función que detecta cuando se llega al final de la página
+  //   const manejarScroll = () => {
+  //     const scrollPos = window.innerHeight + window.scrollY;
+  //     const scrollMax = document.body.offsetHeight - 200; // Ajustar si es necesario
+
+  //     if (scrollPos >= scrollMax) {
+  //       // Cargar más productos cuando se llegue al final
+  //       cargarProductos();
+  //     }
+  //   };
+
+  //   // Agregar un listener para el evento popstate
+  //   window.addEventListener("popstate", function (event) {
+  //     const modal = document.getElementById("modal"); // Cambia #myModal por el ID o clase de tu modal
+  //     // Verificar si el modal está abierto
+
+  //     if ((modal.style.display = "block")) {
+  //       // Si el modal está abierto, solo ciérralo
+  //       modal.style.display = "none"; // Aquí depende de cómo cierras tu modal
+  //       history.pushState(null, null, window.location.href); // Agregar un nuevo estado para evitar que se siga hacia atrás
+  //     } else {
+  //       // Si el modal no está abierto, redirigir a index.html
+  //       window.location.href = "index.html";
+  //     }
+  //   });
+
+  //   // Agregar evento de scroll
+  //   window.addEventListener("scroll", manejarScroll);
+  // },
+
+  // handleCategorySelection(contenedorProductos, productos, opcion) {
+  //   console.log(productos.map((item) => item.section));
+  //   try {
+  //     // Filtrar productos por la categoría seleccionada
+  //     const productosFiltrados = productos.filter(
+  //       (producto) => producto.section === opcion
+  //     );
+  //     console.log(productosFiltrados);
+
+  //     if (productosFiltrados.length === 0) {
+  //       contenedorProductos.innerHTML = "<p>No hay productos para mostrar</p>";
+  //       return;
+  //     }
+
+  //     // Generar tarjetas para los productos filtrados
+  //     contenedorProductos.innerHTML = ""; // Limpiar contenedor antes de agregar
+  //     productosFiltrados.forEach((producto) => {
+  //       const tarjeta = crearTarjetaProducto(producto); // Crear tarjeta del producto
+  //       tarjeta.classList.add("allCard");
+  //       contenedorProductos.appendChild(tarjeta);
+  //     });
+
+  //     // Aplicar estilos y mostrar tarjetas
+  //     const tarjetas = contenedorProductos.querySelectorAll(".card");
+  //     aplicarEstiloTarjetas(tarjetas); // Asegúrate de que esta función esté definida
+
+  //     contenedorProductos.classList.add("allProducts");
+  //     volverBtn.classList.add("show"); // Mostrar el botón "Volver"
+
+  //     // Mantener la historia de navegación
+  //     history.pushState({ categoryId: opcion }, "", `#${opcion}`);
+  //   } catch (error) {
+  //     console.error("Error al manejar la selección de categoría:", error);
+  //   }
+  // },
 };
 
 // import { modalControllers } from "../../modal/modal.js";

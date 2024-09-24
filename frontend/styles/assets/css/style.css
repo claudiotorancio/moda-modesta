@@ -431,7 +431,6 @@ div.table-subtotal td {
 
 .table td {
   vertical-align: middle;
-  padding: 1rem; /* Ajusta el padding según sea necesario */
 }
 
 /* Alinea las imágenes y asegura que tengan el mismo tamaño */
@@ -787,10 +786,8 @@ ul li a {
   }
   /* CSS para dispositivos móviles */
 
-  .admin-only {
-    font-size: 0.8rem;
-    padding: 0;
-    width: 17%;
+  .d-flex {
+    align-items: center;
   }
 
   ul li a {

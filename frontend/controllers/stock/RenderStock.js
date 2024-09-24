@@ -1,10 +1,8 @@
 // RenderStock.js
 
-import { modalControllers } from "../../modal/modal.js";
 import productoServices from "../../services/product_services.js";
 
 import { ProductEventHandler } from "../productos/ProductEventHandler.js";
-import { controllers } from "../productos/productos_controllers.js";
 
 export class RenderStock {
   constructor(titulo) {
@@ -41,13 +39,14 @@ export class RenderStock {
         });
 
         productosOrdenados.forEach((producto) => {
-          const { _id, name, sizes, price, isActive } = producto;
+          const { _id, name, sizes, price, isActive, isFeatured } = producto;
           const productoDiv = this.createProductElement(
             _id,
             name,
             sizes,
             price,
-            isActive
+            isActive,
+            isFeatured
           );
           productosContenedor.appendChild(productoDiv);
         });
@@ -58,49 +57,78 @@ export class RenderStock {
     this.agregarEventListenerBotones();
   }
 
-  createProductElement(_id, name, sizes, price, isActive) {
+  createProductElement(_id, name, sizes, price, isActive, isFeatured) {
     const productoDiv = document.createElement("div");
-    productoDiv.classList.add("table");
-    productoDiv.style.border = "2px solid #000";
-    productoDiv.style.padding = "10px";
-    productoDiv.style.marginBottom = "10px";
-    productoDiv.style.backgroundColor = "#fff";
+    productoDiv.classList.add("table-stock");
 
     const productoTable = document.createElement("table");
-    productoTable.style.width = "100%";
-    productoTable.style.borderCollapse = "collapse";
-    productoTable.style.backgroundColor = "#fff";
+    productoTable.classList.add("table-producto");
 
     const thead = document.createElement("thead");
     thead.innerHTML = `
       <tr>
         <th>#</th>
         <th>Producto</th>
-        <th>Talle</th>
-        <th>Cantidad</th>
+        <th>Talles y Cantidades</th>
         <th>Precio Unitario</th>
         <th>Estado</th>
         <th>Acciones</th>
+        <th>Destacado</th>
       </tr>
     `;
 
     const tbody = document.createElement("tbody");
 
     if (sizes.length === 0) {
-      const row = this.createEmptyStockRow(_id, name, price);
+      const row = this.createEmptyStockRow(_id, name, price, isFeatured);
       tbody.appendChild(row);
     } else {
-      sizes.forEach((size, index) => {
-        const row = this.createSizeRow(index, _id, name, size, price);
-        tbody.appendChild(row);
-      });
+      // Aplicar clases para cada talle individualmente en la lista
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td data-label="ID">${_id}</td>
+        <td data-label="Producto">${name}</td>
+        <td data-label="Talles y Cantidades">
+          <ul class="size-list">
+            ${sizes
+              .map(
+                (size) => `
+              <li class="${
+                size.stock === 0
+                  ? "sin-stock"
+                  : size.stock < 10
+                  ? "stock-bajo"
+                  : "en-stock"
+              }">
+                <strong>${size.size}:</strong> ${size.stock} ${
+                  size.stock === 0
+                    ? "(sin stock)"
+                    : size.stock < 10
+                    ? "(bajo stock)"
+                    : "(en stock)"
+                }
+              </li>
+            `
+              )
+              .join("")}
+          </ul>
+        </td>
+        <td data-label="Precio">${price}</td>
+        <td data-label="Estado" class="${this.getStockState(sizes)}">
+          ${this.getStockState(sizes).replace("-", " ")}
+        </td>
+        <td data-label="Acciones">
+          <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Editar</button>
+        </td>
+        <td data-label="Destacado">${isFeatured ? "sí" : "no"}</td>
+      `;
+      tbody.appendChild(row);
     }
 
     productoTable.appendChild(thead);
     productoTable.appendChild(tbody);
     productoDiv.appendChild(productoTable);
 
-    // Añadir el botón de activar/desactivar
     const estadoButton = isActive
       ? `<button type="button" class="btn btn-warning desactivar-producto" data-id="${_id}">Desactivar</button>`
       : `<button type="button" class="btn btn-success activar-producto" data-id="${_id}">Activar</button>`;
@@ -113,48 +141,26 @@ export class RenderStock {
     return productoDiv;
   }
 
-  createEmptyStockRow(_id, name, price) {
+  // Helper method to get the overall stock state based on sizes
+  getStockState(sizes) {
+    if (sizes.every((size) => size.stock === 0)) return "sin-stock";
+    if (sizes.some((size) => size.stock < 10 && size.stock > 0))
+      return "stock-bajo";
+    return "en-stock";
+  }
+
+  createEmptyStockRow(_id, name, price, isFeatured) {
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${_id}</td>
-      <td>${name}</td>
-      <td>N/A</td>
-      <td>N/A</td>
-      <td>${price}</td>
-      <td class="sin-stock">Sin stock</td>
+      <td data-label="ID">${_id}</td>
+      <td data-label="Producto">${name}</td>
+      <td  data-label="Talle y Cantidades">N/A</td>
+      <td  data-label="Precio">${price}</td>
+      <td data-label="Estado" class="sin-stock">Sin stock</td>
       <td>
         <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">editar</button>
       </td>
-    `;
-    return row;
-  }
-
-  createSizeRow(index, _id, name, size, price) {
-    const stockClass =
-      size.stock === 0 ? "sin-stock" : size.stock < 10 ? "stock-bajo" : "";
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-      <td>${index === 0 ? _id : ""}</td>
-      <td>${index === 0 ? name : ""}</td>
-      <td>${size.size}</td>
-      <td>${size.stock}</td>
-      <td>${index === 0 ? price : ""}</td>
-      <td class="${stockClass}">${
-      size.stock > 0
-        ? size.stock < 10
-          ? "Bajo stock"
-          : "En stock"
-        : "Sin stock"
-    }</td>
-      <td>
-        ${
-          index === 0
-            ? ` 
-          <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">editar</button>`
-            : ""
-        }
-      </td>
+      <td>${isFeatured ? "si" : "no"}</td>
     `;
     return row;
   }

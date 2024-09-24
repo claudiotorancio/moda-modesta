@@ -7,10 +7,10 @@ import "./styles/assets/css/components/inputs.css";
 import "./styles/assets/css/components/header.css";
 import "./styles/assets/css/components/button.css";
 import "./styles/assets/css/components/modal.css";
+import "./styles/assets/css/table.css";
 
 import { LoginServices } from "./services/login_services.js";
 import { LoginControllers } from "./controllers/registro/login_controllers.js";
-import { productosInicio } from "./controllers/productos/ProductInit.js";
 import { ProductForm } from "./controllers/productos/productForm.js";
 import { controllers } from "./controllers/productos/productos_controllers.js";
 import { modalControllers } from "./modal/modal.js";
@@ -20,7 +20,6 @@ import {
 } from "./controllers/reseña/reseñas.js";
 import { Compras } from "./controllers/compras/compras-controllers.js";
 import { hashControllers } from "./controllers/hashControllers.js";
-import { initializeCategoryControls } from "./controllers/productos/categoryControls.js";
 import { ListaServices } from "./services/lista_services.js";
 import { ListaControllers } from "./controllers/ListaUsuarios/lista.controllers.js";
 import { FormResena } from "./controllers/reseña/formResena.js";
@@ -41,7 +40,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (hash.startsWith("#product-")) {
     await hashControllers();
   }
-  initializeCategoryControls();
+
+  // initializeCategoryControls();
 
   loadBannerText();
   loadLogoImage();
@@ -87,7 +87,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
       const productForm = new ProductForm(titulo);
       productForm.render();
-      await controllers.renderProducts();
     });
 
     resenas.addEventListener("click", (e) => {
@@ -117,13 +116,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       await ListaControllersInstamce.renderLista();
     });
 
+    ventas.addEventListener("click", (e) => {
+      e.preventDefault();
+      alert("Seccion en Construccion");
+    });
+
     controllers.renderProducts();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
     buscar();
   } else {
-    productosInicio.renderInit();
+    controllers.renderInit();
     cargarReseñas();
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   }
@@ -138,11 +142,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     const loginControllersInstance = new LoginControllers();
     loginControllersInstance.renderSignin();
-  });
-
-  ventas.addEventListener("click", (e) => {
-    e.preventDefault();
-    alert("Seccion en Construccion");
   });
 
   const logOut = document.querySelector("[data-logOut]");

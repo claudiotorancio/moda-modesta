@@ -8,10 +8,13 @@ const __dirname = path.dirname(__filename);
 const output = path.join(__dirname, "backend/public");
 
 export default {
-  entry: "./frontend/app.js",
+  entry: {
+    index: "./frontend/app.js",
+    verProductos: "./frontend/app-ver-productos.js",
+  },
   output: {
     path: output,
-    filename: "js/bundle.js",
+    filename: "js/[name].bundle.js",
   },
   mode: "production",
   module: {
@@ -35,6 +38,7 @@ export default {
     new HtmlWebpackPlugin({
       filename: "index.html",
       template: "./frontend/index.html",
+      chunks: ["index"],
       minify: {
         collapseWhitespace: true,
         removeComments: true,
@@ -60,6 +64,19 @@ export default {
     new HtmlWebpackPlugin({
       filename: "error.html",
       template: "./frontend/error.html",
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true,
+      },
+    }),
+    new HtmlWebpackPlugin({
+      filename: "ver-productos.html",
+      template: "./frontend/ver-productos.html",
+      chunks: ["verProductos"],
       minify: {
         collapseWhitespace: true,
         removeComments: true,

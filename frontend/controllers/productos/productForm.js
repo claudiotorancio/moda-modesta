@@ -1,9 +1,11 @@
 import { modalControllers } from "../../modal/modal.js";
 import productoServices from "../../services/product_services.js";
+import { controllers } from "./productos_controllers.js";
 
 export class ProductForm {
   constructor(titulo) {
     this.titulo = titulo;
+    this.mostrarProducts();
   }
 
   // Mostrar formulario
@@ -14,97 +16,18 @@ export class ProductForm {
     this.setupFormSubmitHandler();
   }
 
+  mostrarProducts() {
+    document.querySelectorAll(".categoria").forEach((categoria) => {
+      categoria.querySelector(".texto-categoria").style.display = "flex";
+      controllers.renderProducts();
+    });
+  }
+
   // Vaciar contenido
   clearForm() {
     this.titulo.innerHTML = "";
   }
 
-  // Crear formulario dinámico
-  createForm() {
-    const card = document.createElement("div");
-    card.className = "d-flex justify-content-center align-items-center"; // Centrar el contenedor del formulario
-
-    card.innerHTML = `
-      <div>
-        <div class="text-center">
-          <div class="card-header mb-2">
-            <h3 style="font-weight: bold;">Agregar producto</h3>
-          </div>
-          <p>Modo selección de imágenes:</p>
-          <p>a- Seleccionar una sola imagen</p>
-          <p>b- Seleccionar varias imágenes para efecto carrusel.</p>
-          <br>
-          <div class="card-body w-100">
-            <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
-              <div class="form-group">
-                <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
-              </div>
-              <div class="form-group">
-                <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
-              </div>
-              <div class="form-group">
-                <input class="form-control mt-3 mb-3 p-2" type="text" placeholder="Precio del producto" name="price" required data-price>
-              </div>
-              <div class="form-group">
-                <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" name="description" required data-description></textarea>
-              </div>
-              <p for="miMenuDesplegable">Sección</p>
-              <div class="form-group">
-                <select class="form-control mb-3 p-2" id="miMenuDesplegable" name="section">
-                  <option value="opcion1">Vestidos</option>
-                  <option value="opcion2">Polleras</option>
-                  <option value="opcion3">Diversos</option>
-                </select>
-              </div>
-              
-              <!-- Añadir el campo para el stock -->
-              <div class="form-group">
-                <input class="form-control mt-3 mb-3 p-2" type="number" placeholder="Stock disponible" name="stock" required data-stock>
-              </div>
-  
-              <label for="variation_1">Talles disponibles</label>
-              <div class="form-group mb-4">
-                <!-- Checkbox de talles disponibles -->
-                <div class="form-check-inline me-3">
-                  <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">
-                  <label class="form-check-label" for="talle1">Talle 1</label>
-                </div>
-                <div class="form-check-inline me-3">
-                  <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
-                  <label class="form-check-label" for="talle2">Talle 2</label>
-                </div>
-                <div class="form-check-inline me-3">
-                  <input class="form-check-input" type="checkbox" value="Talle 3" name="sizes" id="talle3">
-                  <label class="form-check-label" for="talle3">Talle 3</label>
-                </div>
-                <div class="form-check-inline me-3">
-                  <input class="form-check-input" type="checkbox" value="Talle 4" name="sizes" id="talle4">
-                  <label class="form-check-label" for="talle4">Talle 4</label>
-                </div>
-                <div class="form-check-inline me-3">
-                  <input class="form-check-input" type="checkbox" value="Talle 5" name="sizes" id="talle5">
-                  <label class="form-check-label" for="talle5">Talle 5</label>
-                </div>
-              </div>
-  
-              <!-- Checkbox para destacar producto -->
-              <div class="form-group">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="isFeatured" name="isFeatured">
-                  <label class="form-check-label" for="isFeatured">
-                    Destacar producto
-                  </label>
-                </div>
-              </div>
-  
-              <button type="submit" class="btn btn-primary btn-lg">Agregar</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    `;
-    return card;
-  }
   // Crear formulario dinámico
   createForm() {
     const card = document.createElement("div");
@@ -149,36 +72,28 @@ export class ProductForm {
             <label for="variation_1">Talles y stock disponibles</label>
             <div class="form-group mb-4">
               <div class="form-row">
-                <div class="col">
+                <div class="col-center flex">
                   <div class="form-check-inline nt-2 me-3">
                     <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">
                     <label class="form-check-label" for="talle1">Talle 1</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle1>
                   </div>
-                </div>
-                <div class="col">
-                  <div class="form-check-inline me-3">
+                   <div class="form-check-inline me-3">
                     <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
                     <label class="form-check-label" for="talle2">Talle 2</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle2>
                   </div>
-                </div>
-                <div class="col">
-                  <div class="form-check-inline me-3">
+                   <div class="form-check-inline me-3">
                     <input class="form-check-input" type="checkbox" value="Talle 3" name="sizes" id="talle3">
                     <label class="form-check-label" for="talle3">Talle 3</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle3>
                   </div>
-                </div>
-                <div class="col">
-                  <div class="form-check-inline me-3">
+                   <div class="form-check-inline me-3">
                     <input class="form-check-input" type="checkbox" value="Talle 4" name="sizes" id="talle4">
                     <label class="form-check-label" for="talle4">Talle 4</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle4>
                   </div>
-                </div>
-                <div class="col">
-                  <div class="form-check-inline me-3">
+                   <div class="form-check-inline me-3">
                     <input class="form-check-input" type="checkbox" value="Talle 5" name="sizes" id="talle5">
                     <label class="form-check-label" for="talle5">Talle 5</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle5>

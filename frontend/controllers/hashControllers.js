@@ -15,9 +15,8 @@ export async function hashControllers() {
       return;
     }
 
-    const response = await productoServices.detalleProducto(id);
-    const producto = response.product; // Asumiendo que el objeto está dentro de 'product'
-
+    const producto = await productoServices.detalleProducto(id);
+    console.log(producto);
     if (!producto) {
       console.error("Producto no encontrado en la respuesta de la API.");
       return;
@@ -25,21 +24,18 @@ export async function hashControllers() {
 
     // Verificar si hay stock en alguna de las tallas
     const hayStock = producto.sizes.some((item) => item.stock > 0);
+    console.log(hayStock);
 
-    // Convertir en array si es necesario (en caso de que quieras manejar varios productos)
-    const productosArray = [producto];
-
-    productosArray.forEach((p) => {
-      mostrarProducto(
-        p.name,
-        p.price,
-        p.imagePath,
-        p.sizes, // Pasar las tallas con su stock
-        p.description,
-        p._id,
-        hayStock // Pasar si hay stock general o no
-      );
-    });
+    // Mostrar el producto solo si existe
+    mostrarProducto(
+      producto.name,
+      producto.price,
+      producto.imagePath,
+      producto.description,
+      producto.sizes, // Pasar las tallas con su stock
+      producto._id,
+      hayStock // Pasar si hay stock general o no
+    );
   } catch (error) {
     console.error("Error al obtener los detalles del producto:", error);
   }

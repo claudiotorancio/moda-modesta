@@ -36,24 +36,35 @@ export class ProductCard {
 
     card.innerHTML = `
     
-      <div class="container mx-auto mt-4">
-        <div class="img-card">
-          <img class="card-img-top" src="${this.imagePath[0]}" alt="">
-        </div>
-        <div class="card-body">
-          <a href="#" data-veradmin>ver producto</a>
-          <h3 class="card-title">${this.name}</h3>
-          <p class="card-text">${"$" + this.price}</p>
-          <a href="#form" class="btn btn-primary" id="${
-            this.id
-          }" data-edit>Editar</a>
-           ${
-             this.isActive
-               ? `<button class="btn btn-danger desactivar-producto " type="button" id="${this.id}">Desactivar</button>`
-               : `<button class="btn btn-primary activar-producto" type="button" id="${this.id}">Activar</button>`
-           }
-        </div>
-      </div>
+    <div class="container mx-auto mt-4">
+  <div class="img-card">
+    <img class="card-img-top" src="${this.imagePath[0]}" alt="">
+  </div>
+
+  <!-- Mostrar "Sí" o "No" sin interacción -->
+  <div class="mt-2">
+    <label>Producto destacado:</label>
+    <p>${this.isFeatured ? "Sí" : "No"}</p>
+  </div>
+  <div class="mt-2">
+    <label>Hay stock:</label>
+    <p>${this.hayStock ? "Sí" : "No"}</p>
+  </div>
+
+  <div class="card-body">
+    <a href="#" data-veradmin>ver producto</a>
+    <h3 class="card-title">${this.name}</h3>
+    <p class="card-text">${"$" + this.price}</p>
+    <a href="#form" class="btn btn-primary" id="${this.id}" data-edit>Editar</a>
+    ${
+      this.isActive
+        ? `<button class="btn btn-danger desactivar-producto" type="button" id="${this.id}">Desactivar</button>`
+        : `<button class="btn btn-primary activar-producto" type="button" id="${this.id}">Activar</button>`
+    }
+  </div>
+</div>
+
+
     `;
 
     this.addEventListeners(card);

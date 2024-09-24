@@ -1,3 +1,4 @@
+import { controllers } from "../productos/productos_controllers.js";
 import {
   loadBannerText,
   putBanner,
@@ -23,6 +24,14 @@ export class Estilos {
     this.setupColorPagina();
     this.setupColorTarjetas();
     this.handleFileUpload();
+    this.mostrarProducts();
+  }
+
+  mostrarProducts() {
+    document.querySelectorAll(".categoria").forEach((categoria) => {
+      categoria.querySelector(".texto-categoria").style.display = "flex";
+      controllers.renderProducts();
+    });
   }
 
   // Vaciar contenido

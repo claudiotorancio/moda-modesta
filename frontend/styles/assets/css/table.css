@@ -1,0 +1,76 @@
+.table-stock {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgb(0, 0, 0);
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: #fff;
+}
+
+.table-producto {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.table-producto td {
+  text-align: center; /* Centra el contenido horizontalmente */
+}
+
+/* CSS para alertas de stock */
+.stock-bajo {
+  background-color: #ffeb3b; /* Color amarillo claro para stock bajo */
+}
+
+.sin-stock {
+  background-color: #f44336; /* Color rojo para sin stock */
+  color: #fff; /* Texto blanco para contraste */
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .table-producto {
+    display: contents; /* Cambiamos el display a block para móviles */
+  }
+
+  .table-producto thead {
+    display: none; /* Ocultamos el encabezado para móviles */
+  }
+
+  .table-producto tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+  }
+
+  .table-producto td {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .table-producto td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+
+  /* Lista de talles */
+  .size-list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .size-list li {
+    padding: 0.2rem 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .table-stock .btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}

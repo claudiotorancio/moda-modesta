@@ -8,7 +8,6 @@ export const mostrarProducto = async (
   imagePath,
   description,
   sizes,
-
   id,
   hayStock // Nuevo parámetro para indicar si hay stock
 ) => {

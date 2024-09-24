@@ -1,13 +1,29 @@
+import { initializeCategoryControls } from "../productos/categoryControls.js";
 import { controllers } from "../productos/productos_controllers.js";
 
 export async function buscar() {
   // Cargar los productos cuando se haga clic en el input de búsqueda
+  // document
+  //   .getElementById("searchInput")
+  //   .addEventListener("focus", async function () {
+  //     const titulo = document.querySelector("[data-titulo]");
+  //     titulo.innerHTML = "";
+  //     // const texto = document.querySelectorAll(".texto-categoria");
+  //     // texto.style.display = "flex";
+  //     await controllers.renderProducts();
+  //   });
+
   document
     .getElementById("searchInput")
     .addEventListener("focus", async function () {
-      await controllers.renderProducts();
       const titulo = document.querySelector("[data-titulo]");
       titulo.innerHTML = "";
+
+      document.querySelectorAll(".categoria").forEach((categoria) => {
+        categoria.querySelector(".texto-categoria").style.display = "flex";
+        categoria.querySelector(".productos").innerHTML = "";
+      });
+      await controllers.renderProducts();
     });
 
   document
@@ -62,6 +78,7 @@ export async function buscar() {
 
     // Mostrar todos los productos si la búsqueda está vacía
     if (query === "") {
+      initializeCategoryControls();
       await controllers.renderProducts();
       noResultsMessage.style.display = "none";
     }
