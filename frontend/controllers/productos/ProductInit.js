@@ -28,7 +28,7 @@ export class ProductInit {
       <div class="container mx-auto mt-4">
         <div class="img-card">
           <img class="card-img-top" src="${
-            this.imagePath
+            this.imagePath[0]
           }" alt="imagen del producto">
           <!-- Ícono de lupa -->
           <div class="overlay-icon">
