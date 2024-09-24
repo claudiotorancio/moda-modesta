@@ -39,17 +39,19 @@ export async function initializeCategoryControls() {
   // Limpiar el contenedor antes de cargar productos
   contenedorSeccion.innerHTML = "";
 
-  // Verificar si hay productos filtrados
-  if (productosFiltrados.length === 0) {
-    const mensajeNoProductos = document.createElement("p");
-    mensajeNoProductos.textContent = "No hay productos disponibles.";
-    contenedorSeccion.appendChild(mensajeNoProductos);
-    return; // Salir si no hay productos
-  }
-
   // Variables para controlar la carga progresiva
   const productosPorPagina = 8; // Mostramos 8 productos por bloque
   let paginaActual = 0;
+
+  // **Crear botón de "Volver"**
+  const volverBtn = document.createElement("button");
+  volverBtn.id = "volverBtn";
+  volverBtn.textContent = "Volver";
+  volverBtn.classList.add("show");
+  document.body.appendChild(volverBtn);
+  volverBtn.onclick = () => {
+    history.back(); // O puedes usar window.location.href = "index.html";
+  };
 
   // Función para cargar productos en bloques
   const cargarProductos = () => {
@@ -84,6 +86,8 @@ export async function initializeCategoryControls() {
 
     // Incrementamos la página actual para la siguiente carga
     paginaActual++;
+
+    // Mover el botón de "Volver" al final de los productos cargados
   };
 
   // Cargar los primeros productos inicialmente
@@ -107,7 +111,7 @@ export async function initializeCategoryControls() {
     if ((modal.style.display = "block")) {
       // Si el modal está abierto, solo ciérralo
       modal.style.display = "none"; // Aquí depende de cómo cierras tu modal
-      history.replaceState(null, null, window.location.pathname); // Reemplaza el estado actual sin hash
+      history.pushState(null, null, window.location.href); // Reemplaza el estado actual sin hash
     } else {
       // Si el modal no está abierto, redirigir a index.html
       window.location.href = "index.html"; // Redirigir a index.html

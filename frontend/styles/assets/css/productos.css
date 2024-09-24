@@ -241,8 +241,8 @@ div.card:hover {
   }
 
   .allCard {
-    width: calc(40% - 1px);
-    margin: 1rem;
+    width: calc(48% - 1px);
+    margin: 0.1rem;
   }
 
   .img-allCard {
