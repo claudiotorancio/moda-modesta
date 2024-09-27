@@ -113,8 +113,8 @@ const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
 //notificaciones sin stock
 router.post("/api/notificacionSinStock", notificacionSinStock);
-router.get("/api/getNotificaciones", getNotificaciones);
-router.post("/api/notificacionIngreso/", notificacionIngreso);
+router.get("/api/getNotificaciones", requireAdmin, getNotificaciones);
+router.post("/api/notificacionIngreso/", requireAdmin, notificacionIngreso);
 
 //reseñas
 router.post("/api/agregarResena", requireAdmin, agregarResena);
