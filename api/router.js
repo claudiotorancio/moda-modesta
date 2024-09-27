@@ -182,7 +182,7 @@ router.post("/api/costoEnvio", costoEnvio);
 
 // Rutas signin
 router.post("/api/signup", signup);
-router.post("/api/signin", { session: true }, signin);
+router.post("/api/signin", signin, { session: true });
 router.delete("/api/logout", logout);
 // Rutas listado
 router.get("/api/getAdmin", getAdmin); // Your controller logic);
