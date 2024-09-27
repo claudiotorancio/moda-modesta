@@ -49,8 +49,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadColorSettings();
   loadColorSettingsCard();
 
-  const listaServicesInstance = new ListaServices();
-  const isAdmin = await listaServicesInstance.getAdmin();
+  const loginServicesInstance = new LoginServices();
+  const isuser = await loginServicesInstance.signin();
+  const isAdmin = isuser.role;
+
+  console.log(isuser, isAdmin);
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
   // const divUsuario = document.querySelector(".rounded-circle");
