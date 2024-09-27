@@ -1,7 +1,5 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { Strategy as CookieStrategy } from "passport-cookie";
-
 import mongoose from "mongoose";
 import helpers from "./helpers.js";
 import MONGODB_URI from "../config.js";
@@ -43,31 +41,6 @@ passport.use(
         }
       } catch (err) {
         return done(err, false, { message: "An error occurred" });
-      }
-    }
-  )
-);
-
-// Configuración de la estrategia de Cookie
-passport.use(
-  "cookie",
-  new CookieStrategy(
-    {
-      cookieName: "user_sid", // Asegúrate de que coincida con el nombre de tu cookie
-      signed: true,
-      passReqToCallback: true,
-    },
-    async (req, userId, done) => {
-      // Change token to userId or whatever identifier you are using
-      try {
-        // Assuming you store user ID in the cookie, you can fetch the user by ID
-        const user = await Users.findById(userId);
-        if (!user) {
-          return done(null, false); // User not found
-        }
-        return done(null, user); // User authenticated
-      } catch (err) {
-        return done(err); // Error handling
       }
     }
   )
