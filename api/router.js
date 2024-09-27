@@ -65,6 +65,8 @@ router.use(express.json());
 router.use(cookieParser());
 router.use(express.urlencoded({ extended: false }));
 
+const isProduction = process.env.NODE_ENV === "production";
+
 router.use(
   session({
     key: "user_sid",
@@ -76,13 +78,14 @@ router.use(
       collection: "mySessions",
     }),
     cookie: {
-      expires: 600000,
-      // secure: true, // Asegúrate de que esto esté habilitado
+      expires: 600000, // 10 minutos
+      secure: isProduction, // Solo en producción
       httpOnly: true, // Previene acceso JavaScript a la cookie
-      sameSite: "lax", // Proteger contra CSRF
+      sameSite: "lax", // Protección contra CSRF
     },
   })
 );
+
 router.use(passport.initialize());
 router.use(passport.session());
 
