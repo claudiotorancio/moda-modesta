@@ -50,7 +50,6 @@ passport.use(
 
 // Configuración de la estrategia de Cookie
 passport.use(
-  "cookie",
   new CookieStrategy(
     {
       cookieName: "user_sid", // Asegúrate de que coincida con el nombre de tu cookie
