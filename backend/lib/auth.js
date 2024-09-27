@@ -15,7 +15,9 @@ export const authenticateJWT = async (req, res, next) => {
 
         if (!user || !user.active) {
           // Revisa si el usuario existe y está activo
-          return res.sendStatus(403); // Forbidden
+          return res
+            .status(404)
+            .send({ success: false, message: "Usuario no encontrado" });
         }
 
         req.user = user; // Agregar el usuario al request
