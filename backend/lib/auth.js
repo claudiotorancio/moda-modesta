@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 import jwt from "jsonwebtoken";
 import User from "../models/User.js"; // Asegúrate de importar tu modelo de usuario
 
@@ -11,6 +13,12 @@ export const authenticateJWT = async (req, res, next) => {
 
       // Verifica si el usuario existe y está activo en la base de datos
       try {
+        // Conectar a la base de datos
+        await mongoose.connect(process.env.MONGODB_URI, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        });
+
         const user = await User.findById(decoded.id); // Aquí asumimos que el token contiene el ID del usuario
 
         if (!user || !user.active) {
