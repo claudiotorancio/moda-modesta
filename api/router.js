@@ -78,7 +78,7 @@ router.use(
     cookie: {
       expires: 600000,
       secure: true, // Asegúrate de que esto esté habilitado
-      httpOnly: true, // Previene acceso JavaScript a la cookie
+      // httpOnly: true, // Previene acceso JavaScript a la cookie
       // sameSite: "lax", // Proteger contra CSRF
     },
   })
