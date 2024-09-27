@@ -65,7 +65,7 @@ router.use(express.json());
 router.use(cookieParser());
 router.use(express.urlencoded({ extended: false }));
 
-// const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === "production";
 
 router.use(
   session({
@@ -78,8 +78,9 @@ router.use(
       collection: "mySessions",
     }),
     cookie: {
+      domain: "https://moda-modesta.vercel.app",
       expires: 600000, // 10 minutos
-      // secure: isProduction, // Solo en producción
+      secure: isProduction, // Solo en producción
       httpOnly: true, // Previene acceso JavaScript a la cookie
       sameSite: "lax", // Protección contra CSRF
     },
