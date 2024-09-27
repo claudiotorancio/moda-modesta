@@ -2,42 +2,56 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js"; // Importa el modelo de usuario
 
+// Esta función maneja la conexión a la base de datos reutilizando la conexión si ya existe.
+const connectToDatabase = async () => {
+  if (mongoose.connection.readyState === 0) {
+    // Si no hay una conexión activa, entonces conectamos.
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Conectado a MongoDB");
+  }
+};
+
 export const authenticateJWT = async (req, res, next) => {
   try {
-    const token = req.cookies.user_sid; // Asegúrate de que el token se obtiene correctamente
+    const token = req.cookies.user_sid; // Obtén el token de las cookies
+    console.log("Token recibido:", token);
+
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
         if (err) {
-          return res.status(403).send("Forbidden"); // Forbidden
+          console.error("Error en la verificación del token:", err);
+          return res.status(403).send("Forbidden"); // Si el token es inválido
         }
 
-        // Verifica si el usuario existe y está activo en la base de datos
-        try {
-          // Conectar a la base de datos
-          await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-          });
+        console.log("Token decodificado:", decoded);
 
-          const user = await User.findById(decoded.id); // Busca el usuario en la BD usando el ID del token
+        // Asegúrate de que te conectas a la base de datos
+        try {
+          await connectToDatabase(); // Conecta a MongoDB si no está conectado
+
+          const user = await User.findById(decoded.id); // Busca al usuario en la base de datos
+          console.log("Usuario encontrado:", user);
 
           if (!user || !user.active) {
-            // Verifica si el usuario está activo
-            return res.status(403).send("Forbidden"); // Forbidden
+            // Si el usuario no existe o no está activo
+            return res.status(403).send("Forbidden");
           }
 
-          req.user = user; // Adjunta el usuario al request
-          next(); // Pasa al siguiente middleware
+          req.user = user; // Adjunta el usuario a la solicitud (request)
+          next(); // Llama al siguiente middleware
         } catch (dbError) {
-          console.error("Database error:", dbError);
-          return res.status(500).send("Internal Server Error"); // Error del servidor
+          console.error("Error en la base de datos:", dbError);
+          return res.status(500).send("Internal Server Error"); // Si hay un error con la base de datos
         }
       });
     } else {
-      return res.status(401).send("Unauthorized"); // Unauthorized
+      return res.status(401).send("Unauthorized"); // Si no hay token
     }
   } catch (error) {
-    console.error("Authentication error:", error);
-    return res.status(500).send("Internal Server Error"); // Error del servidor
+    console.error("Error en la autenticación:", error);
+    return res.status(500).send("Internal Server Error"); // Error general
   }
 };
