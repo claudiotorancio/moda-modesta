@@ -14,7 +14,7 @@ const connectToDatabase = async () => {
   }
 };
 
-export const authenticateJWT = async (req, res, next) => {
+export const authenticateJWT = async (req, res, user, next) => {
   try {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
