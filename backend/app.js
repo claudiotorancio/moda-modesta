@@ -3,8 +3,10 @@ import { fileURLToPath } from "url";
 import path from "path";
 import morgan from "morgan";
 import cors from "cors";
-import session from "express-session";
 import indexRouter from "../api/router.js";
+import session from "express-session";
+import MongoDBStore from "connect-mongodb-session";
+import MONGODB_URI from "../backend/config.js";
 
 const app = express();
 
@@ -29,17 +31,26 @@ app.use(
   })
 );
 
+const isProduction = process.env.NODE_ENV === "production";
+console.log(isProduction);
+
 // Configurar sesión con cookies seguras en producción
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    key: "user_sid",
+    secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
+    store: new MongoDBStore(session)({
+      uri: MONGODB_URI,
+      collection: "mySessions",
+    }),
     cookie: {
-      secure: true, // Solo en HTTPS
-      httpOnly: true, // Solo accesible por el servidor
-      sameSite: "None", // Si frontend y backend están en dominios diferentes
-      maxAge: 24 * 60 * 60 * 1000, // 24 horas
+      // domain: "https://moda-modesta.vercel.app",
+      expires: 600000, // 10 minutos
+      secure: isProduction, // Solo en producción
+      httpOnly: true, // Previene acceso JavaScript a la cookie
+      sameSite: "lax", // Protección contra CSRF
     },
   })
 );
