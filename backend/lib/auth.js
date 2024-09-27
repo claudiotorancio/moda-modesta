@@ -30,7 +30,7 @@ export const authenticateJWT = async (req, res, user, next) => {
           }
 
           req.user = user; // Adjunta el usuario a la solicitud (request)
-          next(); // Llama al siguiente middleware
+          return res.json({ ok: true });
         } catch (dbError) {
           console.error("Error en la base de datos:", dbError);
           return res.status(500).send("Internal Server Error"); // Si hay un error con la base de datos
