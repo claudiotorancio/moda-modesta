@@ -63,9 +63,9 @@ const router = Router();
 
 // router.use("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
 
-router.use(express.json());
-router.use(cookieParser());
-router.use(express.urlencoded({ extended: false }));
+// router.use(express.json());
+// router.use(cookieParser());
+// router.use(express.urlencoded({ extended: false }));
 
 // const isProduction = process.env.NODE_ENV === "production";
 // console.log(isProduction);

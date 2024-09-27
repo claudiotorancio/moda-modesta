@@ -35,13 +35,15 @@ app.use(cors());
 const isProduction = process.env.NODE_ENV === "production";
 console.log(isProduction);
 
+const mongoStore = MongoDBStore(session); // Crear la clase del store de MongoDB
+
 app.use(
   session({
     key: "user_sid",
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
-    store: new MongoDBStore(session)({
+    store: new mongoStore({
       uri: MONGODB_URI,
       collection: "mySessions",
     }),
