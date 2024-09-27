@@ -61,7 +61,7 @@ const router = Router();
 
 // Configuración de midllewares
 
-router.set("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
+router.use("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
 
 router.use(express.json());
 router.use(cookieParser());
