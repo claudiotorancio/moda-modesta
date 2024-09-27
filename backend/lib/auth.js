@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import User from "../models/User.js"; // Importa el modelo de usuario
+import Users from "../models/User.js"; // Importa el modelo de usuario
 
 // Esta función maneja la conexión a la base de datos reutilizando la conexión si ya existe.
 const connectToDatabase = async () => {
@@ -32,7 +32,7 @@ export const authenticateJWT = async (req, res, next) => {
         try {
           await connectToDatabase(); // Conecta a MongoDB si no está conectado
 
-          const user = await User.findById(decoded.id); // Busca al usuario en la base de datos
+          const user = await Users.findById(decoded.id); // Busca al usuario en la base de datos
           console.log("Usuario encontrado:", user);
 
           if (!user || !user.active) {
