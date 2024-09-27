@@ -1,18 +1,5 @@
-import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import Users from "../models/User.js"; // Importa el modelo de usuario
-
-// Esta función maneja la conexión a la base de datos reutilizando la conexión si ya existe.
-const connectToDatabase = async () => {
-  if (mongoose.connection.readyState === 0) {
-    // Si no hay una conexión activa, entonces conectamos.
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Conectado a MongoDB");
-  }
-};
 
 export const authenticateJWT = async (req, res, user, next) => {
   try {
