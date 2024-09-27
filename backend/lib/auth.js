@@ -8,7 +8,7 @@ export const authenticateJWT = async (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
       if (err) {
-        return res.sendStatus(403); // Forbidden
+        return res.status(403).send("Forbidden"); // Forbidden
       }
 
       // Verifica si el usuario existe y está activo en la base de datos
