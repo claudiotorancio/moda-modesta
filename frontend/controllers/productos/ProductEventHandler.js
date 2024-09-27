@@ -1,6 +1,7 @@
 import productoServices from "../../services/product_services.js";
 import { modalControllers } from "../../modal/modal.js";
 import { ProductEditor } from "./ProductEditor.js";
+import envioServices from "../../services/envio_services.js";
 
 export class ProductEventHandler {
   static async handleDesactivate(id) {
@@ -28,6 +29,22 @@ export class ProductEventHandler {
     } catch (error) {
       console.error("Error al activar el producto:", error);
       alert("Ocurrió un error al activar el producto.");
+    }
+  }
+
+  static async handleNotification(idProducto, idNotificaciones) {
+    try {
+      const confirmacion = confirm(
+        "¿Desea enviar el aviso de ingreso a todas las solicitudes??"
+      );
+
+      if (confirmacion) {
+        // Esperar a que se complete la desactivación
+        await envioServices.notificacionIngreso(idProducto, idNotificaciones);
+      }
+    } catch (error) {
+      console.error("Error al enviar la notificacion:", error);
+      alert("Ocurrió un error al notifiar.");
     }
   }
 

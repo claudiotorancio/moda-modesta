@@ -502,6 +502,11 @@ ul li a {
   color: #333; 
 } */
 
+.botones-admin {
+  display: flex;
+  justify-content: center;
+}
+
 @media (min-width: 768px) and (max-width: 1200px) {
   #menu-mobile {
     z-index: 1;
@@ -793,5 +798,10 @@ ul li a {
   ul li a {
     text-decoration: none;
     color: var(--fondo-usuario);
+  }
+
+  .botones-admin {
+    align-items: center;
+    flex-direction: column;
   }
 }

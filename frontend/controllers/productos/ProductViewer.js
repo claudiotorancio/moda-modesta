@@ -1,6 +1,5 @@
-import { controllers } from "./productos_controllers.js";
 import { modalControllers } from "../../modal/modal.js";
-import { handleEnvioFormProduct } from "../carrito/envioHandlers.js";
+import { eventListenerBotones } from "./botonesViewer.js";
 
 export const mostrarProducto = async (
   name,
@@ -64,27 +63,48 @@ export const mostrarProducto = async (
           <p class="product-description text-muted">${description}</p>
 
           ${hayStock ? "" : '<div class="alert alert-warning">Sin stock</div>'}
-          
-          <div class="product-options">
+          ${
+            hayStock
+              ? ` <div class="product-options">
             <label for="variation_1" class="form-label">Talles disponibles</label>
-            <select id="variation_1" class="form-select mb-3" ${
-              hayStock ? "" : "disabled"
-            }>
-              ${sizes
-                .map(
-                  (item) => `<option value="${item.size}">${item.size}</option>`
-                )
-                .join("")}
-            </select>
+            <select id="variation_1" class="form-select mb-3"  
+            >  ${sizes
+              .map(
+                (item) => `<option value="${item.size}">${item.size}</option>`
+              )
+              .join("")}
+            </select>`
+              : `<div class="container main-container">
+              <div class="text-center">
+                <div class="card-form">
+                  <p>¡Notificarme cuando ingrese!</p>
+                  <form id="notificacion-form" action="/api/notificacionSinStock" enctype="multipart/form-data" method="POST">
+                    <div class="form-group">
+                      <label for="email">Email:</label>
+                      <input type="email" id="email" class="form-control mt-2" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Enviar</button>
+                  </form>
+                </div>
+              </div>`
+          }
+             
           </div>
-          
-          <div class="d-flex justify-content-between mt-3">
-            <button type="button" class="btn btn-primary me-2" data-carrito ${
-              hayStock ? "" : "disabled"
-            }>Añadir carrito</button>
-            <a id="compartir-producto" class="btn btn-outline-secondary">
+            ${
+              hayStock
+                ? `<div class="d-flex justify-content-between mt-3">
+            <button type="button" class="btn btn-primary me-2" data-carrito 
+             
+            >Añadir carrito</button>`
+                : ""
+            }
+             ${
+               hayStock
+                 ? `<a id="compartir-producto" class="btn btn-outline-secondary">
               <i class="fa-solid fa-share-nodes"></i> Compartir
-            </a>
+            </a>`
+                 : ""
+             }
           </div>
         </div>
       </div>
@@ -122,90 +142,5 @@ export const mostrarProducto = async (
   `;
 
   // Manejar eventos para los botones
-  document
-    .getElementById("toggle-similares")
-    .addEventListener("click", function () {
-      const icon = this.querySelector("i");
-      icon.classList.toggle("fa-chevron-down");
-      icon.classList.toggle("fa-chevron-up");
-      document.getElementById("similares-Container").classList.toggle("show");
-
-      if (
-        document
-          .getElementById("similares-Container")
-          .classList.contains("show")
-      ) {
-        controllers
-          .cargarProductosSimilares(id)
-          .catch((error) =>
-            console.error("Error al cargar productos similares:", error)
-          );
-      }
-    });
-
-  // Verificar si existe el botón de calcular envío antes de añadir el event listener
-  const calcularEnvioBtn = document.getElementById("calcular-envio");
-  if (calcularEnvioBtn) {
-    calcularEnvioBtn.addEventListener(
-      "click",
-      handleEnvioFormProduct.bind(this)
-    );
-  } else {
-    console.log("Botón de calcular envío no encontrado, no hay stock.");
-  }
-
-  // Verificar si el botón de carrito existe antes de añadir el event listener
-  const agregarCarritoBtn = mostrarProducto.querySelector("[data-carrito]");
-  if (agregarCarritoBtn) {
-    agregarCarritoBtn.addEventListener("click", () => {
-      const talleSeleccionado = document.getElementById("variation_1").value;
-      controllers.comprarProducto(
-        name,
-        price,
-        imagePath,
-        id,
-        talleSeleccionado
-      );
-    });
-  } else {
-    console.log(
-      "Botón de añadir al carrito no encontrado, posiblemente no hay stock."
-    );
-  }
-
-  // Asegurarte de que el elemento existe antes de agregar el event listener
-  const compartirBtn = document.getElementById("compartir-producto");
-
-  if (compartirBtn) {
-    compartirBtn.addEventListener("click", () => {
-      // Lógica de compartir
-
-      compartirBtn.disabled = true; // Deshabilitar mientras se realiza la acción de compartir
-      const productUrl = window.location.href;
-
-      if (navigator.share) {
-        navigator
-          .share({
-            text: `¡Mira este producto! ${name} por solo $${price}`,
-            url: productUrl,
-          })
-          .then(() => {
-            console.log("Compartido exitosamente");
-          })
-          .catch((error) => {
-            console.log("Error al compartir:", error);
-          })
-          .finally(() => {
-            compartirBtn.disabled = false; // Habilitar nuevamente
-          });
-      } else {
-        alert(
-          "La función de compartir no es compatible con tu navegador. Comparte manualmente el enlace."
-        );
-        compartirBtn.disabled = false; // Habilitar en caso de error
-      }
-    });
-  } else {
-    console.error("El botón 'compartir-producto' no existe en el DOM.");
-  }
+  eventListenerBotones(name, price, imagePath, id);
 };

@@ -50,7 +50,10 @@ import getResena from "../backend/routes/resena/getResena.js";
 import putResena from "../backend/routes/resena/putResena.js";
 import deleteResena from "../backend/routes/resena/deleteResena.js";
 import { compraCancelada } from "../backend/routes/purchase/compraCancelada.js";
+import notificacionSinStock from "../backend/routes/notificaciones/notificacionSinStock.js";
 import path from "path";
+import getNotificaciones from "../backend/routes/notificaciones/getNotificaciones.js";
+import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 
 const router = Router();
 
@@ -107,6 +110,11 @@ export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 3);
 // Exportar `uploadMultiple` para múltiples imágenes
 // export const uploadMultiple = upload(process.env.BUCKET_AWS).array("images"); // 10 es el límite de imágenes, puedes ajustarlo según tus necesidades
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
+
+//notificaciones sin stock
+router.post("/api/notificacionSinStock", notificacionSinStock);
+router.get("/api/getNotificaciones", getNotificaciones);
+router.post("/api/notificacionIngreso/", notificacionIngreso);
 
 //reseñas
 router.post("/api/agregarResena", requireAdmin, agregarResena);

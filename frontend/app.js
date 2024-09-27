@@ -32,7 +32,7 @@ import {
   loadLogoImage,
 } from "./controllers/admin/eventBanner.js";
 import { buscar } from "./controllers/buscador/buscador.js";
-import { StockControllers } from "./controllers/stock/stock.controllers.js";
+import { RenderStock } from "./controllers/stock/RenderStock.js";
 import { ocultarProductos } from "./controllers/ocultarProductos/ocultarProductos.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     listaStock.addEventListener("click", async (e) => {
       e.preventDefault();
       ocultarProductos();
-      const stockInstance = new StockControllers(titulo);
+      const stockInstance = new RenderStock(titulo);
       await stockInstance.render();
     });
 

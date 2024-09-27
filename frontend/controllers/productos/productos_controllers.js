@@ -145,6 +145,7 @@ export const controllers = {
       // Verificar si hay productos similares
       if (similares.length === 0) {
         contenedorSimilares.innerHTML = `<p>No se encontraron productos similares.</p>`;
+
         return;
       }
       // Construir HTML de productos similares

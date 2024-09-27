@@ -53,6 +53,11 @@ export async function initializeCategoryControls() {
     window.location.href = "index.html"; // O puedes usar window.location.href = "index.html";
   };
 
+  if (productosFiltrados.length === 0) {
+    contenedorSeccion.innerHTML = "<p>No hay productos para mostrar</p>";
+    return;
+  }
+
   // Función para cargar productos en bloques
   const cargarProductos = () => {
     const inicio = paginaActual * productosPorPagina;
