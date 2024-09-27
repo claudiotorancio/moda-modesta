@@ -20,7 +20,7 @@ import {
 } from "./controllers/reseña/reseñas.js";
 import { Compras } from "./controllers/compras/compras-controllers.js";
 import { hashControllers } from "./controllers/hashControllers.js";
-// import { ListaServices } from "./services/lista_services.js";
+import { ListaServices } from "./services/lista_services.js";
 import { ListaControllers } from "./controllers/ListaUsuarios/lista.controllers.js";
 import { FormResena } from "./controllers/reseña/formResena.js";
 import { Estilos } from "./controllers/admin/Estilos.js";
@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadColorSettings();
   loadColorSettingsCard();
 
-  // const listaServicesInstance = new ListaServices();
-  // const isAdmin = await listaServicesInstance.getAdmin();
+  const listaServicesInstance = new ListaServices();
+  const isAdmin = await listaServicesInstance.getAdmin();
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
   // const divUsuario = document.querySelector(".rounded-circle");
@@ -65,10 +65,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const listaStock = document.querySelector("[data-stock]");
 
   const titulo = document.querySelector("[data-titulo]");
-  // console.log(isAdmin);
+
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
 
-  if (user) {
+  if (user && isAdmin) {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "block";
     });

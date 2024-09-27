@@ -13,7 +13,7 @@ export class ListaServices {
         method: "GET",
         credentials: "include",
       });
-      console.log(respuesta);
+
       const data = await respuesta.json();
       console.log(data);
       if (data.ok) {

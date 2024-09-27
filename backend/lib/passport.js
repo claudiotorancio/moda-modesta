@@ -46,6 +46,28 @@ passport.use(
   )
 );
 
+// Configuración de la estrategia de Cookie
+passport.use(
+  new CookieStrategy(
+    {
+      cookieName: "user_sid", // Asegúrate de que coincida con el nombre de tu cookie
+      signed: true, // Esto debe ser true si usas cookies firmadas
+      passReqToCallback: true, // Opcional: permite pasar `req` al callback
+    },
+    async (req, token, done) => {
+      try {
+        const user = await Users.findByToken({ token: token });
+        if (!user) {
+          return done(null, false); // Usuario no encontrado
+        }
+        return done(null, user); // Usuario autenticado
+      } catch (err) {
+        return done(err); // Manejo de errores
+      }
+    }
+  )
+);
+
 // passport.use('local.update', new LocalStrategy({
 //     usernameField: 'newUsername', // Cambiar al campo de nuevo nombre de usuario
 //     passwordField: 'newPassword', // Cambiar al campo de nueva contraseña
