@@ -9,7 +9,10 @@ export class ListaServices {
 
   getAdmin = async () => {
     try {
-      const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
+      const respuesta = await fetch(`${this.baseURL}/api/getAdmin`, {
+        method: "GET",
+        credentials: "include",
+      });
 
       const data = await respuesta.json();
       console.log(data);
