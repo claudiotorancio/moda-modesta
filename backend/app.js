@@ -4,6 +4,7 @@ import path from "path";
 import morgan from "morgan";
 import cors from "cors";
 import indexRouter from "../api/router.js";
+import cookieSession from "cookie-session";
 
 const app = express();
 
@@ -20,6 +21,19 @@ app.use(morgan("dev"));
 
 app.use(cors());
 //passport
+
+const isProduction = process.env.NODE_ENV === "production";
+console.log(isProduction);
+
+app.use(
+  cookieSession({
+    expires: 600000, // 10 minutos
+    domain: "https://moda-modesta.vercel.app",
+    secure: isProduction, // Solo en producción
+    httpOnly: true, // Previene acceso JavaScript a la cookie
+    sameSite: "lax", // Protección contra CSRF
+  })
+);
 
 app.use("/", indexRouter);
 
