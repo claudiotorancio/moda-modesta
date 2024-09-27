@@ -62,6 +62,7 @@ passport.use(
       try {
         // Assuming you store user ID in the cookie, you can fetch the user by ID
         const user = await Users.findById({ username: username });
+        console.log(user);
         if (!user) {
           return done(null, false); // User not found
         }
