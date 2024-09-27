@@ -83,7 +83,7 @@ router.use(
     cookie: {
       secure: isProduction, // Solo en producción
       httpOnly: true, // Previene acceso JavaScript a la cookie
-      sameSite: "None", // Protección contra CSRF
+      sameSite: "Strict", // Protección contra CSRF
       maxAge: 24 * 60 * 60 * 1000, // 24 horas
     },
   })
