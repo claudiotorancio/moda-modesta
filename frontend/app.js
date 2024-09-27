@@ -65,9 +65,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const listaStock = document.querySelector("[data-stock]");
 
   const titulo = document.querySelector("[data-titulo]");
-
+  console.log(isAdmin);
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
+  alert("antes de entrar");
   if (user && isAdmin) {
+    alert("adentro");
+
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "block";
     });
