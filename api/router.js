@@ -55,6 +55,7 @@ import path from "path";
 import getNotificaciones from "../backend/routes/notificaciones/getNotificaciones.js";
 import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 import { authenticateJWT } from "../backend/lib/auth.js";
+import rateLimit from "express-rate-limit";
 
 const router = Router();
 
@@ -84,6 +85,14 @@ router.use(
 );
 router.use(passport.initialize());
 router.use(passport.session());
+
+// Configuración del rate-limiter
+const purchaseLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 10, // Limitar a 10 solicitudes por IP en el intervalo
+  message:
+    "Demasiadas solicitudes desde esta IP. Intenta nuevamente más tarde.",
+});
 
 // Configuración de Multer
 const s3 = new AWS.S3({
@@ -145,8 +154,8 @@ router.put("/api/finalizarPedido/:id", requireAdmin, finalizarPedido);
 router.put("/api/compraCancelada/:id", requireAdmin, compraCancelada);
 
 // Rutas nodeMailer
-router.post("/api/sendMail", sendMail);
-router.post("/api/suscribeMail", suscribeMail);
+router.post("/api/sendMail", purchaseLimiter, sendMail);
+router.post("/api/suscribeMail", purchaseLimiter, suscribeMail);
 router.get("/api/confirmMail", confirmMail);
 router.get("/success", success);
 router.get("/error", error);
