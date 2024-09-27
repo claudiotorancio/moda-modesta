@@ -16,11 +16,13 @@ const connectToDatabase = async () => {
 
 export const authenticateJWT = async (req, res, next) => {
   try {
-    const token = req.cookies.user_sid; // Obtén el token de las cookies
-    console.log("Token recibido:", token);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    res.cookie("user_sid", token, { httpOnly: true });
 
     if (token) {
-      jwt.verify(token, process.env.SECRET_KEY, async (err, decoded) => {
+      jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
         if (err) {
           console.error("Error en la verificación del token:", err);
           return res.status(403).send("Forbidden"); // Si el token es inválido
