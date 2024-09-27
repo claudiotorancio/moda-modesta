@@ -4,10 +4,6 @@ import path from "path";
 import morgan from "morgan";
 import cors from "cors";
 import indexRouter from "../api/router.js";
-import passport from "../backend/lib/passport.js";
-import session from "express-session";
-import MongoDBStore from "connect-mongodb-session";
-import MONGODB_URI from "../backend/config.js";
 
 const app = express();
 
@@ -21,32 +17,6 @@ const outputPath = path.join(__dirname, "../public");
 app.use(urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan("dev"));
-
-const isProduction = process.env.NODE_ENV === "production";
-console.log(isProduction);
-
-router.use(
-  session({
-    key: "user_sid",
-    secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoDBStore(session)({
-      uri: MONGODB_URI,
-      collection: "mySessions",
-    }),
-    cookie: {
-      domain: "https://moda-modesta.vercel.app",
-      expires: 600000, // 10 minutos
-      secure: isProduction, // Solo en producción
-      httpOnly: true, // Previene acceso JavaScript a la cookie
-      sameSite: "lax", // Protección contra CSRF
-    },
-  })
-);
-
-router.use(passport.initialize());
-router.use(passport.session());
 
 app.use(cors());
 //passport

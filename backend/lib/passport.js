@@ -1,48 +1,50 @@
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
 import mongoose from "mongoose";
-import helpers from './helpers.js';
-import MONGODB_URI from '../config.js';
-import Users from '../models/User.js';
+import helpers from "./helpers.js";
+import MONGODB_URI from "../config.js";
+import Users from "../models/User.js";
 
 //connect to database
 
 await mongoose.connect(MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-
 // SignIn
-passport.use('local.signin', new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
-    passReqToCallback: true
-}, async (req, username, password, done) => {
- 
-    try {
+passport.use(
+  "local.signin",
+  new LocalStrategy(
+    {
+      usernameField: "username",
+      passwordField: "password",
+      passReqToCallback: true,
+    },
+    async (req, username, password, done) => {
+      try {
         const user = await Users.findOne({ username: username });
-        
+
         if (user) {
-            const validPassword = await helpers.matchPassword(password, user.password);
+          const validPassword = await helpers.matchPassword(
+            password,
+            user.password
+          );
 
-            if (validPassword) {
-           
- 
-                    return done(null, user);
-            } else {
-                return done(null, false, { message: 'Incorrect password' });
-            }
+          if (validPassword) {
+            return done(null, user);
+          } else {
+            return done(null, false, { message: "Incorrect password" });
+          }
         } else {
-            return done(null, false, { message: 'The username does not exist' });
+          return done(null, false, { message: "The username does not exist" });
         }
-    
-    } catch (err) {
-        return done(err, false, { message: 'An error occurred' }); 
+      } catch (err) {
+        return done(err, false, { message: "An error occurred" });
+      }
     }
-    
-}));
-
+  )
+);
 
 // passport.use('local.update', new LocalStrategy({
 //     usernameField: 'newUsername', // Cambiar al campo de nuevo nombre de usuario
@@ -57,9 +59,9 @@ passport.use('local.signin', new LocalStrategy({
 
 //         // Obtener el usuario desde el req.body
 //         const  {id}  = req.params // Asegúrate de enviar el userId desde el cliente
-        
+
 // // console.log(`id de usuario: ${newUsername}`)
-        
+
 // console.log(`id de usuario: ${id}`)
 
 // // // const {newUsername, newPassword} = req.body
@@ -91,51 +93,50 @@ passport.use('local.signin', new LocalStrategy({
 //     }
 // }));
 
-
 //SignUp
 
-passport.use('local.signup', new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
-    passReqToCallback: true
-}, async (req, username, password, done) => {
-
-    try {
+passport.use(
+  "local.signup",
+  new LocalStrategy(
+    {
+      usernameField: "username",
+      passwordField: "password",
+      passReqToCallback: true,
+    },
+    async (req, username, password, done) => {
+      try {
         const existingUser = await Users.findOne({ username });
         if (existingUser) {
-            return done(null, false, { message: 'Username already taken' });
+          return done(null, false, { message: "Username already taken" });
         }
         const newUser = new Users({
-            username: username,
-            password: await helpers.encryptPassword(password),
+          username: username,
+          password: await helpers.encryptPassword(password),
         });
-       await newUser.save();
-        
+        await newUser.save();
+
         return done(null, newUser);
-    } catch (err) {
-        return done(err, false, { message: 'Error creating user' });
+      } catch (err) {
+        return done(err, false, { message: "Error creating user" });
+      }
     }
-}));
-
-
+  )
+);
 
 //serialUser
 
 passport.serializeUser((user, done) => {
-
-    done(null, user.id);
+  done(null, user.id);
 });
-  
+
 passport.deserializeUser(async (id, done) => {
-    try {
-        const user = await Users.findById(id);
+  try {
+    const user = await Users.findById(id);
 
-        done(null, user);
-        
-    } catch (err) {
-        done(err, null);
-    }
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
 });
 
-
-export default passport
+export default passport;
