@@ -54,18 +54,20 @@ passport.use(
   new CookieStrategy(
     {
       cookieName: "user_sid", // Asegúrate de que coincida con el nombre de tu cookie
-      signed: true, // Esto debe ser true si usas cookies firmadas
-      passReqToCallback: true, // Opcional: permite pasar `req` al callback
+      signed: true,
+      passReqToCallback: true,
     },
-    async (req, token, done) => {
+    async (req, userId, done) => {
+      // Change token to userId or whatever identifier you are using
       try {
-        const user = await Users.findByToken({ token: token });
+        // Assuming you store user ID in the cookie, you can fetch the user by ID
+        const user = await Users.findById(userId);
         if (!user) {
-          return done(null, false); // Usuario no encontrado
+          return done(null, false); // User not found
         }
-        return done(null, user); // Usuario autenticado
+        return done(null, user); // User authenticated
       } catch (err) {
-        return done(err); // Manejo de errores
+        return done(err); // Error handling
       }
     }
   )
