@@ -10,7 +10,7 @@ export class ListaServices {
   getAdmin = async () => {
     try {
       const respuesta = await fetch(`${this.baseURL}/api/getAdmin`, {
-        method: "POST",
+        method: "GET",
         credentials: "include",
       });
 
