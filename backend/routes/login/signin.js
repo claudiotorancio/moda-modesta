@@ -3,7 +3,7 @@ import passport from "../../lib/passport.js";
 const signin = async (req, res) => {
   try {
     // Utilizar passport.authenticate() para manejar la autenticación del usuario
-    passport.authenticate("local.signin", { session: false })(
+    passport.authenticate("local.signin", { session: true })(
       req,
       res,
       async (error) => {
