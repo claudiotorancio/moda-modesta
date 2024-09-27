@@ -3,7 +3,7 @@ const getAdmin = async (req, res) => {
     console.log("Usuario autenticado antes:", req.user);
     console.log("Sesión antes", req.session);
     // Verificar si el usuario está autenticado
-    if (!req.isAuthenticated()) {
+    if ((!req.isAuthenticated(), { session: true })) {
       return res
         .status(401)
         .json({ ok: false, message: "Usuario no autenticado" });
