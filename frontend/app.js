@@ -67,70 +67,69 @@ document.addEventListener("DOMContentLoaded", async () => {
   const titulo = document.querySelector("[data-titulo]");
 
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
-  if (user) {
-    document.querySelectorAll(".admin-only").forEach((el) => {
-      el.style.display = "block";
-    });
 
-    cargarReseñasAdmin();
+  document.querySelectorAll(".admin-only").forEach((el) => {
+    el.style.display = "block";
+  });
 
-    const envio = document.querySelector("[data-pedidos]");
-    envio.addEventListener("click", (e) => {
-      e.preventDefault();
-      ocultarProductos();
-      const comprasInstance = new Compras(titulo);
-      comprasInstance.renderLista();
-    });
+  cargarReseñasAdmin();
 
-    const crearProducto = document.querySelector("[data-crearProductos]");
-    crearProducto.addEventListener("click", async (e) => {
-      e.preventDefault();
-      const productForm = new ProductForm(titulo);
-      productForm.render();
-    });
+  const envio = document.querySelector("[data-pedidos]");
+  envio.addEventListener("click", (e) => {
+    e.preventDefault();
+    ocultarProductos();
+    const comprasInstance = new Compras(titulo);
+    comprasInstance.renderLista();
+  });
 
-    resenas.addEventListener("click", (e) => {
-      e.preventDefault();
-      ocultarProductos();
-      const formResena = new FormResena(titulo);
-      formResena.render();
-    });
+  const crearProducto = document.querySelector("[data-crearProductos]");
+  crearProducto.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const productForm = new ProductForm(titulo);
+    productForm.render();
+  });
 
-    estilosDiseno.addEventListener("click", (e) => {
-      e.preventDefault();
-      const estilosInstance = new Estilos(titulo);
-      estilosInstance.render();
-    });
+  resenas.addEventListener("click", (e) => {
+    e.preventDefault();
+    ocultarProductos();
+    const formResena = new FormResena(titulo);
+    formResena.render();
+  });
 
-    listaStock.addEventListener("click", async (e) => {
-      e.preventDefault();
-      ocultarProductos();
-      const stockInstance = new RenderStock(titulo);
-      await stockInstance.render();
-    });
+  estilosDiseno.addEventListener("click", (e) => {
+    e.preventDefault();
+    const estilosInstance = new Estilos(titulo);
+    estilosInstance.render();
+  });
 
-    susxriptores.addEventListener("click", async (e) => {
-      e.preventDefault();
-      ocultarProductos();
-      const ListaControllersInstamce = new ListaControllers(titulo);
-      await ListaControllersInstamce.renderLista();
-    });
+  listaStock.addEventListener("click", async (e) => {
+    e.preventDefault();
+    ocultarProductos();
+    const stockInstance = new RenderStock(titulo);
+    await stockInstance.render();
+  });
 
-    ventas.addEventListener("click", (e) => {
-      e.preventDefault();
-      alert("Seccion en Construccion");
-    });
+  susxriptores.addEventListener("click", async (e) => {
+    e.preventDefault();
+    ocultarProductos();
+    const ListaControllersInstamce = new ListaControllers(titulo);
+    await ListaControllersInstamce.renderLista();
+  });
 
-    controllers.renderProducts();
-    actualizarUsuario.textContent = `${user}`;
-    logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
-    userActive.style.display = "none";
-    buscar();
-  } else {
-    controllers.renderInit();
-    cargarReseñas();
-    userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
-  }
+  ventas.addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("Seccion en Construccion");
+  });
+
+  controllers.renderProducts();
+  actualizarUsuario.textContent = `${user}`;
+  logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+  userActive.style.display = "none";
+  buscar();
+
+  controllers.renderInit();
+  cargarReseñas();
+  userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
 
   const initButton = document.querySelector("[data-init]");
   initButton.addEventListener("click", (e) => {
