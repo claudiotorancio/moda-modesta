@@ -3,10 +3,7 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
-import passport from "../backend/lib/passport.js";
-import session from "express-session";
-import MongoDBStore from "connect-mongodb-session";
-import MONGODB_URI from "../backend/config.js";
+
 import signin from "../backend/routes/login/signin.js";
 import signup from "../backend/routes/login/signup.js";
 import logout from "../backend/routes/login/logout.js";
@@ -64,33 +61,6 @@ const router = Router();
 router.use(express.json());
 router.use(cookieParser());
 router.use(express.urlencoded({ extended: false }));
-
-const isProduction = process.env.NODE_ENV === "production";
-console.log(isProduction);
-
-router.use(
-  session({
-    key: "user_sid",
-    secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoDBStore(session)({
-      uri: MONGODB_URI,
-      collection: "mySessions",
-    }),
-    cookie: {
-      expires: 600000, // 10 minutos
-      // domain: "https://moda-modesta.vercel.app",
-
-      // // secure: isProduction, // Solo en producción
-      // httpOnly: true, // Previene acceso JavaScript a la cookie
-      // sameSite: "lax", // Protección contra CSRF
-    },
-  })
-);
-
-router.use(passport.initialize());
-router.use(passport.session());
 
 // Configuración del rate-limiter
 const purchaseLimiter = rateLimit({
