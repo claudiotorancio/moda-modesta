@@ -184,11 +184,7 @@ router.post("/api/signup", signup);
 router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 // Rutas listado
-router.get(
-  "/api/getAdmin",
-  passport.authenticate("cookie", { session: false }), // Ensure this is here
-  getAdmin
-); // Your controller logic);
+router.get("/api/getAdmin", getAdmin); // Your controller logic);
 router.get("/api/getUser/:id", requireAdmin, getUser);
 router.get("/api/renderLista", requireAdmin, listaAdmin);
 router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);
