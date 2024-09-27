@@ -1,5 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as CookieStrategy } from "passport-cookie";
+
 import mongoose from "mongoose";
 import helpers from "./helpers.js";
 import MONGODB_URI from "../config.js";

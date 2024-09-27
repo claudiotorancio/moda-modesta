@@ -1,3 +1,5 @@
+import passport from "../../lib/passport.js";
+
 const getAdmin = async (req, res) => {
   try {
     passport.authenticate("cookie", { session: false })(req, res, async () => {
