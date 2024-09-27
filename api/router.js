@@ -127,21 +127,22 @@ router.put("/api/putResena/:id", requireAdmin, putResena);
 router.delete("/api/deleteResena/:id", requireAdmin, deleteResena);
 
 //carrito
-router.get("/api/getProductsCart", authenticateJWT, getProductsCart); // Protegida
-router.post("/api/addProductCart", authenticateJWT, addProductCart); // Protegida
-router.put("/api/putProductCart/:id", authenticateJWT, putProductCart); // Protegida
-router.delete("/api/deleteProductCart/:id", authenticateJWT, deleteProductCart); // Protegida
-router.delete("/api/limpiarCarrito", authenticateJWT, limpiarCarrito); // Protegida
+
+router.get("/api/getProductsCart", getProductsCart);
+router.post("/api/addProductCart", addProductCart);
+router.put("/api/putProductCart/:id", putProductCart);
+router.delete("/api/deleteProductCart/:id", deleteProductCart);
+router.delete("/api/limpiarCarrito", limpiarCarrito);
 
 //compras
-router.get("/api/listaOrder", requireAdmin, purchaseOrder); // Admin
-router.delete("/api/deleteOrder/:id", requireAdmin, deleteOrder); // Admin
-router.post("/api/compraPrepare", requireAdmin, compraPrepare); // Admin
-router.put("/api/compraEnCamino/:id", requireAdmin, compraEnCamino); // Admin
-router.put("/api/aceptarPedido/:id", requireAdmin, aceptarPedido); // Admin
-router.post("/api/correoEnCamino", requireAdmin, correoEnCamino); // Admin
-router.put("/api/finalizarPedido/:id", requireAdmin, finalizarPedido); // Admin
-router.put("/api/compraCancelada/:id", requireAdmin, compraCancelada); // Admin
+router.get("/api/listaOrder", requireAdmin, purchaseOrder);
+router.delete("/api/deleteOrder/:id", requireAdmin, deleteOrder);
+router.post("/api/compraPrepare", requireAdmin, compraPrepare);
+router.put("/api/compraEnCamino/:id", requireAdmin, compraEnCamino);
+router.put("/api/aceptarPedido/:id", requireAdmin, aceptarPedido);
+router.post("/api/correoEnCamino", requireAdmin, correoEnCamino);
+router.put("/api/finalizarPedido/:id", requireAdmin, finalizarPedido);
+router.put("/api/compraCancelada/:id", requireAdmin, compraCancelada);
 
 // Rutas nodeMailer
 router.post("/api/sendMail", sendMail);
@@ -149,7 +150,7 @@ router.post("/api/suscribeMail", suscribeMail);
 router.get("/api/confirmMail", confirmMail);
 router.get("/success", success);
 router.get("/error", error);
-router.post("/api/enviarPromocion/", requireAdmin, enviarPromocion); // Admin
+router.post("/api/enviarPromocion/", requireAdmin, enviarPromocion);
 
 //rutas envio
 router.post("/api/costoEnvio", costoEnvio);
@@ -158,37 +159,27 @@ router.post("/api/costoEnvio", costoEnvio);
 router.post("/api/signup", signup);
 router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
-
 // Rutas listado
 router.get("/api/getAdmin", getAdmin);
-router.get("/api/getUser/:id", requireAdmin, getUser); // Admin
-router.get("/api/renderLista", requireAdmin, listaAdmin); // Admin
-router.delete("/api/deleteUser/:id", requireAdmin, deleteUser); // Admin
-router.put("/api/updateUser/:id", requireAdmin, updateUser); // Admin
-router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos); // Admin
-
+router.get("/api/getUser/:id", requireAdmin, getUser);
+router.get("/api/renderLista", requireAdmin, listaAdmin);
+router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);
+router.put("/api/updateUser/:id", requireAdmin, updateUser);
+router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
-router.get(
-  "/api/listaProductosUsuario",
-  authenticateJWT,
-  listaProductosUsuario
-); // Protegida
-router.get("/api/listaProductosAdmin", requireAdmin, listaProductosAdmin); // Admin
-router.post(
-  "/api/createProduct",
-  requireAdmin,
-  uploadSingleUpdate,
-  createProduct
-); // Admin
+router.get("/api/listaProductosUsuario", listaProductosUsuario);
+router.get("/api/listaProductosAdmin", listaProductosAdmin);
+router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
+router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
+router.put("/api/activateProduct/:id", requireAdmin, activarProducto);
+router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct/:id",
   requireAdmin,
   uploadSingleUpdate,
   updateProduct
-); // Admin
-router.delete("/api/desactivateProduct/:id", requireAdmin, desactivateProduct); // Admin
-router.put("/api/activarProducto/:id", requireAdmin, activarProducto); // Admin
-router.get("/api/detailsProduct/:id", detailsProduct); // Todos
-router.get("/api/productoSimilar/:id", productoSimilar); // Todos
+);
+router.get("/api/productoSimilar/:id", productoSimilar);
+
 export default router;

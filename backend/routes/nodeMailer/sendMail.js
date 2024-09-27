@@ -20,7 +20,6 @@ const sendMail = async (req, res) => {
       enCamino = false, // Valor predeterminado
       finalizado = false, // Valor predeterminado
     } = req.body;
-    console.log(req.body);
     // Verificar que todos los campos requeridos están presentes
     if (
       !nombre ||
@@ -142,8 +141,6 @@ const sendMail = async (req, res) => {
       enCamino,
       finalizado,
     });
-
-    console.log(newOrder);
 
     await newOrder.save();
 
