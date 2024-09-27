@@ -20,7 +20,7 @@ export const authenticateJWT = async (req, res, next) => {
     console.log("Token recibido:", token);
 
     if (token) {
-      jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+      jwt.verify(token, process.env.SECRET_KEY, async (err, decoded) => {
         if (err) {
           console.error("Error en la verificación del token:", err);
           return res.status(403).send("Forbidden"); // Si el token es inválido
