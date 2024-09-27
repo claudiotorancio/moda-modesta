@@ -19,8 +19,10 @@ const signin = async (req, res) => {
           return res.status(401).json({ message: "Usuario no autenticado" });
         }
 
-        // console.log('Usuario autenticado:', req.user);
-        // console.log('Sesión:', req.session);
+        console.log("Usuario autenticado:", req.user);
+        console.log("Sesión:", req.session);
+        console.log("Sesión:", req.session.cookies);
+
         // Manejo de la respuesta para mostrar en pantalla los valores
         return res.json({ user: req.user });
       }

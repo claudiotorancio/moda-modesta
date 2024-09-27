@@ -66,6 +66,7 @@ router.use(cookieParser());
 router.use(express.urlencoded({ extended: false }));
 
 const isProduction = process.env.NODE_ENV === "production";
+console.log(isProduction);
 
 router.use(
   session({

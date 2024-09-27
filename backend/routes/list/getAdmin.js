@@ -9,7 +9,7 @@ const getAdmin = async (req, res) => {
     if (req.user.role !== "admin") {
       return res.status(403).json({ ok: false });
     }
-
+    console.log(req.user.role);
     // Si el usuario está autenticado y tiene el rol de "admin", devolver true
     res.json({ ok: true });
   } catch (error) {
