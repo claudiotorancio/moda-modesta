@@ -4,7 +4,10 @@ import path from "path";
 import morgan from "morgan";
 import cors from "cors";
 import indexRouter from "../api/router.js";
-// import cookieSession from "cookie-session";
+import passport from "../backend/lib/passport.js";
+import session from "express-session";
+import MongoDBStore from "connect-mongodb-session";
+import MONGODB_URI from "../backend/config.js";
 
 const app = express();
 
@@ -22,21 +25,36 @@ app.use(urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan("dev"));
 
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
+
 app.use(cors());
 //passport
 
-// const isProduction = process.env.NODE_ENV === "production";
-// console.log(isProduction);
+const isProduction = process.env.NODE_ENV === "production";
+console.log(isProduction);
 
-// app.use(
-//   cookieSession({
-//     expires: 600000, // 10 minutos
-//     domain: "https://moda-modesta.vercel.app",
-//     secure: isProduction, // Solo en producción
-//     httpOnly: true, // Previene acceso JavaScript a la cookie
-//     sameSite: "lax", // Protección contra CSRF
-//   })
-// );
+app.use(
+  session({
+    key: "user_sid",
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoDBStore(session)({
+      uri: MONGODB_URI,
+      collection: "mySessions",
+    }),
+    cookie: {
+      secure: isProduction, // Solo en producción
+      httpOnly: true, // Previene acceso JavaScript a la cookie
+      sameSite: "None", // Protección contra CSRF
+      maxAge: 24 * 60 * 60 * 1000, // 24 horas
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", indexRouter);
 
