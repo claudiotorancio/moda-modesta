@@ -7,6 +7,7 @@ import indexRouter from "../api/router.js";
 import session from "express-session";
 import MongoDBStore from "connect-mongodb-session";
 import MONGODB_URI from "../backend/config.js";
+import passport from "passport";
 
 const app = express();
 
@@ -55,6 +56,8 @@ app.use(
   })
 );
 
+router.use(passport.initialize());
+router.use(passport.session());
 // Usar router
 app.use("/", indexRouter);
 
