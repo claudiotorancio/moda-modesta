@@ -5,10 +5,10 @@ import path from "path";
 import morgan from "morgan";
 import cors from "cors";
 import indexRouter from "../api/router.js";
-import passport from "../backend/lib/passport.js";
-import session from "express-session";
-import MongoDBStore from "connect-mongodb-session";
-import MONGODB_URI from "../backend/config.js";
+// import passport from "../backend/lib/passport.js";
+// import session from "express-session";
+// import MongoDBStore from "connect-mongodb-session";
+// import MONGODB_URI from "../backend/config.js";
 
 const app = express();
 
@@ -32,34 +32,34 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 //passport
 
-const isProduction = process.env.NODE_ENV === "production";
-console.log(isProduction);
+// const isProduction = process.env.NODE_ENV === "production";
+// console.log(isProduction);
 
-const mongoStore = MongoDBStore(session); // Crear la clase del store de MongoDB
+// const mongoStore = MongoDBStore(session); // Crear la clase del store de MongoDB
 
-app.use(
-  session({
-    key: "user_sid",
-    secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: false,
-    store: new mongoStore({
-      uri: MONGODB_URI,
-      collection: "mySessions",
-    }),
-    cookie: {
-      secure: true, // Solo en producción
-      httpOnly: true, // Previene acceso JavaScript a la cookie
-      sameSite: "None", // Protección contra CSRF
-      maxAge: 24 * 60 * 60 * 1000, // 24 horas
-    },
-  })
-);
+// app.use(
+//   session({
+//     key: "user_sid",
+//     secret: process.env.SECRET_KEY,
+//     resave: false,
+//     saveUninitialized: false,
+//     store: new mongoStore({
+//       uri: MONGODB_URI,
+//       collection: "mySessions",
+//     }),
+//     cookie: {
+//       secure: false, // Solo en producción
+//       httpOnly: true, // Previene acceso JavaScript a la cookie
+//       sameSite: "None", // Protección contra CSRF
+//       maxAge: 24 * 60 * 60 * 1000, // 24 horas
+//     },
+//   })
+// );
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-app.use("/", passport.session(), indexRouter);
+app.use("/", indexRouter);
 
 //manejo de errores
 app.use((err, req, res, next) => {

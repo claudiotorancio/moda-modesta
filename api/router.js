@@ -81,7 +81,7 @@ router.use(
       collection: "mySessions",
     }),
     cookie: {
-      secure: true, // Solo en producción
+      secure: isProduction, // Solo en producción
       httpOnly: true, // Previene acceso JavaScript a la cookie
       sameSite: "None", // Protección contra CSRF
       maxAge: 24 * 60 * 60 * 1000, // 24 horas

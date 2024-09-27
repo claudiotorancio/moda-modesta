@@ -126,13 +126,15 @@ passport.use(
 //serialUser
 
 passport.serializeUser((user, done) => {
+  console.log("id serializer", user.id);
   done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
+  console.log(id);
   try {
     const user = await Users.findById(id);
-
+    console.log("usuario encontrado deserializer", user);
     done(null, user);
   } catch (err) {
     done(err, null);
