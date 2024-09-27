@@ -57,12 +57,11 @@ passport.use(
       signed: true,
       passReqToCallback: true,
     },
-    async (req, username, done) => {
+    async (req, userId, done) => {
       // Change token to userId or whatever identifier you are using
       try {
         // Assuming you store user ID in the cookie, you can fetch the user by ID
-        const user = await Users.findById({ username: username });
-        console.log(user);
+        const user = await Users.findById(userId);
         if (!user) {
           return done(null, false); // User not found
         }

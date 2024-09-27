@@ -81,9 +81,9 @@ router.use(
     cookie: {
       domain: "https://moda-modesta.vercel.app",
       expires: 600000, // 10 minutos
-      // secure: isProduction, // Solo en producción
-      httpOnly: true, // Previene acceso JavaScript a la cookie
-      sameSite: "lax", // Protección contra CSRF
+      // // secure: isProduction, // Solo en producción
+      // httpOnly: true, // Previene acceso JavaScript a la cookie
+      // sameSite: "lax", // Protección contra CSRF
     },
   })
 );
