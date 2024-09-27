@@ -48,7 +48,7 @@ app.use(
       collection: "mySessions",
     }),
     cookie: {
-      secure: isProduction, // Solo en producción
+      secure: true, // Solo en producción
       httpOnly: true, // Previene acceso JavaScript a la cookie
       sameSite: "None", // Protección contra CSRF
       maxAge: 24 * 60 * 60 * 1000, // 24 horas
@@ -59,7 +59,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/", indexRouter);
+app.use("/", passport.session(), indexRouter);
 
 //manejo de errores
 app.use((err, req, res, next) => {
