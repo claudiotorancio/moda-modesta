@@ -5,6 +5,7 @@ import path from "path";
 import morgan from "morgan";
 import cors from "cors";
 import indexRouter from "../api/router.js";
+import { baseURL } from "../frontend/services/product_services.js";
 // import passport from "../backend/lib/passport.js";
 // import session from "express-session";
 // import MongoDBStore from "connect-mongodb-session";
@@ -30,7 +31,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 // Configuración de CORS
 const corsOptions = {
-  origin: "", // Cambia esto a la URL de tu frontend
+  origin: `${baseURL}`, // Cambia esto a la URL de tu frontend
   credentials: true, // Permite que las cookies de sesión se envíen
 };
 
