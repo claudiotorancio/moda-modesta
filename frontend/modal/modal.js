@@ -160,12 +160,12 @@ const modalErrorSignIn = () => {
   showModal(
     "Usuario o contraseña incorrectos",
     "",
-    "Volver",
+    "Volver a intentar",
     () => {
-      const modal = document.getElementById("modal");
-      modal.style.display = "none";
+      const loginControllersInstance = new LoginControllers();
+      loginControllersInstance.renderSignin();
     },
-    3000
+    2000
   );
 };
 

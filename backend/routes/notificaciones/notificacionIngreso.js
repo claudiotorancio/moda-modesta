@@ -5,8 +5,6 @@ import MONGODB_URI from "../../config.js";
 
 // Función para manejar el ingreso de notificaciones y el envío de correos electrónicos
 const notificacionIngreso = async (req, res) => {
-  console.log("Datos recibidos en la solicitud:", req.body);
-
   try {
     // Extraer los IDs de notificaciones y el ID del producto desde el cuerpo de la solicitud
     const { idProducto, idNotificaciones } = req.body;

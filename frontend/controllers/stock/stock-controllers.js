@@ -39,7 +39,7 @@ export class StockControllers {
           const stockB = b.sizes.reduce((acc, size) => acc + size.stock, 0);
           return stockA === 0 ? -1 : stockB === 0 ? 1 : stockA < 10 ? -1 : 1;
         });
-        console.log(productosOrdenados);
+
         productosOrdenados.forEach(async (producto) => {
           const { _id, name, sizes, price, isActive, isFeatured } = producto;
           const hayStock = producto.sizes.some((item) => item.stock > 0);

@@ -16,7 +16,7 @@ export async function hashControllers() {
     }
 
     const producto = await productoServices.detalleProducto(id);
-    console.log(producto);
+
     if (!producto) {
       console.error("Producto no encontrado en la respuesta de la API.");
       return;
@@ -24,7 +24,6 @@ export async function hashControllers() {
 
     // Verificar si hay stock en alguna de las tallas
     const hayStock = producto.sizes.some((item) => item.stock > 0);
-    console.log(hayStock);
 
     // Mostrar el producto solo si existe
     mostrarProducto(

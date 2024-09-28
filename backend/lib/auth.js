@@ -15,14 +15,11 @@ export const authenticateJWT = async (req, res, user, next) => {
           return res.status(403).send("Forbidden"); // Si el token es inválido
         }
 
-        console.log("Token decodificado:", decoded);
-
         // Asegúrate de que te conectas a la base de datos
         try {
           await connectToDatabase(); // Conecta a MongoDB si no está conectado
 
           const user = await Users.findById(decoded.id); // Busca al usuario en la base de datos
-          console.log("Usuario encontrado:", user);
 
           if (!user || !user.active) {
             // Si el usuario no existe o no está activo
