@@ -1,4 +1,3 @@
-import Users from "../../models/User.js";
 import passport from "../../lib/passport.js";
 
 const signin = (req, res) => {
@@ -14,15 +13,7 @@ const signin = (req, res) => {
       return res.status(401).json({ message: "Usuario no autenticado" });
     }
 
-    passport.deserializeUser(async (id, done) => {
-      try {
-        const user = await Users.findById(id);
-        console.log("usuario encontrado deserializer", user);
-        done(null, user);
-      } catch (err) {
-        done(err, null);
-      }
-    });
+    passport.deserializeUser(req.user._id);
     // res.cookie("user_sid", req.sessionID, {
     //   secure: process.env.NODE_ENV === "production",
     //   httpOnly: true,
