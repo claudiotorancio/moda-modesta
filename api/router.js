@@ -1,12 +1,18 @@
-import express, { Router } from "express";
+import { fileURLToPath } from "url";
+import express, { Router, urlencoded } from "express";
+import morgan from "morgan";
+import cors from "cors";
 import cookieParser from "cookie-parser";
+import session from "express-session";
+import MongoDBStore from "connect-mongodb-session";
 import multer from "multer";
 import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
-// import passport from "../backend/lib/passport.js";
-// import session from "express-session";
-// import MongoDBStore from "connect-mongodb-session";
-// import MONGODB_URI from "../backend/config.js";
+import rateLimit from "express-rate-limit";
+import path from "path";
+
+import passport from "../backend/lib/passport.js";
+import MONGODB_URI from "../backend/config.js";
 import signin from "../backend/routes/login/signin.js";
 import signup from "../backend/routes/login/signup.js";
 import logout from "../backend/routes/login/logout.js";
@@ -51,45 +57,60 @@ import putResena from "../backend/routes/resena/putResena.js";
 import deleteResena from "../backend/routes/resena/deleteResena.js";
 import { compraCancelada } from "../backend/routes/purchase/compraCancelada.js";
 import notificacionSinStock from "../backend/routes/notificaciones/notificacionSinStock.js";
-import path from "path";
 import getNotificaciones from "../backend/routes/notificaciones/getNotificaciones.js";
 import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 import { authenticateJWT } from "../backend/lib/auth.js";
-import rateLimit from "express-rate-limit";
 
+const app = express();
 const router = Router();
 
-// Configuración de midllewares
+// Ruta hacia carpeta 'public'
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const outputPath = path.join(__dirname, "../public");
 
-// router.use("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
+// Middlewares
+app.use(cookieParser());
+app.use(urlencoded({ extended: false }));
+app.use(express.json());
+app.use(morgan("dev"));
+app.use(cors());
 
-router.use(express.json());
-router.use(cookieParser());
-router.use(express.urlencoded({ extended: false }));
+// Configuración de la sesión
+const store = new MongoDBStore(session)({
+  uri: MONGODB_URI,
+  collection: "mySessions",
+});
 
-// const store = new MongoDBStore(session)({
-//   uri: MONGODB_URI,
-//   collection: "mySessions",
-// });
+app.use(
+  session({
+    key: "user_sid",
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+      expires: 600000, // 10 minutos
+      secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
+      httpOnly: true, // Previene acceso JavaScript a la cookie
+      sameSite: "lax", // Protección contra CSRF
+    },
+  })
+);
 
-// router.use(
-//   session({
-//     key: "user_sid",
-//     secret: process.env.SECRET_KEY,
-//     resave: false,
-//     saveUninitialized: false,
-//     store: store,
-//     cookie: {
-//       expires: 600000, // 10 minutos
-//       secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
-//       httpOnly: true, // Previene acceso JavaScript a la cookie
-//       sameSite: "lax", // Protección contra CSRF
-//     },
-//   })
-// );
+app.use(passport.initialize());
+app.use(passport.session());
 
-// router.use(passport.initialize());
-// router.use(passport.session());
+// Manejo de errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res
+    .status(500)
+    .send({ error: "Algo salió mal, inténtalo de nuevo más tarde." });
+});
+
+// Archivos estáticos
+app.use(express.static(outputPath));
 
 // Configuración del rate-limiter
 const purchaseLimiter = rateLimit({
@@ -99,7 +120,7 @@ const purchaseLimiter = rateLimit({
     "Demasiadas solicitudes desde esta IP. Intenta nuevamente más tarde.",
 });
 
-// Configuración de Multer
+// Configuración de Multer y AWS S3
 const s3 = new AWS.S3({
   region: process.env.S3_BUCKET_REGION,
   credentials: {
@@ -108,28 +129,27 @@ const s3 = new AWS.S3({
   },
 });
 
-const upload = () =>
-  multer({
-    storage: multerS3({
-      s3,
-      bucket: process.env.BUCKET_AWS,
-      contentType: multerS3.AUTO_CONTENT_TYPE,
-      acl: "public-read",
-      metadata(req, file, cb) {
-        cb(null, { fieldName: file.fieldname });
-      },
-      key(req, file, cb) {
-        cb(null, Date.now().toString() + path.extname(file.originalname));
-      },
-    }),
-  });
+const upload = multer({
+  storage: multerS3({
+    s3,
+    bucket: process.env.BUCKET_AWS,
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: "public-read",
+    metadata(req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key(req, file, cb) {
+      cb(null, Date.now().toString() + path.extname(file.originalname));
+    },
+  }),
+});
 
-export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 3);
-// Exportar `uploadMultiple` para múltiples imágenes
-// export const uploadMultiple = upload(process.env.BUCKET_AWS).array("images"); // 10 es el límite de imágenes, puedes ajustarlo según tus necesidades
-const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
+const uploadSingle = upload.single("imagePath"); // Para subir una sola imagen
+const uploadSingleUpdate = upload.single("imagePath"); // Para actualizar una imagen
 
-//notificaciones sin stock
+// Rutas
+
+// Notificaciones
 router.post("/api/notificacionSinStock", notificacionSinStock);
 router.get(
   "/api/getNotificaciones",
@@ -144,21 +164,20 @@ router.post(
   notificacionIngreso
 );
 
-//reseñas
+// Reseñas
 router.post("/api/agregarResena", requireAdmin, agregarResena);
 router.get("/api/getResena", getResena);
 router.put("/api/putResena/:id", requireAdmin, putResena);
 router.delete("/api/deleteResena/:id", requireAdmin, deleteResena);
 
-//carrito
-
+// Carrito
 router.get("/api/getProductsCart", getProductsCart);
 router.post("/api/addProductCart", addProductCart);
 router.put("/api/putProductCart/:id", putProductCart);
 router.delete("/api/deleteProductCart/:id", deleteProductCart);
 router.delete("/api/limpiarCarrito", limpiarCarrito);
 
-//compras
+// Compras
 router.get("/api/listaOrder", requireAdmin, purchaseOrder);
 router.delete("/api/deleteOrder/:id", requireAdmin, deleteOrder);
 router.post("/api/compraPrepare", requireAdmin, compraPrepare);
@@ -176,23 +195,25 @@ router.get("/success", success);
 router.get("/error", error);
 router.post("/api/enviarPromocion/", requireAdmin, enviarPromocion);
 
-//rutas envio
+// Rutas envío
 router.post("/api/costoEnvio", costoEnvio);
 
 // Rutas signin
 router.post("/api/signup", signup);
 router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
+
 // Rutas listado
-router.get("/api/getAdmin", getAdmin); // Your controller logic);
+router.get("/api/getAdmin", getAdmin);
 router.get("/api/getUser/:id", requireAdmin, getUser);
 router.get("/api/renderLista", requireAdmin, listaAdmin);
 router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);
 router.put("/api/updateUser/:id", requireAdmin, updateUser);
 router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
+
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
-router.get("listaProductosUsuario", listaProductosUsuario);
+router.get("/api/listaProductosUsuario", listaProductosUsuario);
 router.get("/api/listaProductosAdmin", listaProductosAdmin);
 router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
@@ -206,4 +227,8 @@ router.put(
 );
 router.get("/api/productoSimilar/:id", productoSimilar);
 
-export default router;
+// Middleware para la autenticación
+app.use("/", router);
+
+// Escuchar en el puerto especificado
+export default app;
