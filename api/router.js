@@ -11,7 +11,7 @@ import multerS3 from "multer-s3";
 import rateLimit from "express-rate-limit";
 import path from "path";
 
-import passport from "../backend/lib/passport.js";
+import passport from "passport";
 import MONGODB_URI from "../backend/config.js";
 import signin from "../backend/routes/login/signin.js";
 import signup from "../backend/routes/login/signup.js";
@@ -97,7 +97,7 @@ app.use(
   })
 );
 
-app.use(session({ secret: process.env.SECRET_KEY }));
+// app.use(session({ secret: process.env.SECRET_KEY }));
 app.use(passport.initialize());
 app.use(passport.session());
 
