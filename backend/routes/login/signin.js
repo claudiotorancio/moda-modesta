@@ -16,7 +16,7 @@ const signin = (req, res) => {
         return res.status(401).json({ message: "Usuario no autenticado" });
       }
 
-      res.cookie("user_sid", user._id, {
+      res.cookie("user_sid", req.user._id, {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
         sameSite: "lax",
