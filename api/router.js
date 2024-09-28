@@ -77,12 +77,12 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Configuración de CORS
-const corsOptions = {
-  origin: `${baseURL}`, // Cambia esto a la URL de tu frontend
-  credentials: true, // Permite que las cookies de sesión se envíen
-};
+// const corsOptions = {
+//   origin: `${baseURL}`, // Cambia esto a la URL de tu frontend
+//   credentials: true, // Permite que las cookies de sesión se envíen
+// };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Configuración de la sesión
 const store = new MongoDBStore(session)({
@@ -137,20 +137,21 @@ const s3 = new AWS.S3({
   },
 });
 
-const upload = multer({
-  storage: multerS3({
-    s3,
-    bucket: process.env.BUCKET_AWS,
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    acl: "public-read",
-    metadata(req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key(req, file, cb) {
-      cb(null, Date.now().toString() + path.extname(file.originalname));
-    },
-  }),
-});
+const upload = () =>
+  multer({
+    storage: multerS3({
+      s3,
+      bucket: process.env.BUCKET_AWS,
+      contentType: multerS3.AUTO_CONTENT_TYPE,
+      acl: "public-read",
+      metadata(req, file, cb) {
+        cb(null, { fieldName: file.fieldname });
+      },
+      key(req, file, cb) {
+        cb(null, Date.now().toString() + path.extname(file.originalname));
+      },
+    }),
+  });
 
 export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 3);
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
