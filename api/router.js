@@ -109,6 +109,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+//envio de cookies
+app.use((req, res, next) => {
+  console.log("Cookies:", req.cookies); // Verifica las cookies en cada solicitud
+  next();
+});
+
 // Manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);

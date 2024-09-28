@@ -33,7 +33,13 @@ passport.use(
           );
 
           if (validPassword) {
-            return done(null, user);
+            // Establece la cookie solo después de una autenticación exitosa
+            res.cookie("user_sid", req.sessionID, {
+              secure: process.env.NODE_ENV === "production", // Solo se enviará a través de HTTPS
+              httpOnly: true,
+              sameSite: "lax",
+            });
+            return done(null, user); // Usuario autenticado correctamente
           } else {
             return done(null, false, { message: "Incorrect password" });
           }
