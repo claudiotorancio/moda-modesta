@@ -1,6 +1,6 @@
 import passport from "../../lib/passport.js";
 
-const signin = (req, res) => {
+const signin = (req, res, done) => {
   passport.authenticate("local.signin")(req, res, (error) => {
     if (error) {
       console.error("Error al autenticar la sesión del usuario:", error);
@@ -13,7 +13,7 @@ const signin = (req, res) => {
       return res.status(401).json({ message: "Usuario no autenticado" });
     }
 
-    passport.deserializeUser(req.user._id);
+    passport.deserializeUser(req.user._id, done);
     // res.cookie("user_sid", req.sessionID, {
     //   secure: process.env.NODE_ENV === "production",
     //   httpOnly: true,
