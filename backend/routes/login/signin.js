@@ -1,5 +1,4 @@
 import passport from "../../lib/passport.js";
-import getCookie from "./getCookie.js";
 
 const signin = (req, res, done) => {
   passport.authenticate("local.signin")(req, res, (error) => {
@@ -13,7 +12,7 @@ const signin = (req, res, done) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Usuario no autenticado" });
     }
-    getCookie();
+    res.cookie();
 
     // res.cookie("user_sid", req.sessionID, {
     //   secure: process.env.NODE_ENV === "production",
