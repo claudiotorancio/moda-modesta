@@ -26,7 +26,7 @@ app.post("/api/signin", (req, res) => {
   res.cookie("user_sid", "mySessions", {
     secure: true, // Solo se enviará a través de HTTPS
     httpOnly: true, // No accesible desde JavaScript
-    sameSite: "Strict", // Ayuda a prevenir CSRF
+    sameSite: "lax", // Ayuda a prevenir CSRF
   });
   res.json({ message: "User signed in" });
 });
