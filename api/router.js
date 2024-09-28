@@ -82,7 +82,7 @@ router.use(
     }),
     cookie: {
       expires: 600000, // 10 minutos
-      secure: isProduction,
+      // secure: isProduction,
       httpOnly: true, // Previene acceso JavaScript a la cookie
       sameSite: "lax", // Protección contra CSRF
     },
