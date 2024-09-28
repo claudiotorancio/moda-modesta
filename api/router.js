@@ -92,7 +92,7 @@ router.use(
     }),
     cookie: {
       httpOnly: true, // Previene acceso JavaScript a la cookie
-      sameSite: "none", // Protección contra CSRF
+      sameSite: "None", // Protección contra CSRF
       maxAge: 24 * 60 * 60 * 1000, // 24 horas
     },
   })
