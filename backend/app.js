@@ -69,7 +69,7 @@ app.post("/api/signup", signup);
 app.post("/api/signin", signin);
 app.delete("/api/logout", logout);
 
-app.get("/api/listaProductosUsuario", listaProductosUsuario);
+router.get("/api/listaProductosUsuario", listaProductosUsuario);
 
 app.use("/", indexRouter);
 
