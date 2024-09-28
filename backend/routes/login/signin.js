@@ -17,7 +17,7 @@ const signin = (req, res) => {
       }
 
       res.cookie("user_sid", user._id, {
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         httpOnly: true,
         sameSite: "lax",
       });
