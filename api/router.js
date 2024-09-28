@@ -10,7 +10,7 @@ import multerS3 from "multer-s3";
 // import signin from "../backend/routes/login/signin.js";
 // import signup from "../backend/routes/login/signup.js";
 // import logout from "../backend/routes/login/logout.js";
-import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
+// import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
 import listaProductosAdmin from "../backend/routes/product/listaProductosAdmin.js";
 import createProduct from "../backend/routes/product/createProduct.js";
 import desactivateProduct from "../backend/routes/product/desactivateProduct.js";
@@ -193,7 +193,7 @@ router.put("/api/updateUser/:id", requireAdmin, updateUser);
 router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
-router.get("/api/listaProductosUsuario", listaProductosUsuario);
+// router.get("/api/listaProductosUsuario", listaProductosUsuario);
 router.get("/api/listaProductosAdmin", listaProductosAdmin);
 router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);

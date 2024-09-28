@@ -9,6 +9,7 @@ import passport from "../backend/lib/passport.js";
 import session from "express-session";
 import MongoDBStore from "connect-mongodb-session";
 import MONGODB_URI from "../backend/config.js";
+import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
 import signin from "../backend/routes/login/signin.js";
 import signup from "../backend/routes/login/signup.js";
 import logout from "../backend/routes/login/logout.js";
@@ -64,9 +65,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Rutas signin
-router.post("/api/signup", signup);
-router.post("/api/signin", signin);
-router.delete("/api/logout", logout);
+app.post("/api/signup", signup);
+app.post("/api/signin", signin);
+app.delete("/api/logout", logout);
+
+app.get("/api/listaProductosUsuario", listaProductosUsuario);
 
 app.use("/", indexRouter);
 
