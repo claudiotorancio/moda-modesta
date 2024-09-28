@@ -64,9 +64,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Rutas signin
-app.post("/api/signup", signup);
-app.post("/api/signin", signin);
-app.delete("/api/logout", logout);
+router.post("/api/signup", signup);
+router.post("/api/signin", signin);
+router.delete("/api/logout", logout);
 
 app.use("/", indexRouter);
 
