@@ -15,7 +15,6 @@ export class LoginServices {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(dataUser),
-        // credentials: "include",
       });
       if (!response.ok) {
         throw new Error(

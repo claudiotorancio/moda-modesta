@@ -8,7 +8,6 @@ import session from "express-session";
 import MongoDBStore from "connect-mongodb-session";
 import MONGODB_URI from "../backend/config.js";
 import signin from "../backend/routes/login/signin.js";
-import getCookie from "../backend/routes/login/getCookie.js";
 import signup from "../backend/routes/login/signup.js";
 import logout from "../backend/routes/login/logout.js";
 import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
@@ -57,8 +56,6 @@ import getNotificaciones from "../backend/routes/notificaciones/getNotificacione
 import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 import { authenticateJWT } from "../backend/lib/auth.js";
 import rateLimit from "express-rate-limit";
-import cors from "cors";
-import { baseURL } from "../frontend/services/product_services.js";
 
 const router = Router();
 
@@ -66,16 +63,9 @@ const router = Router();
 
 // router.use("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
 
-// Configuración de CORS
-const corsOptions = {
-  origin: `${baseURL}`, // Cambia esto a la URL de tu frontend
-  credentials: true, // Permite que las cookies de sesión se envíen
-};
-
 router.use(express.json());
 router.use(cookieParser());
 router.use(express.urlencoded({ extended: false }));
-router.use(cors(corsOptions));
 
 const isProduction = process.env.NODE_ENV === "production";
 console.log(isProduction);
@@ -92,7 +82,7 @@ router.use(
     }),
     cookie: {
       httpOnly: true, // Previene acceso JavaScript a la cookie
-      sameSite: "None", // Protección contra CSRF
+      sameSite: "lax", // Protección contra CSRF
       maxAge: 24 * 60 * 60 * 1000, // 24 horas
     },
   })
@@ -192,7 +182,6 @@ router.post("/api/costoEnvio", costoEnvio);
 // Rutas signin
 router.post("/api/signup", signup);
 router.post("/api/signin", signin);
-router.get("/api/getCookie", getCookie);
 router.delete("/api/logout", logout);
 // Rutas listado
 router.get("/api/getAdmin", getAdmin); // Your controller logic);
@@ -203,7 +192,7 @@ router.put("/api/updateUser/:id", requireAdmin, updateUser);
 router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
-router.get("/api/listaProductosUsuario", listaProductosUsuario);
+router.get("listaProductosUsuario", listaProductosUsuario);
 router.get("/api/listaProductosAdmin", listaProductosAdmin);
 router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
