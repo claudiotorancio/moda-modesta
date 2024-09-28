@@ -21,15 +21,15 @@ app.use(morgan("dev"));
 app.use(cors());
 //passport
 
-app.post("/api/signin", (req, res) => {
-  // Autenticación aquí
-  res.cookie("user_sid", "mySessions", {
-    secure: true, // Solo se enviará a través de HTTPS
-    httpOnly: true, // No accesible desde JavaScript
-    sameSite: "lax", // Ayuda a prevenir CSRF
-  });
-  res.json({ message: "User signed in" });
-});
+// app.post("/api/signin", (req, res) => {
+//   // Autenticación aquí
+//   res.cookie("user_sid", "mySessions", {
+//     secure: true, // Solo se enviará a través de HTTPS
+//     httpOnly: true, // No accesible desde JavaScript
+//     sameSite: "lax", // Ayuda a prevenir CSRF
+//   });
+//   res.json({ message: "User signed in" });
+// });
 
 app.use("/", indexRouter);
 

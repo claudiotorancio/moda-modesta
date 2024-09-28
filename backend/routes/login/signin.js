@@ -19,6 +19,13 @@ const signin = async (req, res) => {
           return res.status(401).json({ message: "Usuario no autenticado" });
         }
 
+        // Establecer la cookie después de la autenticación
+        res.cookie("user_sid", req.sessionID, {
+          secure: true, // Solo se enviará a través de HTTPS
+          httpOnly: true, // No accesible desde JavaScript
+          sameSite: "lax", // Ayuda a prevenir CSRF
+        });
+
         console.log("Usuario autenticado:", req.user);
         console.log("Sesión:", req.session);
 
