@@ -63,6 +63,9 @@ import { authenticateJWT } from "../backend/lib/auth.js";
 
 const router = Router();
 const app = express();
+
+app.set("trust proxy", 1); // confianza en el proxy de primer nivel
+
 // Ruta hacia carpeta 'public'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -97,13 +100,17 @@ app.use(
   })
 );
 
-app.use(session());
 app.use(passport.initialize());
 app.use(passport.session());
 
 //envio de cookies
 app.use((req, res, next) => {
   console.log("Cookies:", req.cookies); // Verifica las cookies en cada solicitud
+  next();
+});
+
+app.use((req, res, next) => {
+  console.log("Usuario en req.user:", req.user); // Debería mostrar el usuario si está autenticado
   next();
 });
 
