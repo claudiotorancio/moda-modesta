@@ -11,6 +11,7 @@ export class LoginServices {
     try {
       const response = await fetch(`${this.baseURL}/api/signin`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

@@ -3,14 +3,15 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
-// import passport from "../backend/lib/passport.js";
-// import session from "express-session";
-// import MongoDBStore from "connect-mongodb-session";
-// import MONGODB_URI from "../backend/config.js";
-// import signin from "../backend/routes/login/signin.js";
-// import signup from "../backend/routes/login/signup.js";
-// import logout from "../backend/routes/login/logout.js";
-// import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
+import passport from "../backend/lib/passport.js";
+import session from "express-session";
+import MongoDBStore from "connect-mongodb-session";
+import MONGODB_URI from "../backend/config.js";
+import signin from "../backend/routes/login/signin.js";
+import getCookie from "../backend/routes/login/getCookie.js";
+import signup from "../backend/routes/login/signup.js";
+import logout from "../backend/routes/login/logout.js";
+import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
 import listaProductosAdmin from "../backend/routes/product/listaProductosAdmin.js";
 import createProduct from "../backend/routes/product/createProduct.js";
 import desactivateProduct from "../backend/routes/product/desactivateProduct.js";
@@ -67,30 +68,30 @@ router.use(express.json());
 router.use(cookieParser());
 router.use(express.urlencoded({ extended: false }));
 
-// const isProduction = process.env.NODE_ENV === "production";
-// console.log(isProduction);
+const isProduction = process.env.NODE_ENV === "production";
+console.log(isProduction);
 
-// router.use(
-//   session({
-//     key: "user_sid",
-//     secret: process.env.SECRET_KEY,
-//     resave: false,
-//     saveUninitialized: false,
-//     store: new MongoDBStore(session)({
-//       uri: MONGODB_URI,
-//       collection: "mySessions",
-//     }),
-//     cookie: {
-//       secure: isProduction, // Solo en producción
-//       httpOnly: true, // Previene acceso JavaScript a la cookie
-//       sameSite: "Strict", // Protección contra CSRF
-//       maxAge: 24 * 60 * 60 * 1000, // 24 horas
-//     },
-//   })
-// );
+router.use(
+  session({
+    key: "user_sid",
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoDBStore(session)({
+      uri: MONGODB_URI,
+      collection: "mySessions",
+    }),
+    cookie: {
+      secure: isProduction, // Solo en producción
+      httpOnly: true, // Previene acceso JavaScript a la cookie
+      sameSite: "Strict", // Protección contra CSRF
+      maxAge: 24 * 60 * 60 * 1000, // 24 horas
+    },
+  })
+);
 
-// router.use(passport.initialize());
-// router.use(passport.session());
+router.use(passport.initialize());
+router.use(passport.session());
 
 // Configuración del rate-limiter
 const purchaseLimiter = rateLimit({
@@ -180,10 +181,11 @@ router.post("/api/enviarPromocion/", requireAdmin, enviarPromocion);
 //rutas envio
 router.post("/api/costoEnvio", costoEnvio);
 
-// // Rutas signin
-// router.post("/api/signup", signup);
-// router.post("/api/signin", signin);
-// router.delete("/api/logout", logout);
+// Rutas signin
+router.post("/api/signup", signup);
+router.post("/api/signin", signin);
+router.get("/api/getCookie", getCookie);
+router.delete("/api/logout", logout);
 // Rutas listado
 router.get("/api/getAdmin", getAdmin); // Your controller logic);
 router.get("/api/getUser/:id", requireAdmin, getUser);
@@ -193,7 +195,7 @@ router.put("/api/updateUser/:id", requireAdmin, updateUser);
 router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
-// router.get("/api/listaProductosUsuario", listaProductosUsuario);
+router.get("/api/listaProductosUsuario", listaProductosUsuario);
 router.get("/api/listaProductosAdmin", listaProductosAdmin);
 router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
