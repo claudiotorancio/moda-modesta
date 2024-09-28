@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 //   credentials: true, // Permite que las cookies de sesión se envíen
 // };
 
-// app.use(cors(corsOptions));
+app.use(cors());
 //passport
 
 // const isProduction = process.env.NODE_ENV === "production";
