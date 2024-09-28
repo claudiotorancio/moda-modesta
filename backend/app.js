@@ -14,7 +14,7 @@ const app = express();
 
 //router
 
-app.set("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
+// app.set("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
 
 // Ruta hacia carpeta 'public'
 const __filename = fileURLToPath(import.meta.url);
@@ -25,9 +25,6 @@ const outputPath = path.join(__dirname, "../public");
 app.use(urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan("dev"));
-
-app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
 
 app.use(cors());
 //passport

@@ -81,9 +81,7 @@ router.use(
       collection: "mySessions",
     }),
     cookie: {
-      httpOnly: true, // Previene acceso JavaScript a la cookie
-      sameSite: "lax", // Protección contra CSRF
-      maxAge: 24 * 60 * 60 * 1000, // 24 horas
+      expires: 600000,
     },
   })
 );
