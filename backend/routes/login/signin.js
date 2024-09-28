@@ -1,3 +1,4 @@
+import { deserializeUser } from "passport";
 import passport from "../../lib/passport.js";
 
 const signin = (req, res) => {
@@ -13,6 +14,7 @@ const signin = (req, res) => {
       return res.status(401).json({ message: "Usuario no autenticado" });
     }
 
+    passport.deserializeUser();
     // res.cookie("user_sid", req.sessionID, {
     //   secure: process.env.NODE_ENV === "production",
     //   httpOnly: true,
