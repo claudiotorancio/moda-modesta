@@ -70,9 +70,9 @@ const __dirname = path.dirname(__filename);
 const outputPath = path.join(__dirname, "../public");
 
 // Middlewares
-app.use(cookieParser());
-app.use(urlencoded({ extended: false }));
-app.use(express.json());
+router.use(cookieParser());
+router.use(urlencoded({ extended: false }));
+router.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
 
@@ -82,7 +82,7 @@ const store = new MongoDBStore(session)({
   collection: "mySessions",
 });
 
-app.use(
+router.use(
   session({
     key: "user_sid",
     secret: process.env.SECRET_KEY,
