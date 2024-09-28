@@ -1,7 +1,7 @@
 import passport from "../../lib/passport.js";
 
 const signin = (req, res) => {
-  passport.authenticate("local.signin", { session: true })(
+  passport.authenticate("local.signin", { session: false })(
     req,
     res,
     (error) => {

@@ -98,7 +98,7 @@ app.use(
 );
 
 app.use(passport.initialize());
-app.use(passport.session({ session: true }));
+app.use(passport.session());
 
 //envio de cookies
 app.use((req, res, next) => {
