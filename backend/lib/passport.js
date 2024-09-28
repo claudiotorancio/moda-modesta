@@ -47,6 +47,24 @@ passport.use(
   )
 );
 
+passport.serializeUser((user, done) => {
+  console.log("id serializer", user.id);
+  done(null, user.id);
+});
+
+//deserializerUser
+
+passport.deserializeUser(async (id, done) => {
+  console.log(id);
+  try {
+    const user = await Users.findById(id);
+    console.log("usuario encontrado deserializer", user);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
+});
+
 // passport.use('local.update', new LocalStrategy({
 //     usernameField: 'newUsername', // Cambiar al campo de nuevo nombre de usuario
 //     passwordField: 'newPassword', // Cambiar al campo de nueva contraseña
@@ -151,22 +169,5 @@ passport.use(
 // );
 
 //serialUser
-
-passport.serializeUser((user, done) => {
-  done(null, user._id);
-});
-
-//deserializerUser
-
-passport.deserializeUser(async (id, done) => {
-  console.log(id);
-  try {
-    const user = await Users.findById(id);
-    console.log("usuario encontrado deserializer", user);
-    done(null, user);
-  } catch (err) {
-    done(err, null);
-  }
-});
 
 export default passport;
