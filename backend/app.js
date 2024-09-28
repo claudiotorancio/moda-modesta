@@ -32,7 +32,7 @@ const store = new MongoDBStore(session)({
   collection: "mySessions",
 });
 
-router.use(
+app.use(
   session({
     key: "user_sid",
     secret: process.env.SECRET_KEY,
@@ -48,8 +48,8 @@ router.use(
   })
 );
 
-router.use(passport.initialize());
-router.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 router.post("/api/signin", signin);
 
