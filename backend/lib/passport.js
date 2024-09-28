@@ -124,31 +124,31 @@ passport.use(
   )
 );
 
-// // Use CookieStrategy
-// passport.use(
-//   "cookie",
-//   new CookieStrategy(
-//     {
-//       cookieName: "user_sid", // Asegúrate de que coincida con el nombre de tu cookie
-//       signed: true,
-//       passReqToCallback: true,
-//     },
-//     async (req, id, done) => {
-//       // Change token to userId or whatever identifier you are using
-//       console.log("id Cookie", id);
-//       try {
-//         // Assuming you store user ID in the cookie, you can fetch the user by ID
-//         const user = await Users.findById(id);
-//         if (!user) {
-//           return done(null, false); // User not found
-//         }
-//         return done(null, user); // User authenticated
-//       } catch (err) {
-//         return done(err); // Error handling
-//       }
-//     }
-//   )
-// );
+// Use CookieStrategy
+passport.use(
+  "cookie",
+  new CookieStrategy(
+    {
+      cookieName: "user_sid", // Asegúrate de que coincida con el nombre de tu cookie
+      signed: true,
+      passReqToCallback: true,
+    },
+    async (req, id, done) => {
+      // Change token to userId or whatever identifier you are using
+      console.log("id Cookie", id);
+      try {
+        // Assuming you store user ID in the cookie, you can fetch the user by ID
+        const user = await Users.findById(id);
+        if (!user) {
+          return done(null, false); // User not found
+        }
+        return done(null, user); // User authenticated
+      } catch (err) {
+        return done(err); // Error handling
+      }
+    }
+  )
+);
 
 //serialUser
 

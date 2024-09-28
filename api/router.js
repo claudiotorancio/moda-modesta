@@ -97,7 +97,7 @@ app.use(
   })
 );
 
-app.use(session({ secret: process.env.SECRET_KEY }));
+app.use(session());
 app.use(passport.initialize());
 app.use(passport.session());
 
