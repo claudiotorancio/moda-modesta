@@ -60,11 +60,9 @@ import notificacionSinStock from "../backend/routes/notificaciones/notificacionS
 import getNotificaciones from "../backend/routes/notificaciones/getNotificaciones.js";
 import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 import { authenticateJWT } from "../backend/lib/auth.js";
-import { baseURL } from "../frontend/services/product_services.js";
 
-const app = express();
 const router = Router();
-
+const app = express();
 // Ruta hacia carpeta 'public'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -75,13 +73,6 @@ app.use(cookieParser());
 app.use(urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan("dev"));
-
-// Configuración de CORS
-// const corsOptions = {
-//   origin: `${baseURL}`, // Cambia esto a la URL de tu frontend
-//   credentials: true, // Permite que las cookies de sesión se envíen
-// };
-
 app.use(cors());
 
 // Configuración de la sesión
@@ -95,7 +86,7 @@ app.use(
     key: "user_sid",
     secret: process.env.SECRET_KEY,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: store,
     cookie: {
       expires: 600000, // 10 minutos
@@ -107,7 +98,7 @@ app.use(
 );
 
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session(session));
 
 //envio de cookies
 app.use((req, res, next) => {
