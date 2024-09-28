@@ -1,14 +1,10 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Cart from "../../models/Cart.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const getProductsCart = async (req, res) => {
   try {
     // Conectar a la base de datos
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     const productsCart = await Cart.find();
 

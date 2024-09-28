@@ -1,16 +1,11 @@
 //limpiarCarrito.js
 
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Cart from "../../models/Cart.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const limpiarCarrito = async (req, res) => {
   try {
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
+    await connectToDatabase();
     // Eliminar todos los productos del carrito
     const deletedProductsCart = await Cart.deleteMany({});
 
@@ -19,9 +14,6 @@ const limpiarCarrito = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error en el servidor" });
-  } finally {
-    // Cerrar la conexión con la base de datos después de la operación
-    mongoose.connection.close();
   }
 };
 

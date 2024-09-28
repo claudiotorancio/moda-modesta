@@ -1,11 +1,10 @@
 import nodemailer from "nodemailer";
-import mongoose from "mongoose";
 import Users from "../../models/User.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const enviarPromocion = async (req, res) => {
   try {
     const { myContent } = req.body;
-    console.log(req.body);
     // Verificar que todos los campos requeridos están presentes
     if (!myContent) {
       return res
@@ -14,10 +13,7 @@ const enviarPromocion = async (req, res) => {
     }
 
     // Conectar a la base de datos si es necesario
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Obtener todos los usuarios con el email verificado
     const usuarios = await Users.find({ emailVerified: true });
@@ -26,7 +22,7 @@ const enviarPromocion = async (req, res) => {
         .status(404)
         .send({ error: "No se encontraron usuarios con correos verificados." });
     }
-    console.log(usuarios);
+
     // Configurar el transportador de nodemailer
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",

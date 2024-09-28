@@ -1,7 +1,6 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Users from "../../models/User.js";
 import helpers from "../../lib/helpers.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const updateUser = async (req, res) => {
   try {
@@ -14,10 +13,7 @@ const updateUser = async (req, res) => {
     //console.log(`id de usuario: ${userId}`);
 
     // Buscar el usuario en la base de datos por su ID
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Buscar el usuario en la base de datos por su ID
     const user = await Users.findById(userId);

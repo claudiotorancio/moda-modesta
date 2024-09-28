@@ -1,15 +1,11 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const contadorProductos = async (req, res) => {
   try {
     // Conectar a la base de datos
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     //extraer el id
     const userId = req.params.id;

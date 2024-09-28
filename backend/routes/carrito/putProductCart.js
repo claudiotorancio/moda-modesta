@@ -1,6 +1,5 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Cart from "../../models/Cart.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const putProductCart = async (req, res) => {
   try {
@@ -8,10 +7,7 @@ const putProductCart = async (req, res) => {
     const { cantidad } = req.body; // Corregido: se cambia 'prodcutId' a 'productId' para ser coherente con el context
     // Conexión a la base de datos
 
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Buscar el producto en el carrito
     const productFind = await Cart.findById(productId);

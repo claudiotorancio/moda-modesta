@@ -1,6 +1,5 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Users from "../../models/User.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const getUser = async (req, res) => {
   try {
@@ -9,10 +8,7 @@ const getUser = async (req, res) => {
     console.log(`id usuario: ${userId}`);
 
     // Conectar a la base de datos mediante serverless function
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Obtener el user
     const user = await Users.findById(userId);

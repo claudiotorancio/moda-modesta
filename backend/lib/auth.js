@@ -1,21 +1,6 @@
 import jwt from "jsonwebtoken";
 import Users from "../models/User.js"; // Importa el modelo de usuario
-import MONGODB_URI from "../config.js";
-
-export const connectToDatabase = async () => {
-  if (mongoose.connection.readyState === 0) {
-    try {
-      await mongoose.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-      console.log("Conexión a MongoDB exitosa");
-    } catch (error) {
-      console.error("Error conectando a MongoDB:", error);
-      throw new Error("No se pudo conectar a la base de datos");
-    }
-  }
-};
+import { connectToDatabase } from "../db/connectToDatabase.js";
 
 export const authenticateJWT = async (req, res, user, next) => {
   try {

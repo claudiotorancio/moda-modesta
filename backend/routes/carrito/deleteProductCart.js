@@ -1,16 +1,12 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Cart from "../../models/Cart.js";
 import Vista from "../../models/Vista.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const deleteProductCart = async (req, res) => {
   try {
     const _id = req.params.id;
 
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Buscar y eliminar el producto del carrito por su ID
     const deletedProductCart = await Cart.findByIdAndDelete(_id);
@@ -38,8 +34,6 @@ const deleteProductCart = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error en el servidor" });
-  } finally {
-    mongoose.connection.close();
   }
 };
 

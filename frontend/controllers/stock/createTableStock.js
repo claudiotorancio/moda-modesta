@@ -105,7 +105,6 @@ export function createProductElement(
       `;
     tbody.appendChild(row);
   }
-  console.log(getStockState(sizes));
 
   productoTable.appendChild(thead);
   productoTable.appendChild(tbody);

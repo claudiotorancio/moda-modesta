@@ -1,14 +1,10 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Users from "../../models/User.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const listaAdmin = async (req, res) => {
   try {
     // Conectar a la base de datos mediante serverless function
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Obtener el listado de usuarios
     const listado = await Users.find();

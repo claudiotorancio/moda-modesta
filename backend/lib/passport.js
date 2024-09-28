@@ -1,17 +1,15 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 // import CookieStrategy from "passport-cookie";
-import mongoose from "mongoose";
+
 import helpers from "./helpers.js";
-import MONGODB_URI from "../config.js";
+
 import Users from "../models/User.js";
+import { connectToDatabase } from "../db/connectToDatabase.js";
 
 //connect to database
 
-await mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+await connectToDatabase();
 
 // SignIn
 passport.use(
