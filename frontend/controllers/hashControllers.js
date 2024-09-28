@@ -22,6 +22,13 @@ export async function hashControllers() {
       return;
     }
 
+    const isAcative = producto.isAcative;
+
+    if (!isAcative) {
+      alert("el producto no esta disponible");
+      return;
+    }
+
     // Verificar si hay stock en alguna de las tallas
     const hayStock = producto.sizes.some((item) => item.stock > 0);
 

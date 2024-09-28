@@ -1,17 +1,13 @@
-import mongoose from "mongoose";
 import Cart from "../../models/Cart.js";
 import Vista from "../../models/Vista.js";
-import MONGODB_URI from "../../config.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const addProductCart = async (req, res) => {
   try {
     const { name, price, imagePath, size, productId } = req.body;
 
     // Conectar a la base de datos
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Agregar el producto al carrito
     const newProductInCart = new Cart({
