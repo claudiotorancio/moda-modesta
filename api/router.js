@@ -207,7 +207,11 @@ router.post("/api/costoEnvio", costoEnvio);
 
 // Rutas signin
 router.post("/api/signup", signup);
-router.post("/api/signin", signin, passport.authenticate({ session: true }));
+router.post(
+  "/api/signin",
+  signin,
+  passport.authenticate("local,signin", { session: true })
+);
 router.delete("/api/logout", logout);
 
 // Rutas listado
