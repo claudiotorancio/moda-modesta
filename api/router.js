@@ -60,6 +60,7 @@ import notificacionSinStock from "../backend/routes/notificaciones/notificacionS
 import getNotificaciones from "../backend/routes/notificaciones/getNotificaciones.js";
 import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 import { authenticateJWT } from "../backend/lib/auth.js";
+import { baseURL } from "../frontend/services/product_services.js";
 
 const app = express();
 const router = Router();
@@ -74,7 +75,14 @@ app.use(cookieParser());
 app.use(urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(cors());
+
+// Configuración de CORS
+const corsOptions = {
+  origin: `${baseURL}`, // Cambia esto a la URL de tu frontend
+  credentials: true, // Permite que las cookies de sesión se envíen
+};
+
+app.use(cors(corsOptions));
 
 // Configuración de la sesión
 const store = new MongoDBStore(session)({
@@ -87,7 +95,7 @@ app.use(
     key: "user_sid",
     secret: process.env.SECRET_KEY,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: store,
     cookie: {
       expires: 600000, // 10 minutos
@@ -144,8 +152,8 @@ const upload = multer({
   }),
 });
 
-const uploadSingle = upload.single("imagePath"); // Para subir una sola imagen
-const uploadSingleUpdate = upload.single("imagePath"); // Para actualizar una imagen
+export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 3);
+const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
 // Rutas
 
