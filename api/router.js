@@ -210,7 +210,7 @@ router.post("/api/signup", signup);
 router.post(
   "/api/signin",
   signin,
-  passport.authenticate("local,signin", { session: true })
+  passport.authenticate("local.signin", { session: true })
 );
 router.delete("/api/logout", logout);
 
