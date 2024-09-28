@@ -28,8 +28,13 @@ app.use(morgan("dev"));
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+// Configuración de CORS
+const corsOptions = {
+  origin: "", // Cambia esto a la URL de tu frontend
+  credentials: true, // Permite que las cookies de sesión se envíen
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 //passport
 
 // const isProduction = process.env.NODE_ENV === "production";

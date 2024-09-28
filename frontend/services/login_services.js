@@ -7,15 +7,15 @@ export class LoginServices {
   }
 
   //abrir session
-  async signin(dataUser) {
+  async signin(username, password) {
     try {
       const response = await fetch(`${this.baseURL}/api/signin`, {
         method: "POST",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataUser),
+        body: JSON.stringify({ username, password }),
+        credentials: "include",
       });
       if (!response.ok) {
         throw new Error(
