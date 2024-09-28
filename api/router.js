@@ -90,7 +90,7 @@ app.use(
     store: store,
     cookie: {
       expires: 600000, // 10 minutos
-      secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
+      // secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
       httpOnly: true, // Previene acceso JavaScript a la cookie
       sameSite: "lax", // Protección contra CSRF
     },
@@ -98,7 +98,7 @@ app.use(
 );
 
 app.use(passport.initialize());
-app.use(passport.session(session));
+app.use(passport.session());
 
 //envio de cookies
 app.use((req, res, next) => {
