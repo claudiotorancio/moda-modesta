@@ -98,8 +98,8 @@ app.use(
   })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
+router.use(passport.initialize());
+router.use(passport.session());
 
 // Manejo de errores
 app.use((err, req, res, next) => {
