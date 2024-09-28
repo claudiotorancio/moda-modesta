@@ -12,7 +12,7 @@ const signin = (req, res, done) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Usuario no autenticado" });
     }
-    res.cookie();
+    // res.cookie();
 
     // res.cookie("user_sid", req.sessionID, {
     //   secure: process.env.NODE_ENV === "production",

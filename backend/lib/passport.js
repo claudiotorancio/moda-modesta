@@ -154,7 +154,6 @@ passport.use(
 
 passport.serializeUser((user, done) => {
   console.log("id serializer", user.id);
-  next();
   done(null, user.id);
 });
 
