@@ -2,11 +2,10 @@ import passport from "../../lib/passport.js";
 
 const signin = async (req, res) => {
   try {
-    // Utilizar passport.authenticate() para manejar la autenticación del usuario
     passport.authenticate("local.signin", { session: true })(
       req,
       res,
-      async (error) => {
+      (error) => {
         if (error) {
           console.error("Error al autenticar la sesión del usuario:", error);
           return res
@@ -29,7 +28,7 @@ const signin = async (req, res) => {
         console.log("Usuario autenticado:", req.user);
         console.log("Sesión:", req.session);
 
-        // Manejo de la respuesta para mostrar en pantalla los valores
+        // Manejo de la respuesta
         return res.json({ user: req.user });
       }
     );
