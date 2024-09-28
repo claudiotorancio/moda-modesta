@@ -15,7 +15,7 @@ const app = express();
 
 //router
 
-app.set("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
+// app.set("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
 
 // Ruta hacia carpeta 'public'
 const __filename = fileURLToPath(import.meta.url);
