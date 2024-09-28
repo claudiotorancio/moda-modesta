@@ -3,11 +3,11 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
-import passport from "../backend/lib/passport.js";
-import session from "express-session";
-import MongoDBStore from "connect-mongodb-session";
-import MONGODB_URI from "../backend/config.js";
-import signin from "../backend/routes/login/signin.js";
+// import passport from "../backend/lib/passport.js";
+// import session from "express-session";
+// import MongoDBStore from "connect-mongodb-session";
+// import MONGODB_URI from "../backend/config.js";
+// import signin from "../backend/routes/login/signin.js";
 import signup from "../backend/routes/login/signup.js";
 import logout from "../backend/routes/login/logout.js";
 import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
@@ -67,29 +67,29 @@ router.use(express.json());
 router.use(cookieParser());
 router.use(express.urlencoded({ extended: false }));
 
-const store = new MongoDBStore(session)({
-  uri: MONGODB_URI,
-  collection: "mySessions",
-});
+// const store = new MongoDBStore(session)({
+//   uri: MONGODB_URI,
+//   collection: "mySessions",
+// });
 
-router.use(
-  session({
-    key: "user_sid",
-    secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-    cookie: {
-      expires: 600000, // 10 minutos
-      secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
-      httpOnly: true, // Previene acceso JavaScript a la cookie
-      sameSite: "lax", // Protección contra CSRF
-    },
-  })
-);
+// router.use(
+//   session({
+//     key: "user_sid",
+//     secret: process.env.SECRET_KEY,
+//     resave: false,
+//     saveUninitialized: false,
+//     store: store,
+//     cookie: {
+//       expires: 600000, // 10 minutos
+//       secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
+//       httpOnly: true, // Previene acceso JavaScript a la cookie
+//       sameSite: "lax", // Protección contra CSRF
+//     },
+//   })
+// );
 
-router.use(passport.initialize());
-router.use(passport.session());
+// router.use(passport.initialize());
+// router.use(passport.session());
 
 // Configuración del rate-limiter
 const purchaseLimiter = rateLimit({
@@ -181,7 +181,7 @@ router.post("/api/costoEnvio", costoEnvio);
 
 // Rutas signin
 router.post("/api/signup", signup);
-router.post("/api/signin", signin);
+// router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 // Rutas listado
 router.get("/api/getAdmin", getAdmin); // Your controller logic);

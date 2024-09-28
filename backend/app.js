@@ -1,11 +1,17 @@
-import express, { urlencoded } from "express";
+import express, { urlencoded, Router } from "express";
 import { fileURLToPath } from "url";
 import path from "path";
 import morgan from "morgan";
 import cors from "cors";
 import indexRouter from "../api/router.js";
+import passport from "../backend/lib/passport.js";
+import session from "express-session";
+import MongoDBStore from "connect-mongodb-session";
+import MONGODB_URI from "../backend/config.js";
+import signin from "./routes/login/signin.js";
 
 const app = express();
+const router = Router();
 
 //router
 // Ruta hacia carpeta 'public'
@@ -21,15 +27,31 @@ app.use(morgan("dev"));
 app.use(cors());
 //passport
 
-// app.post("/api/signin", (req, res) => {
-//   // Autenticación aquí
-//   res.cookie("user_sid", "mySessions", {
-//     secure: true, // Solo se enviará a través de HTTPS
-//     httpOnly: true, // No accesible desde JavaScript
-//     sameSite: "lax", // Ayuda a prevenir CSRF
-//   });
-//   res.json({ message: "User signed in" });
-// });
+const store = new MongoDBStore(session)({
+  uri: MONGODB_URI,
+  collection: "mySessions",
+});
+
+router.use(
+  session({
+    key: "user_sid",
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+      expires: 600000, // 10 minutos
+      secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
+      httpOnly: true, // Previene acceso JavaScript a la cookie
+      sameSite: "lax", // Protección contra CSRF
+    },
+  })
+);
+
+router.use(passport.initialize());
+router.use(passport.session());
+
+router.post("/api/signin", signin);
 
 app.use("/", indexRouter);
 
