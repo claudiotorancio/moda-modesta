@@ -57,7 +57,7 @@ import getNotificaciones from "../backend/routes/notificaciones/getNotificacione
 import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 import { authenticateJWT } from "../backend/lib/auth.js";
 import rateLimit from "express-rate-limit";
-import cors from "cors";
+// import cors from "cors";
 import { baseURL } from "../frontend/services/product_services.js";
 
 const router = Router();
@@ -67,15 +67,15 @@ const router = Router();
 // router.use("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
 
 // Configuración de CORS
-const corsOptions = {
-  origin: `${baseURL}`, // Cambia esto a la URL de tu frontend
-  credentials: true, // Permite que las cookies de sesión se envíen
-};
+// const corsOptions = {
+//   origin: `${baseURL}`, // Cambia esto a la URL de tu frontend
+//   credentials: true, // Permite que las cookies de sesión se envíen
+// };
 
 router.use(express.json());
 router.use(cookieParser());
 router.use(express.urlencoded({ extended: false }));
-router.use(cors(corsOptions));
+// router.use(cors(corsOptions));
 
 const isProduction = process.env.NODE_ENV === "production";
 console.log(isProduction);
