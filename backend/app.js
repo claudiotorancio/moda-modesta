@@ -1,17 +1,16 @@
-import express, { urlencoded, Router } from "express";
+import express, { urlencoded } from "express";
 import { fileURLToPath } from "url";
 import path from "path";
 import morgan from "morgan";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import indexRouter from "../api/router.js";
 import passport from "../backend/lib/passport.js";
 import session from "express-session";
 import MongoDBStore from "connect-mongodb-session";
 import MONGODB_URI from "../backend/config.js";
-import signin from "./routes/login/signin.js";
 
 const app = express();
-const router = Router();
 
 //router
 // Ruta hacia carpeta 'public'
@@ -20,6 +19,7 @@ const __dirname = path.dirname(__filename);
 const outputPath = path.join(__dirname, "../public");
 
 //middlewares
+app.use(cookieParser());
 app.use(urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan("dev"));
@@ -50,8 +50,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-router.post("/api/signin", signin);
 
 app.use("/", indexRouter);
 

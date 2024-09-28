@@ -7,7 +7,7 @@ import multerS3 from "multer-s3";
 // import session from "express-session";
 // import MongoDBStore from "connect-mongodb-session";
 // import MONGODB_URI from "../backend/config.js";
-// import signin from "../backend/routes/login/signin.js";
+import signin from "../backend/routes/login/signin.js";
 import signup from "../backend/routes/login/signup.js";
 import logout from "../backend/routes/login/logout.js";
 import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
@@ -181,7 +181,7 @@ router.post("/api/costoEnvio", costoEnvio);
 
 // Rutas signin
 router.post("/api/signup", signup);
-// router.post("/api/signin", signin);
+router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 // Rutas listado
 router.get("/api/getAdmin", getAdmin); // Your controller logic);
