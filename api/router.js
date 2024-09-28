@@ -67,8 +67,10 @@ router.use(express.json());
 router.use(cookieParser());
 router.use(express.urlencoded({ extended: false }));
 
-const isProduction = process.env.NODE_ENV === "production";
-console.log(isProduction);
+const store = new MongoDBStore(session)({
+  uri: MONGODB_URI,
+  collection: "mySessions",
+});
 
 router.use(
   session({
@@ -76,13 +78,10 @@ router.use(
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
-    store: new MongoDBStore(session)({
-      uri: MONGODB_URI,
-      collection: "mySessions",
-    }),
+    store: store,
     cookie: {
       expires: 600000, // 10 minutos
-      // secure: isProduction,
+      secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
       httpOnly: true, // Previene acceso JavaScript a la cookie
       sameSite: "lax", // Protección contra CSRF
     },
