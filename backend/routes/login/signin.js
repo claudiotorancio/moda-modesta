@@ -1,4 +1,3 @@
-import { deserializeUser } from "passport";
 import passport from "../../lib/passport.js";
 
 const signin = (req, res) => {
