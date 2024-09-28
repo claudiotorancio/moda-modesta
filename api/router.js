@@ -66,10 +66,16 @@ const router = Router();
 
 // router.use("trust proxy", 1); // Vercel usa un único proxy entre el cliente y tu aplicación
 
+// Configuración de CORS
+const corsOptions = {
+  origin: `${baseURL}`, // Cambia esto a la URL de tu frontend
+  credentials: true, // Permite que las cookies de sesión se envíen
+};
+
 router.use(express.json());
 router.use(cookieParser());
 router.use(express.urlencoded({ extended: false }));
-router.use(cors());
+router.use(cors(corsOptions));
 
 const isProduction = process.env.NODE_ENV === "production";
 console.log(isProduction);
