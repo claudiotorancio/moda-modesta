@@ -81,7 +81,10 @@ router.use(
       collection: "mySessions",
     }),
     cookie: {
-      expires: 600000,
+      expires: 600000, // 10 minutos
+      // secure: isProduction, // Solo en producción
+      httpOnly: true, // Previene acceso JavaScript a la cookie
+      sameSite: "lax", // Protección contra CSRF
     },
   })
 );
