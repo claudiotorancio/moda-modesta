@@ -65,7 +65,7 @@ const suscribeMail = async (req, res) => {
       </ul>
       <p>¡Suscríbete para no perderte las novedades y recibir descuentos exclusivos!</p>
       <p>Para confirmar tu suscripción, por favor haz clic en el siguiente enlace:</p>
-      <a href="${confirmUrl}">Confirmar Suscripción</a>
+      <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar Suscripción</a>
       <p>Recibirás un correo para validar tu email.</p>
     `;
 

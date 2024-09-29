@@ -22,17 +22,23 @@ export async function hashControllers() {
       return;
     }
 
-    const isAcative = producto.isAcative;
+    // Asegúrate de que el campo que indica si el producto está activo sea correcto.
+    const isActive =
+      producto.isActive !== undefined ? producto.isActive : producto.isAcative;
 
-    if (!isAcative) {
-      alert("el producto no esta disponible");
+    if (!isActive) {
+      alert("El producto ya no está disponible.");
+
+      // Eliminar el hash de la barra de direcciones para evitar alertas futuras en recargas
+      window.history.replaceState(null, null, window.location.pathname);
+
       return;
     }
 
     // Verificar si hay stock en alguna de las tallas
     const hayStock = producto.sizes.some((item) => item.stock > 0);
 
-    // Mostrar el producto solo si existe
+    // Mostrar el producto solo si está activo y tiene stock
     mostrarProducto(
       producto.name,
       producto.price,
