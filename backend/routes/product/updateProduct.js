@@ -1,8 +1,7 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
 import AWS from "aws-sdk";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const s3 = new AWS.S3({
   region: process.env.S3_BUCKET_REGION,
@@ -23,10 +22,7 @@ const updateProduct = async (req, res) => {
       req.body;
 
     // Conectar a la base de datos
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Obtener el producto actual
     const model = esAdministrador(req.user) ? Vista : Product;

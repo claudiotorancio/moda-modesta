@@ -1,15 +1,11 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Vista from "../../models/Vista.js";
 import Order from "../../models/Order.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 export const compraCancelada = async (req, res) => {
   try {
     // Conectar a la base de datos
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     const orderId = req.params.id; // ID del pedido desde los parámetros de la URL
     const { productos } = req.body; // Productos desde el cuerpo de la solicitud

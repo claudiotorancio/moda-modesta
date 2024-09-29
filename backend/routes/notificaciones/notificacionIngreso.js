@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
-import mongoose from "mongoose";
 import Notification from "../../models/Notification.js";
-import MONGODB_URI from "../../config.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 // Función para manejar el ingreso de notificaciones y el envío de correos electrónicos
 const notificacionIngreso = async (req, res) => {
@@ -23,12 +22,7 @@ const notificacionIngreso = async (req, res) => {
     }
 
     // Conectar a MongoDB si no se ha hecho previamente
-    if (!mongoose.connection.readyState) {
-      await mongoose.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-    }
+    await connectToDatabase();
 
     // Buscar notificaciones no notificadas por sus IDs
     const notifications = await Notification.find({

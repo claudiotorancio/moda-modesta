@@ -1,20 +1,14 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Resena from "../../models/Resena.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const putResena = async (req, res) => {
   try {
     const resenaId = req.params.id;
     // Conectar a la base de datos si no está ya conectada
 
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     const { name, redSocial, resena, estrellas } = req.body;
-
-    console.log("Request Body:", req.body);
 
     // Validar datos
     if (!name || !redSocial || !resena || !estrellas) {

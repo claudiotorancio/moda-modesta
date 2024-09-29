@@ -1,15 +1,11 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Resena from "../../models/Resena.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const deleteResena = async (req, res) => {
   try {
     // Conectar a la base de datos si no está ya conectada
 
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     const resenaId = req.params.id;
 

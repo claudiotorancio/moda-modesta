@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import Users from "../../models/User.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const confirmMail = async (req, res) => {
   const { token } = req.query;
@@ -13,10 +13,7 @@ const confirmMail = async (req, res) => {
 
   try {
     // Conectar a la base de datos
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Verificar el token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

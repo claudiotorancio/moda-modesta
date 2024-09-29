@@ -17,15 +17,11 @@ const updateUser = async (req, res) => {
 
     // Buscar el usuario en la base de datos por su ID
     const user = await Users.findById(userId);
-    console.log(user);
 
     // Verificar si se encontró el usuario
     if (!user) {
       return null, false, { message: "Usuario no encontrado" };
     }
-
-    console.log(`nuevo username; ${newUsername}`);
-    console.log(`nuevo password; ${newPassword}`);
 
     // Actualizar el nombre de usuario y la contraseña
     user.username = newUsername;

@@ -1,10 +1,10 @@
 import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
 import Users from "../../models/User.js";
 import { baseURL } from "../../../frontend/services/product_services.js";
 import helpers from "../../lib/helpers.js";
 import crypto from "crypto";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const suscribeMail = async (req, res) => {
   const generateRandomPassword = (length = 12) => {
@@ -30,10 +30,7 @@ const suscribeMail = async (req, res) => {
     }
 
     // Conectar a la base de datos si es necesario
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Verificar si el usuario ya existe
     const existingUser = await Users.findOne({ username: email });

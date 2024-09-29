@@ -1,7 +1,6 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const listaProductosAdmin = async (req, res) => {
   // console.log(req.user);
@@ -10,10 +9,7 @@ const listaProductosAdmin = async (req, res) => {
     const user_id = req.user._id;
 
     // Conectar a la base de datos mediante serverless function
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     //Verificar si el usuario esta autenticado
 

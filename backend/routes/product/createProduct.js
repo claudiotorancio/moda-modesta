@@ -1,15 +1,10 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Product from "../../models/Product.js";
 // import { uploadSingle } from "../../../api/router.js"; // Asegúrate de que uploadMultiple maneje múltiples imágenes
 import Vista from "../../models/Vista.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const createProduct = async (req, res) => {
   try {
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
-
     // Obtén las rutas de las imágenes
     const imagePaths = req.files ? req.files.map((file) => file.location) : [];
     const { name, price, description, section, isFeatured } = req.body;
@@ -26,10 +21,6 @@ const createProduct = async (req, res) => {
         }
       }
     }
-
-    // Imprime los datos recibidos para depuración
-    console.log("Image Paths:", imagePaths);
-    console.log("Request Body:", req.body);
 
     if (
       !name ||
@@ -69,10 +60,7 @@ const createProduct = async (req, res) => {
       newProduct = new Product(createProductData);
     }
 
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     await newProduct.save();
     res.json({ message: "Producto guardado" });

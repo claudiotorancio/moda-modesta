@@ -1,8 +1,7 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import nodemailer from "nodemailer";
 import Order from "../../models/Order.js";
 import Vista from "../../models/Vista.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const sendMail = async (req, res) => {
   try {
@@ -110,10 +109,7 @@ const sendMail = async (req, res) => {
     };
 
     // Conectar a la base de datos
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Guardar la orden en la base de datos
     const newOrder = new Order({

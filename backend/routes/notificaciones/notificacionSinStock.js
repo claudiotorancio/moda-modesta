@@ -1,6 +1,5 @@
-import mongoose from "mongoose";
 import Notification from "../../models/Notification.js";
-import MONGODB_URI from "../../config.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const notificacionSinStock = async (req, res) => {
   try {
@@ -23,10 +22,7 @@ const notificacionSinStock = async (req, res) => {
     }
 
     // Conectar a la base de datos si es necesario
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Verificar si el usuario ya existe
     const existingNotification = await Notification.findOne({

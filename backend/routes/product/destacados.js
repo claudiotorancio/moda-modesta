@@ -1,14 +1,10 @@
-import mongoose from "mongoose";
-import MONGODB_URI from "../../config.js";
 import Vista from "../../models/Vista.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const destacadosProduct = async (req, res) => {
   try {
     // Conectar a la base de datos mediante serverless function
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await connectToDatabase();
 
     // Buscar productos que son destacados y que pertenecen a las secciones especificadas
     const productosDestacados = await Vista.find({
