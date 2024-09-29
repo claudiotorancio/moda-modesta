@@ -8,8 +8,6 @@ const agregarResena = async (req, res) => {
 
     const { name, redSocial, resena, estrellas } = req.body;
 
-    console.log("Request Body:", req.body);
-
     // Validar datos
     if (!name || !redSocial || !resena || !estrellas) {
       return res

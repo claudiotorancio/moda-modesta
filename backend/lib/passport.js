@@ -45,6 +45,8 @@ passport.use(
   )
 );
 
+//serialUser
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -165,7 +167,5 @@ passport.use(
 //     }
 //   )
 // );
-
-//serialUser
 
 export default passport;

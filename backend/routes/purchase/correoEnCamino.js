@@ -3,7 +3,6 @@ import nodemailer from "nodemailer";
 const correoEnCamino = async (req, res) => {
   try {
     const { email, name, producto } = req.body;
-    console.log(req.body);
 
     // Verificar que el campo email está presente
     if (!email) {
@@ -22,16 +21,29 @@ const correoEnCamino = async (req, res) => {
 
     // Construir el contenido del correo
     const contentHTML = `
-      <h3>Datos de Contacto</h3>
-      <ul>
+    <div style="font-family: Arial, sans-serif; color: #333;">
+      <h2 style="color: #555;">Datos de Contacto</h2>
+      <ul style="list-style: none; padding: 0;">
         <li><strong>Correo:</strong> ${email}</li>
         <li><strong>Nombre:</strong> ${name}</li>
       </ul>
-      <p>Hola ${name},</p>
-      <p>Tu pedido con el producto <strong>${producto}</strong> está en proceso de entrega.</p>
-      <p>Gracias por tu compra.</p>
-      <p>Si tienes alguna pregunta, no dudes en contactarnos a <a href="mailto:${process.env.EMAIL}">${process.env.EMAIL}</a>.</p>
-    `;
+  
+      <p>Hola <strong>${name}</strong>,</p>
+  
+      <p>Nos complace informarte que tu pedido con el producto <strong>${producto}</strong> está en proceso de entrega. Pronto llegará a la dirección indicada.</p>
+  
+      <p>Gracias por tu compra y por confiar en nosotros.</p>
+  
+      <p>Si tienes alguna pregunta o inquietud, no dudes en contactarnos a través de nuestro correo: <a href="mailto:${process.env.EMAIL}" style="color: #1a73e8; text-decoration: none;">${process.env.EMAIL}</a>.</p>
+  
+      <p>Atentamente,</p>
+      <p><strong>El equipo de Moda Modesta</strong></p>
+  
+      <footer style="margin-top: 30px; font-size: 12px; color: #777;">
+        <p>Este correo es generado automáticamente, por favor no responda a este mensaje.</p>
+      </footer>
+    </div>
+  `;
 
     // Configurar el transportador de nodemailer
     const transporter = nodemailer.createTransport({

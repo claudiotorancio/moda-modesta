@@ -66,7 +66,8 @@ const suscribeMail = async (req, res) => {
       <p>¡Suscríbete para no perderte las novedades y recibir descuentos exclusivos!</p>
       <p>Para confirmar tu suscripción, por favor haz clic en el siguiente enlace:</p>
       <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar Suscripción</a>
-      <p>Recibirás un correo para validar tu email.</p>
+    <p>Gracias por confiar en nosotros,</p>
+    <p>El equipo de Moda Modesta</p>
     `;
 
     // Configurar el transportador de nodemailer

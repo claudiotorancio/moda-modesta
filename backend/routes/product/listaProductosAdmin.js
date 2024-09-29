@@ -3,18 +3,12 @@ import Vista from "../../models/Vista.js";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const listaProductosAdmin = async (req, res) => {
-  // console.log(req.user);
   try {
     //Relacionar id de usuario con producto para visualizar solo sus productos
     const user_id = req.user._id;
 
     // Conectar a la base de datos mediante serverless function
     await connectToDatabase();
-
-    //Verificar si el usuario esta autenticado
-
-    const usuarioAdmin = req.user.role === "admin";
-    console.log(usuarioAdmin);
 
     let products;
     //Verificar si el usuario es administrador
