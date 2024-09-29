@@ -241,7 +241,7 @@ export class RenderCompras {
     card
       .querySelector("[data-compraEnCamino]")
       .addEventListener("click", async () => {
-        await mensajeEnCaminoHandlerCompra(email, name, id);
+        await mensajeEnCaminoHandlerCompra(email, name, producto, id);
         await this.renderCompraLista();
       });
 

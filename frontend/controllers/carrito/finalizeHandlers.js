@@ -99,7 +99,6 @@ Al dar finalizado se enviarán los datos para el pago al correo ingresado. Por f
         size: item.size,
         hash: item.productId,
       }));
-      console.log(productos);
       const datosCompra = {
         nombre,
         email,

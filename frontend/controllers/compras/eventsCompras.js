@@ -40,6 +40,7 @@ export async function mensajeEnCaminoHandlerCompra(email, name, producto, id) {
       const compraServicesHelpers = new CompraServices();
       await compraServicesHelpers.compraEnCamino(id);
       await compraServicesHelpers.correoEnCaminoe(email, name, producto);
+
       alert("Correo de notificación enviado con éxito.");
     } catch (error) {
       console.error(error);
