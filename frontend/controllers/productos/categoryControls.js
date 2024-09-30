@@ -89,21 +89,20 @@ export async function initializeCategoryControls() {
         hayStock
       );
 
-      const listaServicesInstance = new ListaServices();
+      // const listaServicesInstance = new ListaServices();
+      let tarjetaProducto;
 
-      const usuarioAdmin = await listaServicesInstance.getAdmin();
+      tarjetaProducto = new ProductCard(
+        producto.name,
+        producto.price,
+        producto.imagePath,
+        producto.description,
+        producto.sizes,
+        producto._id,
+        hayStock
+      ).render(); //crear producto para admin
 
-      const tarjetaProducto = usuarioAdmin
-        ? new ProductCard(
-            producto.name,
-            producto.price,
-            producto.imagePath,
-            producto.description,
-            producto.sizes,
-            producto._id,
-            hayStock
-          ).render() //crear producto para admin
-        : productCategory.productoInicio(); // Crear la tarjeta del producto para usuario
+      tarjetaProducto = productCategory.productoInicio(); // Crear la tarjeta del producto para usuario
 
       tarjetaProducto.classList.add("allCard"); // Agregar clase allCard
 
