@@ -62,8 +62,7 @@ export async function initializeCategoryControls() {
 
   // Función para cargar productos en bloques
   const cargarProductos = async () => {
-    // Evitar múltiples llamadas a la vez
-    if (cargando) return;
+    if (cargando) return; // Evitar múltiples llamadas a la vez
     cargando = true;
 
     try {
@@ -94,18 +93,24 @@ export async function initializeCategoryControls() {
         const user = sessionStorage.getItem("user");
         const parsedUser = user ? JSON.parse(user) : null;
 
-        // Crear tarjeta del producto dependiendo del tipo de usuario
-        const tarjetaProducto = parsedUser
-          ? new ProductCard(
-              producto.name,
-              producto.price,
-              producto.imagePath,
-              producto.description,
-              producto.sizes,
-              producto._id,
-              hayStock
-            ).render() //crear producto para admin
-          : productCategory.productoInicio(); // Crear la tarjeta del producto para usuario
+        // Definir variable para la tarjeta del producto
+        let tarjetaProducto;
+
+        // Si hay un usuario administrador, crea la tarjeta de ProductCard
+        if (parsedUser && parsedUser.isAdmin) {
+          tarjetaProducto = new ProductCard(
+            producto.name,
+            producto.price,
+            producto.imagePath,
+            producto.description,
+            producto.sizes,
+            producto._id,
+            hayStock
+          ).render(); // Crear producto para admin
+        } else {
+          // Si no hay usuario o no es admin, crear tarjeta de productoInicio
+          tarjetaProducto = productCategory.productoInicio(); // Crear la tarjeta del producto para usuario
+        }
 
         // Añadir clases a la tarjeta y la imagen
         tarjetaProducto.classList.add("allCard");
