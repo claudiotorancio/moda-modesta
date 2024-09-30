@@ -11,7 +11,7 @@ export class StockControllers {
   }
 
   async renderStock() {
-    const productos = await productoServices.listaProductosAdmin();
+    const productos = await productoServices.listaProductos();
     const notificaciones = await envioServices.getNotificaciones();
 
     const categorias = {
