@@ -1,4 +1,4 @@
-import Product from "../../models/Product.js";
+// import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
 

@@ -1,4 +1,3 @@
-import { ListaServices } from "../../services/lista_services.js";
 import productoServices from "../../services/product_services.js";
 import { ProductCard } from "./ProductCard.js";
 import { ProductInit } from "./ProductInit.js";
@@ -89,20 +88,19 @@ export async function initializeCategoryControls() {
         hayStock
       );
 
-      // const listaServicesInstance = new ListaServices();
-      let tarjetaProducto;
+      const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
-      tarjetaProducto = new ProductCard(
-        producto.name,
-        producto.price,
-        producto.imagePath,
-        producto.description,
-        producto.sizes,
-        producto._id,
-        hayStock
-      ).render(); //crear producto para admin
-
-      tarjetaProducto = productCategory.productoInicio(); // Crear la tarjeta del producto para usuario
+      const tarjetaProducto = user
+        ? new ProductCard(
+            producto.name,
+            producto.price,
+            producto.imagePath,
+            producto.description,
+            producto.sizes,
+            producto._id,
+            hayStock
+          ).render() //crear producto para admin
+        : productCategory.productoInicio(); // Crear la tarjeta del producto para usuario
 
       tarjetaProducto.classList.add("allCard"); // Agregar clase allCard
 
