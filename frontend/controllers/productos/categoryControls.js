@@ -44,6 +44,7 @@ export async function initializeCategoryControls() {
   // Variables para controlar la carga progresiva
   const productosPorPagina = 4; // Mostramos 8 productos por bloque
   let paginaActual = 0;
+  let cargando = false;
 
   // **Crear botón de "Volver"**
   const volverBtn = document.createElement("button");
@@ -62,8 +63,18 @@ export async function initializeCategoryControls() {
 
   // Función para cargar productos en bloques
   const cargarProductos = async () => {
+    if (cargando) return; // Evitar múltiples llamadas a la vez
+    cargando = true;
+
     const inicio = paginaActual * productosPorPagina;
     const fin = inicio + productosPorPagina;
+
+    // Si ya se han cargado todos los productos, detener la carga
+    if (inicio >= productosFiltrados.length) {
+      window.removeEventListener("scroll", manejarScroll);
+      return;
+    }
+
     const productosBloque = productosFiltrados.slice(inicio, fin);
 
     for (const producto of productosBloque) {
@@ -109,7 +120,7 @@ export async function initializeCategoryControls() {
 
     // Incrementamos la página actual para la siguiente carga
     paginaActual++;
-
+    cargando = false; // Restablecer el estado de carga
     // Mover el botón de "Volver" al final de los productos cargados
   };
 
