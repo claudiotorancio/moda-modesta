@@ -60,6 +60,7 @@ import notificacionSinStock from "../backend/routes/notificaciones/notificacionS
 import getNotificaciones from "../backend/routes/notificaciones/getNotificaciones.js";
 import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 import { authenticateJWT } from "../backend/lib/auth.js";
+import { baseURL } from "../frontend/services/product_services.js";
 
 const router = Router();
 const app = express();
@@ -72,11 +73,12 @@ const __dirname = path.dirname(__filename);
 const outputPath = path.join(__dirname, "../public");
 
 // Middlewares
-app.use(cookieParser());
+
+// Middlewares
+app.use(cors()); // Mueve cors() al inicio
 app.use(urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(cors());
 
 // Configuración de la sesión
 const store = new MongoDBStore(session)({
@@ -100,11 +102,19 @@ app.use(
   })
 );
 
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Ruta para ver las cookies
+app.get("/", (req, res) => {
+  // Acceder a las cookies desde req.cookies
+  console.log(req.cookies); // Ver las cookies en la consola
+  res.send("Revisa las cookies en la consola!");
+});
 // Manejo de errores
 app.use((err, req, res, next) => {
+  console.log("router.js", req.user);
   console.error(err.stack);
   res
     .status(500)
@@ -207,7 +217,7 @@ router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 
 // Rutas listado
-router.get("/api/getAdmin", getAdmin);
+router.get("/api/getAdmin", requireAdmin, getAdmin);
 router.get("/api/getUser/:id", requireAdmin, getUser);
 router.get("/api/renderLista", requireAdmin, listaAdmin);
 router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);
@@ -217,7 +227,7 @@ router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/listaProductosUsuario", listaProductosUsuario);
-router.get("/api/listaProductosAdmin", listaProductosAdmin);
+router.get("/api/listaProductosAdmin", requireAdmin, listaProductosAdmin);
 router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
 router.put("/api/activateProduct/:id", requireAdmin, activarProducto);

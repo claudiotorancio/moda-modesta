@@ -31,6 +31,7 @@ passport.use(
           );
 
           if (validPassword) {
+            console.log("local.signin", user);
             return done(null, user);
           } else {
             return done(null, false, { message: "Incorrect password" });
@@ -39,6 +40,7 @@ passport.use(
           return done(null, false, { message: "The username does not exist" });
         }
       } catch (err) {
+        console.log(err.stack);
         return done(err, false, { message: "An error occurred" });
       }
     }
@@ -48,7 +50,13 @@ passport.use(
 //serialUser
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  try {
+    const id = user.id;
+    done(null, id);
+  } catch (error) {
+    console.log(error.stack);
+    done(error, false);
+  }
 });
 
 //deserializerUser
