@@ -97,7 +97,7 @@ export async function initializeCategoryControls() {
         let tarjetaProducto;
 
         // Si hay un usuario administrador, crea la tarjeta de ProductCard
-        if (parsedUser && parsedUser.isAdmin) {
+        if (parsedUser) {
           tarjetaProducto = new ProductCard(
             producto.name,
             producto.price,
