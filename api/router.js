@@ -60,7 +60,6 @@ import notificacionSinStock from "../backend/routes/notificaciones/notificacionS
 import getNotificaciones from "../backend/routes/notificaciones/getNotificaciones.js";
 import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 import { authenticateJWT } from "../backend/lib/auth.js";
-import { baseURL } from "../frontend/services/product_services.js";
 
 const router = Router();
 const app = express();

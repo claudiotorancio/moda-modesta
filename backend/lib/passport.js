@@ -31,7 +31,6 @@ passport.use(
           );
 
           if (validPassword) {
-            console.log("local.signin", user);
             return done(null, user);
           } else {
             return done(null, false, { message: "Incorrect password" });
