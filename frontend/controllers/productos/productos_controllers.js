@@ -37,7 +37,7 @@ export const controllers = {
       }
 
       // Carga la lista de productos del admin
-      const products = await productoServices.listaProductosAdmin();
+      const products = await productoServices.listaProductos();
 
       document.querySelectorAll(".productos").forEach((contenedor) => {
         if (contenedor !== contenedorDestacados) {
@@ -96,7 +96,7 @@ export const controllers = {
         contenedorDestacados.appendChild(card.productoInicio());
       }
 
-      const products = await productoServices.listaProductosUsuario();
+      const products = await productoServices.listaProductos();
 
       document.querySelectorAll(".productos").forEach((contenedor) => {
         if (contenedor !== contenedorDestacados) {

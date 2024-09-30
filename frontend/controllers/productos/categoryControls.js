@@ -1,8 +1,10 @@
+import { ListaServices } from "../../services/lista_services.js";
 import productoServices from "../../services/product_services.js";
+import { ProductCard } from "./ProductCard.js";
 import { ProductInit } from "./ProductInit.js";
 
 export async function initializeCategoryControls() {
-  const productos = await productoServices.listaProductosUsuario();
+  const productos = await productoServices.listaProductos();
 
   // Obtener la opción de la query string
   const urlParams = new URLSearchParams(window.location.search);
@@ -59,7 +61,7 @@ export async function initializeCategoryControls() {
   }
 
   // Función para cargar productos en bloques
-  const cargarProductos = () => {
+  const cargarProductos = async () => {
     const inicio = paginaActual * productosPorPagina;
     const fin = inicio + productosPorPagina;
     const productosBloque = productosFiltrados.slice(inicio, fin);
@@ -76,7 +78,22 @@ export async function initializeCategoryControls() {
         hayStock
       );
 
-      const tarjetaProducto = productCategory.productoInicio(); // Crear la tarjeta del producto
+      const listaServicesInstance = new ListaServices();
+
+      const usuarioAdmin = await listaServicesInstance.getAdmin();
+
+      const tarjetaProducto = usuarioAdmin
+        ? new ProductCard(
+            producto.name,
+            producto.price,
+            producto.imagePath,
+            producto.description,
+            producto.sizes,
+            producto._id,
+            hayStock
+          ).render() //crear producto para admin
+        : productCategory.productoInicio(); // Crear la tarjeta del producto para usuario
+
       tarjetaProducto.classList.add("allCard"); // Agregar clase allCard
 
       // Agregar clase img-allCard a la imagen del producto

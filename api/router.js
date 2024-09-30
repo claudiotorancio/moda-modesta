@@ -16,8 +16,8 @@ import MONGODB_URI from "../backend/config.js";
 import signin from "../backend/routes/login/signin.js";
 import signup from "../backend/routes/login/signup.js";
 import logout from "../backend/routes/login/logout.js";
-import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
-import listaProductosAdmin from "../backend/routes/product/listaProductosAdmin.js";
+// import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
+import listaProductos from "../backend/routes/product/listaProductos.js";
 import createProduct from "../backend/routes/product/createProduct.js";
 import desactivateProduct from "../backend/routes/product/desactivateProduct.js";
 import activarProducto from "../backend/routes/product/activarProducto.js";
@@ -216,7 +216,7 @@ router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 
 // Rutas listado
-router.get("/api/getAdmin", requireAdmin, getAdmin);
+router.get("/api/getAdmin", getAdmin);
 router.get("/api/getUser/:id", requireAdmin, getUser);
 router.get("/api/renderLista", requireAdmin, listaAdmin);
 router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);
@@ -225,8 +225,8 @@ router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
-router.get("/api/listaProductosUsuario", listaProductosUsuario);
-router.get("/api/listaProductosAdmin", requireAdmin, listaProductosAdmin);
+// router.get("/api/listaProductosUsuario", listaProductosUsuario);
+router.get("/api/listaProductos", listaProductos);
 router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
 router.put("/api/activateProduct/:id", requireAdmin, activarProducto);

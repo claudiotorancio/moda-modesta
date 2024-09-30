@@ -19,8 +19,8 @@ class ProductService {
     return await this.fetchJSON(`${this.baseURL}/api/listaProductosUsuario`);
   }
 
-  async listaProductosAdmin() {
-    return await this.fetchJSON(`${this.baseURL}/api/listaProductosAdmin`);
+  async listaProductos() {
+    return await this.fetchJSON(`${this.baseURL}/api/listaProductos`);
   }
 
   async crearProducto(product) {
