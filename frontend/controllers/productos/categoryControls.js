@@ -62,63 +62,73 @@ export async function initializeCategoryControls() {
 
   // Función para cargar productos en bloques
   const cargarProductos = async () => {
-    if (cargando) return; // Evitar múltiples llamadas a la vez
+    // Evitar múltiples llamadas a la vez
+    if (cargando) return;
     cargando = true;
 
-    const inicio = paginaActual * productosPorPagina;
-    const fin = inicio + productosPorPagina;
+    try {
+      const inicio = paginaActual * productosPorPagina;
+      const fin = inicio + productosPorPagina;
 
-    // Si ya se han cargado todos los productos, detener la carga
-    if (inicio >= productosFiltrados.length) {
-      window.removeEventListener("scroll", manejarScroll);
-      return;
-    }
-
-    const productosBloque = productosFiltrados.slice(inicio, fin);
-
-    for (const producto of productosBloque) {
-      const hayStock = producto.sizes.some((item) => item.stock > 0);
-      const productCategory = new ProductInit(
-        producto.name,
-        producto.price,
-        producto.imagePath,
-        producto.description,
-        producto.sizes,
-        producto._id,
-        hayStock
-      );
-
-      const user = JSON.parse(sessionStorage.getItem("user")) || null;
-
-      const tarjetaProducto = user
-        ? new ProductCard(
-            producto.name,
-            producto.price,
-            producto.imagePath,
-            producto.description,
-            producto.sizes,
-            producto._id,
-            hayStock
-          ).render() //crear producto para admin
-        : productCategory.productoInicio(); // Crear la tarjeta del producto para usuario
-
-      tarjetaProducto.classList.add("allCard"); // Agregar clase allCard
-
-      // Agregar clase img-allCard a la imagen del producto
-      const imagenProducto = tarjetaProducto.querySelector(".img-card");
-      if (imagenProducto) {
-        imagenProducto.classList.add("img-allCard");
+      // Si ya se han cargado todos los productos, detener la carga
+      if (inicio >= productosFiltrados.length) {
+        window.removeEventListener("scroll", manejarScroll);
+        return;
       }
 
-      contenedorSeccion.appendChild(tarjetaProducto);
-      contenedorSeccion.classList.add("allProducts");
-      contenedorSeccion.classList.add("ver-todos-activado");
-    }
+      const productosBloque = productosFiltrados.slice(inicio, fin);
 
-    // Incrementamos la página actual para la siguiente carga
-    paginaActual++;
-    cargando = false; // Restablecer el estado de carga
-    // Mover el botón de "Volver" al final de los productos cargados
+      for (const producto of productosBloque) {
+        const hayStock = producto.sizes.some((item) => item.stock > 0);
+        const productCategory = new ProductInit(
+          producto.name,
+          producto.price,
+          producto.imagePath,
+          producto.description,
+          producto.sizes,
+          producto._id,
+          hayStock
+        );
+
+        // Intentar obtener el usuario desde sessionStorage (mejora en la verificación)
+        const user = sessionStorage.getItem("user");
+        const parsedUser = user ? JSON.parse(user) : null;
+
+        // Crear tarjeta del producto dependiendo del tipo de usuario
+        const tarjetaProducto = parsedUser
+          ? new ProductCard(
+              producto.name,
+              producto.price,
+              producto.imagePath,
+              producto.description,
+              producto.sizes,
+              producto._id,
+              hayStock
+            ).render() //crear producto para admin
+          : productCategory.productoInicio(); // Crear la tarjeta del producto para usuario
+
+        // Añadir clases a la tarjeta y la imagen
+        tarjetaProducto.classList.add("allCard");
+
+        const imagenProducto = tarjetaProducto.querySelector(".img-card");
+        if (imagenProducto) {
+          imagenProducto.classList.add("img-allCard");
+        }
+
+        // Agregar la tarjeta al contenedor de la sección
+        contenedorSeccion.appendChild(tarjetaProducto);
+        contenedorSeccion.classList.add("allProducts");
+        contenedorSeccion.classList.add("ver-todos-activado");
+      }
+
+      // Incrementar la página actual para cargar más productos en la próxima vez
+      paginaActual++;
+    } catch (error) {
+      console.error("Error al cargar los productos:", error);
+    } finally {
+      // Restablecer el estado de carga
+      cargando = false;
+    }
   };
 
   // Cargar los primeros productos inicialmente
