@@ -94,29 +94,31 @@ export async function initializeCategoryControls() {
         const listaServicesInstance = new ListaServices();
 
         try {
-          const usuarioAdmin = await listaServicesInstance.getAdmin();
+          const usuarioAdmin = await listaServicesInstance.getDataUser();
 
-          if (usuarioAdmin.role === "admin") {
-            // Si el usuario es administrador, mostrar la tarjeta para administrador
-            tarjetaProducto = new ProductCard(
-              producto.name,
-              producto.price,
-              producto.imagePath,
-              producto.description,
-              producto.sizes,
-              producto._id,
-              hayStock
-            ).render(); // Crear producto para admin
-          } else {
-            // Si no es administrador, mostrar la tarjeta de producto normal
+          // Si no es administrador, cargar la tarjeta de producto normal y salir
+          if (usuarioAdmin.role !== "admin") {
             tarjetaProducto = productCategory.productoInicio();
+            return tarjetaProducto; // Salir de la función si no es admin
           }
+
+          // Si es administrador, mostrar la tarjeta para administrador
+          tarjetaProducto = new ProductCard(
+            producto.name,
+            producto.price,
+            producto.imagePath,
+            producto.description,
+            producto.sizes,
+            producto._id,
+            hayStock
+          ).render(); // Crear producto para admin
         } catch (error) {
           console.error(
             "Error al obtener información de administrador:",
             error.message
           );
-          tarjetaProducto = productCategory.productoInicio(); // Si hay un error, cargar tarjeta de producto normal
+          // Si ocurre un error, cargar la tarjeta de producto normal
+          tarjetaProducto = productCategory.productoInicio();
         }
 
         // Añadir clases a la tarjeta y la imagen

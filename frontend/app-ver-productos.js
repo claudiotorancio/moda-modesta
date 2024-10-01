@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   initializeCategoryControls();
   const listaServicesInstance = new ListaServices();
-  const isAdmin = await listaServicesInstance.getAdmin();
+  const isAdmin = await listaServicesInstance.getDataUser();
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
   const actualizarUsuario = document.querySelector(".data-user");

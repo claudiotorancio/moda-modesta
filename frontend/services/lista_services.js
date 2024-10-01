@@ -5,11 +5,30 @@ export class ListaServices {
     this.baseURL = baseURL;
   }
 
-  //validar admin en session
+  //validar user en session
 
-  getAdmin = async () => {
+  //  getAdmin = async () => {
+  //   try {
+  //     const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
+  //     const data = await respuesta.json();
+  //     console.log(data);
+
+  //     // Devolver un objeto con la propiedad 'ok' y el 'role'
+  //     return {
+  //       ok: data.ok,
+  //       role: data.role || "user", // Si no tiene role, asumir que es 'user'
+  //     };
+  //   } catch (error) {
+  //     console.error("Error al obtener usuario:", error);
+  //     throw error;
+  //   }
+  // };
+
+  //validar user en session
+
+  getDataUser = async () => {
     try {
-      const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
+      const respuesta = await fetch(`${this.baseURL}/api/getDataUser`);
       const data = await respuesta.json();
       console.log(data);
 
