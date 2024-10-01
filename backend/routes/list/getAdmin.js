@@ -1,4 +1,4 @@
-const getUserData = async (req, res) => {
+const getAdmin = async (req, res) => {
   try {
     // Verificar si el usuario está autenticado
     if (!req.isAuthenticated()) {
@@ -27,4 +27,4 @@ const getUserData = async (req, res) => {
   }
 };
 
-export default getUserData;
+export default getAdmin;
