@@ -96,7 +96,7 @@ export async function initializeCategoryControls() {
         try {
           const usuarioAdmin = await listaServicesInstance.getAdmin();
 
-          if (usuarioAdmin && usuarioAdmin.role === "admin") {
+          if (usuarioAdmin.role === "admin") {
             // Si el usuario es administrador, mostrar la tarjeta para administrador
             tarjetaProducto = new ProductCard(
               producto.name,
