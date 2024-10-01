@@ -73,7 +73,6 @@ export class LoginControllers {
     const username = document.getElementsByName("username")[0].value;
     const password = document.getElementsByName("password")[0].value;
     const signinData = { username, password };
-    console.log(signinData);
     try {
       const response = await this.loginInstance.signin(signinData);
       if (response) {
