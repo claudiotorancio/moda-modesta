@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     crearProducto.addEventListener("click", async (e) => {
       e.preventDefault();
       const productForm = new ProductForm(titulo);
-      productForm.render();
+      await productForm.render();
     });
 
     resenas.addEventListener("click", (e) => {
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
     buscar();
-  } else if (user && isAdmin.role === "user") {
+  } else if (user && isAdmin) {
     controllers.renderInit();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
