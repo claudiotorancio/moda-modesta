@@ -10,13 +10,14 @@ export class ListaServices {
   getAdmin = async () => {
     try {
       const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
-
       const data = await respuesta.json();
-      if (data.ok) {
-        return true; // El usuario es administrador
-      } else {
-        return false; // El usuario no es administrador
-      }
+      console.log(data);
+
+      // Devolver un objeto con la propiedad 'ok' y el 'role'
+      return {
+        ok: data.ok,
+        role: data.role || "user", // Si no tiene role, asumir que es 'user'
+      };
     } catch (error) {
       console.error("Error al obtener usuario:", error);
       throw error;
