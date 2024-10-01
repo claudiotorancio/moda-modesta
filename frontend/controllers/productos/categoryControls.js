@@ -90,36 +90,39 @@ export async function initializeCategoryControls() {
           hayStock
         );
 
+        // Inicialización
         let tarjetaProducto;
         const listaServicesInstance = new ListaServices();
+        let isAdmin = false; // Variable para almacenar el estado de admin
 
         try {
           // Obtener el token del localStorage
           const token = localStorage.getItem("token");
 
           // Verificar si el token existe
-          if (!token) {
-            // Si no hay token, cargar la tarjeta de producto normal
-            tarjetaProducto = productCategory.productoInicio();
-          } else {
+          if (token) {
             // Llamar a getAdmin pasando el token en la cabecera
             const usuarioAdmin = await listaServicesInstance.getAdmin(token);
 
-            // Si no es administrador, cargar la tarjeta de producto normal
-            if (usuarioAdmin.role !== "admin") {
-              tarjetaProducto = productCategory.productoInicio();
-            } else {
-              // Si es administrador, mostrar la tarjeta para administrador
-              tarjetaProducto = new ProductCard(
-                producto.name,
-                producto.price,
-                producto.imagePath,
-                producto.description,
-                producto.sizes,
-                producto._id,
-                hayStock
-              ).render(); // Crear producto para admin
-            }
+            // Almacenar el estado de admin
+            isAdmin = usuarioAdmin.role === "admin";
+          }
+
+          // Renderizar los productos según el rol
+          if (isAdmin) {
+            // Si es administrador, mostrar tarjeta de producto para admin
+            tarjetaProducto = new ProductCard(
+              producto.name,
+              producto.price,
+              producto.imagePath,
+              producto.description,
+              producto.sizes,
+              producto._id,
+              hayStock
+            ).render(); // Crear producto para admin
+          } else {
+            // Si no es administrador o no hay token, cargar la tarjeta de producto normal
+            tarjetaProducto = productCategory.productoInicio();
           }
         } catch (error) {
           console.error(
