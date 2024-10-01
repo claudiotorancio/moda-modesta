@@ -117,7 +117,9 @@ export async function initializeCategoryControls() {
                 producto.description,
                 producto.sizes,
                 producto._id,
-                hayStock
+                hayStock,
+                producto.isFeatured,
+                producto.isActive
               ).render(); // Crear producto para admin
             }
           }
