@@ -128,6 +128,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     userActive.style.display = "none";
     buscar();
   } else if (user && isAdmin) {
+    document.querySelectorAll(".admin-only").forEach((el) => {
+      el.style.display = "block";
+    });
     controllers.renderInit();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
