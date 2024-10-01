@@ -130,12 +130,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   } else if (isAdmin.role === "user") {
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
-    userActive.style.display = "none";
     controllers.renderInit();
     cargarReseñas();
-    userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   }
-
+  userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   const initButton = document.querySelector("[data-init]");
   initButton.addEventListener("click", (e) => {
     modalControllers.modalSuscribe();
