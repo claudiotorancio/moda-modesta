@@ -137,8 +137,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
-  } else if (!user && !isAdmin) {
-    // controllers.renderInit();
+  } else if (!user && !isAdmin.ok) {
+    controllers.renderInit();
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   }
   userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
