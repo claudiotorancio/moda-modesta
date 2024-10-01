@@ -141,7 +141,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // controllers.renderInit();
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   }
-  controllers.renderInit();
   userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   const initButton = document.querySelector("[data-init]");
   initButton.addEventListener("click", (e) => {
