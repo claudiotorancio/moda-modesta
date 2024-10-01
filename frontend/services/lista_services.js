@@ -7,21 +7,23 @@ export class ListaServices {
 
   //validar admin en session
 
-  getAdmin = async () => {
+  getAdmin = async (token) => {
     try {
-      const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
+      const respuesta = await fetch(`${this.baseURL}/api/getAdmin`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Añadir el token en la cabecera
+        },
+      });
 
       const data = await respuesta.json();
 
       console.log(data);
 
       if (data.ok) {
-        localStorage.setItem("token", data.token);
         return data; // Devuelve el objeto del administrador (incluyendo el rol)
       } else {
         return { role: null }; // Usuario no es administrador
       }
-      data.token;
     } catch (error) {
       console.error("Error al obtener usuario:", error);
       throw error;
@@ -35,6 +37,16 @@ export class ListaServices {
       const respuesta = await fetch(`${this.baseURL}/api/getDataUser`);
       const data = await respuesta.json();
       console.log(data);
+
+      if (data.ok) {
+        // Almacenar el token en localStorage
+        localStorage.setItem("token", data.token);
+        console.log("Token almacenado en localStorage:", data.token);
+
+        // Aquí podrías redirigir al usuario o actualizar el estado de la aplicación
+      } else {
+        console.error("Error de inicio de sesión:", data.message);
+      }
 
       // Devolver un objeto con la propiedad 'ok' y el 'role'
       return {

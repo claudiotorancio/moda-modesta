@@ -10,11 +10,8 @@ const getAdmin = async (req, res) => {
       return res.status(403).json({ ok: false });
     }
 
-    // Si el usuario está autenticado y tiene el rol de "admin", generar un token (si corresponde)
-    const token = req.user.generateAuthToken(); // Genera un token, asegúrate de tener esta función
-    console.log(token);
-    // Devolver el token junto con la confirmación de que el usuario es admin
-    res.json({ ok: true, token });
+    // Si el usuario está autenticado y tiene el rol de "admin", simplemente responde que es admin
+    res.json({ ok: true, role: req.user.role });
   } catch (error) {
     console.error(error);
     res.status(500).json({ ok: false });
