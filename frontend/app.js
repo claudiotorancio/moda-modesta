@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       el.style.display = "block";
     });
 
+    await controllers.renderProducts();
+
     cargarReseñasAdmin();
 
     const envio = document.querySelector("[data-pedidos]");
@@ -122,7 +124,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Seccion en Construccion");
     });
 
-    controllers.renderProducts();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
