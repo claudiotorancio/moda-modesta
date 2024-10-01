@@ -135,7 +135,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     cargarReseñas();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
-    userActive.style.display = "none";
   }
   controllers.renderInit();
   userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
