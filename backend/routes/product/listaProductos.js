@@ -9,20 +9,15 @@ const listaProductos = async (req, res) => {
     // Conectar a la base de datos mediante serverless function
     await connectToDatabase();
 
-    let products;
+    let query = { isActive: true };
 
     if (req.isAuthenticated()) {
-      products = await Vista.find({ isActive: true });
-      // El usuario está autenticado, ahora verificamos su rol
       if (req.user.role === "admin") {
-        // Si el usuario es administrador, obtener todos los productos (o los productos de administrador)
-        const user_id = req.user._id;
-        products = await Vista.find({ user_id: user_id });
+        query = { user_id: req.user._id };
       }
-    } else {
-      // Si el usuario no está autenticado, cargar productos con una condición predeterminada
-      products = await Vista.find({ isActive: true });
     }
+
+    const products = await Vista.find(query);
 
     res.json(products);
   } catch (error) {
