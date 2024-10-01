@@ -94,22 +94,32 @@ export async function initializeCategoryControls() {
         const listaServicesInstance = new ListaServices();
 
         try {
-          const usuarioAdmin = await listaServicesInstance.getAdmin();
+          // Obtener el token del localStorage
+          const token = localStorage.getItem("token");
 
-          // Si no es administrador, cargar la tarjeta de producto normal
-          if (usuarioAdmin.role !== "admin") {
+          // Verificar si el token existe
+          if (!token) {
+            // Si no hay token, no se puede verificar la administración
             tarjetaProducto = productCategory.productoInicio();
           } else {
-            // Si es administrador, mostrar la tarjeta para administrador
-            tarjetaProducto = new ProductCard(
-              producto.name,
-              producto.price,
-              producto.imagePath,
-              producto.description,
-              producto.sizes,
-              producto._id,
-              hayStock
-            ).render(); // Crear producto para admin
+            // Llamar a getAdmin pasando el token en la cabecera
+            const usuarioAdmin = await listaServicesInstance.getAdmin(token);
+
+            // Si no es administrador, cargar la tarjeta de producto normal
+            if (usuarioAdmin.role !== "admin") {
+              tarjetaProducto = productCategory.productoInicio();
+            } else {
+              // Si es administrador, mostrar la tarjeta para administrador
+              tarjetaProducto = new ProductCard(
+                producto.name,
+                producto.price,
+                producto.imagePath,
+                producto.description,
+                producto.sizes,
+                producto._id,
+                hayStock
+              ).render(); // Crear producto para admin
+            }
           }
         } catch (error) {
           console.error(
@@ -119,6 +129,7 @@ export async function initializeCategoryControls() {
           // Cargar la tarjeta de producto normal en caso de error
           tarjetaProducto = productCategory.productoInicio();
         }
+
         // Añadir clases a la tarjeta y la imagen
         tarjetaProducto.classList.add("allCard");
 

@@ -5,7 +5,7 @@ export class ListaServices {
     this.baseURL = baseURL;
   }
 
-  //validar user en session
+  //validar admin en session
 
   getAdmin = async () => {
     try {
@@ -14,7 +14,14 @@ export class ListaServices {
       const data = await respuesta.json();
 
       console.log(data);
+
       if (data.ok) {
+        // Si el usuario es administrador y se devuelve un token
+        if (data.token) {
+          // Guarda el token en localStorage
+          localStorage.setItem("token", data.token);
+          console.log("Token guardado en localStorage:", data.token);
+        }
         return true; // El usuario es administrador
       } else {
         return false; // El usuario no es administrador
