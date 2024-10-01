@@ -132,7 +132,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "none";
     });
-    controllers.renderInit();
     cargarReseñas();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
