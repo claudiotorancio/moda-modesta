@@ -34,7 +34,6 @@ export class ListaServices {
     try {
       const respuesta = await fetch(`${this.baseURL}/api/getDataUser`);
       const data = await respuesta.json();
-      console.log(data);
 
       if (data.ok) {
         // Almacenar el token en localStorage
