@@ -137,8 +137,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
+  } else if (user && isAdmin.role === "user") {
+    controllers.renderInit();
+    userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   }
-
+  controllers.renderInit();
+  userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   const initButton = document.querySelector("[data-init]");
   initButton.addEventListener("click", (e) => {
     modalControllers.modalSuscribe();
