@@ -1,6 +1,7 @@
 import productoServices from "../../services/product_services.js";
 import { ProductCard } from "./ProductCard.js";
 import { ProductInit } from "./ProductInit.js";
+import { ListaServices } from "../../services/lista_services.js";
 
 export async function initializeCategoryControls() {
   const productos = await productoServices.listaProductos();
@@ -89,27 +90,33 @@ export async function initializeCategoryControls() {
           hayStock
         );
 
-        // Intentar obtener el usuario desde sessionStorage (mejora en la verificación)
-        const user = sessionStorage.getItem("user");
-        const parsedUser = user ? JSON.parse(user) : null;
-
-        // Definir variable para la tarjeta del producto
         let tarjetaProducto;
+        const listaServicesInstance = new ListaServices();
 
-        // Si hay un usuario administrador, crea la tarjeta de ProductCard
-        if (parsedUser) {
-          tarjetaProducto = new ProductCard(
-            producto.name,
-            producto.price,
-            producto.imagePath,
-            producto.description,
-            producto.sizes,
-            producto._id,
-            hayStock
-          ).render(); // Crear producto para admin
-        } else {
-          // Si no hay usuario o no es admin, crear tarjeta de productoInicio
-          tarjetaProducto = productCategory.productoInicio(); // Crear la tarjeta del producto para usuario
+        try {
+          const usuarioAdmin = await listaServicesInstance.getAdmin();
+
+          if (usuarioAdmin) {
+            // Si el usuario es administrador, mostrar la tarjeta para administrador
+            tarjetaProducto = new ProductCard(
+              producto.name,
+              producto.price,
+              producto.imagePath,
+              producto.description,
+              producto.sizes,
+              producto._id,
+              hayStock
+            ).render(); // Crear producto para admin
+          } else {
+            // Si no es administrador, mostrar la tarjeta de producto normal
+            tarjetaProducto = productCategory.productoInicio();
+          }
+        } catch (error) {
+          console.error(
+            "Error al obtener información de administrador:",
+            error.message
+          );
+          tarjetaProducto = productCategory.productoInicio(); // Si hay un error, cargar tarjeta de producto normal
         }
 
         // Añadir clases a la tarjeta y la imagen

@@ -1,21 +1,30 @@
-const getAdmin = async (req, res) => {
+const getUserData = async (req, res) => {
   try {
     // Verificar si el usuario está autenticado
     if (!req.isAuthenticated()) {
-      return res.status(401).json({ ok: false });
+      return res.status(401).json({ ok: false, message: "No autenticado" });
     }
 
-    // Verificar si el usuario tiene el rol de "admin"
-    if (req.user.role !== "admin") {
-      return res.status(403).json({ ok: false });
+    // Si el usuario es admin
+    if (req.user.role === "admin") {
+      // Aquí puedes devolver datos o acceso específico para administradores
+      const adminData = await obtenerDatosDeAdmin(); // Función que obtiene los datos de admin
+      return res.json({ ok: true, role: "admin", data: adminData });
     }
 
-    // Si el usuario está autenticado y tiene el rol de "admin", devolver true
-    res.json({ ok: true });
+    // Si el usuario es un usuario común (no admin)
+    if (req.user.role === "user") {
+      // Puedes devolver datos específicos para usuarios comunes
+      const userData = await obtenerDatosDeUsuario(); // Función que obtiene los datos de usuario común
+      return res.json({ ok: true, role: "user", data: userData });
+    }
+
+    // Si el rol del usuario no es reconocido
+    return res.status(403).json({ ok: false, message: "Rol no autorizado" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ ok: false });
+    res.status(500).json({ ok: false, message: "Error del servidor" });
   }
 };
 
-export default getAdmin;
+export default getUserData;
