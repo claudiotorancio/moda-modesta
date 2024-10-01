@@ -52,7 +52,7 @@ async function fetchData() {
     setTimeout(() => {
       console.log("Datos cargados");
       resolve();
-    }, 1000);
+    }, 10);
   });
 }
 
@@ -165,34 +165,33 @@ const modalErrorSignIn = () => {
       const loginControllersInstance = new LoginControllers();
       loginControllersInstance.renderSignin();
     },
-    2000
+    null
   );
 };
 
-const modalSuccessSignup = (username) => {
-  showModal();
+const modalSuccessSignup = () => {
   showModal(
-    "Bienvenido!",
-    `${username}`,
-    "Ir a inicio",
+    "Registro exitoso!",
+    "",
+    "Iniciar sesion",
     () => {
-      window.location.replace("/index.html");
+      const loginControllersInstance = new LoginControllers();
+      loginControllersInstance.renderSignin();
     },
-    3000,
-    "/index.html"
+    null
   );
 };
 
 const modalErrorSignup = () => {
   showModal(
-    "Nombre de usuario existente",
+    "La accion no se completo",
     "",
     "Volver a intentar",
     () => {
       const loginControllersInstance = new LoginControllers();
-      loginControllersInstance.renderSignin();
+      loginControllersInstance.renderSignup();
     },
-    2000
+    null
   );
 };
 

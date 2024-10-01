@@ -6,6 +6,9 @@ import helpers from "../../lib/helpers.js";
 import crypto from "crypto";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
 
+// Tiempo de vida para confirmar el email (por ejemplo, 24 horas)
+const TIME_TO_CONFIRM = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+
 const suscribeMail = async (req, res) => {
   const generateRandomPassword = (length = 12) => {
     return crypto.randomBytes(length).toString("hex").slice(0, length);
@@ -52,6 +55,17 @@ const suscribeMail = async (req, res) => {
     const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
+    // Programar la eliminación del usuario si no se confirma en 24 horas
+    setTimeout(async () => {
+      const existingUser = await Users.findById(newUser._id);
+      if (existingUser && !existingUser.emailVerified) {
+        await Users.deleteOne({ _id: newUser._id });
+        console.log(
+          `Usuario con email ${newUser.username} eliminado por no verificar su cuenta.`
+        );
+      }
+    }, TIME_TO_CONFIRM);
 
     // Construir la URL de confirmación
     const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;

@@ -18,30 +18,14 @@ export class LoginControllers {
       "Don't have an account?",
       this.signinSubmitHandler
     );
+
     const btn = document.querySelector("[data-btn]");
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       this.renderSignup();
-      // const signupBtn = document.querySelector("[data-btn]");
-      // signupBtn.style.display = "none"; desplegar estas dos lineas en caso de volver a activar signUp
+      const signupBtn = document.querySelector("[data-btn]");
+      signupBtn.style.display = "none"; //desplegar estas dos lineas en caso de volver a activar signUp
     });
-  }
-
-  //evento signin
-
-  async signinSubmitHandler(e) {
-    e.preventDefault();
-    const username = document.getElementsByName("username")[0].value;
-    const password = document.getElementsByName("password")[0].value;
-    const signinData = { username, password };
-    try {
-      const response = await this.loginInstance.signin(signinData);
-      if (response) {
-        window.location.href = "/index.html";
-      }
-    } catch (err) {
-      console.error(err.message);
-    }
   }
 
   // form base par ambos estados
@@ -82,6 +66,24 @@ export class LoginControllers {
     form.addEventListener("submit", submitHandler.bind(this));
   }
 
+  //evento signin
+
+  async signinSubmitHandler(e) {
+    e.preventDefault();
+    const username = document.getElementsByName("username")[0].value;
+    const password = document.getElementsByName("password")[0].value;
+    const signinData = { username, password };
+    console.log(signinData);
+    try {
+      const response = await this.loginInstance.signin(signinData);
+      if (response) {
+        window.location.href = "/index.html";
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
   //evento signup
   async signupSubmitHandler(e) {
     e.preventDefault();
@@ -95,36 +97,36 @@ export class LoginControllers {
     }
   }
 
-  //render modal signup
-  renderSignup() {
-    modalControllers.baseModal();
-    const loginInicio = this.modal.querySelector("[data-table]");
-    loginInicio.innerHTML = `
-      <div class="text-center">
-          <div class="card-header mb-4">
-              <h2>Sección en Construcción</h2>
-          </div>
-          <div class="mx-auto card-body">
-              <p>Estamos trabajando para brindarte esta funcionalidad muy pronto.</p>
-          </div>
-      </div>
-  `;
-    loginInicio.classList.add("modalVisor");
-  }
-
-  // activar estas lineas en caso de usar signUp
   // //render modal signup
   // renderSignup() {
-  //   this.renderForm(
-  //     "SignUp",
-  //     "/api/signup",
-  //     "username",
-  //     "password",
-  //     "Sign Up",
-  //     "",
-  //     this.signupSubmitHandler
-  //   );
-  //   const signupBtn = document.querySelector("[data-btn]");
-  //   signupBtn.style.display = "none";
+  //   modalControllers.baseModal();
+  //   const loginInicio = this.modal.querySelector("[data-table]");
+  //   loginInicio.innerHTML = `
+  //     <div class="text-center">
+  //         <div class="card-header mb-4">
+  //             <h2>Sección en Construcción</h2>
+  //         </div>
+  //         <div class="mx-auto card-body">
+  //             <p>Estamos trabajando para brindarte esta funcionalidad muy pronto.</p>
+  //         </div>
+  //     </div>
+  // `;
+  //   loginInicio.classList.add("modalVisor");
   // }
+
+  // activar estas lineas en caso de usar signUp
+  //render modal signup
+  renderSignup() {
+    this.renderForm(
+      "SignUp",
+      "/api/signup",
+      "username",
+      "password",
+      "Sign Up",
+      "",
+      this.signupSubmitHandler
+    );
+    const signupBtn = document.querySelector("[data-btn]");
+    signupBtn.style.display = "none";
+  }
 }

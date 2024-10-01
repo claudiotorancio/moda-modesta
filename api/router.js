@@ -211,7 +211,7 @@ router.post("/api/enviarPromocion/", requireAdmin, enviarPromocion);
 router.post("/api/costoEnvio", costoEnvio);
 
 // Rutas signin
-router.post("/api/signup", signup);
+router.post("/api/signup", purchaseLimiter, signup);
 router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
 
