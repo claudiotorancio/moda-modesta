@@ -17,8 +17,6 @@ export class ListaServices {
 
       const data = await respuesta.json();
 
-      console.log(data);
-
       if (data.ok) {
         return data; // Devuelve el objeto del administrador (incluyendo el rol)
       } else {
@@ -40,8 +38,7 @@ export class ListaServices {
 
       if (data.ok) {
         // Almacenar el token en localStorage
-        localStorage.setItem("token", data.token);
-        console.log("Token almacenado en localStorage:", data.token);
+        sessionStorage.setItem("token", data.token);
 
         // Aquí podrías redirigir al usuario o actualizar el estado de la aplicación
       } else {

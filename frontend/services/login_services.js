@@ -76,8 +76,11 @@ export class LoginServices {
       }
       // Remover usuario de sessionStorage
       const user = JSON.parse(sessionStorage.getItem("user"));
+      JSON.parse(sessionStorage.getItem("token"));
+
       modalControllers.modalLogout(user);
       sessionStorage.removeItem("user");
+      sessionStorage.removeItem("token");
     } catch (error) {
       console.error("Error durante el cierre de sesión:", error);
     }
