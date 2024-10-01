@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
     buscar();
-  } else {
+  } else if (user && isAdmin.role === "user") {
     controllers.renderInit();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
