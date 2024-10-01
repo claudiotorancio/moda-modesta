@@ -95,7 +95,7 @@ export async function initializeCategoryControls() {
 
         try {
           // Obtener el token del localStorage
-          const token = localStorage.getItem("token");
+          const token = sessionStorage.getItem("token");
 
           // Verificar si el token existe
           if (!token) {

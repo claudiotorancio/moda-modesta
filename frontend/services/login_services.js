@@ -76,7 +76,6 @@ export class LoginServices {
       }
       // Remover usuario de sessionStorage
       const user = JSON.parse(sessionStorage.getItem("user"));
-
       modalControllers.modalLogout(user);
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("token");
