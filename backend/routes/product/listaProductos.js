@@ -12,14 +12,12 @@ const listaProductos = async (req, res) => {
     let products;
 
     if (req.isAuthenticated()) {
+      products = await Vista.find({ isActive: true });
       // El usuario está autenticado, ahora verificamos su rol
       if (req.user.role === "admin") {
         // Si el usuario es administrador, obtener todos los productos (o los productos de administrador)
         const user_id = req.user._id;
         products = await Vista.find({ user_id: user_id });
-      } else {
-        //   // Si no es administrador, obtener solo los productos del usuario
-        products = await Vista.find({ isActive: true });
       }
     } else {
       // Si el usuario no está autenticado, cargar productos con una condición predeterminada
