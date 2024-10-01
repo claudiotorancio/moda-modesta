@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
     buscar();
-  } else if (isAdmin.role === "user") {
+  } else {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "none";
     });
