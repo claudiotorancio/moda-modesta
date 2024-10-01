@@ -99,7 +99,7 @@ export async function initializeCategoryControls() {
 
           // Verificar si el token existe
           if (!token) {
-            // Si no hay token, no se puede verificar la administración
+            // Si no hay token, cargar la tarjeta de producto normal
             tarjetaProducto = productCategory.productoInicio();
           } else {
             // Llamar a getAdmin pasando el token en la cabecera
