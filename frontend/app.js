@@ -128,9 +128,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     userActive.style.display = "none";
     buscar();
   } else {
+    controllers.renderInit();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
-    controllers.renderInit();
+    userActive.style.display = "none";
+
     cargarReseñas();
   }
   controllers.renderInit();
