@@ -198,6 +198,10 @@ p.help a {
 .admin-only {
   display: none;
 }
+
+.user-only {
+  display: none;
+}
 .consolas {
   width: 6.8rem;
   height: 3rem;

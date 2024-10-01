@@ -69,6 +69,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
 
   if (user && isAdmin.role === "admin") {
+    document.querySelectorAll(".user-only").forEach((el) => {
+      el.style.display = "block";
+    });
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "block";
     });
@@ -131,6 +134,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   } else if (user && isAdmin.role === "user") {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "none";
+    });
+    document.querySelectorAll(".user-only").forEach((el) => {
+      el.style.display = "block";
     });
     await controllers.renderInit();
     cargarReseñas();
