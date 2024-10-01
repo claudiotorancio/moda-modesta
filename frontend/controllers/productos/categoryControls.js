@@ -99,17 +99,8 @@ export async function initializeCategoryControls() {
           // Obtener el token del localStorage
           const token = localStorage.getItem("token");
 
-          // Verificar si el token existe
-          if (token) {
-            // Llamar a getAdmin pasando el token en la cabecera
-            const usuarioAdmin = await listaServicesInstance.getAdmin(token);
-
-            // Almacenar el estado de admin
-            isAdmin = usuarioAdmin.role === "admin";
-          }
-
           // Renderizar los productos según el rol
-          if (isAdmin) {
+          if (token) {
             // Si es administrador, mostrar tarjeta de producto para admin
             tarjetaProducto = new ProductCard(
               producto.name,

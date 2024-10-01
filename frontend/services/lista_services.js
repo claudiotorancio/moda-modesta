@@ -7,23 +7,21 @@ export class ListaServices {
 
   //validar admin en session
 
-  getAdmin = async (token) => {
+  getAdmin = async () => {
     try {
-      const respuesta = await fetch(`${this.baseURL}/api/getAdmin`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Añadir el token en la cabecera
-        },
-      });
+      const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
 
       const data = await respuesta.json();
 
       console.log(data);
 
       if (data.ok) {
+        localStorage.setItem("token", data.token);
         return data; // Devuelve el objeto del administrador (incluyendo el rol)
       } else {
         return { role: null }; // Usuario no es administrador
       }
+      data.token;
     } catch (error) {
       console.error("Error al obtener usuario:", error);
       throw error;
@@ -38,22 +36,11 @@ export class ListaServices {
       const data = await respuesta.json();
       console.log(data);
 
-      // Verifica si la respuesta es exitosa y si hay un token
-      if (data.ok) {
-        // Almacenar el token en localStorage
-        localStorage.setItem("token", data.token);
-        console.log("Token almacenado en localStorage:", data.token);
-
-        // Devolver un objeto con la propiedad 'ok' y el 'role'
-        return {
-          ok: data.ok,
-          role: data.role || "user", // Si no tiene role, asumir que es 'user'
-        };
-      } else {
-        // Manejar el caso en que no se recibe un token
-        console.warn("No se recibió un token.");
-        return { ok: false, role: "user" };
-      }
+      // Devolver un objeto con la propiedad 'ok' y el 'role'
+      return {
+        ok: data.ok,
+        role: data.role || "user", // Si no tiene role, asumir que es 'user'
+      };
     } catch (error) {
       console.error("Error al obtener usuario:", error);
       throw error;
