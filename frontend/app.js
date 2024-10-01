@@ -131,12 +131,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "block";
     });
-    controllers.renderInit();
+
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
-
-    cargarReseñas();
   }
   controllers.renderInit();
   userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
