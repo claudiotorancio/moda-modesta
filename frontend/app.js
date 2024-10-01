@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     buscar();
   } else if (user && isAdmin && isAdmin.role === "user") {
     document.querySelectorAll(".admin-only").forEach((el) => {
-      el.style.display = "block";
+      el.style.display = "none";
     });
     controllers.renderInit();
     cargarReseñas();
