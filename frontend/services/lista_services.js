@@ -7,22 +7,23 @@ export class ListaServices {
 
   //validar user en session
 
-  //  getAdmin = async () => {
-  //   try {
-  //     const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
-  //     const data = await respuesta.json();
-  //     console.log(data);
+  getAdmin = async () => {
+    try {
+      const respuesta = await fetch(`${this.baseURL}/api/getAdmin`);
 
-  //     // Devolver un objeto con la propiedad 'ok' y el 'role'
-  //     return {
-  //       ok: data.ok,
-  //       role: data.role || "user", // Si no tiene role, asumir que es 'user'
-  //     };
-  //   } catch (error) {
-  //     console.error("Error al obtener usuario:", error);
-  //     throw error;
-  //   }
-  // };
+      const data = await respuesta.json();
+
+      console.log(data);
+      if (data.ok) {
+        return true; // El usuario es administrador
+      } else {
+        return false; // El usuario no es administrador
+      }
+    } catch (error) {
+      console.error("Error al obtener usuario:", error);
+      throw error;
+    }
+  };
 
   //validar user en session
 

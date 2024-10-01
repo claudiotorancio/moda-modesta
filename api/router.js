@@ -60,6 +60,7 @@ import notificacionSinStock from "../backend/routes/notificaciones/notificacionS
 import getNotificaciones from "../backend/routes/notificaciones/getNotificaciones.js";
 import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 import { authenticateJWT } from "../backend/lib/auth.js";
+import getAdmin from "../backend/routes/list/getAdmin.js";
 
 const router = Router();
 const app = express();
@@ -217,6 +218,7 @@ router.delete("/api/logout", logout);
 
 // Rutas listado
 router.get("/api/getDataUser", getDataUser);
+router.get("/api/getAdmin", getAdmin);
 router.get("/api/getUser/:id", requireAdmin, getUser);
 router.get("/api/renderLista", requireAdmin, listaAdmin);
 router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);

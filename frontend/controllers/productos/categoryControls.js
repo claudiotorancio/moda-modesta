@@ -94,7 +94,7 @@ export async function initializeCategoryControls() {
         const listaServicesInstance = new ListaServices();
 
         try {
-          const usuarioAdmin = await listaServicesInstance.getDataUser();
+          const usuarioAdmin = await listaServicesInstance.getAdmin();
 
           // Si no es administrador, cargar la tarjeta de producto normal
           if (usuarioAdmin.role !== "admin") {
