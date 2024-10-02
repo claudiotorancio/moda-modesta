@@ -20,10 +20,11 @@ const sendMail = async (req, res) => {
       total,
       costoEnvio,
       checked,
-      aceptar = false, // Valor predeterminado
-      enCamino = false, // Valor predeterminado
-      finalizado = false, // Valor predeterminado
+      aceptar = false,
+      enCamino = false,
+      finalizado = false,
     } = req.body;
+
     // Verificar que todos los campos requeridos están presentes
     if (
       !nombre ||
@@ -33,11 +34,11 @@ const sendMail = async (req, res) => {
       !codigoPostal === undefined ||
       !productos ||
       !total ||
-      !costoEnvio === undefined ||
-      !checked === undefined ||
-      !aceptar === undefined ||
-      !enCamino === undefined ||
-      !finalizado === undefined
+      !costoEnvio == undefined ||
+      checked === undefined ||
+      aceptar === undefined ||
+      enCamino === undefined ||
+      finalizado === undefined
     ) {
       return res
         .status(400)
@@ -95,10 +96,10 @@ const sendMail = async (req, res) => {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
-      secure: true, // true para 465, false para otros puertos
+      secure: true,
       auth: {
-        user: process.env.EMAIL, // dirección de correo
-        pass: process.env.ACCESS_KEY_ID, // contraseña o token de acceso
+        user: process.env.EMAIL,
+        pass: process.env.ACCESS_KEY_ID,
       },
       tls: {
         rejectUnauthorized: false,
@@ -114,19 +115,45 @@ const sendMail = async (req, res) => {
       $or: [{ emailVerified: false }, { emailVerified: true }],
     });
 
-    // if (user && !user.emailVerified) {
-    //   // Eliminar usuario no verificado
-    //   await Users.deleteOne({ _id: user._id });
-    //   user = null; // Reiniciar para crear un nuevo usuario más adelante
-    // }
+    // Si el usuario no ha verificado su correo, enviarle un nuevo correo de verificación
+    if (user && !user.emailVerified) {
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
 
-    const alertaMensaje =
-      user && !user.emailVerified
-        ? "Se envió un correo a la dirección ingresada para su validación. ¡Muchas gracias!"
-        : "El usuario ya está registrado. No se enviará un correo de confirmación.";
+      const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;
+
+      const myContentHTML = `
+        <h3>Datos de Contacto</h3>
+        <ul>
+          <li>Correo: ${email}</li>
+          <li>Nombre: ${nombre}</li>
+        </ul>
+        <p>Tu cuenta ya existe pero no ha sido verificada. Te hemos enviado un nuevo correo para confirmar tu dirección.</p>
+         <p>Recuerda que la orden no pudo ser completada por lo que deberas ingresar los productos nevamente al carrito</p>
+         <pDisculpe las molestias ocasionadas!</p>
+        <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
+        <p>Gracias por confiar en nosotros,</p>
+        <p>El equipo de Moda Modesta</p>
+      `;
+
+      const mailOptionsUser = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: `¡Hola ${nombre}! Confirma tu correo`,
+        html: myContentHTML,
+      };
+
+      await transporter.sendMail(mailOptionsUser);
+      return res.json({
+        success: true,
+        message:
+          "No se pudo generar la orden porque ya tienes una cuenta que no ha sido verificada. Hemos enviado un correo con instrucciones para completar la validación. ¡Gracias por tu comprensión!",
+      });
+    }
 
     // Si no existe el usuario, crearlo y enviar correo
-    if (user && !user.emailVerified) {
+    if (!user) {
       const generateRandomPassword = (length = 12) =>
         crypto.randomBytes(length).toString("hex").slice(0, length);
 
@@ -153,8 +180,8 @@ const sendMail = async (req, res) => {
           <li>Correo: ${email}</li>
           <li>Nombre: ${nombre}</li>
         </ul>
-       <p>Hemos creado una cuenta para ti en nuestra tienda. Tu username es: <strong>${email}</strong> y tu contraseña temporal es: <strong>${plainPassword}</strong></p>
-       <p>te recomendamos que ingreses a tu cuenta y cambies la contraseña por cuestiones de seguridad</p>
+        <p>Hemos creado una cuenta para ti en nuestra tienda. Tu username es: <strong>${email}</strong> y tu contraseña temporal es: <strong>${plainPassword}</strong></p>
+        <p>Te recomendamos que ingreses a tu cuenta y cambies la contraseña por cuestiones de seguridad.</p>
         <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
         <p>Gracias por confiar en nosotros,</p>
         <p>El equipo de Moda Modesta</p>
@@ -179,7 +206,7 @@ const sendMail = async (req, res) => {
         userId: user._id,
       },
       items: productos.map((producto) => ({
-        productId: producto.id, // Asegúrate de que este campo esté presente y coincida con el nombre del campo en el esquema
+        productId: producto.id,
         name: producto.name,
         price: producto.price,
         quantity: producto.cantidad,
@@ -205,11 +232,10 @@ const sendMail = async (req, res) => {
       productos.map(async (producto) => {
         const product = await Vista.findById(producto.id);
         if (product) {
-          // Encuentra el tamaño correspondiente en el array de sizes
           const size = product.sizes.find((s) => s.size === producto.size);
           if (size) {
-            size.stock -= producto.cantidad; // Reducir el stock del tamaño
-            if (size.stock < 0) size.stock = 0; // Evitar stock negativo
+            size.stock -= producto.cantidad;
+            if (size.stock < 0) size.stock = 0;
             await product.save();
           } else {
             console.warn(
@@ -234,13 +260,16 @@ const sendMail = async (req, res) => {
     const infoOrder = await transporter.sendMail(mailOptionsOrder);
 
     console.log("Correo enviado (Orden):", infoOrder.messageId);
+
     res.json({
       success: true,
-      message: alertaMensaje,
+      message:
+        "¡Orden creada con éxito! Si tu dirección de correo electrónico no ha sido verificada, recibirás un correo con instrucciones para completar la validación.",
     });
   } catch (error) {
-    console.error("Error al enviar el correo:", error.message);
+    console.error("Error al enviar el correo:", error);
     res.status(500).send({ error: "Error al enviar el correo." });
   }
 };
+
 export default sendMail;
