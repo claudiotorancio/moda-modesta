@@ -54,18 +54,18 @@ export class RenderCompras {
     for (const order of listado) {
       const id = order.customer.userId;
       const emailVerified = await this.listaServicesInstance.getUser(id);
-
+      console.log(emailVerified);
       const orderData = {
+        id: order._id,
         name: order.customer.name,
-        created_at: order.createdAt,
         email: order.customer.email,
         phoneNumber: order.customer.phoneNumber,
+        items: order.items,
         aceptar: order.aceptar,
         enCamino: order.enCamino,
         finalizado: order.finalizado,
+        created_at: order.createdAt,
         cancelado: order.cancelado,
-        items: order.items,
-        id: order._id,
         emailVerified,
       };
 
@@ -132,15 +132,15 @@ export class RenderCompras {
   }
 
   crearTarjeta({
+    id,
     name,
     email,
     phoneNumber,
     items,
     aceptar,
     enCamino,
-    created_at,
-    id,
     finalizado,
+    created_at,
     cancelado,
     emailVerified,
   }) {
@@ -200,7 +200,7 @@ export class RenderCompras {
       btnFinDisabled = true;
       btnCancelarDisabled = false;
     }
-    const verified = emailVerified ? "si" : "no";
+    const verified = emailVerified ? "SI" : "NO";
     const card = document.createElement("div");
     card.className = "card";
 
@@ -213,7 +213,7 @@ export class RenderCompras {
       <p class="card-text"><strong>Teléfono:</strong> ${phoneNumber}</p>
       <p class="card-text"><strong>Fecha de creación:</strong> ${fechaFormateada}</p>
       <p class="card-text"><strong>Productos:</strong><br> ${producto}</p>
-      <p class="card-text"><strong>Email verificado:</strong><br> ${verified}</p>
+      <p class="card-text"><strong>Email verificado:</strong> ${verified}</p>
       <p class="card-text"><strong>Estado:  <h5 class="card-title">${estado}</h5></p>
     </div>
     <div class="card-footer text-center">
