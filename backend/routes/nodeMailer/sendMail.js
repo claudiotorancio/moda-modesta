@@ -131,7 +131,7 @@ const sendMail = async (req, res) => {
         </ul>
         <p>Tu cuenta ya existe pero no ha sido verificada. Te hemos enviado un nuevo correo para confirmar tu dirección.</p>
          <p>Recuerda que la orden no pudo ser completada por lo que deberas ingresar los productos nevamente al carrito</p>
-         <pDisculpe las molestias ocasionadas!</p>
+         <pDisculpas por las molestias ocasionadas!</p>
         <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
         <p>Gracias por confiar en nosotros,</p>
         <p>El equipo de Moda Modesta</p>
@@ -180,6 +180,7 @@ const sendMail = async (req, res) => {
           <li>Correo: ${email}</li>
           <li>Nombre: ${nombre}</li>
         </ul>
+        <p>Gracias por tu compra! tu orden ha sido generada con exito y pronto tendras novedades.</p>
         <p>Hemos creado una cuenta para ti en nuestra tienda. Tu username es: <strong>${email}</strong> y tu contraseña temporal es: <strong>${plainPassword}</strong></p>
         <p>Te recomendamos que ingreses a tu cuenta y cambies la contraseña por cuestiones de seguridad.</p>
         <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
