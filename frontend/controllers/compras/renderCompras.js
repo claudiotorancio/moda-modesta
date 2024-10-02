@@ -1,4 +1,5 @@
 import { CompraServices } from "../../services/compra_services.js";
+import { ListaServices } from "../../services/lista_services.js";
 import {
   finalizarPedidoHandler,
   eliminarPedido,
@@ -12,6 +13,7 @@ export class RenderCompras {
     this.titulo = titulo;
     this.compraServicesHelpers = new CompraServices();
     this.listado = []; // Almacenar listado completo
+    this.listaServicesInstance = new ListaServices();
   }
 
   async renderCompraLista() {
@@ -35,13 +37,14 @@ export class RenderCompras {
 
       // Obtener el listado completo de compras y mostrarlo
       this.listado = await this.compraServicesHelpers.listaOrder();
+
       this.mostrarCompras(this.listado); // Mostrar todas las compras inicialmente
     } catch (error) {
       console.log(error);
     }
   }
 
-  mostrarCompras(listado) {
+  async mostrarCompras(listado) {
     // Limpiar el contenedor antes de renderizar
     this.titulo.querySelector(".row").innerHTML = "";
 
@@ -49,6 +52,9 @@ export class RenderCompras {
     row.className = "row"; // Contenedor para las columnas
 
     for (const order of listado) {
+      const id = order.customer.userId;
+      const emailVerified = await this.listaServicesInstance.getUser(id);
+
       const orderData = {
         name: order.customer.name,
         created_at: order.createdAt,
@@ -60,6 +66,7 @@ export class RenderCompras {
         cancelado: order.cancelado,
         items: order.items,
         id: order._id,
+        emailVerified,
       };
 
       // Mostrar notificación de nuevo pedido
@@ -135,6 +142,7 @@ export class RenderCompras {
     id,
     finalizado,
     cancelado,
+    emailVerified,
   }) {
     const fechaCreacion = new Date(created_at);
     const fechaFormateada = `${fechaCreacion
@@ -192,7 +200,7 @@ export class RenderCompras {
       btnFinDisabled = true;
       btnCancelarDisabled = false;
     }
-
+    const verified = emailVerified ? "si" : "no";
     const card = document.createElement("div");
     card.className = "card";
 
@@ -205,6 +213,7 @@ export class RenderCompras {
       <p class="card-text"><strong>Teléfono:</strong> ${phoneNumber}</p>
       <p class="card-text"><strong>Fecha de creación:</strong> ${fechaFormateada}</p>
       <p class="card-text"><strong>Productos:</strong><br> ${producto}</p>
+      <p class="card-text"><strong>Email verificado:</strong><br> ${verified}</p>
       <p class="card-text"><strong>Estado:  <h5 class="card-title">${estado}</h5></p>
     </div>
     <div class="card-footer text-center">
