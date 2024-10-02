@@ -148,7 +148,7 @@ const sendMail = async (req, res) => {
       return res.json({
         success: true,
         message:
-          "No se pudo generar la orden porque ya tienes una cuenta que no ha sido verificada. Hemos enviado un correo con instrucciones para completar la validación. ¡Gracias por tu comprensión!",
+          "Orden no generada, correo existente pero no validado, se envió un correo con instrucciones para su validación. ¡Muchas gracias!",
       });
     }
 
@@ -264,7 +264,7 @@ const sendMail = async (req, res) => {
     res.json({
       success: true,
       message:
-        "¡Orden creada con éxito! Si tu dirección de correo electrónico no ha sido verificada, recibirás un correo con instrucciones para completar la validación.",
+        "¡Orden creada con éxito! Si tu dirección de correo no ha sido verificada, recibirás un correo con instrucciones para completar la validación.",
     });
   } catch (error) {
     console.error("Error al enviar el correo:", error);

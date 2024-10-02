@@ -291,7 +291,7 @@ const modalCorreoMsg = (message) => {
     () => {
       window.location.replace("/index.html");
     },
-    4000,
+    10000,
     "/index.html"
   );
 };
