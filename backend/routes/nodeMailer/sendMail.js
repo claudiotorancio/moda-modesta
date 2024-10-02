@@ -114,15 +114,16 @@ const sendMail = async (req, res) => {
       $or: [{ emailVerified: false }, { emailVerified: true }],
     });
 
-    if (user && !user.emailVerified) {
-      // Eliminar usuario no verificado
-      await Users.deleteOne({ _id: user._id });
-      user = null; // Reiniciar para crear un nuevo usuario más adelante
-    }
+    // if (user && !user.emailVerified) {
+    //   // Eliminar usuario no verificado
+    //   await Users.deleteOne({ _id: user._id });
+    //   user = null; // Reiniciar para crear un nuevo usuario más adelante
+    // }
 
-    const alertaMensaje = user
-      ? "El usuario ya está registrado. No se enviará un correo de confirmación."
-      : "Se envió un correo a la dirección ingresada para su validación. ¡Muchas gracias!";
+    const alertaMensaje =
+      user && !user.emailVerified
+        ? "Se envió un correo a la dirección ingresada para su validación. ¡Muchas gracias!"
+        : "El usuario ya está registrado. No se enviará un correo de confirmación.";
 
     // Si no existe el usuario, crearlo y enviar correo
     if (!user) {
