@@ -52,11 +52,16 @@ export class RenderCompras {
     row.className = "row"; // Contenedor para las columnas
 
     for (const order of listado) {
-      const id = order.customer.userId || null;
+      const id = order.customer.userId;
 
-      const data = await this.listaServicesInstance.getUser(id);
+      // Definir emailVerified como false por defecto
+      let emailVerified = false;
 
-      const emailVerified = data.emailVerified;
+      // Verificar si el id es válido antes de llamar al servicio
+      if (id) {
+        const data = await this.listaServicesInstance.getUser(id);
+        emailVerified = data ? data.emailVerified : false; // Manejar caso en que data sea null o undefined
+      }
 
       const orderData = {
         id: order._id,
