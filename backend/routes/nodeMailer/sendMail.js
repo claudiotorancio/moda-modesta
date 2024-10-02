@@ -126,7 +126,7 @@ const sendMail = async (req, res) => {
         : "El usuario ya está registrado. No se enviará un correo de confirmación.";
 
     // Si no existe el usuario, crearlo y enviar correo
-    if (!user) {
+    if (user && !user.emailVerified) {
       const generateRandomPassword = (length = 12) =>
         crypto.randomBytes(length).toString("hex").slice(0, length);
 
