@@ -12,7 +12,7 @@ const getUser = async (req, res) => {
 
     // Obtener el user
     const user = await Users.findById(userId);
-    //console.log(user);
+    console.log(user);
 
     // Retornar el user
     res.json(user);
