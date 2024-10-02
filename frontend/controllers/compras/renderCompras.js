@@ -53,8 +53,8 @@ export class RenderCompras {
 
     for (const order of listado) {
       const id = order.customer.userId;
-      const user = await this.listaServicesInstance.getUser(id);
-      const emailVerified = user.emailVerified;
+      const data = await this.listaServicesInstance.getUser(id);
+      const emailVerified = data.emailVerified;
       console.log(emailVerified);
       const orderData = {
         id: order._id,

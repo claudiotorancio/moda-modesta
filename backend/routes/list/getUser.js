@@ -15,7 +15,7 @@ const getUser = async (req, res) => {
     //console.log(user);
 
     // Retornar el user
-    res.json({ user });
+    res.json(user);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
