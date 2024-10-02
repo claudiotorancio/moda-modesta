@@ -73,12 +73,12 @@ export class ListaServices {
   //extraer userId de Users
 
   getUser = async (userId) => {
-    console.log(`getUser id:`, userId);
+    // console.log(`getUser id:`, userId);
     try {
       const respuesta = await fetch(`${this.baseURL}/api/getUser/${userId}`);
       const data = await respuesta.json();
 
-      console.log(`getUser user:`, data);
+      // console.log(`getUser user:`, data);
       return data; // Simplificado para devolver solo el usuario
     } catch (error) {
       console.error("Error al obtener usuario:", error);

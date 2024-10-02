@@ -56,7 +56,6 @@ export class RenderHelpers {
         tablaCuerpo.appendChild(this.nuevaLista(usuarioData));
       }
 
-      s;
       document
         .getElementById("enviar-promociones")
         .addEventListener("click", () => {
