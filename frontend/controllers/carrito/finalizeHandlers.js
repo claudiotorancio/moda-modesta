@@ -1,7 +1,6 @@
 // finalizeHandlers.js
 import { valida } from "./validaciones.js";
 import mailServices from "../../services/mail_services.js";
-import { modalControllers } from "../../modal/modal.js";
 
 export function handleFinalizePurchase() {
   // Obtener o crear progresoCompra
@@ -43,7 +42,7 @@ export function handleFinalizePurchase() {
             </div>
           </fieldset>
           <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; vertical-align: baseline;">
-Al dar finalizado se enviarán los datos para el pago al correo ingresado. Por favor, asegúrese de que estén correctos, Muchas gracias!
+Si no esta registrado, se enviara un correo a la direccion ingreada para su validacion, Muchas gracias!
 </em>
 
             <div>
@@ -113,7 +112,6 @@ Al dar finalizado se enviarán los datos para el pago al correo ingresado. Por f
 
       try {
         await mailServices.sendMail(datosCompra);
-        modalControllers.modalCompraOk();
       } catch (error) {
         console.error("Error al enviar los datos de la compra:", error);
         alert(

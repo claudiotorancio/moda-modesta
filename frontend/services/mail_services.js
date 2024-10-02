@@ -25,7 +25,9 @@ export class MailServices {
       }
       const data = await response.json();
 
+      const message = data.message;
       if (data.success) {
+        modalControllers.modalCorreoMsg(message);
         await this.carritoServices.limpiarCarrito();
       } else {
         alert(

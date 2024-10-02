@@ -2,6 +2,11 @@ import nodemailer from "nodemailer";
 import Order from "../../models/Order.js";
 import Vista from "../../models/Vista.js";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import Users from "../../models/User.js";
+import helpers from "../../lib/helpers.js";
+import { baseURL } from "../../../frontend/services/product_services.js";
 
 const sendMail = async (req, res) => {
   try {
@@ -24,15 +29,15 @@ const sendMail = async (req, res) => {
       !nombre ||
       !email ||
       !telefono ||
-      !provincia === undefined ||
-      !codigoPostal === undefined ||
+      provincia === undefined ||
+      codigoPostal === undefined ||
       !productos ||
       !total ||
-      !costoEnvio === undefined ||
-      !checked === undefined ||
-      !aceptar === undefined ||
-      !enCamino === undefined ||
-      !finalizado === undefined
+      costoEnvio === undefined ||
+      checked === undefined ||
+      aceptar === undefined ||
+      enCamino === undefined ||
+      finalizado === undefined
     ) {
       return res
         .status(400)
@@ -100,16 +105,69 @@ const sendMail = async (req, res) => {
       },
     });
 
-    // Configurar el mensaje a enviar
-    const mailOptions = {
-      from: email,
-      to: process.env.EMAIL,
-      subject: `Nueva compra de ${nombre}`,
-      html: contentHTML,
-    };
-
     // Conectar a la base de datos
     await connectToDatabase();
+
+    // Buscar si el usuario existe y si ha verificado su correo
+    let user = await Users.findOne({
+      username: email,
+      $or: [{ emailVerified: false }, { emailVerified: true }],
+    });
+
+    if (user && !user.emailVerified) {
+      // Eliminar usuario no verificado
+      await Users.deleteOne({ _id: user._id });
+      user = null; // Reiniciar para crear un nuevo usuario más adelante
+    }
+
+    const alertaMensaje = user
+      ? "El usuario ya está registrado. No se enviará un correo de confirmación."
+      : "Se envió un correo a la dirección ingresada para su validación. ¡Muchas gracias!";
+
+    // Si no existe el usuario, crearlo y enviar correo
+    if (!user) {
+      const generateRandomPassword = (length = 12) =>
+        crypto.randomBytes(length).toString("hex").slice(0, length);
+
+      const plainPassword = generateRandomPassword();
+      const hashedPassword = await helpers.encryptPassword(plainPassword);
+
+      const newUser = new Users({
+        username: email,
+        password: hashedPassword,
+      });
+
+      user = await newUser.save();
+
+      // Generar token de confirmación
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+
+      const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;
+
+      const myContentHTML = `
+        <h3>Datos de Contacto</h3>
+        <ul>
+          <li>Correo: ${email}</li>
+          <li>Nombre: ${nombre}</li>
+        </ul>
+       <p>Hemos creado una cuenta para ti en nuestra tienda. Tu username es: <strong>${email}</strong> y tu contraseña temporal es: <strong>${plainPassword}</strong></p>
+       <p>te recomendamos que ingreses a tu cuenta y cambies la contraseña por cuestiones de seguridad</p>
+        <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
+        <p>Gracias por confiar en nosotros,</p>
+        <p>El equipo de Moda Modesta</p>
+      `;
+
+      const mailOptionsUser = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: `¡Hola ${nombre}! Confirma tu correo`,
+        html: myContentHTML,
+      };
+
+      await transporter.sendMail(mailOptionsUser);
+    }
 
     // Guardar la orden en la base de datos
     const newOrder = new Order({
@@ -117,6 +175,7 @@ const sendMail = async (req, res) => {
         name: nombre,
         email: email,
         phoneNumber: telefono,
+        userId: user._id,
       },
       items: productos.map((producto) => ({
         productId: producto.id, // Asegúrate de que este campo esté presente y coincida con el nombre del campo en el esquema
@@ -162,15 +221,25 @@ const sendMail = async (req, res) => {
       })
     );
 
-    // Enviar el correo
-    const info = await transporter.sendMail(mailOptions);
+    // Configurar el mensaje a enviar
+    const mailOptionsOrder = {
+      from: email,
+      to: process.env.EMAIL,
+      subject: `Nueva compra de ${nombre}`,
+      html: contentHTML,
+    };
 
-    console.log("Correo enviado:", info.messageId);
-    res.status(201).send({ success: true, messageId: info.messageId });
+    // Enviar ambos correos al mismo tiempo
+    const infoOrder = await transporter.sendMail(mailOptionsOrder);
+
+    console.log("Correo enviado (Orden):", infoOrder.messageId);
+    res.json({
+      success: true,
+      message: alertaMensaje,
+    });
   } catch (error) {
     console.error("Error al enviar el correo:", error.message);
     res.status(500).send({ error: "Error al enviar el correo." });
   }
 };
-
 export default sendMail;

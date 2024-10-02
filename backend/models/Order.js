@@ -6,6 +6,11 @@ const orderSchema = new mongoose.Schema(
       name: { type: String, required: true },
       email: { type: String, required: true },
       phoneNumber: { type: String, required: true },
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", // Hace referencia al modelo de usuarios
+        required: true, // Si deseas que sea obligatorio
+      },
     },
     items: [
       {

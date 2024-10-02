@@ -87,7 +87,7 @@ export function createProductElement(
           ${getStockState(sizes).replace("-", " ")}
         </td>
         <td data-label="Acciones">
-          <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Editar</button>
+          <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
         </td>
         <td data-label="Destacado">${isFeatured ? "sí" : "no"}</td>
          <td data-label="Notificacion">${

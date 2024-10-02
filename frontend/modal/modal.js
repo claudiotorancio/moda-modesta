@@ -282,6 +282,20 @@ const modalCorreoEnviado = () => {
   );
 };
 
+const modalCorreoMsg = (message) => {
+  showModal(
+    message,
+    "",
+    "Volver",
+
+    () => {
+      window.location.replace("/index.html");
+    },
+    4000,
+    "/index.html"
+  );
+};
+
 const modalCompraOk = () => {
   showModal(
     "Correo enviado!",
@@ -344,6 +358,7 @@ export const modalControllers = {
   modalProductoEditado,
   modalSuscribe,
   modalCorreoEnviado,
+  modalCorreoMsg,
   modalCorreoNoenviado,
   modalCompraOk,
   modalCarritoVacio,
