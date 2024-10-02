@@ -52,7 +52,7 @@ export class RenderCompras {
     row.className = "row"; // Contenedor para las columnas
 
     for (const order of listado) {
-      const id = order.customer.userId;
+      const id = order.customer.userId || null;
 
       const data = await this.listaServicesInstance.getUser(id);
 
