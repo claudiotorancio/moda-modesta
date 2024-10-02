@@ -29,15 +29,15 @@ const sendMail = async (req, res) => {
       !nombre ||
       !email ||
       !telefono ||
-      provincia === undefined ||
-      codigoPostal === undefined ||
+      !provincia === undefined ||
+      !codigoPostal === undefined ||
       !productos ||
       !total ||
-      costoEnvio === undefined ||
-      checked === undefined ||
-      aceptar === undefined ||
-      enCamino === undefined ||
-      finalizado === undefined
+      !costoEnvio === undefined ||
+      !checked === undefined ||
+      !aceptar === undefined ||
+      !enCamino === undefined ||
+      !finalizado === undefined
     ) {
       return res
         .status(400)
