@@ -54,7 +54,8 @@ export class RenderCompras {
     for (const order of listado) {
       const id = order.customer.userId;
       const user = await this.listaServicesInstance.getUser(id);
-
+      const emailVerified = user.emailVerified;
+      console.log(emailVerified);
       const orderData = {
         id: order._id,
         name: order.customer.name,
@@ -66,7 +67,7 @@ export class RenderCompras {
         finalizado: order.finalizado,
         created_at: order.createdAt,
         cancelado: order.cancelado,
-        user,
+        emailVerified,
       };
 
       // Mostrar notificación de nuevo pedido
@@ -142,7 +143,7 @@ export class RenderCompras {
     finalizado,
     created_at,
     cancelado,
-    user,
+    emailVerified,
   }) {
     const fechaCreacion = new Date(created_at);
     const fechaFormateada = `${fechaCreacion
@@ -200,7 +201,7 @@ export class RenderCompras {
       btnFinDisabled = true;
       btnCancelarDisabled = false;
     }
-    const emailVerified = user.emailVerified ? "SI" : "NO";
+    const verified = emailVerified ? "SI" : "NO";
     const card = document.createElement("div");
     card.className = "card";
 
@@ -213,7 +214,7 @@ export class RenderCompras {
       <p class="card-text"><strong>Teléfono:</strong> ${phoneNumber}</p>
       <p class="card-text"><strong>Fecha de creación:</strong> ${fechaFormateada}</p>
       <p class="card-text"><strong>Productos:</strong><br> ${producto}</p>
-      <p class="card-text"><strong>Email verificado:</strong> ${emailVerified}</p>
+      <p class="card-text"><strong>Email verificado:</strong> ${verified}</p>
       <p class="card-text"><strong>Estado:  <h5 class="card-title">${estado}</h5></p>
     </div>
     <div class="card-footer text-center">
