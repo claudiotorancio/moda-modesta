@@ -4,8 +4,7 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 import helpers from "../../lib/helpers.js";
 
 const updatePassword = async (req, res) => {
-  const { token } = req.query;
-  const { newPassword } = req.body;
+  const { newPassword, token } = req.body;
 
   if (!token || !newPassword) {
     return res

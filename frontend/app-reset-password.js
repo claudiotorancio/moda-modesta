@@ -12,11 +12,15 @@ import { baseURL } from "./services/product_services.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Obtener el token de la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get("token");
+  document.getElementById("token").value = token; // Asignar el token al input hidden
 
   const form = document.getElementById("resetPasswordForm");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const newPassword = document.getElementById("newPassword").value;
+    const token = document.getElementById("token").value;
 
     try {
       const response = await fetch(`${baseURL}/api/update-password`, {
@@ -24,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ newPassword }),
+        body: JSON.stringify({ newPassword, token }),
       });
 
       const data = await response.json();
