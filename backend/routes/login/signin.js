@@ -3,7 +3,7 @@ import passport from "../../lib/passport.js";
 const signin = (req, res) => {
   // Verificar que los datos requeridos estén presentes
   const { email, password } = req.body;
-  console.log(req.body);
+
   if (!email || !password) {
     return res.status(400).json({ error: "Faltan datos requeridos" });
   }

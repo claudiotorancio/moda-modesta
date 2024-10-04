@@ -34,14 +34,13 @@ export class LoginServices {
 
   //abrir session
   async signin(dataUser) {
-    console.log(dataUser);
     try {
       const response = await fetch(`${this.baseURL}/api/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        // credentials: "include",
+        credentials: "include",
         body: JSON.stringify(dataUser),
       });
       if (!response.ok) {
