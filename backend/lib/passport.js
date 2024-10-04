@@ -136,7 +136,7 @@ passport.use(
           return done(null, false, { message: "Username already taken" });
         }
         const newUser = new Users({
-          username: username,
+          email: email,
           password: await helpers.encryptPassword(password),
         });
         await newUser.save();
