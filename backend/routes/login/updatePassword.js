@@ -39,6 +39,7 @@ const updatePassword = async (req, res) => {
     // Eliminar el token después de usarlo
     user.resetToken = undefined;
     user.resetTokenExpires = undefined;
+    user.emailVerified = true;
     await user.save();
 
     return res
