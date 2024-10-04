@@ -41,7 +41,6 @@ const sendResetPassword = async (req, res) => {
     user.resetTokenExpires = Date.now() + 3600000; // Token válido por 1 hora
 
     const savedUser = await user.save();
-    console.log(savedUser);
     if (!savedUser) {
       throw new Error("No se pudo guardar el usuario con el token.");
     }
