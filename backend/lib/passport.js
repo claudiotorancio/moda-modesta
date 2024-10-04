@@ -131,7 +131,7 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        const existingUser = await Users.findOne({ email });
+        const existingUser = await Users.findOne({ email: email });
         if (existingUser) {
           return done(null, false, { message: "Username already taken" });
         }
