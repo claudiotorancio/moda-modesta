@@ -20,7 +20,11 @@ const updatePassword = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Buscar al usuario por el id en el token
-    const user = await Users.findById(decoded._id);
+    const user = await Users.findOne({
+      _id: decoded._id,
+      resetToken: token, // Verifica que el token coincida con el almacenado
+      resetTokenExpires: { $gt: Date.now() }, // Verifica si el token no ha expirado
+    });
 
     if (!user) {
       return res.status(404).send({ message: "Usuario no encontrado" });
@@ -31,6 +35,10 @@ const updatePassword = async (req, res) => {
 
     // Actualizar la contraseña del usuario
     user.password = hashedPassword;
+
+    // Eliminar el token después de usarlo
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
     await user.save();
 
     return res

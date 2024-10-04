@@ -46,7 +46,7 @@ export class EventHandlers {
     // console.log(`getUsername id: ${userId}`);
     const user = await this.listaServicesHelpers.getUser(userId);
     // console.log(`getUsername: ${user}`);
-    return user.username;
+    return user.email;
   }
 
   //extraer datos de Users
@@ -73,7 +73,7 @@ export class EventHandlers {
         <form action="/api/updateUser/" enctype="multipart/form-data" id="form"  method="PUT" data-forma>                
           <p class="parrafo">Usuario a editar</p>
           <div class="form-group">
-            <input class="form-control mt-3 p-2" placeholder="Nombre de usuario" type="text" value="${username}" required name="newUsername">
+            <input class="form-control mt-3 p-2" placeholder="email" type="email" value="${username}" required name="newEmail">
           </div>
           <div class="form-group"> 
             <input class="form-control mt-3 mb-3 p-2" placeholder="newPassword" type="password" required name="newPassword">

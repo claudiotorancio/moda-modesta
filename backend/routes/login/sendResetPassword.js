@@ -26,7 +26,7 @@ const sendResetPassword = async (req, res) => {
     // Conectar a la base de datos si es necesario
     await connectToDatabase();
     // Verificar si el usuario existe
-    const user = await Users.findOne({ username: email });
+    const user = await Users.findOne({ email: email });
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado." });
     }
@@ -35,6 +35,11 @@ const sendResetPassword = async (req, res) => {
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
+    // Guardar el token y su expiración en la base de datos
+    user.resetToken = token;
+    user.resetTokenExpires = Date.now() + 3600000; // Token válido por 1 hora
+    await user.save();
 
     // Construir la URL de confirmación
     const resetLink = `${baseURL}/api/reset-password?token=${token}`;

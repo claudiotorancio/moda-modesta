@@ -16,13 +16,13 @@ passport.use(
   "local.signin",
   new LocalStrategy(
     {
-      usernameField: "username",
+      emailField: "email",
       passwordField: "password",
       passReqToCallback: true,
     },
-    async (req, username, password, done) => {
+    async (req, email, password, done) => {
       try {
-        const user = await Users.findOne({ username: username });
+        const user = await Users.findOne({ email: email });
 
         if (user) {
           const validPassword = await helpers.matchPassword(
@@ -125,18 +125,18 @@ passport.use(
   "local.signup",
   new LocalStrategy(
     {
-      usernameField: "username",
+      emailField: "email",
       passwordField: "password",
       passReqToCallback: true,
     },
-    async (req, username, password, done) => {
+    async (req, email, password, done) => {
       try {
-        const existingUser = await Users.findOne({ username });
+        const existingUser = await Users.findOne({ email });
         if (existingUser) {
           return done(null, false, { message: "Username already taken" });
         }
         const newUser = new Users({
-          username: username,
+          email: email,
           password: await helpers.encryptPassword(password),
         });
         await newUser.save();

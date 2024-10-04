@@ -47,7 +47,7 @@ export class RenderHelpers {
 
       for (const usuario of listado) {
         const usuarioData = {
-          username: usuario.username,
+          username: usuario.email,
           created_at: usuario.created_at,
           emailVerified: usuario.emailVerified,
           role: usuario.role,

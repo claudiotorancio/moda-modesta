@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         messageEl.textContent = `Error: ${data.message}`;
 
         // Crear un botón para volver a intentar
-        actionButtonEl.innerHTML = `<button class="btn btn-warning" onclick="window.location.reload()">Volver a intentar</button>`;
+        actionButtonEl.innerHTML = `<a href="index.html" class="btn btn-warning">volver a intentar</a>`;
       }
     } catch (error) {
       document.getElementById("message").textContent =
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Mostrar botón para volver a intentar en caso de error
       document.getElementById("actionButton").innerHTML = `
-        <button class="btn btn-warning" onclick="window.location.reload()">Volver a intentar</button>`;
+       <a href="index.html" class="btn btn-warning">volver a intentar</a>`;
     }
   });
 });

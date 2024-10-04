@@ -2,9 +2,17 @@ import passport from "../../lib/passport.js";
 
 const signin = (req, res) => {
   // Verificar que los datos requeridos estén presentes
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { email, password } = req.body;
+  if (!email || !password) {
     return res.status(400).json({ error: "Faltan datos requeridos" });
+  }
+
+  // Validar el formato del correo electrónico
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res
+      .status(400)
+      .send({ error: "El correo electrónico proporcionado no es válido." });
   }
 
   try {

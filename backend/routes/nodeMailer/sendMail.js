@@ -111,7 +111,7 @@ const sendMail = async (req, res) => {
 
     // Buscar si el usuario existe
     let user = await Users.findOne({
-      username: email,
+      email: email,
     });
 
     // Si el usuario existe pero no ha verificado su correo, enviar correo de verificación
@@ -156,7 +156,7 @@ const sendMail = async (req, res) => {
       const hashedPassword = await helpers.encryptPassword(plainPassword);
 
       const newUser = new Users({
-        username: email,
+        email: email,
         password: hashedPassword,
       });
 

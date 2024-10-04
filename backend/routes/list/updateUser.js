@@ -5,7 +5,7 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 const updateUser = async (req, res) => {
   try {
     //cuerpo del body
-    const { newUsername, newPassword, newRole } = req.body;
+    const { newEmail, newPassword, newRole } = req.body;
 
     // Obtener el usuario desde el _id
     const userId = req.params.id;
@@ -24,7 +24,7 @@ const updateUser = async (req, res) => {
     }
 
     // Actualizar el nombre de usuario y la contraseña
-    user.username = newUsername;
+    user.email = newEmail;
     user.password = await helpers.encryptPassword(newPassword);
     user.role = newRole;
 

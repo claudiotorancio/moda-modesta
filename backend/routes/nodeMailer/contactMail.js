@@ -7,7 +7,7 @@ import crypto from "crypto";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 // Tiempo de vida para confirmar el email (por ejemplo, 24 horas)
-const TIME_TO_CONFIRM = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+// const TIME_TO_CONFIRM = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
 
 const suscribeMail = async (req, res) => {
   const generateRandomPassword = (length = 12) => {
@@ -36,7 +36,7 @@ const suscribeMail = async (req, res) => {
     await connectToDatabase();
 
     // Verificar si el usuario ya existe
-    const existingUser = await Users.findOne({ username: email });
+    const existingUser = await Users.findOne({ email: email });
     if (existingUser) {
       return res.status(400).send({ error: "Este correo ya está registrado." });
     }
@@ -45,7 +45,7 @@ const suscribeMail = async (req, res) => {
     const hashedPassword = await helpers.encryptPassword(plainPassword);
     // Crear un nuevo usuario en la base de datos
     const newUser = new Users({
-      username: email,
+      email: email,
       password: hashedPassword,
     });
 
@@ -56,16 +56,16 @@ const suscribeMail = async (req, res) => {
       expiresIn: "1h",
     });
 
-    // Programar la eliminación del usuario si no se confirma en 24 horas
-    setTimeout(async () => {
-      const existingUser = await Users.findById(newUser._id);
-      if (existingUser && !existingUser.emailVerified) {
-        await Users.deleteOne({ _id: newUser._id });
-        console.log(
-          `Usuario con email ${newUser.username} eliminado por no verificar su cuenta.`
-        );
-      }
-    }, TIME_TO_CONFIRM);
+    // // Programar la eliminación del usuario si no se confirma en 24 horas
+    // setTimeout(async () => {
+    //   const existingUser = await Users.findById(newUser._id);
+    //   if (existingUser && !existingUser.emailVerified) {
+    //     await Users.deleteOne({ _id: newUser._id });
+    //     console.log(
+    //       `Usuario con email ${newUser.username} eliminado por no verificar su cuenta.`
+    //     );
+    //   }
+    // }, TIME_TO_CONFIRM);
 
     // Construir la URL de confirmación
     const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;

@@ -12,7 +12,7 @@ export class LoginControllers {
     this.renderForm(
       "SignIn",
       "/api/signin",
-      "username",
+      "email",
       "password",
       "Sign In",
       "Don't have an account?",
@@ -39,7 +39,7 @@ export class LoginControllers {
   renderForm(
     title,
     action,
-    usernamePlaceholder,
+    emailPlaceholder,
     passwordPlaceholder,
     buttonLabel,
     helpText,
@@ -55,10 +55,10 @@ export class LoginControllers {
                 <div class="card-form">
                     <form action="${action}" method="post" data-signin>
                         <div class="form-group mt-3">
-                            <input type="text" id="username" name="username" placeholder="${usernamePlaceholder}" class="form-control" required autocomplete="current-password">
+                            <input type="email" id="email" name="email" placeholder="${emailPlaceholder}" class="form-control" required >
                         </div>
                         <div class="form-group mt-3">
-                            <input type="password" id="password" name="password" placeholder="${passwordPlaceholder}" class="form-control" required>
+                            <input type="password" id="password" name="password" placeholder="${passwordPlaceholder}" class="form-control" required autocomplete="current-password">
                         </div>
                         <div class="form-group mt-3">
                             <button class="btn btn-primary btn-block" >${buttonLabel}</button>
@@ -77,9 +77,9 @@ export class LoginControllers {
   // evento signin
   async signinSubmitHandler(e) {
     e.preventDefault();
-    const username = document.getElementsByName("username")[0].value;
+    const email = document.getElementsByName("email")[0].value;
     const password = document.getElementsByName("password")[0].value;
-    const signinData = { username, password };
+    const signinData = { email, password };
     try {
       const response = await this.loginInstance.signin(signinData);
       if (response) {
@@ -135,9 +135,9 @@ export class LoginControllers {
   // evento signup
   async signupSubmitHandler(e) {
     e.preventDefault();
-    const username = document.getElementsByName("username")[0].value;
+    const email = document.getElementsByName("email")[0].value;
     const password = document.getElementsByName("password")[0].value;
-    const signupData = { username, password };
+    const signupData = { email, password };
     try {
       await this.loginInstance.signup(signupData);
     } catch (err) {
@@ -150,7 +150,7 @@ export class LoginControllers {
     this.renderForm(
       "SignUp",
       "/api/signup",
-      "username",
+      "email",
       "password",
       "Sign Up",
       "",
