@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 // Asegúrate de que esta ruta apunta correctamente al directorio 'public'
 const output = path.resolve(__dirname, "../../public");
 
-const resetPasswordHtml = async (req, res) => {
+const password = async (req, res) => {
   try {
     res.sendFile(path.join(output, "reset-password.html"));
   } catch (error) {
@@ -16,4 +16,4 @@ const resetPasswordHtml = async (req, res) => {
   }
 };
 
-export default resetPasswordHtml;
+export default password;
