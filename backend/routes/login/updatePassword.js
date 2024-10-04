@@ -20,7 +20,7 @@ const updatePassword = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Buscar al usuario por el id en el token
-    const user = await Users.findById(decoded.id);
+    const user = await Users.findById(decoded._id);
 
     if (!user) {
       return res.status(404).send({ message: "Usuario no encontrado" });
