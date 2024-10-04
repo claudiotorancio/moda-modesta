@@ -63,6 +63,7 @@ export class LoginServices {
 
   //crear usuario
   async signup(dataSignup) {
+    console.log(dataSignup);
     try {
       const response = await fetch(`${this.baseURL}/api/signup`, {
         method: "POST",

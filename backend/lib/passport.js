@@ -130,19 +130,26 @@ passport.use(
       passReqToCallback: true,
     },
     async (req, email, password, done) => {
+      if (!email || !password) {
+        return done(null, false, {
+          message: "Email and password are required.",
+        });
+      }
       try {
         const existingUser = await Users.findOne({ email: email });
         if (existingUser) {
-          return done(null, false, { message: "Username already taken" });
+          return done(null, false, { message: "Email already taken" });
         }
         const newUser = new Users({
           email: email,
           password: await helpers.encryptPassword(password),
         });
+
         await newUser.save();
 
         return done(null, newUser);
       } catch (err) {
+        console.error("Error creating user:", err); // Agrega un log para ver errores
         return done(err, false, { message: "Error creating user" });
       }
     }
