@@ -34,6 +34,7 @@ export class LoginServices {
 
   //abrir session
   async signin(dataUser) {
+    console.log(dataUser);
     try {
       const response = await fetch(`${this.baseURL}/api/signin`, {
         method: "POST",
@@ -50,7 +51,7 @@ export class LoginServices {
       }
       // Manejo de la respuesta
       const data = await response.json();
-      const user = data.user.username;
+      const user = data.user.email;
 
       // Uso de sessionStorage para guardar usuario
       sessionStorage.setItem("user", JSON.stringify(user));

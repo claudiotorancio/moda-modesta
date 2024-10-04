@@ -16,11 +16,12 @@ passport.use(
   "local.signin",
   new LocalStrategy(
     {
-      emailField: "email",
+      usernameField: "email",
       passwordField: "password",
       passReqToCallback: true,
     },
     async (req, email, password, done) => {
+      console.log(req.body);
       try {
         const user = await Users.findOne({ email: email });
 
@@ -125,7 +126,7 @@ passport.use(
   "local.signup",
   new LocalStrategy(
     {
-      emailField: "email",
+      usernameField: "email",
       passwordField: "password",
       passReqToCallback: true,
     },
@@ -136,7 +137,7 @@ passport.use(
           return done(null, false, { message: "Username already taken" });
         }
         const newUser = new Users({
-          email: email,
+          username: username,
           password: await helpers.encryptPassword(password),
         });
         await newUser.save();
