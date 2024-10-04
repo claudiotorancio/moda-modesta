@@ -32,18 +32,28 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const data = await response.json();
+      const messageEl = document.getElementById("message");
+      const actionButtonEl = document.getElementById("actionButton");
 
       if (response.ok) {
-        document.getElementById("message").textContent = data.message;
+        messageEl.textContent = data.message;
+
+        // Crear un botón para ir a la tienda
+        actionButtonEl.innerHTML = `<a href="index.html" class="btn btn-success">Ir a la tienda</a>`;
       } else {
-        document.getElementById(
-          "message"
-        ).textContent = `Error: ${data.message}`;
+        messageEl.textContent = `Error: ${data.message}`;
+
+        // Crear un botón para volver a intentar
+        actionButtonEl.innerHTML = `<button class="btn btn-warning" onclick="window.location.reload()">Volver a intentar</button>`;
       }
     } catch (error) {
       document.getElementById("message").textContent =
         "Ocurrió un error al intentar restablecer la contraseña.";
       console.error(error);
+
+      // Mostrar botón para volver a intentar en caso de error
+      document.getElementById("actionButton").innerHTML = `
+        <button class="btn btn-warning" onclick="window.location.reload()">Volver a intentar</button>`;
     }
   });
 });
