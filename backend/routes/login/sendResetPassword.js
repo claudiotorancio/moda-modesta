@@ -37,7 +37,7 @@ const sendResetPassword = async (req, res) => {
     });
 
     // Construir la URL de confirmación
-    const resetLink = `${baseURL}/reset-password?token=${token}`;
+    const resetLink = `${baseURL}/api/reset-password?token=${token}`;
 
     // Construir el contenido del correo
     const contentHTML = `
