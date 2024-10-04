@@ -27,7 +27,7 @@ const confirmResetpassword = async (req, res) => {
         .send({ success: false, message: "Usuario no encontrado" });
     }
 
-    res.redirect("/reset-password.html");
+    res.redirect(`/reset-password.html?token=${token}`);
   } catch (error) {
     console.error("Error al recibir datos:", error.message);
     res.redirect("/error.html");
