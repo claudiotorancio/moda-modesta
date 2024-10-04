@@ -39,7 +39,11 @@ const sendResetPassword = async (req, res) => {
     // Guardar el token y su expiración en la base de datos
     user.resetToken = token;
     user.resetTokenExpires = Date.now() + 3600000; // Token válido por 1 hora
-    await user.save();
+
+    const savedUser = await user.save();
+    if (!savedUser) {
+      throw new Error("No se pudo guardar el usuario con el token.");
+    }
 
     // Construir la URL de confirmación
     const resetLink = `${baseURL}/api/reset-password?token=${token}`;
