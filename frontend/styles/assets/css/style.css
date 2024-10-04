@@ -511,6 +511,10 @@ ul li a {
   justify-content: center;
 }
 
+.rounded-circle {
+  font-size: 1.3rem;
+}
+
 @media (min-width: 768px) and (max-width: 1200px) {
   #menu-mobile {
     z-index: 1;

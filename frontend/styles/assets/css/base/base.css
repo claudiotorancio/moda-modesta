@@ -16,6 +16,7 @@ body {
 .container {
   padding-right: 1rem;
   padding-left: 1rem;
+  margin-top: 1rem;
 }
 
 .flex {
@@ -39,4 +40,7 @@ body {
 }
 
 @media (min-width: 320px) and (max-width: 768px) {
+  .container {
+    margin-top: 5rem;
+  }
 }

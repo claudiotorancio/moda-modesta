@@ -109,13 +109,12 @@ const sendMail = async (req, res) => {
     // Conectar a la base de datos
     await connectToDatabase();
 
-    // Buscar si el usuario existe y si ha verificado su correo
+    // Buscar si el usuario existe
     let user = await Users.findOne({
       username: email,
-      $or: [{ emailVerified: false }, { emailVerified: true }],
     });
 
-    // Si el usuario no ha verificado su correo, enviarle un nuevo correo de verificación
+    // Si el usuario existe pero no ha verificado su correo, enviar correo de verificación
     if (user && !user.emailVerified) {
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "1h",
@@ -123,36 +122,32 @@ const sendMail = async (req, res) => {
 
       const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;
 
-      const myContentHTML = `
-        <h3>Datos de Contacto</h3>
-        <ul>
-          <li>Correo: ${email}</li>
-          <li>Nombre: ${nombre}</li>
-        </ul>
-        <p>Tu cuenta ya existe pero no ha sido verificada. Te hemos enviado un nuevo correo para confirmar tu dirección.</p>
-         <p>Recuerda que la orden no pudo ser completada por lo que deberas ingresar los productos nevamente al carrito</p>
-         <pDisculpas por las molestias ocasionadas!</p>
-        <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
-        <p>Gracias por confiar en nosotros,</p>
-        <p>El equipo de Moda Modesta</p>
-      `;
+      const verificationMailHTML = `
+      <h3>Datos de Contacto</h3>
+      <ul>
+        <li><strong>Correo:</strong> ${email}</li>
+        <li><strong>Nombre:</strong> ${nombre}</li>
+      </ul>
+      <p>Tu cuenta ya existe pero aún no ha sido verificada. Para disfrutar de todos los beneficios, te hemos enviado un nuevo correo para confirmar tu dirección.</p>
+      <p><strong>¡Importante!</strong> Al verificar tu correo electrónico, podrás acceder a descuentos exclusivos, promociones especiales y las últimas novedades de nuestros productos. ¡No te lo pierdas!</p>
+      <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
+      <p>Gracias por confiar en nosotros,</p>
+      <p>El equipo de Moda Modesta</p>
+    `;
 
       const mailOptionsUser = {
         from: process.env.EMAIL,
         to: email,
         subject: `¡Hola ${nombre}! Confirma tu correo`,
-        html: myContentHTML,
+        html: verificationMailHTML,
       };
 
       await transporter.sendMail(mailOptionsUser);
-      return res.json({
-        success: true,
-        message:
-          "Orden no generada, correo existente pero no validado, se envió un correo con instrucciones para su validación. ¡Muchas gracias!",
-      });
+
+      // No se detiene aquí, se continúa generando la orden
     }
 
-    // Si no existe el usuario, crearlo y enviar correo
+    // Si no existe el usuario, crearlo y enviar el correo de bienvenida
     if (!user) {
       const generateRandomPassword = (length = 12) =>
         crypto.randomBytes(length).toString("hex").slice(0, length);
@@ -167,22 +162,21 @@ const sendMail = async (req, res) => {
 
       user = await newUser.save();
 
-      // Generar token de confirmación
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "1h",
       });
 
       const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;
 
-      const myContentHTML = `
+      const welcomeMailHTML = `
         <h3>Datos de Contacto</h3>
         <ul>
           <li>Correo: ${email}</li>
           <li>Nombre: ${nombre}</li>
         </ul>
-        <p>Gracias por tu compra! tu orden ha sido generada con exito y pronto tendras novedades.</p>
-        <p>Hemos creado una cuenta para ti en nuestra tienda. Tu username es: <strong>${email}</strong> y tu contraseña temporal es: <strong>${plainPassword}</strong></p>
-        <p>Te recomendamos que ingreses a tu cuenta y cambies la contraseña por cuestiones de seguridad.</p>
+        <p>¡Gracias por tu compra! Tu orden ha sido generada con éxito.</p>
+        <p>Hemos creado una cuenta para ti. Tu usuario es: <strong>${email}</strong> y tu contraseña temporal es: <strong>${plainPassword}</strong></p>
+        <p>Cambia tu contraseña por seguridad. Haz clic en el siguiente enlace para confirmar tu cuenta:</p>
         <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
         <p>Gracias por confiar en nosotros,</p>
         <p>El equipo de Moda Modesta</p>
@@ -192,13 +186,13 @@ const sendMail = async (req, res) => {
         from: process.env.EMAIL,
         to: email,
         subject: `¡Hola ${nombre}! Confirma tu correo`,
-        html: myContentHTML,
+        html: welcomeMailHTML,
       };
 
       await transporter.sendMail(mailOptionsUser);
     }
 
-    // Guardar la orden en la base de datos
+    // Generar y guardar la orden en la base de datos
     const newOrder = new Order({
       customer: {
         name: nombre,
@@ -220,7 +214,7 @@ const sendMail = async (req, res) => {
         province: provincia,
         postalCode: codigoPostal,
       },
-      checked: checked,
+      checked,
       aceptar,
       enCamino,
       finalizado,
@@ -228,7 +222,7 @@ const sendMail = async (req, res) => {
 
     await newOrder.save();
 
-    // Actualizar el stock de los productos y tamaños
+    // Actualizar el stock de los productos
     await Promise.all(
       productos.map(async (producto) => {
         const product = await Vista.findById(producto.id);
@@ -236,20 +230,13 @@ const sendMail = async (req, res) => {
           const size = product.sizes.find((s) => s.size === producto.size);
           if (size) {
             size.stock -= producto.cantidad;
-            if (size.stock < 0) size.stock = 0;
+            size.stock = Math.max(size.stock, 0);
             await product.save();
-          } else {
-            console.warn(
-              `Tamaño ${producto.size} no encontrado para el producto con ID ${producto.id}.`
-            );
           }
-        } else {
-          console.warn(`Producto con ID ${producto.id} no encontrado.`);
         }
       })
     );
 
-    // Configurar el mensaje a enviar
     const mailOptionsOrder = {
       from: email,
       to: process.env.EMAIL,
@@ -257,15 +244,12 @@ const sendMail = async (req, res) => {
       html: contentHTML,
     };
 
-    // Enviar ambos correos al mismo tiempo
-    const infoOrder = await transporter.sendMail(mailOptionsOrder);
-
-    console.log("Correo enviado (Orden):", infoOrder.messageId);
+    await transporter.sendMail(mailOptionsOrder);
 
     res.json({
       success: true,
       message:
-        "¡Orden creada con éxito! Si tu dirección de correo no ha sido verificada, recibirás un correo con instrucciones para completar la validación.",
+        "¡Orden creada con éxito! Si tu correo no ha sido verificado, recibirás un correo para validar tu cuenta.",
     });
   } catch (error) {
     console.error("Error al enviar el correo:", error);

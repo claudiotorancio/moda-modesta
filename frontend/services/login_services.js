@@ -6,6 +6,32 @@ export class LoginServices {
     this.baseURL = baseURL;
   }
 
+  // Método para restablecer la contraseña
+  async resetPassword(data) {
+    try {
+      const response = await fetch(`${this.baseURL}/api/send-reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Error en la solicitud: ${response.status} - ${response.statusText}`
+        );
+      }
+
+      const dataResponse = await response.json();
+      modalControllers.modalCorreoMsg(dataResponse.message); // Asumiendo que la respuesta incluye un mensaje
+      console.log(dataResponse);
+    } catch (error) {
+      modalControllers.modalCorreoMsg(error.message); // Método que puedes crear para mostrar un error
+      console.error(error);
+    }
+  }
+
   //abrir session
   async signin(dataUser) {
     try {
@@ -14,7 +40,7 @@ export class LoginServices {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        // credentials: "include",
         body: JSON.stringify(dataUser),
       });
       if (!response.ok) {

@@ -26,9 +26,16 @@ export class LoginControllers {
       const signupBtn = document.querySelector("[data-btn]");
       signupBtn.style.display = "none"; //desplegar estas dos lineas en caso de volver a activar signUp
     });
+
+    // Añadimos evento para restablecer contraseña
+    const resetPasswordLink = document.querySelector("[data-reset-password]");
+    resetPasswordLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.renderResetPassword(); // Renderiza el formulario de restablecimiento de contraseña
+    });
   }
 
-  // form base par ambos estados
+  // form base para ambos estados
   renderForm(
     title,
     action,
@@ -56,6 +63,7 @@ export class LoginControllers {
                         <div class="form-group mt-3">
                             <button class="btn btn-primary btn-block" >${buttonLabel}</button>
                             <p class="help">${helpText} <a href="" data-btn>Sign Up</a></p>
+                            <p class="mt-2"><a href="#" data-reset-password>Forgot your password?</a></p>
                         </div>
                     </form>
                 </div>
@@ -66,8 +74,7 @@ export class LoginControllers {
     form.addEventListener("submit", submitHandler.bind(this));
   }
 
-  //evento signin
-
+  // evento signin
   async signinSubmitHandler(e) {
     e.preventDefault();
     const username = document.getElementsByName("username")[0].value;
@@ -83,7 +90,49 @@ export class LoginControllers {
     }
   }
 
-  //evento signup
+  // render modal para restablecer contraseña
+  renderResetPassword() {
+    modalControllers.baseModal();
+    const resetModal = this.modal.querySelector("[data-table]");
+    resetModal.innerHTML = `
+      <div class="text-center">
+        <div class="card-header">
+          <h3>Reset Password</h3>
+        </div>
+        <div class="card-form">
+          <form action="/api/send-reset-password" method="post" data-reset-password-form>
+            <div class="form-group mt-3">
+              <input type="email" id="email" name="email" placeholder="Enter your email" class="form-control" required>
+            </div>
+            <div class="form-group mt-3">
+              <button class="btn btn-primary btn-block">Send Reset Link</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+
+    resetModal.classList.add("modalVisor");
+    const form = document.querySelector("[data-reset-password-form]");
+    form.addEventListener("submit", this.resetPasswordSubmitHandler.bind(this));
+  }
+
+  // handler para restablecer contraseña
+  async resetPasswordSubmitHandler(e) {
+    e.preventDefault();
+    const email = document.getElementsByName("email")[0].value;
+    try {
+      const response = await this.loginInstance.resetPassword({ email });
+      if (response) {
+        alert("A reset link has been sent to your email.");
+        this.modal.style.display = "none"; // Cerrar modal después de enviar el enlace
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
+  // evento signup
   async signupSubmitHandler(e) {
     e.preventDefault();
     const username = document.getElementsByName("username")[0].value;
@@ -96,24 +145,6 @@ export class LoginControllers {
     }
   }
 
-  // //render modal signup
-  // renderSignup() {
-  //   modalControllers.baseModal();
-  //   const loginInicio = this.modal.querySelector("[data-table]");
-  //   loginInicio.innerHTML = `
-  //     <div class="text-center">
-  //         <div class="card-header mb-4">
-  //             <h2>Sección en Construcción</h2>
-  //         </div>
-  //         <div class="mx-auto card-body">
-  //             <p>Estamos trabajando para brindarte esta funcionalidad muy pronto.</p>
-  //         </div>
-  //     </div>
-  // `;
-  //   loginInicio.classList.add("modalVisor");
-  // }
-
-  // activar estas lineas en caso de usar signUp
   //render modal signup
   renderSignup() {
     this.renderForm(
@@ -127,5 +158,12 @@ export class LoginControllers {
     );
     const signupBtn = document.querySelector("[data-btn]");
     signupBtn.style.display = "none";
+
+    // Añadimos evento para restablecer contraseña
+    const resetPasswordLink = document.querySelector("[data-reset-password]");
+    resetPasswordLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.renderResetPassword(); // Renderiza el formulario de restablecimiento de contraseña
+    });
   }
 }

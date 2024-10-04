@@ -323,16 +323,6 @@ const modalCorreoNoenviado = () => {
   );
 };
 
-const container = document.querySelector("#menu-mobile");
-const menu = document.querySelector(".main-menu");
-const checkBox = document.querySelector("#check");
-
-document.addEventListener("click", (e) => {
-  if (!container.contains(e.target) && checkBox.checked) {
-    checkBox.checked = false; // Desmarca el checkbox para cerrar el menú
-  }
-});
-
 const modalCarritoVacio = () => {
   showModal(
     "Tu carrito está vacío",

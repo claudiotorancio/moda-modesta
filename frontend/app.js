@@ -140,12 +140,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     await controllers.renderInit();
     cargarReseñas();
-    actualizarUsuario.textContent = `${user}`;
+    actualizarUsuario.innerHTML = '<i class="fa-solid fa-user-pen"></i>';
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
   } else if (!user && !isAdmin.ok) {
     controllers.renderInit();
-    userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
+    userActive.innerHTML = '<i class="fa-solid fa-user-pen"></i>';
   }
   userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   const initButton = document.querySelector("[data-init]");

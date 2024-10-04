@@ -11,19 +11,9 @@ import "./styles/assets/css/table.css";
 
 import { LoginServices } from "./services/login_services.js";
 import { LoginControllers } from "./controllers/registro/login_controllers.js";
-import { modalControllers } from "./modal/modal.js";
-import { cargarReseñas } from "./controllers/reseña/reseñas.js";
-import { initializeCategoryControls } from "./controllers/productos/categoryControls.js";
 import { ListaServices } from "./services/lista_services.js";
-import { hashControllers } from "./controllers/hashControllers.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const hash = window.location.hash;
-  if (hash.startsWith("#product-")) {
-    await hashControllers();
-  }
-
-  initializeCategoryControls();
   const listaServicesInstance = new ListaServices();
   const isAdmin = await listaServicesInstance.getDataUser();
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
@@ -38,18 +28,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       el.style.display = "block";
     });
 
-    actualizarUsuario.innerHTML = '<i class="fa-solid fa-user-pen"></i>';
+    actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
   }
 
-  cargarReseñas();
   userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
-
-  const initButton = document.querySelector("[data-init]");
-  initButton.addEventListener("click", (e) => {
-    modalControllers.modalSuscribe();
-  });
 
   const login = document.querySelector("[data-log]");
   login.addEventListener("click", (e) => {

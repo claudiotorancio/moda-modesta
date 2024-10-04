@@ -61,6 +61,9 @@ import getNotificaciones from "../backend/routes/notificaciones/getNotificacione
 import notificacionIngreso from "../backend/routes/notificaciones/notificacionIngreso.js";
 import { authenticateJWT } from "../backend/lib/auth.js";
 import getAdmin from "../backend/routes/list/getAdmin.js";
+import resetPasswordHtml from "../backend/routes/nodeMailer/reset-password.js";
+import sendResetPassword from "../backend/routes/login/sendResetPassword.js";
+import updatePassword from "../backend/routes/login/updatePassword.js";
 
 const router = Router();
 const app = express();
@@ -215,6 +218,9 @@ router.post("/api/costoEnvio", costoEnvio);
 router.post("/api/signup", purchaseLimiter, signup);
 router.post("/api/signin", signin);
 router.delete("/api/logout", logout);
+router.post("/api/send-reset-password", purchaseLimiter, sendResetPassword);
+router.get("/api/reset-password", resetPasswordHtml);
+router.post("/api/update-password", updatePassword);
 
 // Rutas listado
 router.get("/api/getDataUser", getDataUser);

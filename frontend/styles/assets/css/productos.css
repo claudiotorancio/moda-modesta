@@ -100,10 +100,10 @@ div.card-header h3 {
   overflow: hidden;
 }
 
-div.card:hover {
+/* div.card:hover {
   transform: translateY(-10px);
   box-shadow: 1.25px 1.25pc 10px rgba(0, 0, 0);
-}
+} */
 .modalCard {
   border: 1px solid #dd2476;
 }

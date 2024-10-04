@@ -41,10 +41,22 @@
             
         </ul>
     </nav>
+
+    <script>
+      const container = document.querySelector("#menu-mobile");
+const menu = document.querySelector(".main-menu");
+const checkBox = document.querySelector("#check");
+
+document.addEventListener("click", (e) => {
+  if (!container.contains(e.target) && checkBox.checked) {
+    checkBox.checked = false; // Desmarca el checkbox para cerrar el menú
+  }
+});
+    </script>
     
     </div>
     <div class=" div-usuario bg-light p-2 rounded-circle user-only">
-      <a href="#" class="d-flex align-items-center">
+      <a href="mi_perfil.html" class="d-flex align-items-center">
         <div class="profile-notificacion mr-2">
           <span class="data-user"></span>
         </div>
