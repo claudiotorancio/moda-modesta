@@ -65,70 +65,27 @@
     </header>
 
     <main class="container">
-        <div id="modal" class="modal">
-            <button class="modal-close">
-              <i class="fa fa-times"></i>
-            </button>
-            <div class="modal-content" data-table>
-              <!-- Contenido del modal aquí -->
-            </div>
-          </div>
-          </div>
-
-      <h2>Perfil de Usuario</h2>
-      <div class="card p-3">
-        <h3>Información Personal</h3>
-        <form>
-          <div class="mb-3">
-            <label for="username" class="form-label">Nombre de Usuario</label>
-            <input
-              type="text"
-              class="form-control"
-              id="username"
-              value="usuario123"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Correo Electrónico</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              value="usuario@example.com"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Cambiar Contraseña</label>
-            <input type="password" class="form-control" id="password" />
-          </div>
-          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-        </form>
-      </div>
-
-      <div class="mt-4">
-        <h3>Pedidos Recientes</h3>
-        <ul class="list-group">
-          <li class="list-group-item">
-            Pedido #12345 - Fecha: 01/10/2024 - Estado: Enviado
-          </li>
-          <li class="list-group-item">
-            Pedido #12344 - Fecha: 15/09/2024 - Estado: Procesando
-          </li>
-          <li class="list-group-item">
-            Pedido #12343 - Fecha: 05/09/2024 - Estado: Entregado
-          </li>
-        </ul>
-      </div>
-
-      <div class="mt-4">
-        <h3>Direcciones Guardadas</h3>
-        <div class="card p-3">
-          <p>
-            <strong>Dirección Principal:</strong> Calle Falsa 123, Ciudad
-            Ficticia
-          </p>
-          <button class="btn btn-primary">Editar Dirección</button>
+      <div id="modal" class="modal">
+        <button class="modal-close">
+          <i class="fa fa-times"></i>
+        </button>
+        <div class="modal-content" data-table>
+          <!-- Contenido del modal aquí -->
         </div>
+      </div>
+
+      <div class="card p-3" id="info-personal"></div>
+
+      <div class="mt-4" id="pedidos-recientes"></div>
+
+      <!-- Botón Volver -->
+      <div class="text-center mt-5">
+        <button
+          onclick="window.location.href='index.html';"
+          class="btn btn-secondary"
+        >
+          <i class="fa fa-arrow-left"></i> Volver
+        </button>
       </div>
     </main>
 

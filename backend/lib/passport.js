@@ -136,11 +136,13 @@ passport.use(
         });
       }
       try {
+        const { nombre } = req.body; // Aquí puedes acceder a nombre
         const existingUser = await Users.findOne({ email: email });
         if (existingUser) {
           return done(null, false, { message: "Email already taken" });
         }
         const newUser = new Users({
+          nombre: nombre,
           email: email,
           password: await helpers.encryptPassword(password),
         });

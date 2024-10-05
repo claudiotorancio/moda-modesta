@@ -45,6 +45,7 @@ const suscribeMail = async (req, res) => {
     const hashedPassword = await helpers.encryptPassword(plainPassword);
     // Crear un nuevo usuario en la base de datos
     const newUser = new Users({
+      nombre: nombre,
       email: email,
       password: hashedPassword,
     });
@@ -55,6 +56,15 @@ const suscribeMail = async (req, res) => {
     const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
+    // Actualizar el usuario con el resetToken y la expiración
+    newUser.resetToken = token;
+    newUser.resetTokenExpires = Date.now() + 3600000; // Token válido por 1 hora
+
+    const savedUser = await newUser.save();
+    if (!savedUser) {
+      throw new Error("No se pudo guardar el usuario con el token.");
+    }
 
     // // Programar la eliminación del usuario si no se confirma en 24 horas
     // setTimeout(async () => {

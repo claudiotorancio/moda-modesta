@@ -19,7 +19,11 @@ const confirmMail = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Buscar al usuario en la base de datos usando el _id decodificado
-    const user = await Users.findById(decoded._id);
+    const user = await Users.findOne({
+      _id: decoded._id,
+      resetToken: token, // Verifica que el token coincida con el almacenado
+      resetTokenExpires: { $gt: Date.now() }, // Verifica si el token no ha expirado
+    });
 
     if (!user) {
       return res
@@ -36,6 +40,8 @@ const confirmMail = async (req, res) => {
     }
 
     // Actualizar el estado del correo electrónico del usuario
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
     user.emailVerified = true;
     await user.save();
 

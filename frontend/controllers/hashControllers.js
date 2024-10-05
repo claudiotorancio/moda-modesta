@@ -40,12 +40,12 @@ export async function hashControllers() {
 
     // Mostrar el producto solo si está activo y tiene stock
     mostrarProducto(
+      producto._id,
       producto.name,
       producto.price,
       producto.imagePath,
       producto.description,
       producto.sizes, // Pasar las tallas con su stock
-      producto._id,
       hayStock // Pasar si hay stock general o no
     );
   } catch (error) {

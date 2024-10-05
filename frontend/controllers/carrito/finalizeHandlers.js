@@ -26,7 +26,7 @@ export function handleFinalizePurchase() {
       
          <fieldset>
             <div class="input-container">
-                <input name="name" id="name" type="text" class="input" placeholder="Nombre" data-tipo="nombre">
+                <input name="name" id="name" type="text" class="input" placeholder="Nombre" data-tipo="nombre" required>
                 <label class="input-label" for="name">Nombre</label>
                   <span class="input-message-error">Este campo no es valido</span>
             </div>

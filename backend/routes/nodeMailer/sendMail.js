@@ -120,6 +120,15 @@ const sendMail = async (req, res) => {
         expiresIn: "1h",
       });
 
+      // Actualizar el usuario con el resetToken y la expiración
+      user.resetToken = token;
+      user.resetTokenExpires = Date.now() + 3600000; // Token válido por 1 hora
+
+      const savedUser = await user.save();
+      if (!savedUser) {
+        throw new Error("No se pudo guardar el usuario con el token.");
+      }
+
       const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;
 
       const verificationMailHTML = `
@@ -156,6 +165,7 @@ const sendMail = async (req, res) => {
       const hashedPassword = await helpers.encryptPassword(plainPassword);
 
       const newUser = new Users({
+        nombre: nombre,
         email: email,
         password: hashedPassword,
       });
@@ -166,6 +176,15 @@ const sendMail = async (req, res) => {
         expiresIn: "1h",
       });
 
+      // Actualizar el usuario con el resetToken y la expiración
+      newUser.resetToken = token;
+      newUser.resetTokenExpires = Date.now() + 3600000; // Token válido por 1 hora
+
+      const savedUser = await newUser.save();
+      if (!savedUser) {
+        throw new Error("No se pudo guardar el usuario con el token.");
+      }
+
       const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;
 
       const welcomeMailHTML = `
@@ -175,8 +194,14 @@ const sendMail = async (req, res) => {
           <li>Nombre: ${nombre}</li>
         </ul>
         <p>¡Gracias por tu compra! Tu orden ha sido generada con éxito.</p>
-        <p>Hemos creado una cuenta para ti. Tu usuario es: <strong>${email}</strong> y tu contraseña temporal es: <strong>${plainPassword}</strong></p>
-        <p>Cambia tu contraseña por seguridad. Haz clic en el siguiente enlace para confirmar tu cuenta:</p>
+        <p>Hemos creado una cuenta para ti con la dirección de correo <strong>${email}</strong>.</p>
+        <p>Para acceder a tu cuenta, deberás crear una contraseña. Sigue estos pasos:</p>
+        <ol>
+          <li>Visita nuestra tienda en línea y accede a la opción "Reset password".</li>
+          <li>Ingresa tu correo electrónico (${email}) para generar un enlace de restablecimiento de contraseña.</li>
+          <li>Haz clic en el enlace que recibirás por correo y sigue las instrucciones para crear una nueva contraseña.</li>
+        </ol>
+        <p>Haz clic en el siguiente botón para confirmar tu correo electrónico y activar tu cuenta:</p>
         <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
         <p>Gracias por confiar en nosotros,</p>
         <p>El equipo de Moda Modesta</p>

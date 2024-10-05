@@ -2,12 +2,12 @@ import { modalControllers } from "../../modal/modal.js";
 import { eventListenerBotones } from "./botonesViewer.js";
 
 export const mostrarProducto = async (
+  id,
   name,
   price,
   imagePath,
   description,
   sizes,
-  id,
   hayStock // Nuevo parámetro para indicar si hay stock
 ) => {
   modalControllers.baseModal();
@@ -142,5 +142,5 @@ export const mostrarProducto = async (
   `;
 
   // Manejar eventos para los botones
-  eventListenerBotones(name, price, imagePath, id);
+  eventListenerBotones(id, name, price, imagePath, sizes);
 };

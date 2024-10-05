@@ -47,7 +47,8 @@ const tipoDeErrores = [
 
 const mensajeDeError = {
   nombre: {
-    valueMissing: "Este campo no puede estar vacío",
+    valueMissing: "",
+    typeMismatch: "El nombre no es válido",
   },
   email: {
     valueMissing: "",

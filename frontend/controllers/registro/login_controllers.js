@@ -12,6 +12,7 @@ export class LoginControllers {
     this.renderForm(
       "SignIn",
       "/api/signin",
+      "",
       "email",
       "password",
       "Sign In",
@@ -23,8 +24,6 @@ export class LoginControllers {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       this.renderSignup();
-      const signupBtn = document.querySelector("[data-btn]");
-      signupBtn.style.display = "none"; //desplegar estas dos lineas en caso de volver a activar signUp
     });
 
     // Añadimos evento para restablecer contraseña
@@ -39,6 +38,7 @@ export class LoginControllers {
   renderForm(
     title,
     action,
+    namePlaceholder,
     emailPlaceholder,
     passwordPlaceholder,
     buttonLabel,
@@ -47,6 +47,19 @@ export class LoginControllers {
   ) {
     modalControllers.baseModal();
     const loginInicio = this.modal.querySelector("[data-table]");
+
+    // Si namePlaceholder está presente, renderiza el input de nombre
+    const nombreInput = namePlaceholder
+      ? `<div class="form-group mt-3">
+        <input type="text" id="nombre" name="nombre" placeholder="${namePlaceholder}" class="form-control" required>
+     </div>`
+      : ""; // Si no, deja el campo vacío
+
+    // Si submitHandler está presente, renderiza el boton
+    const btnSignup = submitHandler
+      ? `  <p class="help">${helpText} <a href="" data-btn>Sign Up</a></p>`
+      : ""; // Si no, deja el campo vacío
+
     loginInicio.innerHTML = `
             <div class="text-center">
                 <div class="card-header">
@@ -54,6 +67,7 @@ export class LoginControllers {
                 </div>
                 <div class="card-form">
                     <form action="${action}" method="post" data-signin>
+                     ${nombreInput} <!-- Input de nombre solo si es SignUp -->
                         <div class="form-group mt-3">
                             <input type="email" id="email" name="email" placeholder="${emailPlaceholder}" class="form-control" required >
                         </div>
@@ -62,8 +76,8 @@ export class LoginControllers {
                         </div>
                         <div class="form-group mt-3">
                             <button class="btn btn-primary btn-block" >${buttonLabel}</button>
-                            <p class="help">${helpText} <a href="" data-btn>Sign Up</a></p>
-                            <p class="mt-2"><a href="#" data-reset-password>Forgot your password?</a></p>
+                            ${btnSignup} <!-- Input de nombre solo si es SignUp -->
+                            <p class="help mt-2"><a href="#" data-reset-password>Forgot your password? Reset password</a></p>
                         </div>
                     </form>
                 </div>
@@ -77,6 +91,7 @@ export class LoginControllers {
   // evento signin
   async signinSubmitHandler(e) {
     e.preventDefault();
+
     const email = document.getElementsByName("email")[0].value;
     const password = document.getElementsByName("password")[0].value;
     const signinData = { email, password };
@@ -135,9 +150,10 @@ export class LoginControllers {
   // evento signup
   async signupSubmitHandler(e) {
     e.preventDefault();
+    const nombre = document.getElementsByName("nombre")[0].value;
     const email = document.getElementsByName("email")[0].value;
     const password = document.getElementsByName("password")[0].value;
-    const signupData = { email, password };
+    const signupData = { nombre, email, password };
     try {
       await this.loginInstance.signup(signupData);
     } catch (err) {
@@ -150,6 +166,7 @@ export class LoginControllers {
     this.renderForm(
       "SignUp",
       "/api/signup",
+      "nombre de usuario",
       "email",
       "password",
       "Sign Up",

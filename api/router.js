@@ -65,6 +65,8 @@ import password from "../backend/routes/nodeMailer/password.js";
 import sendResetPassword from "../backend/routes/login/sendResetPassword.js";
 import updatePassword from "../backend/routes/login/updatePassword.js";
 import confirmResetpassword from "../backend/routes/login/confirmResetPassword.js";
+import { profileControllers } from "../backend/profile/profileControllers.js";
+import { isAuthenticated } from "../backend/isAuthenticated.js";
 
 const router = Router();
 const app = express();
@@ -166,6 +168,18 @@ const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
 // Rutas
 
+//profile
+router.get(
+  "/api/infoPersonal",
+  isAuthenticated,
+  profileControllers.InfoPersonal
+);
+router.get(
+  "/api/pedidosRecientes",
+  isAuthenticated,
+  profileControllers.pedidosRecientes
+);
+
 // Notificaciones
 router.post("/api/notificacionSinStock", notificacionSinStock);
 router.get(
@@ -217,7 +231,7 @@ router.post("/api/costoEnvio", costoEnvio);
 
 // Rutas signin
 router.post("/api/signup", purchaseLimiter, signup);
-router.post("/api/signin", signin);
+router.post("/api/signin", purchaseLimiter, signin);
 router.delete("/api/logout", logout);
 router.post("/api/send-reset-password", purchaseLimiter, sendResetPassword);
 router.get("/reset-password", password);

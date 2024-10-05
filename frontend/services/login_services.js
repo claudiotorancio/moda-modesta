@@ -25,7 +25,6 @@ export class LoginServices {
 
       const dataResponse = await response.json();
       modalControllers.modalCorreoMsg(dataResponse.message); // Asumiendo que la respuesta incluye un mensaje
-      console.log(dataResponse);
     } catch (error) {
       modalControllers.modalCorreoMsg(error.message); // Método que puedes crear para mostrar un error
       console.error(error);
@@ -50,7 +49,7 @@ export class LoginServices {
       }
       // Manejo de la respuesta
       const data = await response.json();
-      const user = data.user.email;
+      const user = data.user.nombre;
 
       // Uso de sessionStorage para guardar usuario
       sessionStorage.setItem("user", JSON.stringify(user));

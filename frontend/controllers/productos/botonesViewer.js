@@ -3,7 +3,7 @@ import { handleEnvioFormProduct } from "../carrito/envioHandlers.js";
 import envioServices from "../../services/envio_services.js";
 import { modalControllers } from "../../modal/modal.js";
 
-export async function eventListenerBotones(name, price, imagePath, id) {
+export async function eventListenerBotones(id, name, price, imagePath, sizes) {
   //evento productos similares
   const botonSimilares = document.getElementById("toggle-similares");
 
@@ -41,10 +41,12 @@ export async function eventListenerBotones(name, price, imagePath, id) {
     agregarCarritoBtn.addEventListener("click", async () => {
       const talleSeleccionado = document.getElementById("variation_1").value;
       await controllers.comprarProducto(
+        id,
         name,
         price,
         imagePath,
-        id,
+
+        sizes,
         talleSeleccionado
       );
     });

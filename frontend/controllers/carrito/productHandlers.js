@@ -43,30 +43,54 @@ export async function agregarProducto(product, size) {
       await cargarCarritoDesdeStorage.call(this);
     }
 
+    // Obtener el producto existente en el carrito
     const productoExistente = this.items.find(
       (item) => item.productId === product._id && item.size === size
     );
+    // Verificar si el producto ya no tiene stock
+    if (product.stock <= 0) {
+      console.error("Producto sin stock.");
+      return alert("Este producto ya no tiene stock disponible.");
+    }
 
+    // Verificar si la cantidad en el carrito más la nueva supera el stock disponible
     if (productoExistente) {
+      const nuevaCantidad = productoExistente.cantidad + 1;
+
+      if (nuevaCantidad > product.stock) {
+        console.error("Cantidad solicitada supera el stock disponible.");
+        return alert(
+          `Solo hay ${product.stock} unidades disponibles de este producto.`
+        );
+      }
+
+      // Actualizar cantidad si hay stock disponible
       productoExistente.cantidad += 1;
       await carritoServices.putProductCart(
         { cantidad: productoExistente.cantidad },
         productoExistente._id
       );
     } else {
-      const productoNuevo = {
-        name: product.name,
-        price: parseFloat(product.price),
-        cantidad: 1,
-        size: size,
-        imagePath: product.imagePath[0],
-        productId: product._id,
-      };
+      // Si es un nuevo producto, verificar que haya stock para agregar
+      if (product.stock >= 1) {
+        const productoNuevo = {
+          name: product.name,
+          price: parseFloat(product.price),
+          cantidad: 1,
+          size: size,
+          imagePath: product.imagePath[0],
+          productId: product._id,
+        };
 
-      await carritoServices.addProductCart(productoNuevo);
-      this.items.push(productoNuevo);
+        await carritoServices.addProductCart(productoNuevo);
+        this.items.push(productoNuevo);
+      } else {
+        console.error("Producto sin stock disponible.");
+        return alert("Este producto ya no tiene stock disponible.");
+      }
     }
 
+    // Mostrar carrito actualizado y notificaciones
     this.mostrarCarrito();
     actualizarNotificacionCarrito.call(this);
   } catch (error) {

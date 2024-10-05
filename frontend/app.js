@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (hash.startsWith("#product-")) {
     await hashControllers();
   }
-
+  cargarReseñas();
   // initializeCategoryControls();
 
   loadBannerText();
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Seccion en Construccion");
     });
 
-    actualizarUsuario.textContent = `${user}`;
+    actualizarUsuario.innerHTML = `${user}<i class="fa-solid fa-user-pen"></i>`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
     buscar();
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     await controllers.renderInit();
     cargarReseñas();
-    actualizarUsuario.innerHTML = '<i class="fa-solid fa-user-pen"></i>';
+    actualizarUsuario.innerHTML = `${user}  <i class="fa-solid fa-user-pen"></i>`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
   } else if (!user && !isAdmin.ok) {

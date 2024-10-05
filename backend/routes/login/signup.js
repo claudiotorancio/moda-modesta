@@ -2,9 +2,9 @@ import passport from "../../lib/passport.js";
 
 const signup = async (req, res) => {
   // Verificar que los datos requeridos estén presentes
-  const { email, password } = req.body;
+  const { nombre, email, password } = req.body;
 
-  if (!email || !password) {
+  if (!nombre || !email || !password) {
     return res.status(400).json({ error: "Faltan datos requeridos" });
   }
 

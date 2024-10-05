@@ -20,12 +20,13 @@ export const controllers = {
           const hayStock = producto.sizes.some((item) => item.stock > 0);
 
           const card = new ProductCard(
+            producto._id,
             producto.name,
             producto.price,
             producto.imagePath,
             producto.description,
             producto.sizes,
-            producto._id,
+
             hayStock,
             producto.isFeatured,
             producto.isActive,
@@ -50,12 +51,13 @@ export const controllers = {
         const hayStock = producto.sizes.some((item) => item.stock > 0);
 
         const productCard = new ProductCard(
+          producto._id,
           producto.name,
           producto.price,
           producto.imagePath,
           producto.description,
           producto.sizes,
-          producto._id,
+
           hayStock,
           producto.isFeatured,
           producto.isActive,
@@ -85,12 +87,13 @@ export const controllers = {
       for (const producto of productosDestacados) {
         const hayStock = producto.sizes.some((item) => item.stock > 0);
         const card = new ProductInit(
+          producto._id,
           producto.name,
           producto.price,
           producto.imagePath,
           producto.description,
           producto.sizes,
-          producto._id,
+
           hayStock
         );
         contenedorDestacados.appendChild(card.productoInicio());
@@ -108,12 +111,13 @@ export const controllers = {
         const hayStock = producto.sizes.some((item) => item.stock > 0);
 
         const productCard = new ProductInit(
+          producto._id,
           producto.name,
           producto.price,
           producto.imagePath,
           producto.description,
           producto.sizes,
-          producto._id,
+
           hayStock
         );
 
@@ -186,8 +190,8 @@ export const controllers = {
           const name = target.dataset.name;
           const price = target.dataset.price;
           const imagePath = JSON.parse(target.dataset.image); // Asegúrate de que esto sea un array
-          const sizes = JSON.parse(target.dataset.sizes);
           const description = target.dataset.description;
+          const sizes = JSON.parse(target.dataset.sizes);
 
           window.location.hash = `product-${id}`;
 
@@ -203,12 +207,12 @@ export const controllers = {
 
           try {
             await mostrarProducto(
+              id,
               name,
               price,
               imagePath,
               description,
               sizes,
-              id,
               hayStock
             );
           } catch (error) {
@@ -230,19 +234,28 @@ export const controllers = {
     }
   },
 
-  async comprarProducto(name, price, imagePath, id, talleSeleccionado) {
-    // Manejar lógica para agregar al carrito
-    const producto = {
-      _id: id,
-      name: name,
-      price: price,
-      imagePath: imagePath,
-    };
+  async comprarProducto(id, name, price, imagePath, sizes, talleSeleccionado) {
+    try {
+      // Mapear stock de los tamaños
+      const stock = sizes.map((item) => item.stock);
 
-    carrito.agregarProducto({
-      product: producto,
-      size: talleSeleccionado,
-    });
+      // Crear objeto de producto
+      const producto = {
+        _id: id,
+        name: name,
+        price: price,
+        imagePath: imagePath,
+        stock,
+      };
+
+      // Agregar producto al carrito
+      await carrito.agregarProducto({
+        product: producto,
+        size: talleSeleccionado,
+      });
+    } catch (error) {
+      console.error("Error al comprar producto:", error);
+    }
   },
 
   // async initializeCategoryControls() {

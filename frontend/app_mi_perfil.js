@@ -12,6 +12,7 @@ import "./styles/assets/css/table.css";
 import { LoginServices } from "./services/login_services.js";
 import { LoginControllers } from "./controllers/registro/login_controllers.js";
 import { ListaServices } from "./services/lista_services.js";
+import { RenderProfile } from "./profile/RenderProfile.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const listaServicesInstance = new ListaServices();
@@ -22,11 +23,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   const logoutUsuario = document.querySelector("[data-logOut]");
   const userActive = document.querySelector("[data-log]");
 
+  const infoPersonal = document.getElementById("info-personal");
+  const pedidosRecientes = document.getElementById("pedidos-recientes");
+
+  const renderProfileInstance = new RenderProfile(
+    infoPersonal,
+    pedidosRecientes
+  );
+
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
   if (user && isAdmin) {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "block";
     });
+
+    renderProfileInstance.render();
 
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';

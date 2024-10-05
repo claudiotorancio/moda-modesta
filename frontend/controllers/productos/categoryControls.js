@@ -81,12 +81,13 @@ export async function initializeCategoryControls() {
       for (const producto of productosBloque) {
         const hayStock = producto.sizes.some((item) => item.stock > 0);
         const productCategory = new ProductInit(
+          producto._id,
           producto.name,
           producto.price,
           producto.imagePath,
           producto.description,
           producto.sizes,
-          producto._id,
+
           hayStock
         );
 
@@ -111,12 +112,13 @@ export async function initializeCategoryControls() {
             } else {
               // Si es administrador, mostrar la tarjeta para administrador
               tarjetaProducto = new ProductCard(
+                producto._id,
                 producto.name,
                 producto.price,
                 producto.imagePath,
                 producto.description,
                 producto.sizes,
-                producto._id,
+
                 hayStock,
                 producto.isFeatured,
                 producto.isActive

@@ -4,13 +4,13 @@ import { controllers } from "./productos_controllers.js";
 import { modalControllers } from "../../modal/modal.js";
 
 export class ProductInit {
-  constructor(name, price, imagePath, description, sizes, id, hayStock) {
+  constructor(id, name, price, imagePath, description, sizes, hayStock) {
+    this.id = id;
     this.name = name;
     this.price = price;
     this.imagePath = imagePath;
     this.description = description;
     this.sizes = sizes;
-    this.id = id;
     this.hayStock = hayStock;
   }
 
@@ -72,12 +72,12 @@ export class ProductInit {
 
           try {
             await mostrarProducto(
+              this.id,
               this.name,
               this.price,
               this.imagePath,
               this.description,
               this.sizes,
-              this.id,
               this.hayStock
             );
           } catch (err) {
@@ -96,12 +96,12 @@ export class ProductInit {
 
       try {
         await mostrarProducto(
+          this.id,
           this.name,
           this.price,
           this.imagePath,
           this.description,
           this.sizes,
-          this.id,
           this.hayStock
         );
       } catch (err) {
@@ -129,6 +129,7 @@ export class ProductInit {
           <div class="text-center">
             <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>
           </div>
+           <p id="message" class="mt-3 text-center"></p>
         `;
 
         containerTalles
@@ -137,10 +138,11 @@ export class ProductInit {
             const talleSeleccionado =
               document.getElementById("variation_1").value;
             controllers.comprarProducto(
+              this.id,
               this.name,
               this.price,
               this.imagePath,
-              this.id,
+              this.sizes,
               talleSeleccionado
             );
           });
