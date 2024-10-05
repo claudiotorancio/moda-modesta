@@ -5,24 +5,24 @@ import { controllers } from "./productos_controllers.js";
 
 export class ProductCard {
   constructor(
+    id,
     name,
     price,
     imagePath,
     description,
     sizes,
-    id,
     hayStock,
     isFeatured,
     isActive,
     inCart,
     section
   ) {
+    this.id = id;
     this.name = name;
     this.price = price;
     this.imagePath = imagePath;
     this.description = description;
     this.sizes = sizes;
-    this.id = id;
     this.hayStock = hayStock;
     this.isFeatured = isFeatured;
     this.isActive = isActive;
@@ -79,12 +79,12 @@ export class ProductCard {
         window.location.hash = `product-${this.id}`;
 
         mostrarProducto(
+          this.id,
           this.name,
           this.price,
           this.imagePath,
           this.description,
           this.sizes,
-          this.id,
           this.hayStock
         );
       });
@@ -127,12 +127,12 @@ export class ProductCard {
     card.querySelector("[data-edit]").addEventListener("click", (e) => {
       e.preventDefault();
       ProductEventHandler.handleEdit(
+        this.id,
         this.name,
         this.price,
         this.imagePath,
         this.description,
         this.sizes,
-        this.id,
         this.isFeatured
       );
     });
