@@ -213,7 +213,7 @@ const modalSuscribe = () => {
   const modal = document.getElementById("modal");
   const suscribe = modal.querySelector("[data-table]");
   suscribe.innerHTML = `
-   <div class="container main-container">
+   <div class="main-container">
     <div class="text-center">
       <div class="card-header">
         <h4>¡Ofertas y Novedades!</h4>
