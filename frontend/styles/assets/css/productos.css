@@ -280,6 +280,10 @@ div.card-header h3 {
     }
   }
 
+  .producto-similar {
+    width: auto;
+  }
+
   #productos-similares {
     width: max-content;
   }

@@ -134,7 +134,7 @@ export const mostrarProducto = async (
             <i class="fa-solid fa-chevron-down"></i>
           </button>
           <div id="similares-Container" class="collapse">
-            <div id="productos-similares" class="d-flex flex-wrap justify-content-start gap-2"></div>
+            <div id="productos-similares" class="d-flex flex-wrap justify-content-center gap-2"></div>
           </div>
         </div>
       </div>
