@@ -52,7 +52,7 @@ async function fetchData() {
     setTimeout(() => {
       console.log("Datos cargados");
       resolve();
-    }, 10);
+    }, 1000);
   });
 }
 
