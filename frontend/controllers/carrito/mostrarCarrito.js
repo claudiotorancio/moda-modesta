@@ -32,7 +32,7 @@ export function mostrarCarrito() {
     summaryDetails.appendChild(progresoCompra);
 
     const carritoContent = `
-      <div class="container main-container">
+      <div class=" main-container">
         <div class="summary-details panel p-none">
           <table class="table table-scrollable">
             <tbody>
