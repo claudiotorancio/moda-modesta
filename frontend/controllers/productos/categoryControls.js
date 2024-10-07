@@ -41,17 +41,8 @@ export async function initializeCategoryControls() {
   // Limpiar el contenedor antes de cargar productos
   contenedorSeccion.innerHTML = "";
 
-  // **Ordenar los productos por disponibilidad de stock**
-  const productosConStock = productosFiltrados.filter((producto) =>
-    producto.sizes.some((item) => item.stock > 0)
-  );
-  const productosSinStock = productosFiltrados.filter(
-    (producto) => !producto.sizes.some((item) => item.stock > 0)
-  );
-  const productosOrdenados = [...productosConStock, ...productosSinStock]; // Primero los productos con stock
-
   // Variables para controlar la carga progresiva
-  const productosPorPagina = 4; // Mostramos 4 productos por bloque
+  const productosPorPagina = 4; // Mostramos 8 productos por bloque
   let paginaActual = 0;
   let cargando = false;
 
@@ -65,7 +56,7 @@ export async function initializeCategoryControls() {
     window.location.href = "index.html"; // O puedes usar window.location.href = "index.html";
   };
 
-  if (productosOrdenados.length === 0) {
+  if (productosFiltrados.length === 0) {
     contenedorSeccion.innerHTML = "<p>No hay productos para mostrar</p>";
     return;
   }
@@ -80,12 +71,12 @@ export async function initializeCategoryControls() {
       const fin = inicio + productosPorPagina;
 
       // Si ya se han cargado todos los productos, detener la carga
-      if (inicio >= productosOrdenados.length) {
+      if (inicio >= productosFiltrados.length) {
         window.removeEventListener("scroll", manejarScroll);
         return;
       }
 
-      const productosBloque = productosOrdenados.slice(inicio, fin);
+      const productosBloque = productosFiltrados.slice(inicio, fin);
 
       for (const producto of productosBloque) {
         const hayStock = producto.sizes.some((item) => item.stock > 0);
@@ -96,6 +87,7 @@ export async function initializeCategoryControls() {
           producto.imagePath,
           producto.description,
           producto.sizes,
+
           hayStock
         );
 
@@ -103,7 +95,7 @@ export async function initializeCategoryControls() {
         const listaServicesInstance = new ListaServices();
 
         try {
-          // Obtener el token del sessionStorage
+          // Obtener el token del localStorage
           const token = sessionStorage.getItem("token");
 
           // Verificar si el token existe
@@ -126,6 +118,7 @@ export async function initializeCategoryControls() {
                 producto.imagePath,
                 producto.description,
                 producto.sizes,
+
                 hayStock,
                 producto.isFeatured,
                 producto.isActive
@@ -155,7 +148,7 @@ export async function initializeCategoryControls() {
         contenedorSeccion.classList.add("ver-todos-activado");
       }
 
-      // Incrementar la página actual para cargar más productos la próxima vez
+      // Incrementar la página actual para cargar más productos en la próxima vez
       paginaActual++;
     } catch (error) {
       console.error("Error al cargar los productos:", error);
