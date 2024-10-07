@@ -1,5 +1,6 @@
 import { ProfileServices } from "../services/profile-services.js";
 import { LoginControllers } from "../controllers/registro/login_controllers.js";
+import { modalControllers } from "../modal/modal.js";
 
 export const profileControllers = {
   async InfoPersonal() {
@@ -44,6 +45,7 @@ export const profileControllers = {
         try {
           const loginControllersInstance = new LoginControllers();
           loginControllersInstance.renderResetPassword();
+          modalControllers.baseModal();
         } catch (error) {
           console.error("Error al cambiar la contraseña:", error);
           alert("Hubo un problema al cambiar la contraseña.");
