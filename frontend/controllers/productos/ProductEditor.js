@@ -223,17 +223,16 @@ export class ProductEditor {
 
       const dataEdit = new FormData();
 
-      // Cambia esta parte para mantener la imagen en la posición correcta:
       if (imagePath1) {
-        dataEdit.append("imagePath1", imagePath1); // Mantén la imagen en el índice 1
+        dataEdit.append("imagePath", imagePath1);
         dataEdit.append(
-          "oldImagePath1",
+          "oldImagePath",
           document.querySelector("[data-oldPath1]").value
         );
       } else if (imagePath2) {
-        dataEdit.append("imagePath2", imagePath2); // Mantén la imagen en el índice 2
+        dataEdit.append("imagePath", imagePath2);
         dataEdit.append(
-          "oldImagePath2",
+          "oldImagePath",
           document.querySelector("[data-oldPath2]").value
         );
       }
