@@ -41,8 +41,17 @@ export async function initializeCategoryControls() {
   // Limpiar el contenedor antes de cargar productos
   contenedorSeccion.innerHTML = "";
 
+  // **Ordenar los productos por disponibilidad de stock**
+  const productosConStock = productosFiltrados.filter((producto) =>
+    producto.sizes.some((item) => item.stock > 0)
+  );
+  const productosSinStock = productosFiltrados.filter(
+    (producto) => !producto.sizes.some((item) => item.stock > 0)
+  );
+  const productosOrdenados = [...productosConStock, ...productosSinStock]; // Primero los productos con stock
+
   // Variables para controlar la carga progresiva
-  const productosPorPagina = 4; // Mostramos 8 productos por bloque
+  const productosPorPagina = 4; // Mostramos 4 productos por bloque
   let paginaActual = 0;
   let cargando = false;
 
@@ -56,7 +65,7 @@ export async function initializeCategoryControls() {
     window.location.href = "index.html"; // O puedes usar window.location.href = "index.html";
   };
 
-  if (productosFiltrados.length === 0) {
+  if (productosOrdenados.length === 0) {
     contenedorSeccion.innerHTML = "<p>No hay productos para mostrar</p>";
     return;
   }
@@ -71,12 +80,12 @@ export async function initializeCategoryControls() {
       const fin = inicio + productosPorPagina;
 
       // Si ya se han cargado todos los productos, detener la carga
-      if (inicio >= productosFiltrados.length) {
+      if (inicio >= productosOrdenados.length) {
         window.removeEventListener("scroll", manejarScroll);
         return;
       }
 
-      const productosBloque = productosFiltrados.slice(inicio, fin);
+      const productosBloque = productosOrdenados.slice(inicio, fin);
 
       for (const producto of productosBloque) {
         const hayStock = producto.sizes.some((item) => item.stock > 0);
@@ -87,7 +96,6 @@ export async function initializeCategoryControls() {
           producto.imagePath,
           producto.description,
           producto.sizes,
-
           hayStock
         );
 
@@ -95,7 +103,7 @@ export async function initializeCategoryControls() {
         const listaServicesInstance = new ListaServices();
 
         try {
-          // Obtener el token del localStorage
+          // Obtener el token del sessionStorage
           const token = sessionStorage.getItem("token");
 
           // Verificar si el token existe
@@ -118,7 +126,6 @@ export async function initializeCategoryControls() {
                 producto.imagePath,
                 producto.description,
                 producto.sizes,
-
                 hayStock,
                 producto.isFeatured,
                 producto.isActive
@@ -148,7 +155,7 @@ export async function initializeCategoryControls() {
         contenedorSeccion.classList.add("ver-todos-activado");
       }
 
-      // Incrementar la página actual para cargar más productos en la próxima vez
+      // Incrementar la página actual para cargar más productos la próxima vez
       paginaActual++;
     } catch (error) {
       console.error("Error al cargar los productos:", error);
@@ -171,20 +178,6 @@ export async function initializeCategoryControls() {
       cargarProductos();
     }
   };
-
-  // Agregar un listener para el evento popstate
-  window.addEventListener("popstate", function (event) {
-    const modal = document.getElementById("modal"); // Cambia #myModal por el ID o clase de tu modal
-    // Verificar si el modal está abierto
-    if ((modal.style.display = "block")) {
-      // Si el modal está abierto, solo ciérralo
-      modal.style.display = "none"; // Aquí depende de cómo cierras tu modal
-      history.pushState(null, null, window.location.href); // Reemplaza el estado actual sin hash
-    } else {
-      // Si el modal no está abierto, redirigir a index.html
-      window.location.href = "index.html"; // Redirigir a index.html
-    }
-  });
 
   // Agregar evento de scroll
   window.addEventListener("scroll", manejarScroll);
