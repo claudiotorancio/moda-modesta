@@ -3,6 +3,12 @@ import { ProductCard } from "./ProductCard.js";
 import { ProductInit } from "./ProductInit.js";
 import { ListaServices } from "../../services/lista_services.js";
 
+import productoServices from "../../services/product_services.js";
+import { ProductCard } from "./ProductCard.js";
+import { ProductInit } from "./ProductInit.js";
+import { ListaServices } from "../../services/lista_services.js";
+import { baseURL } from "../../../backend/baseUrl.js";
+
 export async function initializeCategoryControls() {
   const productos = await productoServices.listaProductos();
 
@@ -178,6 +184,21 @@ export async function initializeCategoryControls() {
       cargarProductos();
     }
   };
+
+  const nuevaURL = `${baseURL}/ver-productos.html?section=${opcion}`;
+  // Agregar un listener para el evento popstate
+  window.addEventListener("popstate", function (event) {
+    const modal = document.getElementById("modal"); // Cambia #myModal por el ID o clase de tu modal
+    // Verificar si el modal está abierto
+    if ((modal.style.display = "block")) {
+      // Si el modal está abierto, solo ciérralo
+      modal.style.display = "none"; // Aquí depende de cómo cierras tu modal
+      history.pushState(null, null, nuevaURL); // Reemplaza el estado actual sin hash
+    } else {
+      // Si el modal no está abierto, redirigir a index.html
+      window.location.href = "index.html"; // Redirigir a index.html
+    }
+  });
 
   // Agregar evento de scroll
   window.addEventListener("scroll", manejarScroll);

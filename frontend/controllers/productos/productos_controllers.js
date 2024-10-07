@@ -168,6 +168,7 @@ export const controllers = {
       console.log(error);
     }
   },
+
   async cargarProductosSimilares(id) {
     try {
       const data = await productoServices.productoSimilar(id);
