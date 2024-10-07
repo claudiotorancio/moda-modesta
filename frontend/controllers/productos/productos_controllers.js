@@ -15,10 +15,19 @@ export const controllers = {
 
       if (contenedorDestacados) {
         contenedorDestacados.innerHTML = "";
-        // Renderiza las tarjetas de los productos destacados
-        for (const producto of productosDestacados) {
-          const hayStock = producto.sizes.some((item) => item.stock > 0);
 
+        // Ordena los productos por disponibilidad de stock
+        const productosConStock = productosDestacados.filter((producto) =>
+          producto.sizes.some((item) => item.stock > 0)
+        );
+        const productosSinStock = productosDestacados.filter(
+          (producto) => !producto.sizes.some((item) => item.stock > 0)
+        );
+        const productosOrdenados = [...productosConStock, ...productosSinStock]; // Productos con stock primero
+
+        // Renderiza las tarjetas de los productos destacados
+        for (const producto of productosOrdenados) {
+          const hayStock = producto.sizes.some((item) => item.stock > 0);
           const card = new ProductCard(
             producto._id,
             producto.name,
@@ -26,7 +35,6 @@ export const controllers = {
             producto.imagePath,
             producto.description,
             producto.sizes,
-
             hayStock,
             producto.isFeatured,
             producto.isActive,
@@ -46,10 +54,18 @@ export const controllers = {
         }
       });
 
-      // Renderiza las tarjetas de productos en sus respectivas secciones
-      for (const producto of products) {
-        const hayStock = producto.sizes.some((item) => item.stock > 0);
+      // Ordenar los productos por stock
+      const productosConStock = products.filter((producto) =>
+        producto.sizes.some((item) => item.stock > 0)
+      );
+      const productosSinStock = products.filter(
+        (producto) => !producto.sizes.some((item) => item.stock > 0)
+      );
+      const productosOrdenados = [...productosConStock, ...productosSinStock]; // Productos con stock primero
 
+      // Renderiza las tarjetas de productos en sus respectivas secciones
+      for (const producto of productosOrdenados) {
+        const hayStock = producto.sizes.some((item) => item.stock > 0);
         const productCard = new ProductCard(
           producto._id,
           producto.name,
@@ -57,7 +73,6 @@ export const controllers = {
           producto.imagePath,
           producto.description,
           producto.sizes,
-
           hayStock,
           producto.isFeatured,
           producto.isActive,
@@ -81,10 +96,22 @@ export const controllers = {
     try {
       const productosDestacados = await productoServices.destacadosProducto();
       const contenedorDestacados = document.querySelector("[data-destacados]");
-
       contenedorDestacados.innerHTML = "";
 
-      for (const producto of productosDestacados) {
+      // Ordenar los productos destacados por disponibilidad de stock
+      const destacadosConStock = productosDestacados.filter((producto) =>
+        producto.sizes.some((item) => item.stock > 0)
+      );
+      const destacadosSinStock = productosDestacados.filter(
+        (producto) => !producto.sizes.some((item) => item.stock > 0)
+      );
+      const destacadosOrdenados = [
+        ...destacadosConStock,
+        ...destacadosSinStock,
+      ]; // Productos con stock primero
+
+      // Renderizar productos destacados
+      for (const producto of destacadosOrdenados) {
         const hayStock = producto.sizes.some((item) => item.stock > 0);
         const card = new ProductInit(
           producto._id,
@@ -93,23 +120,33 @@ export const controllers = {
           producto.imagePath,
           producto.description,
           producto.sizes,
-
           hayStock
         );
         contenedorDestacados.appendChild(card.productoInicio());
       }
 
       const products = await productoServices.listaProductos();
-
       document.querySelectorAll(".productos").forEach((contenedor) => {
         if (contenedor !== contenedorDestacados) {
           contenedor.innerHTML = "";
         }
       });
 
-      for (const producto of products) {
-        const hayStock = producto.sizes.some((item) => item.stock > 0);
+      // Ordenar los productos generales por disponibilidad de stock
+      const productosConStockGenerales = products.filter((producto) =>
+        producto.sizes.some((item) => item.stock > 0)
+      );
+      const productosSinStockGenerales = products.filter(
+        (producto) => !producto.sizes.some((item) => item.stock > 0)
+      );
+      const productosOrdenadosGenerales = [
+        ...productosConStockGenerales,
+        ...productosSinStockGenerales,
+      ]; // Productos con stock primero
 
+      // Renderizar productos generales
+      for (const producto of productosOrdenadosGenerales) {
+        const hayStock = producto.sizes.some((item) => item.stock > 0);
         const productCard = new ProductInit(
           producto._id,
           producto.name,
@@ -117,7 +154,6 @@ export const controllers = {
           producto.imagePath,
           producto.description,
           producto.sizes,
-
           hayStock
         );
 
@@ -132,7 +168,6 @@ export const controllers = {
       console.log(error);
     }
   },
-
   async cargarProductosSimilares(id) {
     try {
       const data = await productoServices.productoSimilar(id);
