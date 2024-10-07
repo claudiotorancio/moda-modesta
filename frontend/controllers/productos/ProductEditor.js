@@ -9,13 +9,12 @@ export class ProductEditor {
 
   editProduct(id, name, price, imagePath, description, sizes, isFeatured) {
     this.renderEditor(
-      s,
-
+      id,
       name,
       price,
       imagePath,
       description,
-      sizeid,
+      sizes,
       isFeatured
     );
     this.setupFormSubmitHandler(id);
