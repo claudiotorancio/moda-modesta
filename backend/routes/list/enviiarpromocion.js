@@ -41,7 +41,7 @@ const enviarPromocion = async (req, res) => {
     const emailPromises = usuarios.map((usuario) => {
       const mailOptions = {
         from: process.env.EMAIL,
-        to: usuario.username,
+        to: usuario.email,
         subject: "Promoción Especial",
         html: myContent,
       };
@@ -57,7 +57,7 @@ const enviarPromocion = async (req, res) => {
       results.map((info) => info.messageId)
     );
     res
-      .status(200)
+      .status(201)
       .json({ success: true, message: "Promociones enviadas exitosamente." });
   } catch (error) {
     console.error("Error al enviar los correos:", error.message);
