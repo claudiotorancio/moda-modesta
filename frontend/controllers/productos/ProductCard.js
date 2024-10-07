@@ -58,7 +58,7 @@ export class ProductCard {
     ${
       this.isActive
         ? `<button class="btn btn-danger desactivar-producto" type="button" id="${this.id}">Desactivar</button>`
-        : `<button class="btn btn-primary activar-producto" type="button" id="${this.id}">Activar</button>`
+        : `<button class="btn btn-success activar-producto" type="button" id="${this.id}">Activar</button>`
     }
   </div>
 </div>
