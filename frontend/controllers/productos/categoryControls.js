@@ -2,11 +2,6 @@ import productoServices from "../../services/product_services.js";
 import { ProductCard } from "./ProductCard.js";
 import { ProductInit } from "./ProductInit.js";
 import { ListaServices } from "../../services/lista_services.js";
-
-import productoServices from "../../services/product_services.js";
-import { ProductCard } from "./ProductCard.js";
-import { ProductInit } from "./ProductInit.js";
-import { ListaServices } from "../../services/lista_services.js";
 import { baseURL } from "../../../backend/baseUrl.js";
 
 export async function initializeCategoryControls() {
