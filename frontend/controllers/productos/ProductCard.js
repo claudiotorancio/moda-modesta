@@ -1,6 +1,5 @@
 import { mostrarProducto } from "./ProductViewer.js";
 import { ProductEventHandler } from "./ProductEventHandler.js";
-import productoServices from "../../services/product_services.js";
 import { controllers } from "./productos_controllers.js";
 
 export class ProductCard {

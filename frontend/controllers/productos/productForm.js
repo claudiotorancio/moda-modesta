@@ -1,4 +1,3 @@
-import { modalControllers } from "../../modal/modal.js";
 import productoServices from "../../services/product_services.js";
 import { controllers } from "./productos_controllers.js";
 
@@ -165,7 +164,6 @@ export class ProductForm {
 
     try {
       await productoServices.crearProducto(productData);
-      modalControllers.modalProductoCreado();
     } catch (error) {
       console.error("Error al crear el producto:", error);
     }

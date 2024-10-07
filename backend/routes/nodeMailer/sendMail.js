@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import Users from "../../models/User.js";
 import helpers from "../../lib/helpers.js";
-import { baseURL } from "../../../frontend/services/product_services.js";
+import { baseURL } from "../../baseUrl.js";
 
 const sendMail = async (req, res) => {
   try {

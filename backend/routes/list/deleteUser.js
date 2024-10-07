@@ -13,11 +13,11 @@ const deleteUser = async (req, res) => {
     const deletedUser = await Users.findByIdAndDelete(userId);
 
     // Usuario eliminado con éxito
-    return res.json({ message: "User deleted", deletedUser });
+    return res.json({ message: "Usuario eliminado", deletedUser });
   } catch (error) {
     // Manejar errores durante la eliminación del usuario
     console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ error: "Error al elimninar eñ usuario" });
   }
 };
 

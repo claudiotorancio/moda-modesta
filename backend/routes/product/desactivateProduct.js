@@ -51,10 +51,10 @@ const deactivateProduct = async (req, res) => {
     //   }
     // }
 
-    res.json({ message: "Producto desactivado" });
+    res.json({ message: "Producto desactivado correctamente" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ error: "error al desactivar el producto" });
   }
 };
 

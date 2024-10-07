@@ -19,10 +19,10 @@ const activarProducto = async (req, res) => {
     producto.isActive = true;
     await producto.save();
 
-    res.json({ message: "Producto desactivado" });
+    res.json({ message: "Producto activado correctamente" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ error: "error al activar el producto" });
   }
 };
 

@@ -8,7 +8,7 @@ import "./styles/assets/css/components/header.css";
 import "./styles/assets/css/components/button.css";
 import "./styles/assets/css/components/modal.css";
 import "./styles/assets/css/table.css";
-import { baseURL } from "./services/product_services.js";
+import { baseURL } from "../backend/baseUrl.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Obtener el token de la URL

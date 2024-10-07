@@ -24,7 +24,7 @@ const aceptarPedido = async (req, res) => {
     res.json({ message: "Pedido aceptado", product: updatedProduct });
   } catch (error) {
     console.error("Error al aceptar el pedido:", error);
-    res.status(500).json({ message: "Error al aceptar el pedido" });
+    res.status(500).json({ error: "Error al aceptar el pedido" });
   }
 };
 

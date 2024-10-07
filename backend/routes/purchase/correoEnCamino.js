@@ -71,7 +71,7 @@ const correoEnCamino = async (req, res) => {
     const info = await transporter.sendMail(mailOptions);
 
     console.log("Correo enviado:", info.messageId);
-    res.status(201).json({ success: true, messageId: info.messageId });
+    res.status(201).json({ success: true, message: "Correo enviado!" });
   } catch (error) {
     console.error("Error al enviar el correo:", error.message);
     res.status(500).json({ error: "Error al enviar el correo." });

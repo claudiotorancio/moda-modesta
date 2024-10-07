@@ -1,3 +1,5 @@
+import { baseURL } from "../../backend/baseUrl.js";
+
 class ResenaService {
   constructor(baseURL) {
     this.baseURL = baseURL;
@@ -78,12 +80,6 @@ class ResenaService {
     }
   }
 }
-
-// Configuración del modo
-export const baseURL =
-  process.env.NODE_ENV === "production"
-    ? "https://moda-modesta.vercel.app"
-    : "http://localhost:3000";
 
 // Instancia de la clase ProductService
 const resenaServices = new ResenaService(baseURL);

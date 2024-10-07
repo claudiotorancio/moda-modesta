@@ -248,13 +248,12 @@ export class ProductEditor {
         dataEdit.append(`stock_${normalizedSize}`, stock);
       });
 
-      for (let [key, value] of dataEdit.entries()) {
-        console.log(`${key}: ${value}`);
-      }
+      // for (let [key, value] of dataEdit.entries()) {
+      //   console.log(`${key}: ${value}`);
+      // }
 
       try {
         await productoServices.actualizarProducto(dataEdit, id);
-        modalControllers.modalProductoEditado();
       } catch (err) {
         console.error("Error al actualizar el producto:", err);
         alert(

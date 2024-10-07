@@ -13,10 +13,6 @@ const s3 = new AWS.S3({
 
 const updateProduct = async (req, res) => {
   try {
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
-
     const { id } = req.params;
     const { name, price, description, oldImagePath, sizes, isFeatured } =
       req.body;
@@ -130,7 +126,7 @@ const updateProduct = async (req, res) => {
     res.json({ message: "Producto actualizado", updatedProduct: result });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ error: "Producto no actualizado" });
   }
 };
 

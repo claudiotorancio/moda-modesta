@@ -1,3 +1,6 @@
+import { modalControllers } from "../modal/modal.js";
+import { baseURL } from "../../backend/baseUrl.js";
+
 class ProductService {
   constructor(baseURL) {
     this.baseURL = baseURL;
@@ -15,12 +18,12 @@ class ProductService {
     }
   }
 
-  async listaProductosUsuario() {
-    return await this.fetchJSON(`${this.baseURL}/api/listaProductosUsuario`);
-  }
-
   async listaProductos() {
     return await this.fetchJSON(`${this.baseURL}/api/listaProductos`);
+  }
+
+  async detalleProducto(id) {
+    return await this.fetchJSON(`${this.baseURL}/api/detailsProduct/${id}`);
   }
 
   async crearProducto(product) {
@@ -31,40 +34,65 @@ class ProductService {
         body: product,
       });
 
+      const dataResponse = await response.json();
+
       if (!response.ok) {
-        throw new Error("No fue posible crear un producto");
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
       }
 
-      // Obtén el contenido de la respuesta como JSON
-      const responseData = await response.json();
-      return responseData;
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
   }
 
   async desactivarProducto(id) {
     try {
-      await fetch(`${this.baseURL}/api/desactivateProduct/${id}`, {
-        method: "PUT",
-      });
+      const response = await fetch(
+        `${this.baseURL}/api/desactivateProduct/${id}`,
+        {
+          method: "PUT",
+        }
+      );
+      const dataResponse = await response.json();
+
+      if (!response.ok) {
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
+      }
+
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
   }
 
   async activarProducto(id) {
     try {
-      await fetch(`${this.baseURL}/api/activateProduct/${id}`, {
-        method: "PUT",
-      });
+      const response = await fetch(
+        `${this.baseURL}/api/activateProduct/${id}`,
+        {
+          method: "PUT",
+        }
+      );
+      const dataResponse = await response.json();
+
+      if (!response.ok) {
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
+      }
+
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
-  }
-
-  async detalleProducto(id) {
-    return await this.fetchJSON(`${this.baseURL}/api/detailsProduct/${id}`);
   }
 
   async destacadosProducto() {
@@ -83,17 +111,23 @@ class ProductService {
   }
 
   async actualizarProducto(product, id) {
-    console.log(product);
     try {
       const response = await fetch(`${this.baseURL}/api/updateProduct/${id}`, {
         method: "PUT",
         body: product,
       });
+
+      const dataResponse = await response.json();
+
       if (!response.ok) {
-        throw new Error("No fue posible actualizar el producto");
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
       }
-      return response;
+
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
   }
@@ -112,12 +146,6 @@ class ProductService {
     }
   }
 }
-
-// Configuración del modo
-export const baseURL =
-  process.env.NODE_ENV === "production"
-    ? "https://moda-modesta.vercel.app"
-    : "http://localhost:3000";
 
 // Instancia de la clase ProductService
 const productoServices = new ProductService(baseURL);

@@ -1,4 +1,4 @@
-import { baseURL } from "./product_services.js";
+import { baseURL } from "../../backend/baseUrl.js";
 
 export class CarritoServices {
   constructor() {

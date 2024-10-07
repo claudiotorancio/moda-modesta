@@ -1,5 +1,5 @@
 import { modalControllers } from "../modal/modal.js";
-import { baseURL } from "./product_services.js";
+import { baseURL } from "../../backend/baseUrl.js";
 import { CarritoServices } from "./carrito_services.js";
 
 export class MailServices {
@@ -52,21 +52,19 @@ export class MailServices {
         body: JSON.stringify(datos),
       });
 
-      if (!response.ok) {
-        throw new Error(
-          `Error en la solicitud: ${response.status} - ${response.statusText}`
-        );
-      }
-      const data = await response.json();
+      const dataResponse = await response.json();
 
-      if (data.success) {
-        modalControllers.modalCorreoEnviado();
-      } else {
-        modalControllers.modalCorreoNoenviado();
+      if (!response.ok) {
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
       }
-    } catch (err) {
-      console.error("Error al enviar los datos de la suscripción:", err);
-      alert("Hubo un error al suscribirse. Por favor, intente nuevamente.");
+
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
+      return dataResponse; // Devuelve los datos recibidos
+    } catch (error) {
+      modalControllers.modalMsg(error.message);
+      console.error(error);
     }
   }
 }

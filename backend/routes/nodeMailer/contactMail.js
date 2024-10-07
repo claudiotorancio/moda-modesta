@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 import Users from "../../models/User.js";
-import { baseURL } from "../../../frontend/services/product_services.js";
+import { baseURL } from "../../baseUrl.js";
 import helpers from "../../lib/helpers.js";
 import crypto from "crypto";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
@@ -120,10 +120,12 @@ const suscribeMail = async (req, res) => {
     const info = await transporter.sendMail(mailOptions);
 
     console.log("Correo enviado:", info.messageId);
-    res.status(201).send({ success: true, messageId: info.messageId });
+    res
+      .status(201)
+      .json({ success: true, message: "Correo enviado con exito!" });
   } catch (error) {
     console.error("Error al enviar el correo:", error.message);
-    res.status(500).send({ error: "Error al enviar el correo." });
+    res.status(500).jsons({ error: "Error al enviar el correo." });
   }
 };
 

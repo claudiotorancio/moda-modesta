@@ -1,6 +1,7 @@
 import { fileURLToPath } from "url";
 import express, { Router, urlencoded } from "express";
 import morgan from "morgan";
+// import cors from "cors";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -134,8 +135,10 @@ app.use(express.static(outputPath));
 const purchaseLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
   max: 10, // Limitar a 10 solicitudes por IP en el intervalo
-  message:
-    "Demasiadas solicitudes desde esta IP. Intenta nuevamente más tarde.",
+  message: {
+    error:
+      "Demasiadas solicitudes desde esta IP. Intenta nuevamente más tarde.",
+  },
 });
 
 // Configuración de Multer y AWS S3

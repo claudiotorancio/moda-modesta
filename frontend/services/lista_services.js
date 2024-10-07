@@ -1,4 +1,5 @@
-import { baseURL } from "./product_services.js";
+import { baseURL } from "../../backend/baseUrl.js";
+import { modalControllers } from "../modal/modal.js";
 
 export class ListaServices {
   constructor() {
@@ -57,16 +58,26 @@ export class ListaServices {
 
   enviarPromocion = async (myContent) => {
     try {
-      await fetch(`${this.baseURL}/api/enviarPromocion/`, {
+      const response = await fetch(`${this.baseURL}/api/enviarPromocion/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ myContent }),
       });
+      const dataResponse = await response.json();
+
+      if (!response.ok) {
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
+      }
+
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
+      return dataResponse; // Devuelve los datos recibidos
     } catch (error) {
-      console.error("Error al actualizar usuario:", error);
-      throw error;
+      modalControllers.modalMsg(error.message);
+      console.error(error);
     }
   };
 
@@ -103,28 +114,47 @@ export class ListaServices {
 
   eliminarUser = async (id) => {
     try {
-      await fetch(`${this.baseURL}/api/deleteUser/${id}`, {
+      const response = await fetch(`${this.baseURL}/api/deleteUser/${id}`, {
         method: "DELETE",
       });
+      const dataResponse = await response.json();
+
+      if (!response.ok) {
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
+      }
+
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
-      console.error("Error al eliminar usuario:", error);
-      throw error;
+      modalControllers.modalMsg(error.message);
+      console.error(error);
     }
   };
   //actualizar usuario
 
   updateUser = async (dataUser, id) => {
     try {
-      await fetch(`${this.baseURL}/api/updateUser/${id}`, {
+      const response = await fetch(`${this.baseURL}/api/updateUser/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(dataUser),
       });
+      const dataResponse = await response.json();
+
+      if (!response.ok) {
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
+      }
+
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
+      return dataResponse; // Devuelve los datos recibidos
     } catch (error) {
-      console.error("Error al actualizar usuario:", error);
-      throw error;
+      modalControllers.modalMsg(error.message);
+      console.error(error);
     }
   };
   //extraer cantidad de productos de Products

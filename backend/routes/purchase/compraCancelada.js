@@ -39,11 +39,9 @@ export const compraCancelada = async (req, res) => {
       { new: true }
     );
 
-    res
-      .status(200)
-      .send({ message: "Stock actualizado correctamente.", updatedOrder });
+    res.status(201).json({ message: "Compra cancelada.", updatedOrder });
   } catch (error) {
     console.error("Error al actualizar el stock:", error.message);
-    res.status(500).send({ error: "Error al actualizar el stock." });
+    res.status(500).send({ error: "Error al cancelar la compra." });
   }
 };

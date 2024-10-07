@@ -40,8 +40,6 @@ export async function mensajeEnCaminoHandlerCompra(email, name, producto, id) {
       const compraServicesHelpers = new CompraServices();
       await compraServicesHelpers.compraEnCamino(id);
       await compraServicesHelpers.correoEnCaminoe(email, name, producto);
-
-      alert("Correo de notificación enviado con éxito.");
     } catch (error) {
       console.error(error);
     }
@@ -56,13 +54,7 @@ export async function aceptarPedidoHandler(email, name, producto, id) {
     if (confirmacion) {
       const compraServicesHelpers = new CompraServices();
       await compraServicesHelpers.aceptarPedido(id);
-      const response = await compraServicesHelpers.compraPrepare(
-        email,
-        name,
-        producto
-      );
-      console.log(response);
-      alert("Correo de notificación enviado con éxito.");
+      await compraServicesHelpers.compraPrepare(email, name, producto);
     }
   } catch (error) {
     console.error("Error al aceptar el pedido o enviar el mensaje:", error);
@@ -78,7 +70,6 @@ export async function eliminarPedido(id) {
     if (confirmacion) {
       const compraServicesHelpers = new CompraServices();
       await compraServicesHelpers.eliminarCompra(id);
-      alert("Orden eliminada con éxito.");
     }
   } catch (error) {
     console.error(error);

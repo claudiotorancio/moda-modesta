@@ -10,7 +10,7 @@ const purchaseOrder = async (req, res) => {
     const order = await Order.find();
 
     // Retornar el listado de usuarios
-    res.json({ order });
+    res.json(order);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

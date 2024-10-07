@@ -31,10 +31,10 @@ const updateUser = async (req, res) => {
     //salvamos los nuevos datos
     await user.save();
 
-    return res.json({ user });
+    return res.json({ message: "Usuario acrualizado" });
   } catch (error) {
     console.error("Error al actualizar usuario:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ error: "Error al actualizar el usuario" });
   }
 };
 

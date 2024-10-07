@@ -20,7 +20,7 @@ const enviarPromocion = async (req, res) => {
     if (usuarios.length === 0) {
       return res
         .status(404)
-        .send({ error: "No se encontraron usuarios con correos verificados." });
+        .json({ error: "No se encontraron usuarios con correos verificados." });
     }
 
     // Configurar el transportador de nodemailer
@@ -58,10 +58,10 @@ const enviarPromocion = async (req, res) => {
     );
     res
       .status(200)
-      .send({ success: true, message: "Promociones enviadas exitosamente." });
+      .json({ success: true, message: "Promociones enviadas exitosamente." });
   } catch (error) {
     console.error("Error al enviar los correos:", error.message);
-    res.status(500).send({ error: "Error al enviar los correos." });
+    res.status(500).json({ error: "Error al enviar los correos." });
   }
 };
 

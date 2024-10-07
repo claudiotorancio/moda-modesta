@@ -1,17 +1,16 @@
 import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 import Users from "../../models/User.js";
-import { baseURL } from "../../../frontend/services/product_services.js";
+import { baseURL } from "../../baseUrl.js";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 // Función para restablecer la contraseña
 const sendResetPassword = async (req, res) => {
-  console.log(req.body);
   const { email } = req.body;
 
   // Verificar que todos los campos requeridos están presentes
   if (!email) {
-    return res.status(400).send({ error: "El campo es obligatorio." });
+    return res.status(400).json({ error: "El campo es obligatorio." });
   }
 
   // Validar el formato del correo electrónico
@@ -19,7 +18,7 @@ const sendResetPassword = async (req, res) => {
   if (!emailRegex.test(email)) {
     return res
       .status(400)
-      .send({ error: "El correo electrónico proporcionado no es válido." });
+      .json({ error: "El correo electrónico proporcionado no es válido." });
   }
 
   try {
@@ -28,7 +27,7 @@ const sendResetPassword = async (req, res) => {
     // Verificar si el usuario existe
     const user = await Users.findOne({ email: email });
     if (!user) {
-      return res.status(404).json({ message: "Usuario no encontrado." });
+      return res.status(404).json({ error: "Usuario no encontrado." });
     }
 
     // Generar un token de restablecimiento

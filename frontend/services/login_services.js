@@ -1,5 +1,5 @@
 import { modalControllers } from "../modal/modal.js";
-import { baseURL } from "./product_services.js";
+import { baseURL } from "../../backend/baseUrl.js";
 
 export class LoginServices {
   constructor() {
@@ -17,16 +17,18 @@ export class LoginServices {
         body: JSON.stringify(data),
       });
 
+      const dataResponse = await response.json(); // Parsear la respuesta JSON siempre, incluso si hay error
+
       if (!response.ok) {
-        throw new Error(
-          `Error en la solicitud: ${response.status} - ${response.statusText}`
-        );
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
       }
 
-      const dataResponse = await response.json();
-      modalControllers.modalCorreoMsg(dataResponse.message); // Asumiendo que la respuesta incluye un mensaje
+      // Si todo sale bien, muestra el mensaje de éxito
+      modalControllers.modalMsg(dataResponse.message); // Mensaje de éxito
     } catch (error) {
-      modalControllers.modalCorreoMsg(error.message); // Método que puedes crear para mostrar un error
+      // Capturar errores de red o errores del backend y mostrarlos en el modal
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
   }
@@ -42,20 +44,24 @@ export class LoginServices {
         credentials: "include",
         body: JSON.stringify(dataUser),
       });
-      if (!response.ok) {
-        throw new Error(
-          `Error en la solicitud: ${response.status} - ${response.statusText}`
-        );
-      }
-      // Manejo de la respuesta
-      const data = await response.json();
-      const user = data.user.nombre;
 
-      // Uso de sessionStorage para guardar usuario
-      sessionStorage.setItem("user", JSON.stringify(user));
-      modalControllers.modalSuccessSignIn(user);
+      const dataResponse = await response.json();
+
+      if (!response.ok) {
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
+      }
+
+      // Manejo de la respuesta
+      const userName = dataResponse.user.nombre;
+      // Uso de sessionStorage para guardar usuario (puedes guardar más información si es necesario)
+      sessionStorage.setItem("user", JSON.stringify(userName));
+
+      // Mostrar el mensaje del servidor
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
-      modalControllers.modalErrorSignIn();
+      // Captura cualquier error que ocurra
+      modalControllers.modalMsg(error.message); // Muestra el mensaje de error
       console.error(error);
     }
   }
@@ -70,18 +76,17 @@ export class LoginServices {
         },
         body: JSON.stringify(dataSignup),
       });
-      // Manejo de la respuesta
+      const dataResponse = await response.json();
+
       if (!response.ok) {
-        throw new Error(
-          `Error en la solicitud: ${response.status} - ${response.statusText}`
-        );
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
       }
-      const data = await response.json();
 
       // Muestra de éxito en pantalla
-      modalControllers.modalSuccessSignup();
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
-      modalControllers.modalErrorSignup();
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
   }
@@ -93,19 +98,20 @@ export class LoginServices {
         method: "DELETE",
       });
 
-      // Manejo de la respuesta
+      const dataResponse = await response.json();
+
       if (!response.ok) {
-        throw new Error(
-          `Error durante el cierre de sesión: ${response.status} - ${response.statusText}`
-        );
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
       }
-      // Remover usuario de sessionStorage
-      const user = JSON.parse(sessionStorage.getItem("user"));
-      modalControllers.modalLogout(user);
+
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("token");
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
-      console.error("Error durante el cierre de sesión:", error);
+      modalControllers.modalMsg(error.message);
+      console.error(error);
     }
   }
 }

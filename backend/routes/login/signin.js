@@ -12,7 +12,7 @@ const signin = (req, res) => {
   if (!emailRegex.test(email)) {
     return res
       .status(400)
-      .send({ error: "El correo electrónico proporcionado no es válido." });
+      .json({ error: "El correo electrónico proporcionado no es válido." });
   }
 
   try {
@@ -29,7 +29,7 @@ const signin = (req, res) => {
       if (!user) {
         return res
           .status(401)
-          .json({ message: info.message || "Usuario no autenticado" });
+          .json({ error: "Usuario o contraseña incorrectos" });
       }
 
       // Inicia sesión y maneja la sesión
@@ -40,7 +40,10 @@ const signin = (req, res) => {
         }
 
         // Responde con el usuario autenticado
-        return res.json({ user: req.user });
+        return res.json({
+          user: req.user,
+          message: "Inicio de sesión exitoso",
+        });
       });
     })(req, res);
   } catch (error) {

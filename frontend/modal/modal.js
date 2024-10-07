@@ -1,4 +1,3 @@
-import { LoginControllers } from "../controllers/registro/login_controllers.js";
 import mailServices from "../services/mail_services.js";
 
 const baseModal = async () => {
@@ -103,111 +102,6 @@ const showModal = async (
   }
 };
 
-// Caso donde solo se cierra el modal sin redirigir
-const accionRegistrada = () => {
-  showModal(
-    "Acción registrada!",
-    "",
-    "Cerrar",
-    () => {
-      const modal = document.getElementById("modal");
-      modal.style.display = "none"; // Cierra el modal al hacer clic en el botón
-    },
-    3000 // Cierra automáticamente después de 3 segundos
-  );
-};
-
-const modalSuccessSignIn = (username) => {
-  showModal(
-    "Bienvenido!",
-    `${username}`,
-    "Ir a inicio",
-    () => {
-      window.location.replace("/index.html");
-    },
-    3000,
-    "/index.html"
-  );
-};
-
-const modalProductoCreado = () => {
-  showModal(
-    "producto creado correctamente!",
-    "",
-    "Volver",
-    () => {
-      window.location.replace("/index.html");
-    },
-    3000,
-    "/index.html"
-  );
-};
-
-const modalProductoEditado = () => {
-  showModal(
-    "producto editado!",
-    "",
-    "Volver",
-    () => {
-      window.location.replace("/index.html");
-    },
-    3000,
-    "/index.html"
-  );
-};
-
-const modalErrorSignIn = () => {
-  showModal(
-    "Usuario o contraseña incorrectos",
-    "",
-    "Volver a intentar",
-    () => {
-      const loginControllersInstance = new LoginControllers();
-      loginControllersInstance.renderSignin();
-    },
-    null
-  );
-};
-
-const modalSuccessSignup = () => {
-  showModal(
-    "Registro exitoso!",
-    "",
-    "Iniciar sesion",
-    () => {
-      const loginControllersInstance = new LoginControllers();
-      loginControllersInstance.renderSignin();
-    },
-    null
-  );
-};
-
-const modalErrorSignup = () => {
-  showModal(
-    "La accion no se completo",
-    "",
-    "Volver a intentar",
-    () => {
-      const loginControllersInstance = new LoginControllers();
-      loginControllersInstance.renderSignup();
-    },
-    null
-  );
-};
-
-const modalLogout = (user) => {
-  showModal(
-    "Vuelve pronto!",
-    `${user}`,
-    "Ok",
-    () => {
-      window.location.replace("/index.html");
-    },
-    3000,
-    "/index.html"
-  );
-};
-
 const modalSuscribe = () => {
   baseModal();
   const modal = document.getElementById("modal");
@@ -249,106 +143,30 @@ const modalSuscribe = () => {
       email,
       nombre,
     };
-
-    // Validar que los campos no estén vacíos
-    if (!email || !nombre) {
-      alert("Por favor, complete todos los campos.");
-      return;
-    }
-
     // Aquí puedes enviar los datos del formulario a tu servidor
     try {
       await mailServices.mailContact(datos);
     } catch (error) {
       console.error("Error al suscribirse:", error);
-      alert(
-        "Hubo un problema al procesar la suscripción. Por favor, intente nuevamente."
-      );
     }
   });
 };
 
-const modalCorreoEnviado = () => {
+const modalMsg = (message) => {
   showModal(
-    "Correo enviado!",
-    "Verifica tu casila de email porfavor.",
-    "Volver",
-
-    () => {
-      window.location.replace("/index.html");
-    },
-    4000,
-    "/index.html"
-  );
-};
-
-const modalCorreoMsg = (message) => {
-  showModal(
+    "Mensaje: ",
     message,
-    "",
-    "Volver",
+    "Cerrar",
 
     () => {
-      window.location.reload();
+      null;
     },
-    10000
-  );
-};
-
-const modalCompraOk = () => {
-  showModal(
-    "Correo enviado!",
-    "En breve recibiras un correo con toda la info",
-    "Volver",
-
-    () => {
-      window.location.replace("/index.html");
-    },
-    3000,
-    "/index.html"
-  );
-};
-
-const modalCorreoNoenviado = () => {
-  showModal(
-    "Error al envar el correo",
-    "",
-    "intenta mas tarde",
-    () => {
-      window.location.replace("/index.html");
-    },
-    3000,
-    "/index.html"
-  );
-};
-
-const modalCarritoVacio = () => {
-  showModal(
-    "Tu carrito está vacío",
-    "",
-    "Ir a inicio",
-    () => {
-      window.location.replace("/index.html");
-    },
-    3000,
-    "/index.html"
+    null
   );
 };
 
 export const modalControllers = {
-  accionRegistrada,
   baseModal,
-  modalSuccessSignIn,
-  modalErrorSignIn,
-  modalSuccessSignup,
-  modalErrorSignup,
-  modalLogout,
-  modalProductoCreado,
-  modalProductoEditado,
   modalSuscribe,
-  modalCorreoEnviado,
-  modalCorreoMsg,
-  modalCorreoNoenviado,
-  modalCompraOk,
-  modalCarritoVacio,
+  modalMsg,
 };

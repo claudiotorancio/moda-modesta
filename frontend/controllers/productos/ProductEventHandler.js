@@ -20,7 +20,6 @@ export class ProductEventHandler {
       if (confirmacion) {
         // Esperar a que se complete la desactivación
         await productoServices.desactivarProducto(id);
-        alert("Producto desactivado correctamente.");
       }
     } catch (error) {
       console.error("Error al desactivar el producto:", error);

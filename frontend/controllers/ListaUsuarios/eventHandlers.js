@@ -115,7 +115,6 @@ export class EventHandlers {
 
         try {
           await this.listaServicesHelpers.updateUser(jsonData, id);
-          modalControllers.modalProductoEditado();
         } catch (error) {
           console.error(error);
         }

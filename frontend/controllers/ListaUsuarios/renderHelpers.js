@@ -76,19 +76,9 @@ export class RenderHelpers {
             }
 
             // Llamar a la función `enviarPromociones` con el contenido
-            this.buttonHandler
-              .enviarPromociones(myContent)
-              .then((response) => {
-                // Mostrar mensaje de éxito en alerta
-                alert("Correo enviado con éxito.");
-
-                // Volver a renderizar la lista de usuarios (opcional)
-                this.renderUsersList();
-              })
-              .catch((error) => {
-                console.error("Error al enviar el correo:", error);
-                alert("Hubo un problema al enviar el correo.");
-              });
+            this.buttonHandler.enviarPromociones(myContent);
+            // Volver a renderizar la lista de usuarios (opcional)
+            this.renderUsersList();
           }
         });
     } catch (error) {

@@ -15,7 +15,6 @@ const compraEnCamino = async (req, res) => {
       { enCamino: true }, // Aquí actualizamos el campo 'enCamino' a true
       { new: true } // Opción para devolver el documento actualizado
     );
-    console.log(updatedProduct);
     if (!updatedProduct) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
@@ -27,7 +26,7 @@ const compraEnCamino = async (req, res) => {
     });
   } catch (error) {
     console.error("Error al actualizar el pedido:", error);
-    res.status(500).json({ message: "Error al actualizar el pedido" });
+    res.status(500).json({ error: "Error al actualizar el pedido" });
   }
 };
 

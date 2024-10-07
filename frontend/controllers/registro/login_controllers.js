@@ -9,6 +9,7 @@ export class LoginControllers {
 
   //render modal signin
   renderSignin() {
+    modalControllers.baseModal();
     this.renderForm(
       "SignIn",
       "/api/signin",
@@ -45,7 +46,6 @@ export class LoginControllers {
     helpText,
     submitHandler
   ) {
-    modalControllers.baseModal();
     const loginInicio = this.modal.querySelector("[data-table]");
 
     // Si namePlaceholder está presente, renderiza el input de nombre
@@ -107,7 +107,6 @@ export class LoginControllers {
 
   // render modal para restablecer contraseña
   renderResetPassword() {
-    modalControllers.baseModal();
     const resetModal = this.modal.querySelector("[data-table]");
     resetModal.innerHTML = `
       <div class="text-center">

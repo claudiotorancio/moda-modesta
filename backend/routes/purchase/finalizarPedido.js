@@ -27,7 +27,7 @@ const finalizarPedido = async (req, res) => {
     });
   } catch (error) {
     console.error("Error al finalizar el pedido:", error);
-    res.status(500).json({ message: "Error al actualizar el pedido" });
+    res.status(500).json({ message: "Error al finalzar el pedido" });
   }
 };
 

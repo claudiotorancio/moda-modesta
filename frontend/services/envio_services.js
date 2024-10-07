@@ -1,6 +1,6 @@
 // envio_services.js
 
-import { baseURL } from "./product_services.js";
+import { baseURL } from "../../backend/baseUrl.js";
 import { modalControllers } from "../modal/modal.js";
 
 export class EnvioService {
@@ -72,22 +72,19 @@ export class EnvioService {
         body: JSON.stringify({ idProducto, idNotificaciones }),
       });
 
+      const dataResponse = await response.json();
+
       if (!response.ok) {
-        throw new Error(
-          `Error en la solicitud: ${response.status} - ${response.statusText}`
-        );
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
       }
 
-      const data = await response.json();
-
-      if (data.success) {
-        modalControllers.modalCorreoEnviado();
-      } else {
-        modalControllers.modalCorreoNoenviado();
-      }
-    } catch (err) {
-      console.error("Error al enviar los datos de la notificacion:", err);
-      alert("Hubo un error al enviar. Por favor, intente nuevamente.");
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
+      return dataResponse; // Devuelve los datos recibidos
+    } catch (error) {
+      modalControllers.modalMsg(error.message);
+      console.error(error);
     }
   }
 }

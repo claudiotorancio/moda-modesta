@@ -1,8 +1,8 @@
 export function createProductElement(
   _id,
   name,
-  sizes,
   price,
+  sizes,
   isActive,
   isFeatured,
   hayStock,

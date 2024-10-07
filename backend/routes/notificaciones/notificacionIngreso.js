@@ -102,10 +102,6 @@ const notificacionIngreso = async (req, res) => {
     // Esperar a que todos los correos se envíen y las notificaciones se actualicen
     await Promise.all(emailPromises);
 
-    console.log(
-      "Correos enviados y notificaciones actualizadas correctamente."
-    );
-
     // Respuesta exitosa
     return res.status(200).json({
       success: true,

@@ -13,7 +13,7 @@ const signup = async (req, res) => {
   if (!emailRegex.test(email)) {
     return res
       .status(400)
-      .send({ error: "El correo electrónico proporcionado no es válido." });
+      .json({ error: "El correo electrónico proporcionado no es válido." });
   }
 
   try {
@@ -21,14 +21,20 @@ const signup = async (req, res) => {
     passport.authenticate("local.signup", function (err, user, info) {
       //manejo de errores
       if (err) {
-        throw err;
+        console.error("Error en la autenticación:", err);
+        return res.status(500).json({ error: "Error en la autenticación" });
       }
       if (!user) {
-        return res.status(400).json({ message: "Failed to sign up" });
+        return res
+          .status(400)
+          .json({
+            error:
+              "Este correo electrónico ya está registrado. Si olvidó su contraseña, puede solicitar un restablecimiento.",
+          });
       }
-      if (user) {
-        res.json({ message: "Usuario registrado" });
-      }
+      res.status(201).json({
+        message: "Usuario registrado correctamente",
+      });
     })(req, res);
   } catch (error) {
     // Manejar errores generales aquí
