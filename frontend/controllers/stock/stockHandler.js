@@ -23,12 +23,12 @@ export async function agregarEventListenerBotones() {
 
         // Llamar a ProductEventHandler.handleEdit con todos los parámetros
         await ProductEventHandler.handleEdit(
+          idProducto,
           name,
           price,
           imagePath,
           description,
           sizes,
-          idProducto,
           isFeatured
         );
 
