@@ -278,7 +278,12 @@ const sendMail = async (req, res) => {
     });
   } catch (error) {
     console.error("Error al enviar el correo:", error);
-    res.status(500).send({ error: "Error al enviar el correo." });
+    res
+      .status(500)
+      .json({
+        error:
+          "Orden no generada, porfavor intenta mas tarde, Disculpe las molestias.",
+      });
   }
 };
 

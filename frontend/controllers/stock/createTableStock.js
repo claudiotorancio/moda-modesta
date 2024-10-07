@@ -148,7 +148,7 @@ export function createEmptyStockRow(
       <td  data-label="Precio">${price}</td>
       <td data-label="Estado" class="sin-stock">Sin stock</td>
       <td>
-        <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">editar</button>
+        <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
       </td>
       <td data-label="Destacado">${isFeatured ? "si" : "no"}</td>
        <td data-label="Notificacion">${
