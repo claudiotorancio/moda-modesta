@@ -58,10 +58,10 @@ export class LoginServices {
       sessionStorage.setItem("user", JSON.stringify(userName));
 
       // Mostrar el mensaje del servidor
-      modalControllers.modalMsg(dataResponse.message);
+      modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {
       // Captura cualquier error que ocurra
-      modalControllers.modalMsg(error.message); // Muestra el mensaje de error
+      modalControllers.modalMsgReload(error.message); // Muestra el mensaje de error
       console.error(error);
     }
   }
@@ -108,9 +108,9 @@ export class LoginServices {
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("token");
       // Muestra de éxito en pantalla
-      modalControllers.modalMsg(dataResponse.message);
+      modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {
-      modalControllers.modalMsg(error.message);
+      modalControllers.modalMsgReload(error.message);
       console.error(error);
     }
   }

@@ -236,8 +236,17 @@ export const controllers = {
 
   async comprarProducto(id, name, price, imagePath, sizes, talleSeleccionado) {
     try {
-      // Mapear stock de los tamaños
-      const stock = sizes.map((item) => item.stock);
+      // Encontrar el objeto del tamaño seleccionado en el array sizes
+      const sizeObject = sizes.find((item) => item.size === talleSeleccionado);
+
+      // Verificar si se encontró el objeto del tamaño
+      if (!sizeObject) {
+        console.error("Talla seleccionada no disponible.");
+        return alert("La talla seleccionada no está disponible.");
+      }
+
+      // Obtener el stock del talle seleccionado
+      const stockSeleccionado = sizeObject.stock;
 
       // Crear objeto de producto
       const producto = {
@@ -245,7 +254,7 @@ export const controllers = {
         name: name,
         price: price,
         imagePath: imagePath,
-        stock,
+        stock: stockSeleccionado, // Solo el stock del talle seleccionado
       };
 
       // Agregar producto al carrito

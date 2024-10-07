@@ -58,24 +58,24 @@ export class ProductEventHandler {
   }
 
   static async handleEdit(
+    id,
     name,
     price,
     imagePath,
     description,
     sizes,
-    id,
     isFeatured
   ) {
     try {
       await productoServices.detalleProducto(id);
       const productEditor = new ProductEditor();
       productEditor.editProduct(
+        id,
         name,
         price,
         imagePath,
         description,
         sizes,
-        id,
         isFeatured
       );
     } catch (error) {

@@ -102,6 +102,20 @@ const showModal = async (
   }
 };
 
+// Caso donde solo se cierra el modal sin redirigir
+const accionRegistrada = () => {
+  showModal(
+    "Acción registrada!",
+    "",
+    "Cerrar",
+    () => {
+      const modal = document.getElementById("modal");
+      modal.style.display = "none"; // Cierra el modal al hacer clic en el botón
+    },
+    3000 // Cierra automáticamente después de 3 segundos
+  );
+};
+
 const modalSuscribe = () => {
   baseModal();
   const modal = document.getElementById("modal");
@@ -165,7 +179,22 @@ const modalMsg = (message) => {
   );
 };
 
+const modalMsgReload = (message) => {
+  showModal(
+    message,
+    "",
+    "Volver",
+
+    () => {
+      window.location.reload();
+    },
+    10000
+  );
+};
+
 export const modalControllers = {
+  modalMsgReload,
+  accionRegistrada,
   baseModal,
   modalSuscribe,
   modalMsg,

@@ -60,7 +60,7 @@ export async function agregarProducto(product, size) {
       if (nuevaCantidad > product.stock) {
         console.error("Cantidad solicitada supera el stock disponible.");
         return alert(
-          `Solo hay ${product.stock} unidades disponibles de este producto.`
+          `Solo hay ${product.stock} unidades disponibles para el talle seleccionado.`
         );
       }
 

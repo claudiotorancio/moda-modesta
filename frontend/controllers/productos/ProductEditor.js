@@ -7,20 +7,21 @@ export class ProductEditor {
     this.productoEdicion = this.modal.querySelector("[data-table]");
   }
 
-  editProduct(name, price, imagePath, description, sizes, id, isFeatured) {
+  editProduct(id, name, price, imagePath, description, sizes, isFeatured) {
     this.renderEditor(
+      s,
+
       name,
       price,
       imagePath,
       description,
-      sizes,
-      id,
+      sizeid,
       isFeatured
     );
     this.setupFormSubmitHandler(id);
   }
 
-  renderEditor(name, price, imagePath, description, sizes, id, isFeatured) {
+  renderEditor(id, name, price, imagePath, description, sizes, isFeatured) {
     modalControllers.baseModal();
 
     this.productoEdicion.innerHTML = `
