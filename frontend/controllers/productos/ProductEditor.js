@@ -188,6 +188,7 @@ export class ProductEditor {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      // Obtener las imágenes seleccionadas para actualización
       const imageInput1 = document.querySelector("[data-image1]");
       const imageInput2 = document.querySelector("[data-image2]");
 
@@ -223,20 +224,22 @@ export class ProductEditor {
 
       const dataEdit = new FormData();
 
+      // Agregar la nueva imagen y su posición
       if (imagePath1) {
-        dataEdit.append("imagePath", imagePath1);
+        dataEdit.append("imagePath1", imagePath1); // Cambia este nombre para que coincida con la imagen específica
         dataEdit.append(
-          "oldImagePath",
+          "oldImagePath1",
           document.querySelector("[data-oldPath1]").value
         );
       } else if (imagePath2) {
-        dataEdit.append("imagePath", imagePath2);
+        dataEdit.append("imagePath2", imagePath2); // Asegúrate de usar nombres específicos para cada imagen
         dataEdit.append(
-          "oldImagePath",
+          "oldImagePath2",
           document.querySelector("[data-oldPath2]").value
         );
       }
 
+      // Añadir los demás datos del producto
       dataEdit.append("name", name);
       dataEdit.append("price", price);
       dataEdit.append("description", description);
@@ -247,10 +250,6 @@ export class ProductEditor {
         dataEdit.append("sizes[]", size);
         dataEdit.append(`stock_${normalizedSize}`, stock);
       });
-
-      // for (let [key, value] of dataEdit.entries()) {
-      //   console.log(`${key}: ${value}`);
-      // }
 
       try {
         await productoServices.actualizarProducto(dataEdit, id);
