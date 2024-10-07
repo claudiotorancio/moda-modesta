@@ -26,10 +26,10 @@ export class MailServices {
       }
 
       // Muestra de éxito en pantalla
-      modalControllers.modalMsg(dataResponse.message);
+      modalControllers.modalMsgReload(dataResponse.message);
       return dataResponse; // Devuelve los datos recibidos
     } catch (error) {
-      modalControllers.modalMsg(error.message);
+      modalControllers.modalMsgReload(error.message);
       console.error(error);
     }
   }
