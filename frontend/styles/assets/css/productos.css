@@ -187,6 +187,82 @@ div.card-header h3 {
   }
 }
 
+/* Estilos para el contenedor de pedidos recientes */
+#pedidos-recientes {
+  margin: 20px 0;
+}
+
+/* Estilo de la lista de grupos */
+.list-group {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Estilo para cada elemento de la lista */
+.list-group-item {
+  background-color: #fff; /* Fondo blanco */
+  border: 1px solid #e0e0e0; /* Borde gris claro */
+  border-radius: 8px; /* Esquinas redondeadas */
+  margin-bottom: 10px; /* Espacio entre elementos */
+  padding: 20px; /* Espaciado interno */
+  transition: box-shadow 0.3s; /* Transición suave para sombra */
+}
+
+/* Efecto hover en los elementos de la lista */
+.list-group-item:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra en hover */
+}
+
+/* Estilo del encabezado de cada pedido */
+.list-group-item strong {
+  color: #333; /* Color del texto fuerte */
+}
+
+/* Estilo del botón de ver producto */
+.btn-primary {
+  background-color: #007bff; /* Color primario */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Esquinas redondeadas */
+  padding: 10px 15px; /* Espaciado interno */
+  color: #fff; /* Color del texto */
+  transition: background-color 0.3s; /* Transición suave para el fondo */
+}
+
+/* Efecto hover en el botón de ver producto */
+.btn-primary:hover {
+  background-color: #0056b3; /* Color más oscuro en hover */
+}
+
+/* Estilo para las etiquetas dentro del listado */
+.list-group-item label {
+  font-weight: bold; /* Negrita para etiquetas */
+  color: #666; /* Color gris para etiquetas */
+}
+
+/* Estilo de los detalles de cada producto */
+.list-group-item ul {
+  list-style: none; /* Sin viñetas */
+  padding-left: 0; /* Sin espaciado a la izquierda */
+}
+
+/* Estilo para cada item de producto en la lista */
+.list-group-item ul li {
+  padding: 5px 0; /* Espaciado vertical entre productos */
+  border-bottom: 1px solid #e0e0e0; /* Borde inferior */
+}
+
+/* Remover borde en el último item */
+.list-group-item ul li:last-child {
+  border-bottom: none; /* Sin borde inferior en el último item */
+}
+
+/* Títulos para encabezados */
+h2,
+h3 {
+  color: #333; /* Color para encabezados */
+  margin-bottom: 15px; /* Espacio inferior */
+}
+
 @media (min-width: 320px) and (max-width: 768px) {
   .texto-categoria h2 {
     font-size: 25px;
