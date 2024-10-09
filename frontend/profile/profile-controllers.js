@@ -11,7 +11,7 @@ export const profileControllers = {
       const divInfoPersonal = document.getElementById("info-personal");
       divInfoPersonal.innerHTML = "";
 
-      const contenido = `   
+      const contenido = `
         <h2>Perfil de Usuario</h2>
         <div class="card p-3" id="info-personal">
           <h3>Información Personal</h3>
@@ -61,6 +61,9 @@ export const profileControllers = {
     try {
       const profileServicesInstance = new ProfileServices();
       const pedidos = await profileServicesInstance.listaOrders();
+
+      // Ordenar los pedidos por fecha de creación (más recientes primero)
+      pedidos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
       const divPedidosRecientes = document.getElementById("pedidos-recientes");
       divPedidosRecientes.innerHTML = "";
