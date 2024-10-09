@@ -3,7 +3,12 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const getUser = async (req, res) => {
   try {
-    const userId = req.params.id;
+    // Verificar si el usuario está autenticado
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ ok: false, message: "No autenticado" });
+    }
+
+    const userId = req.user._id;
 
     // console.log(`id usuario: ${userId}`);
 

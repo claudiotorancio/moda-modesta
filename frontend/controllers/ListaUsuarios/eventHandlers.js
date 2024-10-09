@@ -34,7 +34,7 @@ export class EventHandlers {
     event.preventDefault();
     const userId = event.target.dataset.userup;
     try {
-      const username = await this.getUsername(userId);
+      const username = await this.getUsername();
       this.editarLista(username, userId);
     } catch (error) {
       console.error(error);
@@ -42,18 +42,18 @@ export class EventHandlers {
   }
 
   //extraer datos de Users
-  async getUsername(userId) {
+  async getUsername() {
     // console.log(`getUsername id: ${userId}`);
-    const user = await this.listaServicesHelpers.getUser(userId);
+    const user = await this.listaServicesHelpers.getDataUser();
     // console.log(`getUsername: ${user}`);
     return user.email;
   }
 
   //extraer datos de Users
 
-  async getRole(id) {
+  async getRole() {
     try {
-      const user = await this.listaServicesHelpers.getUser(id);
+      const user = await this.listaServicesHelpers.getDataUser();
       //console.log(`getRole: ${user}`);
       return user.role;
     } catch (error) {

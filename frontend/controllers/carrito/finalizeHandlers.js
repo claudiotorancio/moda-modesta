@@ -1,8 +1,9 @@
 // finalizeHandlers.js
 import { valida } from "./validaciones.js";
 import mailServices from "../../services/mail_services.js";
+import { ListaServices } from "../../services/lista_services.js";
 
-export function handleFinalizePurchase() {
+export async function handleFinalizePurchase() {
   // Obtener o crear progresoCompra
   const progresoCompra = document.querySelector("#progreso-compra");
   if (!progresoCompra) {
@@ -58,6 +59,16 @@ Si no esta registrado, se enviara un correo a la direccion ingreada para su vali
   summaryDetails.innerHTML = ""; // Limpiar contenido actual
   summaryDetails.appendChild(progresoCompra); // Reinsertar la barra de progreso
   summaryDetails.insertAdjacentHTML("beforeend", formularioDatosPersonales);
+
+  //Llamar a la api para obtener datos de usuario logueado
+
+  try {
+    const listaServicesInstance = new ListaServices();
+    await listaServicesInstance.getDataUser();
+    console.log(listaServicesInstance);
+  } catch (error) {
+    console.log(error);
+  }
 
   // Validar inputs al perder el foco
   const inputs = document.querySelectorAll("input");
