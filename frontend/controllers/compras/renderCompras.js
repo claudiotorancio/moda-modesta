@@ -152,7 +152,7 @@ export class RenderCompras {
     cancelado,
     emailVerified,
   }) {
-    const fechaFormateada = new Date(pedido.created_at).toLocaleDateString();
+    const fechaFormateada = new Date(created_at).toLocaleDateString();
 
     const producto = items
       .map(

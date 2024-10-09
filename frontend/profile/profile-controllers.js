@@ -112,9 +112,9 @@ export const profileControllers = {
     if (pedido.finalizado) {
       return "Entregado";
     } else if (pedido.enCamino) {
-      return "En camino";
+      return "En proceso de entrega";
     } else if (pedido.aceptar) {
-      return "Procesando";
+      return "Procesando pedido";
     } else if (pedido.cancelado) {
       return "Compra Cancelada";
     } else {
