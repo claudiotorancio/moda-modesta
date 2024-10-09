@@ -115,6 +115,8 @@ export const profileControllers = {
       return "En camino";
     } else if (pedido.aceptar) {
       return "Procesando";
+    } else if (pedido.cancelado) {
+      return "Compra Cancelada";
     } else {
       return "Pendiente";
     }
