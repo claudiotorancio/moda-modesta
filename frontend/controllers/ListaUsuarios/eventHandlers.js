@@ -17,7 +17,7 @@ export class EventHandlers {
 
     if (confirmacion) {
       try {
-        const role = await this.getRole();
+        const role = await this.getRole(userId);
         if (role !== "admin") {
           await this.listaServicesHelpers.eliminarUser(userId);
           event.target.closest(".row").remove();
@@ -32,9 +32,9 @@ export class EventHandlers {
 
   async updateButtonHandler(event) {
     event.preventDefault();
+    const userId = event.target.dataset.userup;
     try {
-      const username = await this.getUsername();
-      const userId = await this.getUserId();
+      const username = await this.getUsername(userId);
       this.editarLista(username, userId);
     } catch (error) {
       console.error(error);
@@ -42,27 +42,20 @@ export class EventHandlers {
   }
 
   //extraer datos de Users
-  async getUsername() {
+  async getUsername(userId) {
     // console.log(`getUsername id: ${userId}`);
-    const data = await this.listaServicesHelpers.getDataUser();
+    const user = await this.listaServicesHelpers.getUser(userId);
     // console.log(`getUsername: ${user}`);
-    return data.user.email;
-  }
-
-  //extraer datos de Users
-  async getUserId() {
-    const data = await this.listaServicesHelpers.getDataUser();
-    // console.log(`getUsername: ${user}`);
-    return data.user._id;
+    return user.email;
   }
 
   //extraer datos de Users
 
-  async getRole() {
+  async getRole(id) {
     try {
-      const data = await this.listaServicesHelpers.getDataUser();
-      console.log(`getRole: ${data}`);
-      return data.role;
+      const user = await this.listaServicesHelpers.getUser(id);
+      //console.log(`getRole: ${user}`);
+      return user.role;
     } catch (error) {
       console.error("Error al obtener el rol del usuario:", error);
       throw error;

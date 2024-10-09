@@ -8,7 +8,7 @@ const getUser = async (req, res) => {
       return res.status(401).json({ ok: false, message: "No autenticado" });
     }
 
-    const userId = req.user._id;
+    const userId = req.params.id;
 
     // console.log(`id usuario: ${userId}`);
 
