@@ -19,7 +19,7 @@ const getDataUser = async (req, res) => {
     });
 
     const user = req.user;
-
+    console.log(user);
     // Devolver el token en la respuesta
     return res.json({ ok: true, role: req.user.role, token, user });
   } catch (error) {
