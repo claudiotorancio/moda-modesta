@@ -45,15 +45,14 @@ export class EventHandlers {
   async getUsername() {
     // console.log(`getUsername id: ${userId}`);
     const user = await this.listaServicesHelpers.getDataUser();
-    // console.log(`getUsername: ${user}`);
+    console.log(`getUsername: ${user}`);
     return user.email;
   }
 
   //extraer datos de Users
   async getUserId() {
-    // console.log(`getUsername id: ${userId}`);
     const user = await this.listaServicesHelpers.getDataUser();
-    // console.log(`getUsername: ${user}`);
+    console.log(`getUsername: ${user}`);
     return user._id;
   }
 
@@ -62,7 +61,7 @@ export class EventHandlers {
   async getRole() {
     try {
       const user = await this.listaServicesHelpers.getDataUser();
-      //console.log(`getRole: ${user}`);
+      console.log(`getRole: ${user}`);
       return user.role;
     } catch (error) {
       console.error("Error al obtener el rol del usuario:", error);
