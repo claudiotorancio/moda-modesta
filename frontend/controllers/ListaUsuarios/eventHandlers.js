@@ -32,9 +32,9 @@ export class EventHandlers {
 
   async updateButtonHandler(event) {
     event.preventDefault();
-    const userId = event.target.dataset.userup;
     try {
       const username = await this.getUsername();
+      const userId = await this.getUserId();
       this.editarLista(username, userId);
     } catch (error) {
       console.error(error);
@@ -47,6 +47,14 @@ export class EventHandlers {
     const user = await this.listaServicesHelpers.getDataUser();
     // console.log(`getUsername: ${user}`);
     return user.email;
+  }
+
+  //extraer datos de Users
+  async getUserId() {
+    // console.log(`getUsername id: ${userId}`);
+    const user = await this.listaServicesHelpers.getDataUser();
+    // console.log(`getUsername: ${user}`);
+    return user._id;
   }
 
   //extraer datos de Users
