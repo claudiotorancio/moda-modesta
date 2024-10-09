@@ -66,12 +66,29 @@ Si no esta registrado, se enviara un correo a la direccion ingreada para su vali
     const listaServicesInstance = new ListaServices();
     const userData = await listaServicesInstance.getDataUser();
 
-    document.getElementById("name").value = userData.user.name || "";
-    document.getElementById("email").value = userData.user.email || "";
-    document.getElementById("phoneNumber").value =
-      userData.user.phoneNumber || "";
+    if (userData && userData.user) {
+      // Si el usuario está logueado, llenamos los campos y los deshabilitamos
+      document.getElementById("name").value = userData.user.nombre || "";
+      document.getElementById("name").disabled = true; // Deshabilitar el campo
+
+      document.getElementById("email").value = userData.user.email || "";
+      document.getElementById("email").disabled = true; // Deshabilitar el campo
+    } else {
+      // Si no está logueado, dejamos los campos habilitados
+      document.getElementById("name").value = "";
+      document.getElementById("name").disabled = false; // Asegurarse de que no esté deshabilitado
+
+      document.getElementById("email").value = "";
+      document.getElementById("email").disabled = false; // Asegurarse de que no esté deshabilitado
+    }
   } catch (error) {
-    console.log(error);
+    console.log("Error obteniendo los datos del usuario:", error);
+    // Si ocurre un error o no está logueado, los campos siguen habilitados para edición
+    document.getElementById("name").value = "";
+    document.getElementById("name").disabled = false; // Asegurarse de que no esté deshabilitado
+
+    document.getElementById("email").value = "";
+    document.getElementById("email").disabled = false; // Asegurarse de que no esté deshabilitado
   }
 
   // Validar inputs al perder el foco
