@@ -64,8 +64,12 @@ Si no esta registrado, se enviara un correo a la direccion ingreada para su vali
 
   try {
     const listaServicesInstance = new ListaServices();
-    await listaServicesInstance.getDataUser();
-    console.log(listaServicesInstance);
+    const userData = await listaServicesInstance.getDataUser();
+
+    document.getElementById("name").value = userData.user.name || "";
+    document.getElementById("email").value = userData.user.email || "";
+    document.getElementById("phoneNumber").value =
+      userData.user.phoneNumber || "";
   } catch (error) {
     console.log(error);
   }
