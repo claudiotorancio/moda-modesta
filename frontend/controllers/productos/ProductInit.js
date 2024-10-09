@@ -92,6 +92,7 @@ export class ProductInit {
     // Evento para mostrar el modal de compra al hacer clic en "Ver Detalles"
     card.querySelector("a").addEventListener("click", async (e) => {
       e.preventDefault();
+      //agrego el indentificador unico
       window.location.hash = `product-${this.id}`;
 
       try {

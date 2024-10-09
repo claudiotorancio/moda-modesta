@@ -9,7 +9,6 @@ export async function initializeCategoryControls() {
   // Obtener la opción de la query string
   const urlParams = new URLSearchParams(window.location.search);
   const opcion = urlParams.get("section"); // 'section' es la clave de la query string
-  console.log(opcion);
   if (!opcion) {
     console.warn("No se ha seleccionado ninguna categoría.");
     return; // Redirigir a la página principal si es necesario
@@ -183,6 +182,7 @@ export async function initializeCategoryControls() {
 
   // Agregar un listener para el evento popstate
   window.addEventListener("popstate", function (event) {
+    event.preventDefault();
     const modal = document.getElementById("modal"); // Cambia #myModal por el ID o clase de tu modal
     // Verificar si el modal está abierto
     if ((modal.style.display = "block")) {
