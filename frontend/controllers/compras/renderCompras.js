@@ -23,20 +23,25 @@ export class RenderCompras {
 
       // Agregar la estructura del título y el campo de búsqueda
       const tituloContenido = `
-        <div>
-          <h2 class="text-center">COMPRAS</h2>
-          <input type="text" id="searchInput" placeholder="Buscar..." class="form-control mx-auto mt-2 w-50">
-        </div>
-        <div class="row"></div> <!-- Contenedor para las compras -->
-      `;
+            <div>
+                <h2 class="text-center">COMPRAS</h2>
+                <input type="text" id="searchInput" placeholder="Buscar..." class="form-control mx-auto mt-2 w-50">
+            </div>
+            <div class="row"></div> <!-- Contenedor para las compras -->
+        `;
       this.titulo.innerHTML = tituloContenido;
 
       // Configurar el evento de búsqueda
       const searchInput = this.titulo.querySelector("#searchInput");
       searchInput.addEventListener("input", () => this.filtrarCompras());
 
-      // Obtener el listado completo de compras y mostrarlo
+      // Obtener el listado completo de compras
       this.listado = await this.compraServicesHelpers.listaOrder();
+
+      // Ordenar las compras por la fecha de creación (createdAt) en orden descendente
+      this.listado.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
 
       this.mostrarCompras(this.listado); // Mostrar todas las compras inicialmente
     } catch (error) {
