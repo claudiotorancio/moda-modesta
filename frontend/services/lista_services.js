@@ -49,7 +49,6 @@ export class ListaServices {
       return {
         ok: data.ok,
         role: data.role || "user", // Si no tiene role, asumir que es 'user'
-        user: data.user,
       };
     } catch (error) {
       console.error("Error al obtener usuario:", error);
