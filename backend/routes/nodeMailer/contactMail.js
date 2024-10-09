@@ -125,7 +125,7 @@ const suscribeMail = async (req, res) => {
       .json({ success: true, message: "Correo enviado con exito!" });
   } catch (error) {
     console.error("Error al enviar el correo:", error.message);
-    res.status(500).jsons({ error: "Error al enviar el correo." });
+    res.status(500).json({ error: "Error al enviar el correo." });
   }
 };
 

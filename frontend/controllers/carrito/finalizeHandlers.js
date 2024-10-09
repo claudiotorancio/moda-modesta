@@ -21,39 +21,38 @@ export async function handleFinalizePurchase() {
 
   // Mostrar el formulario de datos personales pero mantener la barra de progreso
   const formularioDatosPersonales = `
-      <form id="personal-info-form" action="/api/sendmail" enctype="multipart/form-data" method="POST">
-    <div class="container main-container">
-        <h4>Datos personales</h4>
+  <form id="personal-info-form" action="/api/sendmail" enctype="multipart/form-data" method="POST">
+<div class="main-container">
+    <h4>Datos personales</h4>
+  
+     <fieldset>
+        <div class="input-container mt-2">
+            <input name="name" id="name" type="text" class="input" placeholder="Nombre" data-tipo="nombre" required>
+            <label class="input-label" for="name">Nombre</label>
+              <span class="input-message-error">Este campo no es valido</span>
+        </div>
+        <div class="input-container">
+            <input name="email" type="email" id="email" class="input" placeholder="Email" data-tipo="email" required>
+            <label class="input-label" for="email">Email</label>
+              <span class="input-message-error">Este campo no es valido</span>
+        </div>
+        <div class="input-container">
+            <input name="phoneNumber" type="tel" id="phoneNumber" class="input" placeholder="Número telefónico" pattern="\\d{10}" required maxlength="10" data-tipo="numero">
+            <label class="input-label" for="phoneNumber">Número telefónico</label>
+              <span class="input-message-error">Este campo no es valido</span>
+        </div>
+      </fieldset>
       
-         <fieldset>
-            <div class="input-container">
-                <input name="name" id="name" type="text" class="input" placeholder="Nombre" data-tipo="nombre" required>
-                <label class="input-label" for="name">Nombre</label>
-                  <span class="input-message-error">Este campo no es valido</span>
-            </div>
-            <div class="input-container">
-                <input name="email"  type="email" id="email" class="input" placeholder="Email" data-tipo="email" required>
-                <label class="input-label" for="email">Email</label>
-                  <span class="input-message-error">Este campo no es valido</span>
-            </div>
-            <div class="input-container">
-                <input name="phoneNumber" type="tel" id="phoneNumber" class="input" placeholder="Número telefónico" pattern="\\d{10}" required maxlength="10" data-tipo="numero"  required>
-                 <label class="input-label" for="phoneNumber">Número telefónico</label>
-                  <span class="input-message-error">Este campo no es valido</span>
-            </div>
-          </fieldset>
-          <em style="font-size: 10pt; font-family: Arial, sans-serif; background-color: transparent; vertical-align: baseline;">
-Si no esta registrado, se enviara un correo a la direccion ingreada para su validacion, Muchas gracias!
-</em>
+      <div style="font-size: 12pt; font-family: Arial, sans-serif; background-color: transparent; margin-top: 15px;">
+        <strong>Importante:</strong> La transacción no se completará en esta página. Recibirás un correo electrónico o te contactaremos por teléfono para coordinar el pago y completar el pedido.
+      </div>
 
-            <div>
-               
-                <button type="submit" class="btn btn-primary" id="finalize-order">Finalizar compra</button>
-            </div>
-       
-    </div>
-     </form>
-  `;
+      <div>
+            <button type="submit" class="btn btn-primary mt-3" id="finalize-order">Finalizar compra</button>
+      </div>
+</div>
+ </form>
+`;
 
   const summaryDetails = document.querySelector("[data-table]");
   summaryDetails.innerHTML = ""; // Limpiar contenido actual

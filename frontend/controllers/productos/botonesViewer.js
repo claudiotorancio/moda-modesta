@@ -1,7 +1,6 @@
 import { controllers } from "./productos_controllers.js";
 import { handleEnvioFormProduct } from "../carrito/envioHandlers.js";
 import envioServices from "../../services/envio_services.js";
-import { modalControllers } from "../../modal/modal.js";
 
 export async function eventListenerBotones(id, name, price, imagePath, sizes) {
   //evento productos similares
@@ -115,12 +114,8 @@ export async function eventListenerBotones(id, name, price, imagePath, sizes) {
       // Aquí puedes enviar los datos del formulario a tu servidor
       try {
         await envioServices.notificacionSinStock(datos);
-        modalControllers.accionRegistrada();
       } catch (error) {
         console.error("Error al guardar la notificacion", error);
-        alert(
-          "Hubo un problema al procesar notificacion. o ya esta registrada.Por favor, intente nuevamente."
-        );
       }
     });
   } else {

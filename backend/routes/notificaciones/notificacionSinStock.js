@@ -18,7 +18,7 @@ const notificacionSinStock = async (req, res) => {
     if (!emailRegex.test(email)) {
       return res
         .status(400)
-        .send({ error: "El correo electrónico proporcionado no es válido." });
+        .json({ error: "El correo electrónico proporcionado no es válido." });
     }
 
     // Conectar a la base de datos si es necesario
@@ -30,7 +30,10 @@ const notificacionSinStock = async (req, res) => {
       productId,
     });
     if (existingNotification) {
-      return res.status(400).send({ error: "Este correo ya está registrado." });
+      return res.status(400).json({
+        error:
+          "Este correo junto con este producto ya se encuentran registrados para su notificacion.",
+      });
     }
 
     // Crea una nueva notificación
@@ -38,10 +41,14 @@ const notificacionSinStock = async (req, res) => {
 
     await notification.save();
 
-    res.status(200).json({ success: true });
+    res
+      .status(201)
+      .json({ success: true, message: "Notificacion enviada con exito!" });
   } catch (error) {
     console.error("Error al guardar la notificacion", error.message);
-    res.status(500).send({ error: "Error alguardar la notificacion." });
+    res.status(500).json({
+      error: "Error al guardar la notificacion, intente nuevamente mas tarde",
+    });
   }
 };
 

@@ -28,20 +28,30 @@ export class EnvioService {
   }
 
   async notificacionSinStock(datos) {
-    const response = await fetch(`${this.baseURL}/api/notificacionSinStock`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(datos),
-    });
-    if (!response.ok) {
-      throw new Error("No fue posible guradar la notificacion");
+    try {
+      const response = await fetch(`${this.baseURL}/api/notificacionSinStock`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+      });
+
+      const dataResponse = await response.json();
+
+      if (!response.ok) {
+        // Si la respuesta no es exitosa, se lanza un error con el mensaje adecuado
+        throw new Error(dataResponse.error || "Error en la solicitud.");
+      }
+
+      // Si la respuesta es exitosa, muestra el mensaje de éxito
+      modalControllers.modalMsg(dataResponse.message);
+      return dataResponse; // Devuelve los datos recibidos
+    } catch (error) {
+      // Aquí capturamos cualquier error, ya sea del backend o de la solicitud
+      console.error("Error:", error);
+      modalControllers.modalMsg(error.message); // Muestra el error en el modal
     }
-    return await response.json();
-  }
-  catch(error) {
-    console.error(error);
   }
 
   // Obtener productos del carrito
