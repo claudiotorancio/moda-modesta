@@ -142,33 +142,34 @@ export function createEmptyStockRow(
 
   const row = document.createElement("tr");
   row.innerHTML = `
-      <td data-label="ID">${_id}</td>
-      <td data-label="Producto">${name}</td>
-      <td  data-label="Talle y Cantidades">N/A</td>
-      <td  data-label="Precio">${price}</td>
-      <td data-label="Estado" class="sin-stock">Sin stock</td>
-      <td>
-        <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
-      </td>
-      <td data-label="Destacado">${isFeatured ? "si" : "no"}</td>
-       <td data-label="Notificacion">${
-         notified
-           ? `<p>solicitudes (${notificacionesPendientes.length})</p>
-       <button type="button" class="btn btn-primary notificacion-producto" 
-         data-product-id="${_id}" 
-          data-notificacion-ids="${notificacionesPendientes
-            .map((item) => item._id.toString())
-            .join(",")}" ${hayStock ? "" : "disabled"}>
-         enviar
-       </button>`
-           : "sin notificaciones"
-       }</td>
-    `;
+    <td data-label="ID">${_id}</td>
+    <td data-label="Producto">${name}</td>
+    <td data-label="Talle y Cantidades">N/A</td>
+    <td data-label="Precio">${price}</td>
+    <td data-label="Estado" class="${hayStock ? "en-stock" : "sin-stock"}">${
+    hayStock ? "En stock" : "Sin stock"
+  }</td>
+    <td>
+      <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
+    </td>
+    <td data-label="Destacado">${isFeatured ? "sí" : "no"}</td>
+    <td data-label="Notificacion">${
+      notified
+        ? `<p>solicitudes (${notificacionesPendientes.length})</p>
+    <button type="button" class="btn btn-primary notificacion-producto" 
+      data-product-id="${_id}" 
+      data-notificacion-ids="${notificacionesPendientes
+        .map((item) => item._id.toString())
+        .join(",")}" ${hayStock ? "" : "disabled"}>enviar</button>`
+        : "sin notificaciones"
+    }</td>
+  `;
   return row;
 }
 
 // Helper method to get the overall stock state based on sizes
-function getStockState(sizes) {
+function getStockState(sizes, hayStock) {
+  if (sizes.length === 0) return hayStock ? "en-stock" : "sin-stock";
   if (sizes.every((size) => size.stock === 0)) return "sin-stock";
   if (sizes.some((size) => size.stock < 10 && size.stock > 0))
     return "stock-bajo";
