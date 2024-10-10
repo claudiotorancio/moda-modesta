@@ -40,7 +40,6 @@ export class ProductEditor {
     isFeatured,
     generalStock
   ) {
-    console.log(generalStock);
     modalControllers.baseModal();
 
     this.productoEdicion.innerHTML = `
@@ -110,8 +109,10 @@ export class ProductEditor {
           </div>`
             : `
           <div class="form-group">
+             <label for="generalStock">Stock actual</label>
+            <input class="form-control mt-3 mb-3 p-2" type="number" value="${generalStock}" disabled>
             <label for="generalStock">Stock general</label>
-            <input class="form-control mt-3 mb-3 p-2" type="number" value="${generalStock}" required data-generalStock>
+            <input class="form-control mt-3 mb-3 p-2" type="number" required data-generalStock>
           </div>`
         }
         <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>

@@ -64,7 +64,8 @@ export class ProductEventHandler {
     imagePath,
     description,
     sizes,
-    isFeatured
+    isFeatured,
+    generalStock
   ) {
     try {
       await productoServices.detalleProducto(id);
@@ -76,7 +77,8 @@ export class ProductEventHandler {
         imagePath,
         description,
         sizes,
-        isFeatured
+        isFeatured,
+        generalStock
       );
     } catch (error) {
       console.error("Error al obtener el detalle del producto:", error);
