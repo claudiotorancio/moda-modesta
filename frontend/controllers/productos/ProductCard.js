@@ -87,7 +87,8 @@ export class ProductCard {
           this.description,
           this.sizes,
           this.hayStock,
-          this.section
+          this.section,
+          this.generalStock
         );
       });
 
