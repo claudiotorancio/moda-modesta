@@ -2,7 +2,15 @@ import { controllers } from "./productos_controllers.js";
 import { handleEnvioFormProduct } from "../carrito/envioHandlers.js";
 import envioServices from "../../services/envio_services.js";
 
-export async function eventListenerBotones(id, name, price, imagePath, sizes) {
+export async function eventListenerBotones(
+  id,
+  name,
+  price,
+  imagePath,
+  sizes,
+  section,
+  generalStock
+) {
   //evento productos similares
   const botonSimilares = document.getElementById("toggle-similares");
 
@@ -34,19 +42,30 @@ export async function eventListenerBotones(id, name, price, imagePath, sizes) {
     console.log("Botón de calcular envío no encontrado, no hay stock.");
   }
 
-  // agregar al carrito
+  // Agregar al carrito
   const agregarCarritoBtn = document.querySelector("[data-carrito]");
   if (agregarCarritoBtn) {
     agregarCarritoBtn.addEventListener("click", async () => {
-      const talleSeleccionado = document.getElementById("variation_1").value;
+      let talleSeleccionado;
+
+      // Comprobar si la sección es 'opcion3'
+      if (section === "opcion3") {
+        // No hay talle seleccionado, puedes asignar un valor predeterminado
+        talleSeleccionado = null; // O 'Sin talla' si prefieres
+      } else {
+        // Obtener el talle seleccionado del select
+        talleSeleccionado = document.getElementById("variation_1").value;
+      }
+
       await controllers.comprarProducto(
         id,
         name,
         price,
         imagePath,
-
         sizes,
-        talleSeleccionado
+        talleSeleccionado,
+        section,
+        generalStock
       );
     });
   } else {

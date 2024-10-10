@@ -310,19 +310,38 @@ export const controllers = {
     }
   },
 
-  async comprarProducto(id, name, price, imagePath, sizes, talleSeleccionado) {
+  async comprarProducto(
+    id,
+    name,
+    price,
+    imagePath,
+    sizes,
+    talleSeleccionado,
+    section,
+    generalStock
+  ) {
     try {
-      // Encontrar el objeto del tamaño seleccionado en el array sizes
-      const sizeObject = sizes.find((item) => item.size === talleSeleccionado);
+      let stockSeleccionado;
 
-      // Verificar si se encontró el objeto del tamaño
-      if (!sizeObject) {
-        console.error("Talla seleccionada no disponible.");
-        return alert("La talla seleccionada no está disponible.");
+      // Verificar si es de la sección 'opcion3'
+      if (section === "opcion3") {
+        // Usar el generalStock para productos de esta sección
+        stockSeleccionado = generalStock;
+      } else {
+        // Encontrar el objeto del tamaño seleccionado en el array sizes
+        const sizeObject = sizes.find(
+          (item) => item.size === talleSeleccionado
+        );
+
+        // Obtener el stock del talle seleccionado
+        stockSeleccionado = sizeObject.stock;
+
+        // Verificar si hay stock disponible para la talla seleccionada
+        if (stockSeleccionado <= 0) {
+          console.error("Stock insuficiente para la talla seleccionada.");
+          return alert("No hay stock disponible para la talla seleccionada.");
+        }
       }
-
-      // Obtener el stock del talle seleccionado
-      const stockSeleccionado = sizeObject.stock;
 
       // Crear objeto de producto
       const producto = {
@@ -330,13 +349,13 @@ export const controllers = {
         name: name,
         price: price,
         imagePath: imagePath,
-        stock: stockSeleccionado, // Solo el stock del talle seleccionado
+        stock: stockSeleccionado, // Stock del talle o general, dependiendo de la sección
       };
 
       // Agregar producto al carrito
       await carrito.agregarProducto({
         product: producto,
-        size: talleSeleccionado,
+        size: talleSeleccionado || "Unidades", // Indicar 'Sin talla' si no hay talla seleccionada (opcion3)
       });
     } catch (error) {
       console.error("Error al comprar producto:", error);

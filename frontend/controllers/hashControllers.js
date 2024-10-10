@@ -50,7 +50,8 @@ export async function hashControllers() {
       producto.description,
       producto.sizes, // Pasar las tallas con su stock
       hayStock,
-      producto.section
+      producto.section,
+      producto.generalStock
     );
   } catch (error) {
     console.error("Error al obtener los detalles del producto:", error);

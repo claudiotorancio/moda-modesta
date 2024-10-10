@@ -121,14 +121,19 @@ export async function handleFinalizePurchase() {
       const email = document.querySelector("#email").value;
       const telefono = document.querySelector("#phoneNumber").value;
 
-      const productos = this.items.map((item) => ({
-        id: item.productId,
-        name: item.name,
-        price: item.price,
-        cantidad: item.cantidad,
-        size: item.size,
-        hash: item.productId,
-      }));
+      const productos = this.items.map((item) => {
+        // Verifica si el producto tiene talla
+        const size = item.size ? item.size : null; // O puedes usar null si prefieres
+        return {
+          id: item.productId,
+          name: item.name,
+          price: item.price,
+          cantidad: item.cantidad,
+          size: size, // Asigna el valor de la talla
+          hash: item.productId,
+        };
+      });
+
       const datosCompra = {
         nombre,
         email,

@@ -150,5 +150,13 @@ export const mostrarProducto = async (
   `;
 
   // Manejar eventos para los botones
-  eventListenerBotones(id, name, price, imagePath, sizes);
+  eventListenerBotones(
+    id,
+    name,
+    price,
+    imagePath,
+    sizes,
+    section,
+    generalStock
+  );
 };
