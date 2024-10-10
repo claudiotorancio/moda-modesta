@@ -161,6 +161,15 @@ export class ProductForm {
   setupFormSubmitHandler() {
     const form = this.titulo.querySelector("[data-form]");
     form.addEventListener("submit", (e) => {
+      const images = document.querySelector("[data-imageUrls]").files;
+
+      // Validar que solo se puedan seleccionar 2 imágenes
+      if (images.length > 2) {
+        e.preventDefault(); // Evitar el envío del formulario
+        alert("Por favor, selecciona un máximo de 2 imágenes."); // Mensaje de alerta
+        return; // Salir de la función
+      }
+
       e.preventDefault();
       this.handleSubmit();
     });
