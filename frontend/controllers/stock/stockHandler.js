@@ -18,8 +18,15 @@ export async function agregarEventListenerBotones() {
           throw new Error("Datos del producto no disponibles");
         }
 
-        const { name, price, imagePath, description, sizes, isFeatured } =
-          product;
+        const {
+          name,
+          price,
+          imagePath,
+          description,
+          sizes,
+          isFeatured,
+          generalStock,
+        } = product;
 
         // Llamar a ProductEventHandler.handleEdit con todos los parámetros
         await ProductEventHandler.handleEdit(
@@ -29,7 +36,8 @@ export async function agregarEventListenerBotones() {
           imagePath,
           description,
           sizes,
-          isFeatured
+          isFeatured,
+          generalStock
         );
 
         await stockControllersInstance.renderStock();
