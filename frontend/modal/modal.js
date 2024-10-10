@@ -172,7 +172,7 @@ const modalMsgReload = (message) => {
     "Volver",
 
     () => {
-      window.location.replace("/index.html");
+      window.location.reload();
     },
     10000,
     "/index.html"
