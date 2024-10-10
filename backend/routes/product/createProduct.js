@@ -1,5 +1,4 @@
 import Product from "../../models/Product.js";
-// import { uploadSingle } from "../../../api/router.js"; // Asegúrate de que uploadMultiple maneje múltiples imágenes
 import Vista from "../../models/Vista.js";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
 
@@ -7,62 +6,56 @@ const createProduct = async (req, res) => {
   try {
     // Obtén las rutas de las imágenes
     const imagePaths = req.files ? req.files.map((file) => file.location) : [];
-    const { name, price, description, section, isFeatured } = req.body;
+    const { name, price, description, section, isFeatured, generalStock } =
+      req.body;
 
-    // Procesa los tamaños y el stock
-    const sizes = JSON.parse(req.body.sizes || "[]"); // Convierte el JSON de vuelta a un array
-    const stock = {};
-
-    // Procesa el stock si es un objeto
-    if (typeof req.body.stock === "object") {
-      for (const [key, value] of Object.entries(req.body.stock)) {
-        if (value) {
-          stock[key] = parseInt(value);
-        }
-      }
+    // Procesa los tamaños y el stock si la sección NO es "Diversos"
+    let sizes = [];
+    if (section !== "opcion3") {
+      sizes = JSON.parse(req.body.sizes || "[]"); // Convierte el JSON de vuelta a un array si hay tallas
     }
 
-    if (
-      !name ||
-      !price ||
-      !description ||
-      !section ||
-      !isFeatured ||
-      !imagePaths.length
-    ) {
+    // Validaciones básicas
+    if (!name || !price || !description || !section || !imagePaths.length) {
       return res
         .status(400)
         .json({ error: "Todos los campos son requeridos." });
     }
 
-    // Crear datos del producto
+    // Crear datos del producto según la sección
     const createProductData = {
       name,
       price,
       description,
       section,
-      isFeatured,
+      isFeatured: isFeatured || false,
       imagePath: imagePaths,
       user_id: req.user._id,
-      sizes: sizes.map((sizeData) => ({
+      isActive: true, // La propiedad isActive es true por defecto
+    };
+
+    // Si la sección es "Diversos", agrega el stock general
+    if (section === "opcion3") {
+      createProductData.generalStock = parseInt(generalStock) || 0;
+    } else {
+      // Si no es "Diversos", agrega las tallas y el stock por talla
+      createProductData.sizes = sizes.map((sizeData) => ({
         size: sizeData.size,
         stock: sizeData.stock,
-      })),
-      stock: stock,
-      isActive: true, // Agrego la propiedad isActive
-    };
+      }));
+    }
 
     // Crear y guardar el producto
     let newProduct;
     if (esAdministrador(req.user)) {
-      newProduct = new Vista(createProductData);
+      newProduct = new Vista(createProductData); // Crear en el modelo Vista si es admin
     } else {
-      newProduct = new Product(createProductData);
+      newProduct = new Product(createProductData); // Crear en el modelo Product si no es admin
     }
 
     await connectToDatabase();
-
     await newProduct.save();
+
     res.json({ message: "Producto guardado" });
   } catch (error) {
     console.error("Error al crear el producto:", error);
