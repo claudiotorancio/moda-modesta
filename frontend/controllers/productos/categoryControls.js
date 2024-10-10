@@ -94,6 +94,7 @@ export async function initializeCategoryControls() {
           producto.section === "opcion3"
             ? producto.generalStock > 0 // Verifica stock general para "Diversos"
             : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
+
         const productCategory = new ProductInit(
           producto._id,
           producto.name,
@@ -126,6 +127,7 @@ export async function initializeCategoryControls() {
               tarjetaProducto = productCategory.productoInicio();
             } else {
               // Si es administrador, mostrar la tarjeta para administrador
+
               tarjetaProducto = new ProductCard(
                 producto._id,
                 producto.name,
@@ -134,10 +136,10 @@ export async function initializeCategoryControls() {
                 producto.description,
                 producto.sizes,
                 hayStock,
-                producto.isFeatured,
-                producto.isActive,
                 producto.section,
-                producto.generalStock
+                producto.generalStock,
+                producto.isFeatured,
+                producto.isActive
               ).render(); // Crear producto para admin
             }
           }
