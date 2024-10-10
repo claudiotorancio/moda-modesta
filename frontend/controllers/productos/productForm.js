@@ -45,7 +45,7 @@ export class ProductForm {
         </div>
         <p>Modo seleccion de imagenes:</p>
         <p>a- Seleccionar una sola imagen</p>
-        <p>b- Seleccionar varias imagenes de una vez para efecto carrousel.</p>
+        <p>b- Seleccionar dos (2) imagenes de una vez para efecto carrousel.</p>
         <br>
         <div class="card-body w-100">
           <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>

@@ -177,7 +177,7 @@ const upload = () =>
     }),
   });
 
-export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 3);
+export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 2);
 const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
 // Rutas
