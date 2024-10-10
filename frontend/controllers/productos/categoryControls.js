@@ -136,10 +136,11 @@ export async function initializeCategoryControls() {
                 producto.description,
                 producto.sizes,
                 hayStock,
-                producto.section,
-                producto.generalStock,
                 producto.isFeatured,
-                producto.isActive
+                producto.isActive,
+                producto.inCart,
+                producto.section,
+                producto.generalStock
               ).render(); // Crear producto para admin
             }
           }
