@@ -129,10 +129,12 @@ export class ProductEditor {
 
   setupGeneralStockCheck() {
     const generalStockInput = document.querySelector("[data-generalStock]");
-    const generalStockCheck = document.getElementById("updateGeneralStock");
-
-    generalStockCheck.addEventListener("change", () => {
-      generalStockInput.disabled = !generalStockCheck.checked;
+    if (!generalStockInput) {
+      console.error("El elemento de stock general no existe en el DOM.");
+      return;
+    }
+    generalStockInput.addEventListener("change", (event) => {
+      // Tu lógica aquí
     });
   }
 
