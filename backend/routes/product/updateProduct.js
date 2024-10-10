@@ -14,8 +14,15 @@ const s3 = new AWS.S3({
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, price, description, oldImagePath, sizes, isFeatured } =
-      req.body;
+    const {
+      name,
+      price,
+      description,
+      oldImagePath,
+      sizes,
+      generalStock,
+      isFeatured,
+    } = req.body;
 
     // Conectar a la base de datos
     await connectToDatabase();
@@ -101,9 +108,6 @@ const updateProduct = async (req, res) => {
         stock !== undefined && stock !== null ? Number(stock) : 0;
 
       sizesWithStock.push({ size: sizes, stock: parsedStock });
-    } else {
-      // Si no se envía `sizes`, dejarlo como array vacío
-      console.log("No se proporcionaron tamaños válidos, se mantendrá vacío.");
     }
 
     // Datos a actualizar
@@ -115,6 +119,11 @@ const updateProduct = async (req, res) => {
       isFeatured,
       imagePath: updatedImagePath.length ? updatedImagePath : undefined,
     };
+
+    // Si no hay talles, incluir `generalStock`
+    if (sizesWithStock.length === 0 && generalStock !== undefined) {
+      updateData.generalStock = Number(generalStock) || 0; // Guardar generalStock si no hay talles
+    }
 
     // Actualizar el producto en la base de datos
     const result = await model.findByIdAndUpdate(id, updateData, { new: true });
