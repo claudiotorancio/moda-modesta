@@ -6,7 +6,7 @@ export function createProductElement(
   isActive,
   isFeatured,
   hayStock,
-  generalStock, // <-- Nuevo parámetro
+  generalStock,
   notificaciones
 ) {
   const productoDiv = document.createElement("div");
@@ -31,37 +31,43 @@ export function createProductElement(
 
   const tbody = document.createElement("tbody");
 
+  // Si no hay tallas disponibles
   if (sizes.length === 0) {
-    const row = createEmptyStockRow(
-      _id,
-      name,
-      price,
-      isFeatured,
-      hayStock,
-      generalStock, // <-- Se pasa el nuevo parámetro
-      notificaciones
-    );
-    tbody.appendChild(row);
-  } else {
-    const notified = notificaciones.some(
-      (item) =>
-        item.productId.toString() === _id.toString() && item.notified === false
-    );
-
-    const notificacionesPendientes = notificaciones.filter(
-      (item) =>
-        item.productId.toString() === _id.toString() && item.notified === false
-    );
-
     const row = document.createElement("tr");
     row.innerHTML = `
-        <td data-label="ID">${_id}</td>
-        <td data-label="Producto">${name}</td>
-        <td data-label="Talles y Cantidades">
-          <ul class="size-list">
-            ${sizes
-              .map(
-                (size) => `
+      <td data-label="ID">${_id}</td>
+      <td data-label="Producto">${name}</td>
+      <td data-label="Talles y Cantidades">${generalStock}</td> <!-- Mostrar el stock general -->
+      <td data-label="Precio">${price}</td>
+      <td data-label="Estado" class="${hayStock ? "en-stock" : "sin-stock"}">${
+      hayStock ? "En stock" : "Sin stock"
+    }</td>
+      <td data-label="Acciones">
+        <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
+      </td>
+      <td data-label="Destacado">${isFeatured ? "sí" : "no"}</td>
+      <td data-label="Notificacion">${
+        notificaciones.some(
+          (item) =>
+            item.productId.toString() === _id.toString() &&
+            item.notified === false
+        )
+          ? "solicitudes"
+          : "sin notificaciones"
+      }</td>
+    `;
+    tbody.appendChild(row);
+  } else {
+    // Manejar productos con talles
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td data-label="ID">${_id}</td>
+      <td data-label="Producto">${name}</td>
+      <td data-label="Talles y Cantidades">
+        <ul class="size-list">
+          ${sizes
+            .map(
+              (size) => `
               <li class="${
                 size.stock === 0
                   ? "sin-stock"
@@ -70,37 +76,36 @@ export function createProductElement(
                   : "en-stock"
               }">
                 <strong>${size.size}:</strong> ${size.stock} ${
-                  size.stock === 0
-                    ? "(sin stock)"
-                    : size.stock < 10
-                    ? "(bajo stock)"
-                    : "(en stock)"
-                }
+                size.stock === 0
+                  ? "(sin stock)"
+                  : size.stock < 10
+                  ? "(bajo stock)"
+                  : "(en stock)"
+              }
               </li>
             `
-              )
-              .join("")}
-          </ul>
-        </td>
-        <td data-label="Precio">${price}</td>
-        <td data-label="Estado" class="${getStockState(sizes, generalStock)}">
-          ${getStockState(sizes, generalStock).replace("-", " ")}
-        </td>
-        <td data-label="Acciones">
-          <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
-        </td>
-        <td data-label="Destacado">${isFeatured ? "sí" : "no"}</td>
-         <td data-label="Notificacion">${
-           notified
-             ? `<p>solicitudes (${notificacionesPendientes.length})</p>
-       <button type="button" class="btn btn-primary notificacion-producto" 
-         data-product-id="${_id}" 
-         data-notificacion-ids="${notificacionesPendientes
-           .map((item) => item._id.toString())
-           .join(",")}" ${hayStock ? "" : "disabled"}>enviar</button>`
-             : "sin notificaciones"
-         }</td>
-      `;
+            )
+            .join("")}
+        </ul>
+      </td>
+      <td data-label="Precio">${price}</td>
+      <td data-label="Estado" class="${getStockState(sizes)}">${getStockState(
+      sizes
+    ).replace("-", " ")}</td>
+      <td data-label="Acciones">
+        <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
+      </td>
+      <td data-label="Destacado">${isFeatured ? "sí" : "no"}</td>
+      <td data-label="Notificacion">${
+        notificaciones.some(
+          (item) =>
+            item.productId.toString() === _id.toString() &&
+            item.notified === false
+        )
+          ? "solicitudes"
+          : "sin notificaciones"
+      }</td>
+    `;
     tbody.appendChild(row);
   }
 
