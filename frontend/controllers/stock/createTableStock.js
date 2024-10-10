@@ -167,7 +167,6 @@ export function createEmptyStockRow(
   return row;
 }
 
-// Helper method to get the overall stock state based on sizes
 function getStockState(sizes, generalStock) {
   if (sizes.length === 0) {
     // Si no hay talles, usamos el generalStock

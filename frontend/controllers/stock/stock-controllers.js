@@ -63,8 +63,8 @@ export class StockControllers {
             isActive,
             isFeatured,
             hayStock,
-            generalStock,
-            notificaciones
+            notificaciones,
+            generalStock
           );
 
           productosContenedor.appendChild(productoDiv);
