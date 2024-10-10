@@ -17,9 +17,6 @@ const destacadosProduct = async (req, res) => {
       ],
     });
 
-    // Agregar un console.log para depurar
-    console.log("Productos destacados:", productosDestacados);
-
     // Enviar los productos destacados como respuesta
     res.json(productosDestacados);
   } catch (error) {

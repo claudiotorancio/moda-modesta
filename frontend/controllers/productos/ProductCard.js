@@ -14,7 +14,8 @@ export class ProductCard {
     isFeatured,
     isActive,
     inCart,
-    section
+    section,
+    generalStock
   ) {
     this.id = id;
     this.name = name;
@@ -27,6 +28,7 @@ export class ProductCard {
     this.isActive = isActive;
     this.inCart = inCart;
     this.section = section;
+    this.generalStock = generalStock;
   }
 
   render() {

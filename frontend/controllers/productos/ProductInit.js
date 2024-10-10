@@ -99,7 +99,8 @@ export class ProductInit {
               this.description,
               this.sizes,
               this.hayStock,
-              this.section
+              this.section,
+              this.generalStock
             );
           } catch (err) {
             console.log(err);
@@ -125,7 +126,8 @@ export class ProductInit {
           this.description,
           this.sizes,
           this.hayStock,
-          this.section
+          this.section,
+          this.generalStock
         );
       } catch (err) {
         console.log(err);

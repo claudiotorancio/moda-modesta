@@ -41,11 +41,14 @@ export async function initializeCategoryControls() {
   contenedorSeccion.innerHTML = "";
 
   // **Ordenar los productos por disponibilidad de stock**
-  const productosConStock = productosFiltrados.filter((producto) =>
-    producto.sizes.some((item) => item.stock > 0)
+  const productosConStock = productosFiltrados.filter(
+    (producto) =>
+      producto.sizes.some((item) => item.stock > 0) || producto.generalStock > 0
   );
   const productosSinStock = productosFiltrados.filter(
-    (producto) => !producto.sizes.some((item) => item.stock > 0)
+    (producto) =>
+      !producto.sizes.some((item) => item.stock > 0) &&
+      producto.generalStock <= 0
   );
   const productosOrdenados = [...productosConStock, ...productosSinStock];
 
@@ -87,7 +90,10 @@ export async function initializeCategoryControls() {
       const productosBloque = productosOrdenados.slice(inicio, fin);
 
       for (const producto of productosBloque) {
-        const hayStock = producto.sizes.some((item) => item.stock > 0);
+        const hayStock =
+          producto.section === "opcion3"
+            ? producto.generalStock > 0 // Verifica stock general para "Diversos"
+            : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
         const productCategory = new ProductInit(
           producto._id,
           producto.name,
@@ -96,7 +102,8 @@ export async function initializeCategoryControls() {
           producto.description,
           producto.sizes,
           hayStock,
-          producto.section
+          producto.section,
+          producto.generalStock
         );
 
         let tarjetaProducto;
@@ -129,7 +136,8 @@ export async function initializeCategoryControls() {
                 hayStock,
                 producto.isFeatured,
                 producto.isActive,
-                producto.section
+                producto.section,
+                producto.generalStock
               ).render(); // Crear producto para admin
             }
           }
