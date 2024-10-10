@@ -4,7 +4,17 @@ import { controllers } from "./productos_controllers.js";
 import { modalControllers } from "../../modal/modal.js";
 
 export class ProductInit {
-  constructor(id, name, price, imagePath, description, sizes, hayStock) {
+  constructor(
+    id,
+    name,
+    price,
+    imagePath,
+    description,
+    sizes,
+    hayStock,
+    section,
+    generalStock
+  ) {
     this.id = id;
     this.name = name;
     this.price = price;
@@ -12,17 +22,27 @@ export class ProductInit {
     this.description = description;
     this.sizes = sizes;
     this.hayStock = hayStock;
+    this.section = section; // Añadimos la categoría (opcion3)
+    this.generalStock = generalStock; // Añadimos generalStock
   }
 
   productoInicio() {
     const card = document.createElement("div");
 
-    // Verificar si hay algún talle con stock
-    // const hayStock = this.sizes.some((item) => item.stock > 0);
-    // conso
-    const mensajeStock = this.hayStock
-      ? `<button type="button" class="btn btn-primary btn-block mt-2" data-compra>Comprar</button>`
-      : `<span class="text-danger font-weight-bold ">Sin stock</span>`;
+    // Determinar el mensaje de stock o el botón de compra
+    let mensajeStock = "";
+
+    // Si es "opcion3" (diversos), mostrar siempre "Ver Detalles" y el mensaje de "Sin stock" si no hay stock
+    if (this.section === "opcion3") {
+      mensajeStock = !this.generalStock
+        ? `<span class="text-danger font-weight-bold">Sin stock</span>`
+        : ""; // No mostrar mensaje si hay stock
+    } else {
+      // Mostrar el botón solo si hay stock, y el mensaje "Sin stock" si no hay stock en las demás secciones
+      mensajeStock = this.hayStock
+        ? `<button type="button" class="btn btn-primary btn-block mt-2" data-compra>Comprar</button>`
+        : `<span class="text-danger font-weight-bold">Sin stock</span>`;
+    }
 
     const contenido = `
       <div class="container mx-auto mt-4">
@@ -92,7 +112,7 @@ export class ProductInit {
     // Evento para mostrar el modal de compra al hacer clic en "Ver Detalles"
     card.querySelector("a").addEventListener("click", async (e) => {
       e.preventDefault();
-      //agrego el indentificador unico
+      // Agregar el identificador único
       window.location.hash = `product-${this.id}`;
 
       try {
@@ -110,8 +130,8 @@ export class ProductInit {
       }
     });
 
-    // Solo permitir la compra si hay stock disponible
-    if (this.hayStock) {
+    // Solo permitir la compra si hay stock disponible y no es "opcion3"
+    if (this.hayStock && this.section !== "opcion3") {
       card.querySelector("[data-compra]").addEventListener("click", () => {
         modalControllers.baseModal();
         const modal = document.getElementById("modal");
