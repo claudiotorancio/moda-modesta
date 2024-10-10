@@ -107,6 +107,12 @@ export class ProductForm {
               </div>
             </div>
 
+            <div class="form-group general-stock-container d-none"> <!-- Oculto por defecto -->
+  <label for="generalStock">Stock general</label>
+  <input type="number" min="0" class="form-control mt-2" placeholder="Stock" id="generalStock" name="generalStock">
+</div>
+
+
             <div class="form-group">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="isFeatured" name="isFeatured">
@@ -134,14 +140,20 @@ export class ProductForm {
   // Lógica para actualizar la visibilidad de los talles
   updateSizesVisibility() {
     const sectionSelect = document.getElementById("miMenuDesplegable");
-    const sizesContainer = document.querySelector(".sizes-container"); // Referencia a la sección de talles
+    const sizesContainer = document.querySelector(".sizes-container");
+    const generalStockContainer = document.querySelector(
+      ".general-stock-container"
+    );
     const selectedValue = sectionSelect.value;
 
     if (selectedValue === "opcion3") {
-      // Si es "Diversos"
-      sizesContainer.classList.add("d-none"); // Oculta talles
+      // Si es "Diversos", oculta los talles y muestra el campo de stock general
+      sizesContainer.classList.add("d-none");
+      generalStockContainer.classList.remove("d-none");
     } else {
-      sizesContainer.classList.remove("d-none"); // Muestra talles
+      // Si no es "Diversos", muestra los talles y oculta el stock general
+      sizesContainer.classList.remove("d-none");
+      generalStockContainer.classList.add("d-none");
     }
   }
 
@@ -162,19 +174,7 @@ export class ProductForm {
     const images = document.querySelector("[data-imageUrls]").files;
     const isFeatured = document.getElementById("isFeatured").checked;
 
-    // Capturar talles seleccionados y sus stocks
-    const selectedSizes = Array.from(
-      document.querySelectorAll('input[name="sizes"]:checked')
-    ).map((checkbox) => {
-      const size = checkbox.value;
-      const stockInput = document.querySelector(
-        `[data-stock-${size.toLowerCase().replace(" ", "")}]`
-      );
-      const stock = stockInput ? parseInt(stockInput.value) : 0;
-      return { size, stock };
-    });
-
-    const productData = new FormData();
+    let productData = new FormData();
     productData.append("name", name);
     productData.append("price", price);
     productData.append("description", description);
@@ -186,8 +186,27 @@ export class ProductForm {
       productData.append("images[]", image);
     }
 
-    // Convierte `sizes` y `stock` a JSON y agrégalo al FormData
-    productData.append("sizes", JSON.stringify(selectedSizes));
+    // Capturar datos de stock dependiendo de la sección seleccionada
+    if (section === "opcion3") {
+      // Si es "Diversos", capturar el stock general
+      const generalStock =
+        parseInt(document.getElementById("generalStock").value) || 0;
+      productData.append("generalStock", generalStock);
+    } else {
+      // Si no es "Diversos", capturar los talles y sus stocks
+      const selectedSizes = Array.from(
+        document.querySelectorAll('input[name="sizes"]:checked')
+      ).map((checkbox) => {
+        const size = checkbox.value;
+        const stockInput = document.querySelector(
+          `[data-stock-${size.toLowerCase().replace(" ", "")}]`
+        );
+        const stock = stockInput ? parseInt(stockInput.value) : 0;
+        return { size, stock };
+      });
+
+      productData.append("sizes", JSON.stringify(selectedSizes));
+    }
 
     try {
       await productoServices.crearProducto(productData);

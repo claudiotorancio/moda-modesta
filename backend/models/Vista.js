@@ -18,6 +18,7 @@ const VistaSchema = new Schema(
     user_id: { type: Schema.Types.ObjectId, ref: "Users" }, // Referencia al usuario
     created_at: { type: Date, default: Date.now },
     sizes: [SizeSchema], // Array de subdocumentos que contienen talla y stock
+    generalStock: { type: Number, default: 0 }, // Stock general para productos sin tallas (como "Diversos")
     inCart: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true }, // Campo para activar/desactivar
   },
