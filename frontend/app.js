@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
 
-  if (user && isAdmin.role === "admin") {
+  if (user) {
     document.querySelectorAll(".user-only").forEach((el) => {
       el.style.display = "block";
     });

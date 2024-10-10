@@ -4,7 +4,9 @@ import { controllers } from "./productos_controllers.js";
 export class ProductForm {
   constructor(titulo) {
     this.titulo = titulo;
-    this.mostrarProducts();
+    this.render();
+    this.setupSelectChangeHandler();
+    this.updateSizesVisibility(); // Llama a la función al iniciar para ocultar talles si es necesario
   }
 
   // Mostrar formulario
@@ -12,6 +14,9 @@ export class ProductForm {
     this.clearForm();
     const card = this.createForm();
     this.titulo.appendChild(card);
+
+    this.setupSelectChangeHandler();
+    this.updateSizesVisibility(); // Llama a la función al iniciar para ocultar talles si es necesario
     this.setupFormSubmitHandler();
   }
 
@@ -44,8 +49,16 @@ export class ProductForm {
         <br>
         <div class="card-body w-100">
           <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
-            <!-- Campos del formulario -->
-            <!-- Imágenes, nombre, precio, descripción, sección -->
+
+            <p for="miMenuDesplegable">Sección</p>
+            <div class="form-group">
+              <select class="form-control mb-3 p-2" id="miMenuDesplegable" name="section">
+                <option value="opcion1">Vestidos</option>
+                <option value="opcion2">Polleras</option>
+                <option value="opcion3">Diversos</option>
+              </select>
+            </div>
+
             <div class="form-group">
               <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
             </div>
@@ -58,18 +71,11 @@ export class ProductForm {
             <div class="form-group">
               <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" name="description" required data-description></textarea>
             </div>
-            <p for="miMenuDesplegable">Sección</p>
-            <div class="form-group">
-              <select class="form-control mb-3 p-2" id="miMenuDesplegable" name="section">
-                <option value="opcion1">Vestidos</option>
-                <option value="opcion2">Polleras</option>
-                <option value="opcion3">Diversos</option>
-              </select>
-            </div >
             
             <!-- Talles disponibles y cantidad de stock -->
-            <label for="variation_1">Talles y stock disponibles</label>
-            <div class="form-group mb-4">
+         
+            <div class="form-group mb-4 sizes-container"> <!-- Añade una clase aquí -->
+               <label for="variation_1">Talles y stock disponibles</label>
               <div class="form-row">
                 <div class="col-center flex">
                   <div class="form-check-inline nt-2 me-3">
@@ -77,22 +83,22 @@ export class ProductForm {
                     <label class="form-check-label" for="talle1">Talle 1</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle1>
                   </div>
-                   <div class="form-check-inline me-3">
+                  <div class="form-check-inline me-3">
                     <input class="form-check-input" type="checkbox" value="Talle 2" name="sizes" id="talle2">
                     <label class="form-check-label" for="talle2">Talle 2</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle2>
                   </div>
-                   <div class="form-check-inline me-3">
+                  <div class="form-check-inline me-3">
                     <input class="form-check-input" type="checkbox" value="Talle 3" name="sizes" id="talle3">
                     <label class="form-check-label" for="talle3">Talle 3</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle3>
                   </div>
-                   <div class="form-check-inline me-3">
+                  <div class="form-check-inline me-3">
                     <input class="form-check-input" type="checkbox" value="Talle 4" name="sizes" id="talle4">
                     <label class="form-check-label" for="talle4">Talle 4</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle4>
                   </div>
-                   <div class="form-check-inline me-3">
+                  <div class="form-check-inline me-3">
                     <input class="form-check-input" type="checkbox" value="Talle 5" name="sizes" id="talle5">
                     <label class="form-check-label" for="talle5">Talle 5</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle5>
@@ -101,7 +107,6 @@ export class ProductForm {
               </div>
             </div>
 
-            <!-- Checkbox para destacar producto -->
             <div class="form-group">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="isFeatured" name="isFeatured">
@@ -116,6 +121,28 @@ export class ProductForm {
     </div>
   `;
     return card;
+  }
+
+  // Configurar el evento change en el select
+  setupSelectChangeHandler() {
+    const sectionSelect = this.titulo.querySelector("#miMenuDesplegable");
+    sectionSelect.addEventListener("change", () =>
+      this.updateSizesVisibility()
+    );
+  }
+
+  // Lógica para actualizar la visibilidad de los talles
+  updateSizesVisibility() {
+    const sectionSelect = document.getElementById("miMenuDesplegable");
+    const sizesContainer = document.querySelector(".sizes-container"); // Referencia a la sección de talles
+    const selectedValue = sectionSelect.value;
+
+    if (selectedValue === "opcion3") {
+      // Si es "Diversos"
+      sizesContainer.classList.add("d-none"); // Oculta talles
+    } else {
+      sizesContainer.classList.remove("d-none"); // Muestra talles
+    }
   }
 
   // Capturar el evento submit
