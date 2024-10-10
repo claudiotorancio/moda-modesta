@@ -34,10 +34,25 @@ export class StockControllers {
           `#productos-${categoria}`
         );
 
+        // Ordenar productos usando `generalStock` o `sizes`
         const productosOrdenados = categorias[categoria].sort((a, b) => {
-          const stockA = a.sizes.reduce((acc, size) => acc + size.stock, 0);
-          const stockB = b.sizes.reduce((acc, size) => acc + size.stock, 0);
-          return stockA === 0 ? -1 : stockB === 0 ? 1 : stockA < 10 ? -1 : 1;
+          // Para productos con tallas
+          const stockA =
+            a.sizes.length > 0
+              ? a.sizes.reduce((acc, size) => acc + size.stock, 0)
+              : a.generalStock; // Usar generalStock si no hay tallas
+
+          const stockB =
+            b.sizes.length > 0
+              ? b.sizes.reduce((acc, size) => acc + size.stock, 0)
+              : b.generalStock; // Usar generalStock si no hay tallas
+
+          // Comparación lógica de ordenamiento
+          if (stockA === 0 && stockB !== 0) return -1; // Priorizar productos sin stock
+          if (stockB === 0 && stockA !== 0) return 1;
+          if (stockA < 10 && stockB >= 10) return -1; // Priorizar bajo stock
+          if (stockB < 10 && stockA >= 10) return 1;
+          return 0; // Si ambos tienen el mismo stock, mantener el orden
         });
 
         productosOrdenados.forEach(async (producto) => {
@@ -50,6 +65,8 @@ export class StockControllers {
             isFeatured,
             generalStock,
           } = producto;
+
+          // Lógica para verificar si hay stock
           const hayStock =
             producto.section === "opcion3"
               ? producto.generalStock > 0 // Verifica stock general para "Diversos"
