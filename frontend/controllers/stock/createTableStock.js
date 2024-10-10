@@ -31,16 +31,37 @@ export function createProductElement(
 
   const tbody = document.createElement("tbody");
 
-  // Si no hay tallas disponibles
+  // Si no hay tallas disponibles (por ejemplo, para "Diversos")
   if (sizes.length === 0) {
+    const estadoStock =
+      generalStock === 0
+        ? "sin-stock"
+        : generalStock < 10
+        ? "stock-bajo"
+        : "en-stock";
+
     const row = document.createElement("tr");
     row.innerHTML = `
       <td data-label="ID">${_id}</td>
       <td data-label="Producto">${name}</td>
-      <td data-label="Talles y Cantidades">${generalStock}</td> <!-- Mostrar el stock general -->
+      <td data-label="Talles y Cantidades">
+        <span class="${estadoStock}">
+          ${generalStock} ${
+      generalStock === 0
+        ? "(sin stock)"
+        : generalStock < 10
+        ? "(bajo stock)"
+        : "(en stock)"
+    }
+        </span>
+      </td>
       <td data-label="Precio">${price}</td>
-      <td data-label="Estado" class="${hayStock ? "en-stock" : "sin-stock"}">${
-      hayStock ? "En stock" : "Sin stock"
+      <td data-label="Estado" class="${estadoStock}">${
+      generalStock === 0
+        ? "Sin stock"
+        : generalStock < 10
+        ? "Bajo stock"
+        : "En stock"
     }</td>
       <td data-label="Acciones">
         <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
@@ -58,7 +79,7 @@ export function createProductElement(
     `;
     tbody.appendChild(row);
   } else {
-    // Manejar productos con talles
+    // Manejar productos con tallas
     const row = document.createElement("tr");
     row.innerHTML = `
       <td data-label="ID">${_id}</td>
