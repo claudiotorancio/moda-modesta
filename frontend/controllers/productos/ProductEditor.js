@@ -108,11 +108,13 @@ export class ProductEditor {
             ${this.renderSizeOptions(sizes)}
           </div>`
             : `
+          <div class="form-group form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="updateGeneralStock" name="updateGeneralStock">
+            <label class="form-check-label" for="updateGeneralStock">Modificar stock general</label>
+          </div>
           <div class="form-group">
-             <label for="generalStock">Stock actual</label>
-            <input class="form-control mt-3 mb-3 p-2" type="number" value="${generalStock}" disabled>
             <label for="generalStock">Stock general</label>
-            <input class="form-control mt-3 mb-3 p-2" type="number" required data-generalStock>
+            <input class="form-control mt-3 mb-3 p-2" type="number" value="${generalStock}" required data-generalStock disabled>
           </div>`
         }
         <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
@@ -122,6 +124,16 @@ export class ProductEditor {
     this.productoEdicion.classList.add("modalVisor");
 
     this.setupImageCheckListeners();
+    this.setupGeneralStockCheck();
+  }
+
+  setupGeneralStockCheck() {
+    const generalStockInput = document.querySelector("[data-generalStock]");
+    const generalStockCheck = document.getElementById("updateGeneralStock");
+
+    generalStockCheck.addEventListener("change", () => {
+      generalStockInput.disabled = !generalStockCheck.checked;
+    });
   }
 
   renderSizeOptions(selectedSizes = []) {
@@ -241,7 +253,6 @@ export class ProductEditor {
       const description = document.querySelector("[data-description]").value;
       const isFeatured = document.querySelector("#isFeatured").checked;
 
-      // Verifica si hay talles seleccionados
       const selectedSizes = Array.from(
         document.querySelectorAll('input[name="sizes"]:checked')
       ).map((checkbox) => {
@@ -252,11 +263,11 @@ export class ProductEditor {
         return { size, stock };
       });
 
-      // Si no hay talles, obtener el valor de stock general
-      const generalStock =
-        selectedSizes.length === 0
-          ? document.querySelector("[data-generalStock]").value
-          : null;
+      const generalStockCheck =
+        document.getElementById("updateGeneralStock").checked;
+      const generalStock = generalStockCheck
+        ? document.querySelector("[data-generalStock]").value
+        : null;
 
       const dataEdit = new FormData();
 
