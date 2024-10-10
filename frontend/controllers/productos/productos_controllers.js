@@ -1,10 +1,6 @@
 import { ProductCard } from "../../controllers/productos/ProductCard.js"; // Ajusta la ruta según tu estructura
 import productoServices from "../../services/product_services.js"; // Importa el servicio que obtiene los productos
-import { mostrarProducto } from "./ProductViewer.js";
-import Carrito from "../carrito/carrito.js";
 import { ProductInit } from "./ProductInit.js";
-
-const carrito = new Carrito();
 
 export const controllers = {
   async renderProducts() {
@@ -34,9 +30,8 @@ export const controllers = {
         // Renderiza las tarjetas de los productos destacados
         for (const producto of productosOrdenados) {
           const hayStock =
-            producto.section === "opcion3"
-              ? producto.generalStock > 0 // Verifica stock general para "Diversos"
-              : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
+            producto.generalStock > 0 || // Verifica stock general para "Diversos"
+            producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
 
           const card = new ProductCard(
             producto._id,
@@ -82,9 +77,8 @@ export const controllers = {
       // Renderiza las tarjetas de productos en sus respectivas secciones
       for (const producto of productosOrdenados) {
         const hayStock =
-          producto.section === "opcion3"
-            ? producto.generalStock > 0 // Verifica stock general para "Diversos"
-            : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
+          producto.generalStock > 0 || // Verifica stock general para "Diversos"
+          producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
 
         const productCard = new ProductCard(
           producto._id,
@@ -139,9 +133,8 @@ export const controllers = {
       // Renderizar productos destacados
       for (const producto of destacadosOrdenados) {
         const hayStock =
-          producto.section === "opcion3"
-            ? producto.generalStock > 0 // Verifica stock general para "Diversos"
-            : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
+          producto.generalStock > 0 || // Verifica stock general para "Diversos"
+          producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
 
         const card = new ProductInit(
           producto._id,
@@ -185,9 +178,8 @@ export const controllers = {
       // Renderizar productos generales
       for (const producto of productosOrdenadosGenerales) {
         const hayStock =
-          producto.section === "opcion3"
-            ? producto.generalStock > 0 // Verifica stock general para "Diversos"
-            : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
+          producto.generalStock > 0 || // Verifica stock general para "Diversos"
+          producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
 
         const productCard = new ProductInit(
           producto._id,
@@ -210,155 +202,6 @@ export const controllers = {
       }
     } catch (error) {
       console.log(error);
-    }
-  },
-
-  async cargarProductosSimilares(id) {
-    try {
-      const data = await productoServices.productoSimilar(id);
-      const similares = data.slice(0, 3); // Limitar a los primeros 3 productos
-
-      const contenedorSimilares = document.getElementById(
-        "productos-similares"
-      );
-      if (!contenedorSimilares) {
-        console.error("Contenedor de productos similares no encontrado.");
-        return;
-      }
-
-      // Verificar si hay productos similares
-      if (similares.length === 0) {
-        contenedorSimilares.innerHTML = `<p>No se encontraron productos similares.</p>`;
-        return;
-      }
-
-      // Construir HTML de productos similares
-      let productosHTML = "";
-      similares.forEach((producto) => {
-        const hayStock =
-          producto.section === "opcion3"
-            ? producto.generalStock > 0 // Verifica el stock general para "Diversos"
-            : producto.sizes.some((item) => item.stock > 0); // Verifica el stock por talla para otras secciones
-
-        productosHTML += `
-          <div class="producto-similar" data-id="${producto._id}" data-name="${
-          producto.name
-        }" data-price="${producto.price}" data-image='${JSON.stringify(
-          producto.imagePath
-        )}' data-sizes='${JSON.stringify(producto.sizes)}' data-description="${
-          producto.description
-        }" data-stock="${hayStock}">
-            <a href="#">
-              <img src="${producto.imagePath[0]}" alt="${
-          producto.name
-        }" class="img-thumbnail">
-              <p>${producto.name}</p>
-              <p>$ ${producto.price}</p>
-            </a>
-          </div>
-        `;
-      });
-      contenedorSimilares.innerHTML = productosHTML;
-
-      // Manejo de eventos para productos similares
-      contenedorSimilares.addEventListener("click", async (e) => {
-        const target = e.target.closest(".producto-similar");
-        if (target) {
-          const id = target.dataset.id;
-          const name = target.dataset.name;
-          const price = target.dataset.price;
-          const imagePath = JSON.parse(target.dataset.image); // Asegúrate de que esto sea un array
-          const description = target.dataset.description;
-          const sizes = JSON.parse(target.dataset.sizes);
-          const hayStock = target.dataset.stock === "true"; // Recuperar el stock ya calculado
-
-          window.location.hash = `product-${id}`;
-
-          const producto = await productoServices.detalleProducto(id);
-
-          if (!producto) {
-            console.error("Producto no encontrado en la respuesta de la API.");
-            return;
-          }
-
-          try {
-            await mostrarProducto(
-              id,
-              name,
-              price,
-              imagePath,
-              description,
-              sizes,
-              hayStock
-            );
-          } catch (error) {
-            console.error("Error al mostrar producto:", error);
-          }
-        }
-      });
-
-      // Manejo de eventos para enlaces
-      const enlaces = contenedorSimilares.querySelectorAll("a");
-      enlaces.forEach((enlace) => {
-        enlace.addEventListener("click", (e) => {
-          e.preventDefault();
-          window.location.hash = `product-${id}`;
-        });
-      });
-    } catch (error) {
-      console.error("Error al cargar productos similares:", error);
-    }
-  },
-
-  async comprarProducto(
-    id,
-    name,
-    price,
-    imagePath,
-    sizes,
-    talleSeleccionado,
-    section,
-    generalStock
-  ) {
-    try {
-      let stockSeleccionado;
-
-      // Verificar si es de la sección 'opcion3'
-      if (section === "opcion3") {
-        // Usar el generalStock para productos de esta sección
-        stockSeleccionado = generalStock;
-      } else {
-        // Encontrar el objeto del tamaño seleccionado en el array sizes
-        const sizeObject = sizes.find(
-          (item) => item.size === talleSeleccionado
-        );
-
-        // Obtener el stock del talle seleccionado
-        stockSeleccionado = sizeObject.stock;
-
-        // Verificar si hay stock disponible para la talla seleccionada
-        if (stockSeleccionado <= 0) {
-          console.error("Stock insuficiente para la talla seleccionada.");
-          return alert("No hay stock disponible para la talla seleccionada.");
-        }
-      }
-
-      // Crear objeto de producto
-      const producto = {
-        _id: id,
-        name: name,
-        price: price,
-        imagePath: imagePath,
-        stock: stockSeleccionado, // Stock del talle o general, dependiendo de la sección
-      };
-
-      // Agregar producto al carrito
-      await carrito.agregarProducto({
-        product: producto,
-        size: talleSeleccionado || "Unidades", // Indicar 'Sin talla' si no hay talla seleccionada (opcion3)
-      });
-    } catch (error) {
-      console.error("Error al comprar producto:", error);
     }
   },
 };

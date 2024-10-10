@@ -1,4 +1,5 @@
-import { controllers } from "./productos_controllers.js";
+import { comprarProducto } from "../carrito/comprarProducto.js";
+import { cargarProductosSimilares } from "./cargarProductosSimilares.js";
 import { handleEnvioFormProduct } from "../carrito/envioHandlers.js";
 import envioServices from "../../services/envio_services.js";
 
@@ -23,11 +24,9 @@ export async function eventListenerBotones(
     if (
       document.getElementById("similares-Container").classList.contains("show")
     ) {
-      await controllers
-        .cargarProductosSimilares(id)
-        .catch((error) =>
-          console.error("Error al cargar productos similares:", error)
-        );
+      await cargarProductosSimilares(id).catch((error) =>
+        console.error("Error al cargar productos similares:", error)
+      );
     }
   });
 
@@ -57,7 +56,7 @@ export async function eventListenerBotones(
         talleSeleccionado = document.getElementById("variation_1").value;
       }
 
-      await controllers.comprarProducto(
+      await comprarProducto(
         id,
         name,
         price,

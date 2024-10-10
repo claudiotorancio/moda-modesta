@@ -1,6 +1,6 @@
 import productoServices from "../../services/product_services.js";
 import { mostrarProducto } from "./ProductViewer.js";
-import { controllers } from "./productos_controllers.js";
+import { comprarProducto } from "../carrito/comprarProducto.js";
 import { modalControllers } from "../../modal/modal.js";
 
 export class ProductInit {
@@ -162,7 +162,7 @@ export class ProductInit {
           .addEventListener("click", () => {
             const talleSeleccionado =
               document.getElementById("variation_1").value;
-            controllers.comprarProducto(
+            comprarProducto(
               this.id,
               this.name,
               this.price,
