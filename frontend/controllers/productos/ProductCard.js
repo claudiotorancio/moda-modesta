@@ -84,7 +84,8 @@ export class ProductCard {
           this.imagePath,
           this.description,
           this.sizes,
-          this.hayStock
+          this.hayStock,
+          this.section
         );
       });
 

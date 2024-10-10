@@ -95,8 +95,8 @@ export async function initializeCategoryControls() {
           producto.imagePath,
           producto.description,
           producto.sizes,
-
-          hayStock
+          hayStock,
+          producto.section
         );
 
         let tarjetaProducto;
@@ -126,10 +126,10 @@ export async function initializeCategoryControls() {
                 producto.imagePath,
                 producto.description,
                 producto.sizes,
-
                 hayStock,
                 producto.isFeatured,
-                producto.isActive
+                producto.isActive,
+                producto.section
               ).render(); // Crear producto para admin
             }
           }
