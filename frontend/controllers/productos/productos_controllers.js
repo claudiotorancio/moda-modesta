@@ -49,7 +49,7 @@ export const controllers = {
             producto.isFeatured,
             producto.isActive,
             producto.inCart,
-            producto.generalStock
+            producto.section
           );
           contenedorDestacados.appendChild(card.render());
         }
@@ -97,7 +97,7 @@ export const controllers = {
           producto.isFeatured,
           producto.isActive,
           producto.inCart,
-          producto.generalStock
+          producto.section
         );
 
         const contenedorSeccion = document.querySelector(
