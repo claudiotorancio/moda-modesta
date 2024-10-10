@@ -32,6 +32,7 @@ export class ProductCard {
   }
 
   render() {
+    console.log(this.generalStock);
     const card = document.createElement("div");
     card.classList.add("card");
 

@@ -40,6 +40,7 @@ export class ProductEditor {
     isFeatured,
     generalStock
   ) {
+    console.log(generalStock);
     modalControllers.baseModal();
 
     this.productoEdicion.innerHTML = `
