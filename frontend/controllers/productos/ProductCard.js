@@ -136,7 +136,8 @@ export class ProductCard {
         this.imagePath,
         this.description,
         this.sizes,
-        this.isFeatured
+        this.isFeatured,
+        this.generalStock
       );
     });
   }

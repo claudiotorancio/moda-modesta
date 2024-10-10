@@ -7,7 +7,16 @@ export class ProductEditor {
     this.productoEdicion = this.modal.querySelector("[data-table]");
   }
 
-  editProduct(id, name, price, imagePath, description, sizes, isFeatured) {
+  editProduct(
+    id,
+    name,
+    price,
+    imagePath,
+    description,
+    sizes,
+    isFeatured,
+    generalStock
+  ) {
     this.renderEditor(
       id,
       name,
@@ -15,12 +24,22 @@ export class ProductEditor {
       imagePath,
       description,
       sizes,
-      isFeatured
+      isFeatured,
+      generalStock
     );
     this.setupFormSubmitHandler(id);
   }
 
-  renderEditor(id, name, price, imagePath, description, sizes, isFeatured) {
+  renderEditor(
+    id,
+    name,
+    price,
+    imagePath,
+    description,
+    sizes,
+    isFeatured,
+    generalStock
+  ) {
     modalControllers.baseModal();
 
     this.productoEdicion.innerHTML = `
@@ -81,10 +100,19 @@ export class ProductEditor {
           }>
           <label class="form-check-label" for="isFeatured">Destacar producto</label>
         </div>
-        <label for="sizes">Modificar talles y stocks </label>
-        <div class="form-group mb-4">
-          ${this.renderSizeOptions(sizes)}
-        </div>
+        ${
+          sizes && sizes.length > 0
+            ? `
+          <label for="sizes">Modificar talles y stocks </label>
+          <div class="form-group mb-4">
+            ${this.renderSizeOptions(sizes)}
+          </div>`
+            : `
+          <div class="form-group">
+            <label for="generalStock">Stock general</label>
+            <input class="form-control mt-3 mb-3 p-2" type="number" value="${generalStock}" required data-generalStock>
+          </div>`
+        }
         <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
       </form>
     `;
@@ -211,6 +239,7 @@ export class ProductEditor {
       const description = document.querySelector("[data-description]").value;
       const isFeatured = document.querySelector("#isFeatured").checked;
 
+      // Verifica si hay talles seleccionados
       const selectedSizes = Array.from(
         document.querySelectorAll('input[name="sizes"]:checked')
       ).map((checkbox) => {
@@ -220,6 +249,12 @@ export class ProductEditor {
         ).value;
         return { size, stock };
       });
+
+      // Si no hay talles, obtener el valor de stock general
+      const generalStock =
+        selectedSizes.length === 0
+          ? document.querySelector("[data-generalStock]").value
+          : null;
 
       const dataEdit = new FormData();
 
@@ -242,15 +277,15 @@ export class ProductEditor {
       dataEdit.append("description", description);
       dataEdit.append("isFeatured", isFeatured);
 
+      if (generalStock !== null) {
+        dataEdit.append("generalStock", generalStock);
+      }
+
       selectedSizes.forEach(({ size, stock }) => {
         const normalizedSize = size.replace(" ", "_").toLowerCase();
         dataEdit.append("sizes[]", size);
         dataEdit.append(`stock_${normalizedSize}`, stock);
       });
-
-      // for (let [key, value] of dataEdit.entries()) {
-      //   console.log(`${key}: ${value}`);
-      // }
 
       try {
         await productoServices.actualizarProducto(dataEdit, id);
