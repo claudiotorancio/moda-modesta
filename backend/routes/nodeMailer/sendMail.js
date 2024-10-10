@@ -252,10 +252,18 @@ const sendMail = async (req, res) => {
       productos.map(async (producto) => {
         const product = await Vista.findById(producto.id);
         if (product) {
-          const size = product.sizes.find((s) => s.size === producto.size);
-          if (size) {
-            size.stock -= producto.cantidad;
-            size.stock = Math.max(size.stock, 0);
+          if (product.sizes && product.sizes.length > 0) {
+            // Si el producto tiene talles
+            const size = product.sizes.find((s) => s.size === producto.size);
+            if (size) {
+              size.stock -= producto.cantidad;
+              size.stock = Math.max(size.stock, 0); // Asegurarse de que el stock no sea negativo
+              await product.save();
+            }
+          } else {
+            // Si el producto NO tiene talles, actualizar el generalStock
+            product.generalStock -= producto.cantidad;
+            product.generalStock = Math.max(product.generalStock, 0); // Asegurarse de que el stock no sea negativo
             await product.save();
           }
         }
@@ -278,12 +286,10 @@ const sendMail = async (req, res) => {
     });
   } catch (error) {
     console.error("Error al enviar el correo:", error);
-    res
-      .status(500)
-      .json({
-        error:
-          "Orden no generada, porfavor intenta mas tarde, Disculpe las molestias.",
-      });
+    res.status(500).json({
+      error:
+        "Orden no generada, porfavor intenta mas tarde, Disculpe las molestias.",
+    });
   }
 };
 
