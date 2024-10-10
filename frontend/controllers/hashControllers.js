@@ -36,7 +36,10 @@ export async function hashControllers() {
     }
 
     // Verificar si hay stock en alguna de las tallas
-    const hayStock = producto.sizes.some((item) => item.stock > 0);
+    const hayStock =
+      producto.section === "opcion3"
+        ? producto.generalStock > 0 // Verifica stock general para "Diversos"
+        : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
 
     // Mostrar el producto solo si está activo y tiene stock
     mostrarProducto(
@@ -46,7 +49,8 @@ export async function hashControllers() {
       producto.imagePath,
       producto.description,
       producto.sizes, // Pasar las tallas con su stock
-      hayStock // Pasar si hay stock general o no
+      hayStock,
+      producto.section
     );
   } catch (error) {
     console.error("Error al obtener los detalles del producto:", error);

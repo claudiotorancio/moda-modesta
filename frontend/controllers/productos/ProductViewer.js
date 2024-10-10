@@ -8,7 +8,9 @@ export const mostrarProducto = async (
   imagePath,
   description,
   sizes,
-  hayStock // Nuevo parámetro para indicar si hay stock
+  hayStock,
+  section,
+  generalStock
 ) => {
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
@@ -58,7 +60,7 @@ export const mostrarProducto = async (
           </div>
         </div>
         <div class="col-md-6">
-          <h2 class="product-title-bold mt-2"  style="font-size: 1.3rem;">${name}</h2>
+          <h2 class="product-title-bold mt-2" style="font-size: 1.3rem;">${name}</h2>
           <h3 class="product-price text-primary-bold mt-2" style="font-weight: bold; font-size: 1.25em;">$${price}</h3>
           <p class="product-description text-muted">${description}</p>
 
@@ -66,45 +68,51 @@ export const mostrarProducto = async (
           ${
             hayStock
               ? ` <div class="product-options">
-            <label for="variation_1" class="form-label">Talles disponibles</label>
-            <select id="variation_1" class="form-select mb-3"  
-            >  ${sizes
-              .map(
-                (item) => `<option value="${item.size}">${item.size}</option>`
-              )
-              .join("")}
-            </select>`
-              : `<div class="container main-container">
-              <div class="text-center">
-                <div class="card-form">
-                  <p>¡Notificarme cuando ingrese!</p>
-                  <form id="notificacion-form" action="/api/notificacionSinStock" enctype="multipart/form-data" method="POST">
-                    <div class="form-group">
-                      <label for="email">Email:</label>
-                      <input type="email" id="email" class="form-control mt-2" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-2">Enviar</button>
-                  </form>
-                </div>
-              </div>`
-          }
-             
-          </div>
             ${
-              hayStock
-                ? `<div class="d-flex justify-content-between mt-3">
-            <button type="button" class="btn btn-primary me-2" data-carrito 
-             
-            >Añadir carrito</button>`
+              section !== "opcion3"
+                ? `
+              <label for="variation_1" class="form-label">Talles disponibles</label>
+              <select id="variation_1" class="form-select mb-3">  
+                ${sizes
+                  .map(
+                    (item) =>
+                      `<option value="${item.size}">${item.size}</option>`
+                  )
+                  .join("")}
+              </select>`
                 : ""
             }
-             ${
-               hayStock
-                 ? `<a id="compartir-producto" class="btn btn-outline-secondary">
+            </div>`
+              : `<div class="container main-container">
+                  <div class="text-center">
+                    <div class="card-form">
+                      <p>¡Notificarme cuando ingrese!</p>
+                      <form id="notificacion-form" action="/api/notificacionSinStock" enctype="multipart/form-data" method="POST">
+                        <div class="form-group">
+                          <label for="email">Email:</label>
+                          <input type="email" id="email" class="form-control mt-2" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Enviar</button>
+                      </form>
+                    </div>
+                  </div>`
+          }
+
+          </div>
+          ${
+            hayStock
+              ? `<div class="d-flex justify-content-center mt-3">
+            <button type="button" class="btn btn-primary me-2" data-carrito 
+              >Añadir carrito</button>`
+              : ""
+          }
+           ${
+             hayStock
+               ? `<a id="compartir-producto" class="btn btn-outline-secondary">
               <i class="fa-solid fa-share-nodes"></i> Compartir
             </a>`
-                 : ""
-             }
+               : ""
+           }
           </div>
         </div>
       </div>

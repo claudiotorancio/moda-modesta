@@ -98,7 +98,8 @@ export class ProductInit {
               this.imagePath,
               this.description,
               this.sizes,
-              this.hayStock
+              this.hayStock,
+              this.section
             );
           } catch (err) {
             console.log(err);
@@ -123,7 +124,8 @@ export class ProductInit {
           this.imagePath,
           this.description,
           this.sizes,
-          this.hayStock
+          this.hayStock,
+          this.section
         );
       } catch (err) {
         console.log(err);

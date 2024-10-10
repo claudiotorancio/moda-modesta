@@ -26,7 +26,7 @@ export class ProductCard {
     this.isFeatured = isFeatured;
     this.isActive = isActive;
     this.inCart = inCart;
-    this.secation = section;
+    this.section = section;
   }
 
   render() {

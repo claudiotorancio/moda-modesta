@@ -6,13 +6,19 @@ const destacadosProduct = async (req, res) => {
     // Conectar a la base de datos mediante serverless function
     await connectToDatabase();
 
-    // Buscar productos que son destacados y que pertenecen a las secciones especificadas
+    // Buscar productos que son destacados y que cumplen con las condiciones de stock
     const productosDestacados = await Vista.find({
-      "sizes.stock": { $gt: 0 },
       isFeatured: true,
-      section: { $in: ["opcion1", "opcion2", "opcion3"] },
       isActive: true,
+      section: { $in: ["opcion1", "opcion2", "opcion3"] },
+      $or: [
+        { generalStock: { $gt: 0 } }, // Productos con generalStock mayor a 0
+        { "sizes.stock": { $gt: 0 } }, // O productos con al menos un tamaño con stock mayor a 0
+      ],
     });
+
+    // Agregar un console.log para depurar
+    console.log("Productos destacados:", productosDestacados);
 
     // Enviar los productos destacados como respuesta
     res.json(productosDestacados);

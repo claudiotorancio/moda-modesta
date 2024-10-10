@@ -49,7 +49,6 @@ export const controllers = {
             producto.isFeatured,
             producto.isActive,
             producto.inCart,
-            producto.section,
             producto.generalStock
           );
           contenedorDestacados.appendChild(card.render());
@@ -98,7 +97,6 @@ export const controllers = {
           producto.isFeatured,
           producto.isActive,
           producto.inCart,
-          producto.section,
           producto.generalStock
         );
 
