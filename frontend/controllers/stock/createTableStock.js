@@ -6,8 +6,8 @@ export function createProductElement(
   isActive,
   isFeatured,
   hayStock,
-  notificaciones,
-  generalStock // <-- Nuevo parámetro
+  generalStock, // <-- Nuevo parámetro
+  notificaciones
 ) {
   const productoDiv = document.createElement("div");
   productoDiv.classList.add("table-stock");
@@ -38,8 +38,8 @@ export function createProductElement(
       price,
       isFeatured,
       hayStock,
-      notificaciones,
-      generalStock // <-- Se pasa el nuevo parámetro
+      generalStock, // <-- Se pasa el nuevo parámetro
+      notificaciones
     );
     tbody.appendChild(row);
   } else {
@@ -126,8 +126,8 @@ export function createEmptyStockRow(
   price,
   isFeatured,
   hayStock,
-  notificaciones,
-  generalStock // <-- Nuevo parámetro
+  generalStock, // <-- Nuevo parámetro
+  notificaciones
 ) {
   const notified = notificaciones.some(
     (item) =>
