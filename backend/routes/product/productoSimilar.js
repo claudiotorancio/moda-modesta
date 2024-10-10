@@ -27,7 +27,10 @@ const productoSimilar = async (req, res) => {
           _id: { $ne: new mongoose.Types.ObjectId(productId) }, // Excluir el producto base
           price: { $gte: precioMin, $lte: precioMax }, // Filtrar por rango de precio
           section: productoBase.section, // Coincidencia por categorí
-          "sizes.stock": { $gte: 5 }, // Asegurar que haya suficiente stock (al menos 5 unidades)
+          $or: [
+            { generalStock: { $gt: 2 } }, // Productos con generalStock mayor a 0
+            { "sizes.stock": { $gt: 2 } }, // O productos con al menos un tamaño con stock mayor a 0
+          ],
           isActive: true, // Asegurar que el producto esté activo
           $or: palabrasNombreBase.map((palabra) => ({
             name: { $regex: palabra, $options: "i" }, // Coincidencia parcial insensible a mayúsculas/minúsculas

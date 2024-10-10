@@ -3,6 +3,7 @@ import productoServices from "../../services/product_services.js"; // Importa el
 import { ProductInit } from "./ProductInit.js";
 
 export const controllers = {
+  //Mostrar productos admin
   async renderProducts() {
     try {
       // Carga los productos destacados
@@ -105,6 +106,8 @@ export const controllers = {
       console.log("Error al renderizar productos:", error);
     }
   },
+
+  //mostrar productos usuario
 
   async renderInit() {
     try {
