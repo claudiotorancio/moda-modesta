@@ -128,14 +128,28 @@ export class ProductEditor {
   }
 
   setupGeneralStockCheck() {
+    // Selecciona los elementos
     const generalStockInput = document.querySelector("[data-generalStock]");
+    const generalStockCheck = document.getElementById("updateGeneralStock");
+
+    // Verifica que ambos elementos existan antes de proceder
     if (!generalStockInput) {
-      console.error("El elemento de stock general no existe en el DOM.");
+      console.error("El input de stock general no existe.");
       return;
     }
-    generalStockInput.addEventListener("change", (event) => {
-      // Tu lógica aquí
+
+    if (!generalStockCheck) {
+      console.error("El checkbox de 'updateGeneralStock' no existe.");
+      return;
+    }
+
+    // Agrega el event listener para habilitar/deshabilitar el input
+    generalStockCheck.addEventListener("change", () => {
+      generalStockInput.disabled = !generalStockCheck.checked;
     });
+
+    // Inicializa el estado del input basado en el estado actual del checkbox
+    generalStockInput.disabled = !generalStockCheck.checked;
   }
 
   renderSizeOptions(selectedSizes = []) {
