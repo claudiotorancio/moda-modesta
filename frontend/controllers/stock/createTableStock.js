@@ -6,8 +6,8 @@ export function createProductElement(
   isActive,
   isFeatured,
   hayStock,
-  generalStock, // Añadido generalStock
-  notificaciones
+  notificaciones,
+  generalStock // <-- Nuevo parámetro
 ) {
   const productoDiv = document.createElement("div");
   productoDiv.classList.add("table-stock");
@@ -31,7 +31,6 @@ export function createProductElement(
 
   const tbody = document.createElement("tbody");
 
-  // Si el producto no tiene talles
   if (sizes.length === 0) {
     const row = createEmptyStockRow(
       _id,
@@ -39,8 +38,8 @@ export function createProductElement(
       price,
       isFeatured,
       hayStock,
-      generalStock, // Añadir generalStock
-      notificaciones
+      notificaciones,
+      generalStock // <-- Se pasa el nuevo parámetro
     );
     tbody.appendChild(row);
   } else {
@@ -84,8 +83,8 @@ export function createProductElement(
           </ul>
         </td>
         <td data-label="Precio">${price}</td>
-        <td data-label="Estado" class="${getStockState(sizes, hayStock)}">
-          ${getStockState(sizes, hayStock).replace("-", " ")}
+        <td data-label="Estado" class="${getStockState(sizes, generalStock)}">
+          ${getStockState(sizes, generalStock).replace("-", " ")}
         </td>
         <td data-label="Acciones">
           <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
@@ -98,9 +97,7 @@ export function createProductElement(
          data-product-id="${_id}" 
          data-notificacion-ids="${notificacionesPendientes
            .map((item) => item._id.toString())
-           .join(",")}" ${hayStock ? "" : "disabled"}>
-         enviar
-       </button>`
+           .join(",")}" ${hayStock ? "" : "disabled"}>enviar</button>`
              : "sin notificaciones"
          }</td>
       `;
@@ -129,8 +126,8 @@ export function createEmptyStockRow(
   price,
   isFeatured,
   hayStock,
-  generalStock, // Añadido generalStock
-  notificaciones
+  notificaciones,
+  generalStock // <-- Nuevo parámetro
 ) {
   const notified = notificaciones.some(
     (item) =>
@@ -146,11 +143,12 @@ export function createEmptyStockRow(
   row.innerHTML = `
     <td data-label="ID">${_id}</td>
     <td data-label="Producto">${name}</td>
-    <td data-label="Talle y Cantidades">${generalStock}</td> <!-- Mostrar generalStock aquí -->
+    <td data-label="Talle y Cantidades">N/A</td>
     <td data-label="Precio">${price}</td>
-    <td data-label="Estado" class="${hayStock ? "en-stock" : "sin-stock"}">${
-    hayStock ? "En stock" : "Sin stock"
-  }</td>
+    <td data-label="Estado" class="${getStockState(
+      [],
+      generalStock
+    )}">${getStockState([], generalStock).replace("-", " ")}</td>
     <td>
       <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
     </td>
@@ -170,8 +168,13 @@ export function createEmptyStockRow(
 }
 
 // Helper method to get the overall stock state based on sizes
-function getStockState(sizes, hayStock) {
-  if (sizes.length === 0) return hayStock ? "en-stock" : "sin-stock";
+function getStockState(sizes, generalStock) {
+  if (sizes.length === 0) {
+    // Si no hay talles, usamos el generalStock
+    if (generalStock === 0) return "sin-stock";
+    if (generalStock < 10) return "stock-bajo";
+    return "en-stock";
+  }
   if (sizes.every((size) => size.stock === 0)) return "sin-stock";
   if (sizes.some((size) => size.stock < 10 && size.stock > 0))
     return "stock-bajo";
