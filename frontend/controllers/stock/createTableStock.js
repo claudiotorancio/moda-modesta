@@ -6,6 +6,7 @@ export function createProductElement(
   isActive,
   isFeatured,
   hayStock,
+  generalStock, // Añadido generalStock
   notificaciones
 ) {
   const productoDiv = document.createElement("div");
@@ -30,6 +31,7 @@ export function createProductElement(
 
   const tbody = document.createElement("tbody");
 
+  // Si el producto no tiene talles
   if (sizes.length === 0) {
     const row = createEmptyStockRow(
       _id,
@@ -37,11 +39,11 @@ export function createProductElement(
       price,
       isFeatured,
       hayStock,
+      generalStock, // Añadir generalStock
       notificaciones
     );
     tbody.appendChild(row);
   } else {
-    // Aplicar clases para cada talle individualmente en la lista
     const notified = notificaciones.some(
       (item) =>
         item.productId.toString() === _id.toString() && item.notified === false
@@ -82,9 +84,8 @@ export function createProductElement(
           </ul>
         </td>
         <td data-label="Precio">${price}</td>
-        <td data-label="Estado" class="${getStockState(sizes)}">
-     
-          ${getStockState(sizes).replace("-", " ")}
+        <td data-label="Estado" class="${getStockState(sizes, hayStock)}">
+          ${getStockState(sizes, hayStock).replace("-", " ")}
         </td>
         <td data-label="Acciones">
           <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
@@ -128,6 +129,7 @@ export function createEmptyStockRow(
   price,
   isFeatured,
   hayStock,
+  generalStock, // Añadido generalStock
   notificaciones
 ) {
   const notified = notificaciones.some(
@@ -144,7 +146,7 @@ export function createEmptyStockRow(
   row.innerHTML = `
     <td data-label="ID">${_id}</td>
     <td data-label="Producto">${name}</td>
-    <td data-label="Talle y Cantidades">N/A</td>
+    <td data-label="Talle y Cantidades">${generalStock}</td> <!-- Mostrar generalStock aquí -->
     <td data-label="Precio">${price}</td>
     <td data-label="Estado" class="${hayStock ? "en-stock" : "sin-stock"}">${
     hayStock ? "En stock" : "Sin stock"

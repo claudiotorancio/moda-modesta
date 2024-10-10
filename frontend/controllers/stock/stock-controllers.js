@@ -41,7 +41,15 @@ export class StockControllers {
         });
 
         productosOrdenados.forEach(async (producto) => {
-          const { _id, name, sizes, price, isActive, isFeatured } = producto;
+          const {
+            _id,
+            name,
+            sizes,
+            price,
+            isActive,
+            isFeatured,
+            generalStock,
+          } = producto;
           const hayStock =
             producto.section === "opcion3"
               ? producto.generalStock > 0 // Verifica stock general para "Diversos"
@@ -55,6 +63,7 @@ export class StockControllers {
             isActive,
             isFeatured,
             hayStock,
+            generalStock,
             notificaciones
           );
 
