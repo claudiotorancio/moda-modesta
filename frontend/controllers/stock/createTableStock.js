@@ -146,52 +146,52 @@ export function createProductElement(
   return productoDiv;
 }
 
-export function createEmptyStockRow(
-  _id,
-  name,
-  price,
-  isFeatured,
-  hayStock,
-  generalStock, // <-- Nuevo parámetro
-  notificaciones
-) {
-  const notified = notificaciones.some(
-    (item) =>
-      item.productId.toString() === _id.toString() && item.notified === false
-  );
+// export function createEmptyStockRow(
+//   _id,
+//   name,
+//   price,
+//   isFeatured,
+//   hayStock,
+//   generalStock, // <-- Nuevo parámetro
+//   notificaciones
+// ) {
+//   const notified = notificaciones.some(
+//     (item) =>
+//       item.productId.toString() === _id.toString() && item.notified === false
+//   );
 
-  const notificacionesPendientes = notificaciones.filter(
-    (item) =>
-      item.productId.toString() === _id.toString() && item.notified === false
-  );
+//   const notificacionesPendientes = notificaciones.filter(
+//     (item) =>
+//       item.productId.toString() === _id.toString() && item.notified === false
+//   );
 
-  const row = document.createElement("tr");
-  row.innerHTML = `
-    <td data-label="ID">${_id}</td>
-    <td data-label="Producto">${name}</td>
-    <td data-label="Talle y Cantidades">N/A</td>
-    <td data-label="Precio">${price}</td>
-    <td data-label="Estado" class="${getStockState(
-      [],
-      generalStock
-    )}">${getStockState([], generalStock).replace("-", " ")}</td>
-    <td>
-      <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
-    </td>
-    <td data-label="Destacado">${isFeatured ? "sí" : "no"}</td>
-    <td data-label="Notificacion">${
-      notified
-        ? `<p>solicitudes (${notificacionesPendientes.length})</p>
-    <button type="button" class="btn btn-primary notificacion-producto" 
-      data-product-id="${_id}" 
-      data-notificacion-ids="${notificacionesPendientes
-        .map((item) => item._id.toString())
-        .join(",")}" ${hayStock ? "" : "disabled"}>enviar</button>`
-        : "sin notificaciones"
-    }</td>
-  `;
-  return row;
-}
+//   const row = document.createElement("tr");
+//   row.innerHTML = `
+//     <td data-label="ID">${_id}</td>
+//     <td data-label="Producto">${name}</td>
+//     <td data-label="Talle y Cantidades">N/A</td>
+//     <td data-label="Precio">${price}</td>
+//     <td data-label="Estado" class="${getStockState(
+//       [],
+//       generalStock
+//     )}">${getStockState([], generalStock).replace("-", " ")}</td>
+//     <td>
+//       <button type="button" class="btn btn-info ver-detalles" data-id="${_id}">Ver/Editar</button>
+//     </td>
+//     <td data-label="Destacado">${isFeatured ? "sí" : "no"}</td>
+//     <td data-label="Notificacion">${
+//       notified
+//         ? `<p>solicitudes (${notificacionesPendientes.length})</p>
+//     <button type="button" class="btn btn-primary notificacion-producto"
+//       data-product-id="${_id}"
+//       data-notificacion-ids="${notificacionesPendientes
+//         .map((item) => item._id.toString())
+//         .join(",")}" ${hayStock ? "" : "disabled"}>enviar</button>`
+//         : "sin notificaciones"
+//     }</td>
+//   `;
+//   return row;
+// }
 
 function getStockState(sizes, generalStock) {
   if (sizes.length === 0) {
