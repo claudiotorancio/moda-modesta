@@ -92,31 +92,37 @@ export class ProductCard {
         );
       });
 
-    card
-      .querySelector(".desactivar-producto, .activar-producto")
-      .addEventListener("click", async (e) => {
-        e.preventDefault();
+    const toggleButton = card.querySelector(
+      ".desactivar-producto, .activar-producto"
+    );
+    toggleButton.addEventListener("click", async (e) => {
+      e.preventDefault();
 
-        try {
-          // Verificar si el producto está en el carrito
-          if (this.inCart) {
-            alert("El producto está en el carrito y no se puede desactivar.");
-            return;
-          }
-
-          // Determinar si se activa o desactiva el producto
-          if (this.isActive) {
-            await handleToggleProduct(this.id, false); // Desactivar producto
-          } else {
-            await handleToggleProduct(this.id, true); // Activar producto
-          }
-
-          // Actualizar los productos en el DOM (puedes optimizar esto si es necesario)
-          this.render();
-        } catch (error) {
-          console.error("Error al activar/desactivar producto:", error);
+      try {
+        // Verificar si el producto está en el carrito
+        if (this.inCart) {
+          alert("El producto está en el carrito y no se puede desactivar.");
+          return;
         }
-      });
+
+        // Determinar si se activa o desactiva el producto
+        if (this.isActive) {
+          await handleToggleProduct(this.id, false); // Desactivar producto
+          this.isActive = false; // Actualizar estado del producto
+          toggleButton.textContent = "Activar"; // Cambiar el texto del botón
+          toggleButton.classList.remove("btn-danger");
+          toggleButton.classList.add("btn-success");
+        } else {
+          await handleToggleProduct(this.id, true); // Activar producto
+          this.isActive = true; // Actualizar estado del producto
+          toggleButton.textContent = "Desactivar"; // Cambiar el texto del botón
+          toggleButton.classList.remove("btn-success");
+          toggleButton.classList.add("btn-danger");
+        }
+      } catch (error) {
+        console.error("Error al activar/desactivar producto:", error);
+      }
+    });
 
     // Función para manejar la activación/desactivación del producto
     async function handleToggleProduct(productId, isActive) {
