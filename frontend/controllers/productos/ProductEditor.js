@@ -259,9 +259,10 @@ export class ProductEditor {
       const imagePath1 = imageInput1 ? imageInput1.files[0] : null;
       const imagePath2 = imageInput2 ? imageInput2.files[0] : null;
 
-      // Verificar si se intentan reemplazar ambas imágenes
       if (imagePath1 && imagePath2) {
-        alert("Solo puedes reemplazar una imagen a la vez.");
+        alert(
+          "Solo puedes reemplazar una imagen. Si necesitas reemplazar ambas, debes crear un nuevo producto."
+        );
         return;
       }
 
@@ -280,6 +281,7 @@ export class ProductEditor {
         return { size, stock };
       });
 
+      // Verificar si el checkbox existe antes de acceder a él
       const generalStockCheckElement =
         document.getElementById("updateGeneralStock");
       let generalStockCheck = false;
@@ -294,18 +296,18 @@ export class ProductEditor {
 
       const dataEdit = new FormData();
 
-      // Manejar la imagen seleccionada
-      if (imagePath1 || imagePath2) {
-        const oldImagePath1 = document.querySelector("[data-oldPath1]").value;
-        const oldImagePath2 = document.querySelector("[data-oldPath2]").value;
-
-        if (imagePath1) {
-          dataEdit.append("imagePath", imagePath1);
-          dataEdit.append("oldImagePath", oldImagePath1);
-        } else if (imagePath2) {
-          dataEdit.append("imagePath", imagePath2);
-          dataEdit.append("oldImagePath", oldImagePath2);
-        }
+      if (imagePath1) {
+        dataEdit.append("imagePath", imagePath1);
+        dataEdit.append(
+          "oldImagePath",
+          document.querySelector("[data-oldPath1]").value
+        );
+      } else if (imagePath2) {
+        dataEdit.append("imagePath", imagePath2);
+        dataEdit.append(
+          "oldImagePath",
+          document.querySelector("[data-oldPath2]").value
+        );
       }
 
       dataEdit.append("name", name);

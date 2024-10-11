@@ -1,3 +1,4 @@
+// Código del archivo updateProduct.js
 import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
 import AWS from "aws-sdk";
@@ -43,12 +44,19 @@ const updateProduct = async (req, res) => {
         ? oldImagePath
         : [oldImagePath];
 
-      oldImages.forEach(async (path) => {
+      for (const path of oldImages) {
         // Verificar si la imagen está en el producto
-        if (updatedImagePath.includes(path)) {
-          updatedImagePath = updatedImagePath.filter((image) => image !== path);
+        const imageIndex = updatedImagePath.indexOf(path);
+        if (imageIndex !== -1) {
+          // Reemplazar la imagen antigua con la nueva si se está subiendo una
+          if (req.file) {
+            updatedImagePath[imageIndex] = req.file.location; // Reemplazar la imagen en la posición correcta
+          } else {
+            // Si no se está subiendo una nueva imagen, solo eliminarla
+            updatedImagePath.splice(imageIndex, 1);
+          }
 
-          // Eliminar la imagen de S3
+          // Eliminar la imagen de S3 si ha sido eliminada
           const nombreDeArchivo = path.split("/").pop();
           const params = {
             Bucket: process.env.BUCKET_AWS,
@@ -62,13 +70,12 @@ const updateProduct = async (req, res) => {
             console.error("Error al eliminar la imagen en S3:", err);
           }
         }
-      });
+      }
     }
 
     // Agregar la nueva imagen al array imagePath si se proporciona
     if (req.file) {
-      const newImagePath = req.file.location;
-      updatedImagePath.push(newImagePath);
+      // La nueva imagen ya se ha agregado en el ciclo anterior
     }
 
     const sizesWithStock = [];
