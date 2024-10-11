@@ -65,9 +65,9 @@ class ProductService {
       }
 
       // Muestra de éxito en pantalla
-      modalControllers.modalMsgReload(dataResponse.message);
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
-      modalControllers.modalMsgReload(error.message);
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
   }
@@ -88,9 +88,9 @@ class ProductService {
       }
 
       // Muestra de éxito en pantalla
-      modalControllers.modalMsgReload(dataResponse.message);
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
-      modalControllers.modalMsgReload(error.message);
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
   }
