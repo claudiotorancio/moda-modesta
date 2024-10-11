@@ -112,7 +112,7 @@ export class ProductCard {
           }
 
           // Actualizar los productos en el DOM (puedes optimizar esto si es necesario)
-          await controllers.renderProducts();
+          this.render();
         } catch (error) {
           console.error("Error al activar/desactivar producto:", error);
         }

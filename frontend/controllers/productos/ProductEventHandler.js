@@ -15,9 +15,7 @@ export class ProductEventHandler {
         );
         return; // Salir de la función si está en el carrito
       }
-      const confirmacion = modalControllers.modalMsg(
-        "¿Desea desactivar el producto?"
-      );
+      const confirmacion = confirm("¿Desea desactivar el producto?");
 
       if (confirmacion) {
         // Esperar a que se complete la desactivación
