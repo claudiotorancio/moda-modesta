@@ -9,6 +9,8 @@ const createProduct = async (req, res) => {
     const { name, price, description, section, isFeatured, generalStock } =
       req.body;
 
+    console.log(imagePaths);
+
     // Procesa los tamaños y el stock si la sección NO es "Diversos"
     let sizes = [];
     if (section !== "opcion3") {
