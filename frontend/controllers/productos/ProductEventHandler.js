@@ -65,10 +65,10 @@ export class ProductEventHandler {
     description,
     sizes,
     isFeatured,
+    section,
     generalStock
   ) {
     try {
-      await productoServices.detalleProducto(id);
       const productEditor = new ProductEditor();
       productEditor.editProduct(
         id,
@@ -78,6 +78,7 @@ export class ProductEventHandler {
         description,
         sizes,
         isFeatured,
+        section,
         generalStock
       );
     } catch (error) {

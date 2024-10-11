@@ -143,6 +143,7 @@ export class ProductCard {
         this.description,
         this.sizes,
         this.isFeatured,
+        this.section,
         this.generalStock
       );
     });

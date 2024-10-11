@@ -15,6 +15,7 @@ export class ProductEditor {
     description,
     sizes,
     isFeatured,
+    section,
     generalStock
   ) {
     this.renderEditor(
@@ -25,6 +26,7 @@ export class ProductEditor {
       description,
       sizes,
       isFeatured,
+      section,
       generalStock
     );
     this.setupFormSubmitHandler(id);
@@ -38,6 +40,7 @@ export class ProductEditor {
     description,
     sizes,
     isFeatured,
+    section,
     generalStock
   ) {
     modalControllers.baseModal();
@@ -101,7 +104,7 @@ export class ProductEditor {
           <label class="form-check-label" for="isFeatured">Destacar producto</label>
         </div>
         ${
-          sizes && sizes.length > 0
+          sizes && sizes.length > 0 && section !== "opcion3"
             ? `
           <label for="sizes">Modificar talles y stocks </label>
           <div class="form-group mb-4">
