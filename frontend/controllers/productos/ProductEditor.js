@@ -279,11 +279,18 @@ export class ProductEditor {
         return { size, stock };
       });
 
-      const generalStockCheck =
-        document.getElementById("updateGeneralStock").checked;
-      const generalStock = generalStockCheck
-        ? document.querySelector("[data-generalStock]").value
-        : null;
+      // Verificar si el checkbox existe antes de acceder a él
+      const generalStockCheckElement =
+        document.getElementById("updateGeneralStock");
+      let generalStockCheck = false;
+      let generalStock = null;
+
+      if (generalStockCheckElement) {
+        generalStockCheck = generalStockCheckElement.checked;
+        generalStock = generalStockCheck
+          ? document.querySelector("[data-generalStock]").value
+          : null;
+      }
 
       const dataEdit = new FormData();
 
