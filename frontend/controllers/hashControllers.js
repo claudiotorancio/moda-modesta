@@ -44,7 +44,6 @@ export async function hashControllers() {
         producto.section,
         producto.generalStock
       );
-      console.log(producto);
     }
 
     // Si el producto está pausado, mostramos un HTML personalizado
