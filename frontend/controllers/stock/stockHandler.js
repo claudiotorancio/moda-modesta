@@ -25,6 +25,7 @@ export async function agregarEventListenerBotones() {
           description,
           sizes,
           isFeatured,
+          section,
           generalStock,
         } = product;
 
@@ -37,6 +38,7 @@ export async function agregarEventListenerBotones() {
           description,
           sizes,
           isFeatured,
+          section,
           generalStock
         );
 
