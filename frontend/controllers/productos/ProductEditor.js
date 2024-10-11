@@ -43,6 +43,7 @@ export class ProductEditor {
     section,
     generalStock
   ) {
+    console.log(section);
     modalControllers.baseModal();
 
     this.productoEdicion.innerHTML = `
@@ -104,7 +105,7 @@ export class ProductEditor {
           <label class="form-check-label" for="isFeatured">Destacar producto</label>
         </div>
         ${
-          sizes && sizes.length > 0 && section !== "opcion3"
+          section !== "opcion3" && sizes && sizes.length > 0
             ? `
           <label for="sizes">Modificar talles y stocks </label>
           <div class="form-group mb-4">
