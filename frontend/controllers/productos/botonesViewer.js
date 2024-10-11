@@ -68,9 +68,9 @@ export async function eventListenerBotones(
       );
     });
   } else {
-    console.log(
-      "Botón de añadir al carrito no encontrado, posiblemente no hay stock."
-    );
+    // console.log(
+    //   "Botón de añadir al carrito no encontrado, posiblemente no hay stock."
+    // );
   }
 
   //evento comnpratir
@@ -106,7 +106,7 @@ export async function eventListenerBotones(
       }
     });
   } else {
-    console.error("El botón 'compartir-producto' no existe en el DOM.");
+    // console.error("El botón 'compartir-producto' no existe en el DOM.");
   }
 
   //enviar notificacion sin stock
@@ -137,6 +137,6 @@ export async function eventListenerBotones(
       }
     });
   } else {
-    console.error("El botón 'notificar' no existe en el DOM.");
+    // console.error("El botón 'notificar' no existe en el DOM.");
   }
 }

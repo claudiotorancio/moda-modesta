@@ -134,12 +134,12 @@ export class ProductEditor {
 
     // Verifica que ambos elementos existan antes de proceder
     if (!generalStockInput) {
-      console.error("El input de stock general no existe.");
+      // console.error("El input de stock general no existe.");
       return;
     }
 
     if (!generalStockCheck) {
-      console.error("El checkbox de 'updateGeneralStock' no existe.");
+      // console.error("El checkbox de 'updateGeneralStock' no existe.");
       return;
     }
 
