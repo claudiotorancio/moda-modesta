@@ -45,7 +45,7 @@ export async function comprarProducto(
     // Agregar producto al carrito
     await carrito.agregarProducto({
       product: producto,
-      size: talleSeleccionado || "Unidades", // Indicar 'Sin talla' si no hay talla seleccionada (opcion3)
+      size: talleSeleccionado || "Un.", // Indicar 'Sin talla' si no hay talla seleccionada (opcion3)
     });
   } catch (error) {
     console.error("Error al comprar producto:", error);
