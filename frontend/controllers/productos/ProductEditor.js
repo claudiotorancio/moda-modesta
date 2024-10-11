@@ -105,7 +105,7 @@ export class ProductEditor {
           <label class="form-check-label" for="isFeatured">Destacar producto</label>
         </div>
         ${
-          section !== "opcion3" && sizes && sizes.length > 0
+          section !== "opcion3" && sizes
             ? `
           <label for="sizes">Modificar talles y stocks </label>
           <div class="form-group mb-4">
