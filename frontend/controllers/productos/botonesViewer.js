@@ -38,7 +38,7 @@ export async function eventListenerBotones(
       handleEnvioFormProduct.bind(this)
     );
   } else {
-    console.log("Botón de calcular envío no encontrado, no hay stock.");
+    // console.log("Botón de calcular envío no encontrado, no hay stock.");
   }
 
   // Agregar al carrito

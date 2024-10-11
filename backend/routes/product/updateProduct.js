@@ -24,10 +24,8 @@ const updateProduct = async (req, res) => {
       isFeatured,
     } = req.body;
 
-    // Conectar a la base de datos
     await connectToDatabase();
 
-    // Obtener el producto actual
     const model = esAdministrador(req.user) ? Vista : Product;
     const product = await model.findById(id);
 
@@ -35,44 +33,34 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    // Eliminar la imagen antigua si es necesario
+    // Mantener el array de imágenes actualizado
     let updatedImagePath = product.imagePath || [];
-    if (Array.isArray(oldImagePath)) {
-      oldImagePath.forEach((path) => {
-        updatedImagePath = updatedImagePath.filter((image) => image !== path);
 
-        // Eliminar la imagen de S3
-        const nombreDeArchivo = path.split("/").pop();
-        const params = {
-          Bucket: process.env.BUCKET_AWS,
-          Key: nombreDeArchivo,
-        };
+    // Eliminar imágenes antiguas si se proporcionan
+    if (oldImagePath) {
+      // Si oldImagePath es un solo string, conviértelo en un array
+      const oldImages = Array.isArray(oldImagePath)
+        ? oldImagePath
+        : [oldImagePath];
 
-        s3.deleteObject(params, (err, data) => {
-          if (err) {
+      oldImages.forEach(async (path) => {
+        // Verificar si la imagen está en el producto
+        if (updatedImagePath.includes(path)) {
+          updatedImagePath = updatedImagePath.filter((image) => image !== path);
+
+          // Eliminar la imagen de S3
+          const nombreDeArchivo = path.split("/").pop();
+          const params = {
+            Bucket: process.env.BUCKET_AWS,
+            Key: nombreDeArchivo,
+          };
+
+          try {
+            await s3.deleteObject(params).promise();
+            console.log("Imagen eliminada con éxito en S3:", nombreDeArchivo);
+          } catch (err) {
             console.error("Error al eliminar la imagen en S3:", err);
-          } else {
-            console.log("Imagen eliminada con éxito en S3:", data);
           }
-        });
-      });
-    } else if (oldImagePath) {
-      updatedImagePath = updatedImagePath.filter(
-        (image) => image !== oldImagePath
-      );
-
-      // Eliminar la imagen de S3
-      const nombreDeArchivo = oldImagePath.split("/").pop();
-      const params = {
-        Bucket: process.env.BUCKET_AWS,
-        Key: nombreDeArchivo,
-      };
-
-      s3.deleteObject(params, (err, data) => {
-        if (err) {
-          console.error("Error al eliminar la imagen en S3:", err);
-        } else {
-          console.log("Imagen eliminada con éxito en S3:", data);
         }
       });
     }
