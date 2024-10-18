@@ -4,7 +4,6 @@ export class ProductForm {
   constructor(titulo) {
     this.titulo = titulo;
     this.sectionSelect = null;
-    this.setupSelectChangeHandler();
     this.render();
   }
 
@@ -123,10 +122,9 @@ export class ProductForm {
 
   // Configurar el evento change en el select
   setupSelectChangeHandler() {
-    const sectionSelect = this.titulo.querySelector("#miMenuDesplegable");
-    if (!this.sectionSelectHandler) {
+    if (!this.sectionSelect) {
       this.sectionSelectHandler = () => this.updateSizesVisibility();
-      sectionSelect.addEventListener("change", this.sectionSelectHandler);
+      sectionSelect.addEventListener("change", this.sectionSelect);
     }
   }
 
