@@ -166,6 +166,7 @@ export class ProductForm {
     const form = this.titulo.querySelector("[data-form]");
     form.addEventListener("submit", (e) => {
       // Validar que solo se puedan seleccionar 2 imágenes
+      const images = document.querySelector("[data-imageUrls]").files;
       if (images.length > 2) {
         e.preventDefault(); // Evitar el envío del formulario
         alert("Por favor, selecciona un máximo de 2 imágenes."); // Mensaje de alerta
