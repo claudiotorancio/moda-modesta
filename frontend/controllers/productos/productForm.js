@@ -4,7 +4,7 @@ export class ProductForm {
   constructor(titulo) {
     this.titulo = titulo;
     this.sectionSelect = null;
-    this.updateSizesVisibility();
+    this.setupSelectChangeHandler();
     this.render();
   }
 
