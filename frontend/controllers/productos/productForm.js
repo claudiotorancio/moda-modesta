@@ -12,7 +12,7 @@ export class ProductForm {
     this.clearForm();
     const card = this.createForm();
     this.titulo.appendChild(card);
-    this.sectionSelect = this.titulo.getElementById("#miMenuDesplegable");
+    this.sectionSelect = this.titulo.querySelector("#miMenuDesplegable");
     this.setupSelectChangeHandler();
     this.updateSizesVisibility();
     this.setupFormSubmitHandler();
@@ -122,9 +122,10 @@ export class ProductForm {
 
   // Configurar el evento change en el select
   setupSelectChangeHandler() {
-    if (!this.sectionSelect) {
-      this.sectionSelectHandler = () => this.updateSizesVisibility();
-      sectionSelect.addEventListener("change", this.sectionSelect);
+    if (this.sectionSelect) {
+      this.sectionSelect.addEventListener("change", () =>
+        this.updateSizesVisibility()
+      );
     }
   }
 
