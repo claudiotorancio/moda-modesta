@@ -1,12 +1,10 @@
 import productoServices from "../../services/product_services.js";
-import { controllers } from "./productos_controllers.js";
 
 export class ProductForm {
   constructor(titulo) {
     this.titulo = titulo;
+    this.sectionSelect = null;
     this.render();
-    this.setupSelectChangeHandler();
-    this.updateSizesVisibility(); // Llama a la función al iniciar para ocultar talles si es necesario
   }
 
   // Mostrar formulario
@@ -14,17 +12,10 @@ export class ProductForm {
     this.clearForm();
     const card = this.createForm();
     this.titulo.appendChild(card);
-
+    this.sectionSelect = this.titulo.querySelector("#miMenuDesplegable");
     this.setupSelectChangeHandler();
-    this.updateSizesVisibility(); // Llama a la función al iniciar para ocultar talles si es necesario
+    this.updateSizesVisibility();
     this.setupFormSubmitHandler();
-  }
-
-  mostrarProducts() {
-    document.querySelectorAll(".categoria").forEach((categoria) => {
-      categoria.querySelector(".texto-categoria").style.display = "flex";
-      controllers.renderProducts();
-    });
   }
 
   // Vaciar contenido
@@ -60,7 +51,7 @@ export class ProductForm {
             </div>
 
             <div class="form-group">
-              <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus>
+              <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus accept="image/*" max="2">
             </div>
             <div class="form-group">
               <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
@@ -132,9 +123,10 @@ export class ProductForm {
   // Configurar el evento change en el select
   setupSelectChangeHandler() {
     const sectionSelect = this.titulo.querySelector("#miMenuDesplegable");
-    sectionSelect.addEventListener("change", () =>
-      this.updateSizesVisibility()
-    );
+    if (!this.sectionSelectHandler) {
+      this.sectionSelectHandler = () => this.updateSizesVisibility();
+      sectionSelect.addEventListener("change", this.sectionSelectHandler);
+    }
   }
 
   // Lógica para actualizar la visibilidad de los talles
@@ -157,19 +149,23 @@ export class ProductForm {
     }
   }
 
+  collectSizesAndStock() {
+    const selectedSizes = Array.from(
+      document.querySelectorAll('input[name="sizes"]:checked')
+    ).map((checkbox) => {
+      const size = checkbox.value;
+      const stockInput = document.querySelector(
+        `[data-stock-${size.toLowerCase().replace(" ", "")}]`
+      );
+      return { size, stock: stockInput ? parseInt(stockInput.value) : 0 };
+    });
+    return selectedSizes;
+  }
+
   // Capturar el evento submit
   setupFormSubmitHandler() {
     const form = this.titulo.querySelector("[data-form]");
     form.addEventListener("submit", (e) => {
-      const images = document.querySelector("[data-imageUrls]").files;
-
-      // Validar que solo se puedan seleccionar 2 imágenes
-      if (images.length > 2) {
-        e.preventDefault(); // Evitar el envío del formulario
-        alert("Por favor, selecciona un máximo de 2 imágenes."); // Mensaje de alerta
-        return; // Salir de la función
-      }
-
       e.preventDefault();
       this.handleSubmit();
     });
@@ -179,42 +175,32 @@ export class ProductForm {
     const name = document.querySelector("[data-name]").value;
     const price = parseFloat(document.querySelector("[data-price]").value);
     const description = document.querySelector("[data-description]").value;
-    const section = document.getElementById("miMenuDesplegable").value;
-    const images = document.querySelector("[data-imageUrls]").files;
     const isFeatured = document.getElementById("isFeatured").checked;
 
     let productData = new FormData();
     productData.append("name", name);
     productData.append("price", price);
     productData.append("description", description);
-    productData.append("section", section);
+    productData.append("section", this.sectionSelect.value);
     productData.append("isFeatured", isFeatured);
 
     // Agrega cada archivo de imagen al FormData
+    const images = document.querySelector("[data-imageUrls]").files;
     for (const image of images) {
       productData.append("images[]", image);
     }
 
     // Capturar datos de stock dependiendo de la sección seleccionada
-    if (section === "opcion3") {
+    if (this.sectionSelect.value === "opcion3") {
       // Si es "Diversos", capturar el stock general
-      const generalStock =
-        parseInt(document.getElementById("generalStock").value) || 0;
-      productData.append("generalStock", generalStock);
+      productData.append(
+        "generalStock",
+        parseInt(document.getElementById("generalStock").value) || 0
+      );
     } else {
       // Si no es "Diversos", capturar los talles y sus stocks
-      const selectedSizes = Array.from(
-        document.querySelectorAll('input[name="sizes"]:checked')
-      ).map((checkbox) => {
-        const size = checkbox.value;
-        const stockInput = document.querySelector(
-          `[data-stock-${size.toLowerCase().replace(" ", "")}]`
-        );
-        const stock = stockInput ? parseInt(stockInput.value) : 0;
-        return { size, stock };
-      });
-
-      productData.append("sizes", JSON.stringify(selectedSizes));
+      const sizesStock = this.collectSizesAndStock();
+      productData.append("sizes", JSON.stringify(sizesStock));
     }
 
     try {
