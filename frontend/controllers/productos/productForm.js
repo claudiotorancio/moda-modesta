@@ -12,7 +12,7 @@ export class ProductForm {
     this.clearForm();
     const card = this.createForm();
     this.titulo.appendChild(card);
-    this.sectionSelect = this.titulo.querySelector("#miMenuDesplegable");
+    this.sectionSelect = this.titulo.getElementById("#miMenuDesplegable");
     this.setupSelectChangeHandler();
     this.updateSizesVisibility();
     this.setupFormSubmitHandler();
@@ -130,12 +130,11 @@ export class ProductForm {
 
   // Lógica para actualizar la visibilidad de los talles
   updateSizesVisibility() {
-    const sectionSelect = document.getElementById("miMenuDesplegable");
     const sizesContainer = document.querySelector(".sizes-container");
     const generalStockContainer = document.querySelector(
       ".general-stock-container"
     );
-    const selectedValue = sectionSelect.value;
+    const selectedValue = this.sectionSelect.value;
 
     if (selectedValue === "opcion3") {
       // Si es "Diversos", oculta los talles y muestra el campo de stock general
