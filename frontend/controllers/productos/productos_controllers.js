@@ -14,7 +14,7 @@ export const controllers = {
         contenedorDestacados.innerHTML = "";
 
         // Renderiza las tarjetas de los productos destacados
-        for (const producto of productosOrdenados) {
+        for (const producto of productosDestacados) {
           const hayStock =
             producto.generalStock > 0 || // Verifica stock general para "Diversos"
             producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
