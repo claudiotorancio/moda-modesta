@@ -13,21 +13,6 @@ export const controllers = {
       if (contenedorDestacados) {
         contenedorDestacados.innerHTML = "";
 
-        // Ordena los productos por disponibilidad de stock, incluyendo sección "Diversos"
-        const productosConStock = productosDestacados.filter(
-          (producto) =>
-            producto.section === "opcion3"
-              ? producto.generalStock > 0 // Verifica el stock general para "Diversos"
-              : producto.sizes.some((item) => item.stock > 0) // Verifica el stock por talla para otras secciones
-        );
-        const productosSinStock = productosDestacados.filter(
-          (producto) =>
-            producto.section === "opcion3"
-              ? producto.generalStock === 0 // Sin stock general para "Diversos"
-              : !producto.sizes.some((item) => item.stock > 0) // Sin stock por talla para otras secciones
-        );
-        const productosOrdenados = [...productosConStock, ...productosSinStock]; // Productos con stock primero
-
         // Renderiza las tarjetas de los productos destacados
         for (const producto of productosOrdenados) {
           const hayStock =
@@ -61,23 +46,8 @@ export const controllers = {
         }
       });
 
-      // Ordena los productos por stock, incluyendo sección "Diversos"
-      const productosConStock = products.filter(
-        (producto) =>
-          producto.section === "opcion3"
-            ? producto.generalStock > 0 // Verifica el stock general para "Diversos"
-            : producto.sizes.some((item) => item.stock > 0) // Verifica el stock por talla para otras secciones
-      );
-      const productosSinStock = products.filter(
-        (producto) =>
-          producto.section === "opcion3"
-            ? producto.generalStock === 0 // Sin stock general para "Diversos"
-            : !producto.sizes.some((item) => item.stock > 0) // Sin stock por talla para otras secciones
-      );
-      const productosOrdenados = [...productosConStock, ...productosSinStock]; // Productos con stock primero
-
       // Renderiza las tarjetas de productos en sus respectivas secciones
-      for (const producto of productosOrdenados) {
+      for (const producto of products) {
         const hayStock =
           producto.generalStock > 0 || // Verifica stock general para "Diversos"
           producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
@@ -117,26 +87,8 @@ export const controllers = {
       const contenedorDestacados = document.querySelector("[data-destacados]");
       contenedorDestacados.innerHTML = "";
 
-      // Ordenar los productos destacados por disponibilidad de stock, incluyendo sección "Diversos"
-      const destacadosConStock = productosDestacados.filter(
-        (producto) =>
-          producto.section === "opcion3"
-            ? producto.generalStock > 0 // Verifica el stock general para "Diversos"
-            : producto.sizes.some((item) => item.stock > 0) // Verifica el stock por talla para otras secciones
-      );
-      const destacadosSinStock = productosDestacados.filter(
-        (producto) =>
-          producto.section === "opcion3"
-            ? producto.generalStock === 0 // Sin stock general para "Diversos"
-            : !producto.sizes.some((item) => item.stock > 0) // Sin stock por talla para otras secciones
-      );
-      const destacadosOrdenados = [
-        ...destacadosConStock,
-        ...destacadosSinStock,
-      ]; // Productos con stock primero
-
       // Renderizar productos destacados
-      for (const producto of destacadosOrdenados) {
+      for (const producto of productosDestacados) {
         const hayStock =
           producto.generalStock > 0 || // Verifica stock general para "Diversos"
           producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
@@ -162,26 +114,8 @@ export const controllers = {
         }
       });
 
-      // Ordenar los productos generales por disponibilidad de stock, incluyendo sección "Diversos"
-      const productosConStockGenerales = products.filter(
-        (producto) =>
-          producto.section === "opcion3"
-            ? producto.generalStock > 0 // Verifica el stock general para "Diversos"
-            : producto.sizes.some((item) => item.stock > 0) // Verifica el stock por talla para otras secciones
-      );
-      const productosSinStockGenerales = products.filter(
-        (producto) =>
-          producto.section === "opcion3"
-            ? producto.generalStock === 0 // Sin stock general para "Diversos"
-            : !producto.sizes.some((item) => item.stock > 0) // Sin stock por talla para otras secciones
-      );
-      const productosOrdenadosGenerales = [
-        ...productosConStockGenerales,
-        ...productosSinStockGenerales,
-      ]; // Productos con stock primero
-
       // Renderizar productos generales
-      for (const producto of productosOrdenadosGenerales) {
+      for (const producto of products) {
         const hayStock =
           producto.generalStock > 0 || // Verifica stock general para "Diversos"
           producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
