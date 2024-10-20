@@ -38,7 +38,6 @@ function actualizarNotificacionCarrito() {
 }
 
 export async function agregarProducto(product, size) {
-  console.log(product.cantidad);
   try {
     if (!this.items) {
       await cargarCarritoDesdeStorage.call(this);

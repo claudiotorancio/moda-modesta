@@ -40,17 +40,17 @@ export async function initializeCategoryControls() {
   // Limpiar el contenedor antes de cargar productos
   contenedorSeccion.innerHTML = "";
 
-  // **Ordenar los productos por disponibilidad de stock**
-  const productosConStock = productosFiltrados.filter(
-    (producto) =>
-      producto.sizes.some((item) => item.stock > 0) || producto.generalStock > 0
-  );
-  const productosSinStock = productosFiltrados.filter(
-    (producto) =>
-      !producto.sizes.some((item) => item.stock > 0) &&
-      producto.generalStock <= 0
-  );
-  const productosOrdenados = [...productosConStock, ...productosSinStock];
+  // // **Ordenar los productos por disponibilidad de stock**
+  // const productosConStock = productosFiltrados.filter(
+  //   (producto) =>
+  //     producto.sizes.some((item) => item.stock > 0) || producto.generalStock > 0
+  // );
+  // const productosSinStock = productosFiltrados.filter(
+  //   (producto) =>
+  //     !producto.sizes.some((item) => item.stock > 0) &&
+  //     producto.generalStock <= 0
+  // );
+  // const productosOrdenados = [...productosConStock, ...productosSinStock];
 
   // Variables para controlar la carga progresiva
   const productosPorPagina = 4; // Mostramos 8 productos por bloque
@@ -82,12 +82,12 @@ export async function initializeCategoryControls() {
       const fin = inicio + productosPorPagina;
 
       // Si ya se han cargado todos los productos, detener la carga
-      if (inicio >= productosOrdenados.length) {
+      if (inicio >= productosFiltrados.length) {
         window.removeEventListener("scroll", manejarScroll);
         return;
       }
 
-      const productosBloque = productosOrdenados.slice(inicio, fin);
+      const productosBloque = productosFiltrados.slice(inicio, fin);
 
       for (const producto of productosBloque) {
         const hayStock =

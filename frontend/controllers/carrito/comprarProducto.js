@@ -12,7 +12,6 @@ export async function comprarProducto(
   section,
   generalStock
 ) {
-  console.log(talleSeleccionado);
   try {
     let stockSeleccionado;
     let cantidad = 1; // Por defecto, la cantidad es 1
