@@ -8,19 +8,32 @@ export async function comprarProducto(
   price,
   imagePath,
   sizes,
-  talleSeleccionado,
+  talleSeleccionado, // Cantidad cuando es de 'opcion3'
   section,
   generalStock
 ) {
+  console.log(talleSeleccionado);
   try {
     let stockSeleccionado;
+    let cantidad = 1; // Por defecto, la cantidad es 1
 
     // Verificar si es de la sección 'opcion3'
     if (section === "opcion3") {
-      // Usar el generalStock para productos de esta sección
+      // En 'opcion3', 'talleSeleccionado' contiene la cantidad seleccionada
       stockSeleccionado = generalStock;
+
+      // Asignar la cantidad seleccionada
+      cantidad = parseInt(talleSeleccionado, 10);
+
+      // Verificar que haya suficiente stock general
+      if (cantidad > stockSeleccionado) {
+        console.error("Stock insuficiente para la cantidad seleccionada.");
+        return alert(
+          "No hay suficiente stock disponible para la cantidad seleccionada."
+        );
+      }
     } else {
-      // Encontrar el objeto del tamaño seleccionado en el array sizes
+      // Para otras secciones, encontrar el objeto del tamaño seleccionado en el array sizes
       const sizeObject = sizes.find((item) => item.size === talleSeleccionado);
 
       // Obtener el stock del talle seleccionado
@@ -39,13 +52,15 @@ export async function comprarProducto(
       name: name,
       price: price,
       imagePath: imagePath,
+      section: section,
       stock: stockSeleccionado, // Stock del talle o general, dependiendo de la sección
+      cantidad: cantidad, // Incluir la cantidad seleccionada
     };
 
     // Agregar producto al carrito
     await carrito.agregarProducto({
       product: producto,
-      size: talleSeleccionado || "Un.", // Indicar 'Sin talla' si no hay talla seleccionada (opcion3)
+      size: section === "opcion3" ? "Un." : talleSeleccionado, // Si es opcion3, no hay talles
     });
   } catch (error) {
     console.error("Error al comprar producto:", error);

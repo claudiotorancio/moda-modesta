@@ -50,7 +50,7 @@ export async function eventListenerBotones(
       // Comprobar si la sección es 'opcion3'
       if (section === "opcion3") {
         // No hay talle seleccionado, puedes asignar un valor predeterminado
-        talleSeleccionado = null; // O 'Sin talla' si prefieres
+        talleSeleccionado = 1; // O 'Sin talla' si prefieres
       } else {
         // Obtener el talle seleccionado del select
         talleSeleccionado = document.getElementById("variation_1").value;

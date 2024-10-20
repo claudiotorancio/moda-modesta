@@ -1,4 +1,3 @@
-import { modalControllers } from "../../modal/modal.js";
 import { CarritoServices } from "../../services/carrito_services.js";
 
 const carritoServices = new CarritoServices();
@@ -39,6 +38,7 @@ function actualizarNotificacionCarrito() {
 }
 
 export async function agregarProducto(product, size) {
+  console.log(product.cantidad);
   try {
     if (!this.items) {
       await cargarCarritoDesdeStorage.call(this);
@@ -48,6 +48,7 @@ export async function agregarProducto(product, size) {
     const productoExistente = this.items.find(
       (item) => item.productId === product._id && item.size === size
     );
+
     // Verificar si el producto ya no tiene stock
     if (product.stock <= 0) {
       console.error("Producto sin stock.");
@@ -56,7 +57,14 @@ export async function agregarProducto(product, size) {
 
     // Verificar si la cantidad en el carrito más la nueva supera el stock disponible
     if (productoExistente) {
-      const nuevaCantidad = productoExistente.cantidad + 1;
+      let nuevaCantidad;
+
+      // Si el producto es de opcion3, usa la cantidad del producto directamente
+      if (product.section === "opcion3") {
+        nuevaCantidad = productoExistente.cantidad + product.cantidad; // Agrega la cantidad seleccionada
+      } else {
+        nuevaCantidad = productoExistente.cantidad + 1; // Incrementa la cantidad normal para otros productos
+      }
 
       if (nuevaCantidad > product.stock) {
         console.error("Cantidad solicitada supera el stock disponible.");
@@ -66,7 +74,7 @@ export async function agregarProducto(product, size) {
       }
 
       // Actualizar cantidad si hay stock disponible
-      productoExistente.cantidad += 1;
+      productoExistente.cantidad = nuevaCantidad;
       await carritoServices.putProductCart(
         { cantidad: productoExistente.cantidad },
         productoExistente._id
@@ -77,7 +85,7 @@ export async function agregarProducto(product, size) {
         const productoNuevo = {
           name: product.name,
           price: parseFloat(product.price),
-          cantidad: 1,
+          cantidad: product.section === "opcion3" ? product.cantidad : 1, // Asigna la cantidad del producto si es opcion3, de lo contrario 1
           size: size,
           imagePath: product.imagePath[0],
           productId: product._id,
