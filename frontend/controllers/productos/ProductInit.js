@@ -88,25 +88,27 @@ export class ProductInit {
 
     this.updateModalContent(content);
 
-    document.querySelector("a").addEventListener("click", async (e) => {
-      e.preventDefault();
-      window.location.hash = `product-${this.id}`;
-      try {
-        await mostrarProducto(
-          this.id,
-          this.name,
-          this.price,
-          this.imagePath,
-          this.description,
-          this.sizes,
-          this.hayStock,
-          this.section,
-          this.generalStock
-        );
-      } catch (err) {
-        console.error(err);
-      }
-    });
+    document
+      .querySelector("a.btn-info")
+      .addEventListener("click", async (e) => {
+        e.preventDefault();
+        window.location.hash = `product-${this.id}`;
+        try {
+          await mostrarProducto(
+            this.id,
+            this.name,
+            this.price,
+            this.imagePath,
+            this.description,
+            this.sizes,
+            this.hayStock,
+            this.section,
+            this.generalStock
+          );
+        } catch (err) {
+          console.error(err);
+        }
+      });
   }
 
   containerTallesHandler() {
