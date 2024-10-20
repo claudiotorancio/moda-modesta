@@ -69,7 +69,7 @@ export class ProductInit {
     ).join("");
 
     return `
-      <label for="quantity" class="form-label">Cantidad disponible</label>
+      <label for="quantity" class="form-label">Seleccione la cantidad</label>
       <select id="quantity" class="form-select mb-3">
         ${options}
       </select>
