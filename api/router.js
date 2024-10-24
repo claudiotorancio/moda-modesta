@@ -1,5 +1,36 @@
 import { fileURLToPath } from "url";
 import express, { Router, urlencoded } from "express";
+import {
+  validacionesGetNotificaciones,
+  validacionesNotificacionIngreso,
+  validacionesAgregarResena,
+  validacionesPutResena,
+  validacionesDelete,
+  validacionesGetProductsCart,
+  validacionesSendMail,
+  validacionesResetPassword,
+  validacionesConfirmResetPassword,
+  validacionesListaProductos,
+  validacionesNotificacionesSinStock,
+  validacionesAddProdcutCart,
+  validacionesPutProdcutCart,
+  validacionesDeleteCart,
+  validacionesPurchaseOrder,
+  validacionesDeletOrder,
+  validacionesCompraPrepare,
+  validacionesCompraEnCamino,
+  validacionesAceptarPedido,
+  validacionesCorreoEnCamino,
+  validacionesFinalizarPedido,
+  validacionesCancelarPedido,
+  validacionesSuscribeMail,
+  validacionesConfirmMail,
+  validacionesEnviarPromociones,
+  validacionesCostoEnvio,
+  validacionesSignup,
+  validacionesSignin,
+  validacionesUpdatePassword,
+} from "../api/validaciones.js";
 import morgan from "morgan";
 // import cors from "cors";
 import cors from "cors";
@@ -68,6 +99,7 @@ import updatePassword from "../backend/routes/login/updatePassword.js";
 import confirmResetpassword from "../backend/routes/login/confirmResetPassword.js";
 import { profileControllers } from "../backend/profile/profileControllers.js";
 import { isAuthenticated } from "../backend/isAuthenticated.js";
+import { validationResult } from "express-validator";
 
 const router = Router();
 const app = express();
@@ -80,6 +112,19 @@ const __dirname = path.dirname(__filename);
 const outputPath = path.join(__dirname, "../public");
 
 // Middlewares
+// Middleware para manejo de errores de validación
+const handleValidationErrors = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      error: errors.array().map((err) => ({
+        field: err.param, // El campo que causó el error
+        message: err.msg, // El mensaje de error proporcionado
+      })),
+    });
+  }
+  next();
+};
 
 // Middlewares
 app.use(cors()); // Mueve cors() al inicio
@@ -198,59 +243,200 @@ router.get(
 router.post("/api/notificacionSinStock", notificacionSinStock);
 router.get(
   "/api/getNotificaciones",
+  validacionesNotificacionesSinStock,
+  handleValidationErrors,
   authenticateJWT,
   requireAdmin,
   getNotificaciones
 );
 router.post(
   "/api/notificacionIngreso/",
+  validacionesNotificacionIngreso,
+  handleValidationErrors,
   authenticateJWT,
   requireAdmin,
   notificacionIngreso
 );
 
 // Reseñas
-router.post("/api/agregarResena", requireAdmin, agregarResena);
+router.post(
+  "/api/agregarResena",
+  validacionesAgregarResena,
+  handleValidationErrors,
+  requireAdmin,
+  agregarResena
+);
 router.get("/api/getResena", getResena);
-router.put("/api/putResena/:id", requireAdmin, putResena);
-router.delete("/api/deleteResena/:id", requireAdmin, deleteResena);
+router.put(
+  "/api/putResena/:id",
+  validacionesPutResena,
+  handleValidationErrors,
+  requireAdmin,
+  putResena
+);
+router.delete(
+  "/api/deleteResena/:id",
+  validacionesDelete,
+  handleValidationErrors,
+  requireAdmin,
+  deleteResena
+);
 
 // Carrito
 router.get("/api/getProductsCart", getProductsCart);
-router.post("/api/addProductCart", addProductCart);
-router.put("/api/putProductCart/:id", putProductCart);
-router.delete("/api/deleteProductCart/:id", deleteProductCart);
+router.post(
+  "/api/addProductCart",
+  validacionesAddProdcutCart,
+  handleValidationErrors,
+  addProductCart
+);
+router.put(
+  "/api/putProductCart/:id",
+  validacionesPutProdcutCart,
+  handleValidationErrors,
+  putProductCart
+);
+router.delete(
+  "/api/deleteProductCart/:id",
+  validacionesDeleteCart,
+  handleValidationErrors,
+  deleteProductCart
+);
 router.delete("/api/limpiarCarrito", limpiarCarrito);
 
 // Compras
-router.get("/api/listaOrder", requireAdmin, purchaseOrder);
-router.delete("/api/deleteOrder/:id", requireAdmin, deleteOrder);
-router.post("/api/compraPrepare", requireAdmin, compraPrepare);
-router.put("/api/compraEnCamino/:id", requireAdmin, compraEnCamino);
-router.put("/api/aceptarPedido/:id", requireAdmin, aceptarPedido);
-router.post("/api/correoEnCamino", requireAdmin, correoEnCamino);
-router.put("/api/finalizarPedido/:id", requireAdmin, finalizarPedido);
-router.put("/api/compraCancelada/:id", requireAdmin, compraCancelada);
+router.get(
+  "/api/listaOrder",
+  validacionesPurchaseOrder,
+  handleValidationErrors,
+  requireAdmin,
+  purchaseOrder
+);
+router.delete(
+  "/api/deleteOrder/:id",
+  validacionesDeletOrder,
+  handleValidationErrors,
+  requireAdmin,
+  deleteOrder
+);
+router.post(
+  "/api/compraPrepare",
+  validacionesCompraPrepare,
+  handleValidationErrors,
+  requireAdmin,
+  compraPrepare
+);
+router.put(
+  "/api/compraEnCamino/:id",
+  validacionesCompraEnCamino,
+  handleValidationErrors,
+  requireAdmin,
+  compraEnCamino
+);
+router.put(
+  "/api/aceptarPedido/:id",
+  validacionesAceptarPedido,
+  handleValidationErrors,
+  requireAdmin,
+  aceptarPedido
+);
+router.post(
+  "/api/correoEnCamino",
+  validacionesCorreoEnCamino,
+  handleValidationErrors,
+  requireAdmin,
+  correoEnCamino
+);
+router.put(
+  "/api/finalizarPedido/:id",
+  validacionesFinalizarPedido,
+  handleValidationErrors,
+  requireAdmin,
+  finalizarPedido
+);
+router.put(
+  "/api/compraCancelada/:id",
+  validacionesCancelarPedido,
+  handleValidationErrors,
+  requireAdmin,
+  compraCancelada
+);
 
 // Rutas nodeMailer
-router.post("/api/sendMail", purchaseLimiter, sendMail);
-router.post("/api/suscribeMail", purchaseLimiter, suscribeMail);
-router.get("/api/confirmMail", confirmMail);
+router.post(
+  "/api/sendMail",
+  validacionesSendMail,
+  handleValidationErrors,
+  purchaseLimiter,
+  sendMail
+);
+router.post(
+  "/api/suscribeMail",
+  validacionesSuscribeMail,
+  handleValidationErrors,
+  purchaseLimiter,
+  suscribeMail
+);
+router.get(
+  "/api/confirmMail",
+  validacionesConfirmMail,
+  handleValidationErrors,
+  confirmMail
+);
 router.get("/success", success);
 router.get("/error", error);
-router.post("/api/enviarPromocion/", requireAdmin, enviarPromocion);
+router.post(
+  "/api/enviarPromocion/",
+  validacionesEnviarPromociones,
+  handleValidationErrors,
+  requireAdmin,
+  enviarPromocion
+);
 
 // Rutas envío
-router.post("/api/costoEnvio", costoEnvio);
+router.post(
+  "/api/costoEnvio",
+  validacionesCostoEnvio,
+  handleValidationErrors,
+  costoEnvio
+);
 
 // Rutas signin
-router.post("/api/signup", purchaseLimiter, signup);
-router.post("/api/signin", purchaseLimiter, signin);
+router.post(
+  "/api/signup",
+  validacionesSignup,
+  handleValidationErrors,
+  purchaseLimiter,
+  signup
+);
+router.post(
+  "/api/signin",
+  validacionesSignin,
+  handleValidationErrors,
+  purchaseLimiter,
+  signin
+);
 router.delete("/api/logout", logout);
-router.post("/api/send-reset-password", purchaseLimiter, sendResetPassword);
+router.post(
+  "/api/send-reset-password",
+  validacionesResetPassword,
+  handleValidationErrors,
+  purchaseLimiter,
+  sendResetPassword
+);
 router.get("/reset-password", password);
-router.post("/api/update-password", updatePassword);
-router.get("/api/reset-password", confirmResetpassword);
+router.post(
+  "/api/update-password",
+  validacionesUpdatePassword,
+  handleValidationErrors,
+  updatePassword
+);
+router.get(
+  "/api/reset-password",
+  validacionesConfirmResetPassword,
+  handleValidationErrors,
+  confirmResetpassword
+);
 
 // Rutas listado
 router.get("/api/getDataUser", getDataUser);

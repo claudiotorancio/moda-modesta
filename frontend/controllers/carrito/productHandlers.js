@@ -1,4 +1,5 @@
 import { CarritoServices } from "../../services/carrito_services.js";
+import validator from "validator";
 
 const carritoServices = new CarritoServices();
 
@@ -39,13 +40,17 @@ function actualizarNotificacionCarrito() {
 
 export async function agregarProducto(product, size) {
   try {
+    // Sanitizar datos de entrada
+    const sanitizedProductId = validator.escape(product._id);
+    const sanitizedSize = validator.escape(size);
+
     if (!this.items) {
       await cargarCarritoDesdeStorage.call(this);
     }
 
     // Obtener el producto existente en el carrito
     const productoExistente = this.items.find(
-      (item) => item.productId === product._id && item.size === size
+      (item) => item.productId === product._id && item.size === sanitizedSize
     );
 
     // Verificar si el producto ya no tiene stock
@@ -87,7 +92,7 @@ export async function agregarProducto(product, size) {
           cantidad: product.section === "opcion3" ? product.cantidad : 1, // Asigna la cantidad del producto si es opcion3, de lo contrario 1
           size: size,
           imagePath: product.imagePath[0],
-          productId: product._id,
+          productId: sanitizedProductId,
         };
 
         await carritoServices.addProductCart(productoNuevo);

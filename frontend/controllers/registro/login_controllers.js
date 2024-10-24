@@ -16,6 +16,7 @@ export class LoginControllers {
       "",
       "email",
       "password",
+      "",
       "Sign In",
       "Don't have an account?",
       this.signinSubmitHandler
@@ -42,6 +43,7 @@ export class LoginControllers {
     namePlaceholder,
     emailPlaceholder,
     passwordPlaceholder,
+    titleHolder,
     buttonLabel,
     helpText,
     submitHandler
@@ -72,7 +74,9 @@ export class LoginControllers {
                             <input type="email" id="email" name="email" placeholder="${emailPlaceholder}" class="form-control" required >
                         </div>
                         <div class="form-group mt-3">
-                            <input type="password" id="password" name="password" placeholder="${passwordPlaceholder}" class="form-control" required autocomplete="current-password">
+                            <input type="password" id="password" name="password" placeholder="${passwordPlaceholder}" class="form-control" required  minlength="8"
+    pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"  title="${titleHolder}"
+   autocomplete="current-password">
                         </div>
                         <div class="form-group mt-3">
                             <button class="btn btn-primary btn-block" >${buttonLabel}</button>
@@ -168,6 +172,7 @@ export class LoginControllers {
       "nombre de usuario",
       "email",
       "password",
+      "La contraseña debe tener al menos 8 caracteres, incluir al menos un número y una letra.",
       "Sign Up",
       "",
       this.signupSubmitHandler

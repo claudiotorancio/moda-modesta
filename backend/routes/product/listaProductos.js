@@ -17,7 +17,6 @@ const listaProductos = async (req, res) => {
     }
 
     const products = await Vista.find(query).sort({
-      // Ordenar productos por stock: primero los que tienen stock
       generalStock: -1, // Productos con generalStock mayor a 0 primero
       "sizes.stock": -1, // Si generalStock es 0, ordenar por stock en talles
     });

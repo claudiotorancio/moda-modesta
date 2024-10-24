@@ -25,14 +25,6 @@ export class ProductInit {
     this.generalStock = generalStock;
   }
 
-  mensajeStockHandler() {
-    const { hayStock } = this;
-
-    return hayStock
-      ? `<button type="button" class="btn btn-primary btn-block mt-2" data-compra>Comprar</button>`
-      : `<span class="text-danger font-weight-bold">Sin stock</span>`;
-  }
-
   updateModalContent(content) {
     modalControllers.baseModal();
     const modal = document.getElementById("modal");
@@ -40,10 +32,12 @@ export class ProductInit {
     contentContainer.innerHTML = content;
   }
 
-  getStockButtonHTML() {
+  //html dinamico
+
+  getMensajeStockHtml() {
     return this.hayStock
       ? `<button type="button" class="btn btn-primary btn-block mt-2" data-compra>Comprar</button>`
-      : `<span class="text-danger font-weight-bold">Sin stock</span>`;
+      : `<span class="text-danger mt-2 font-weight-bold">Sin stock</span>`;
   }
 
   getTallesSelectHTML() {
@@ -79,12 +73,17 @@ export class ProductInit {
       <p id="message" class="mt-3 text-center"></p>`;
   }
 
-  zoomImageHandler() {
-    const content = `
+  getZoomImageHtml() {
+    return `
       <img class="card-img-top" src="${this.imagePath[0]}" alt="imagen del producto">
       <div class="d-flex justify-content-center">
         <a href="#" type="button" class="btn btn-info btn-sm mt-2">Ver Detalles</a>
       </div>`;
+  }
+
+  // eventos producto inicio
+  zoomImageHandler() {
+    const content = this.getZoomImageHtml();
 
     this.updateModalContent(content);
 
@@ -171,7 +170,7 @@ export class ProductInit {
             <a href="#">Ver Detalles</a>
           </div>
           <div>
-            ${this.mensajeStockHandler()}
+            ${this.getMensajeStockHtml()}
           </div>
         </div>
       </div>
