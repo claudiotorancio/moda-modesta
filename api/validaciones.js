@@ -65,8 +65,6 @@ const validacionesDeleteCart = [validacionesIdParam];
 
 const validacionesPutProductCart = [validarId("id"), validacionesCantidad];
 
-const validacionesPurchaseOrder = [validarId("userId")];
-
 const validacionesDeletOrder = [validacionesIdParam];
 
 const validacionesAceptarPedido = [validacionesIdParam];
@@ -248,7 +246,6 @@ export {
   validacionesPutResena,
   validacionesPutProductCart,
   validacionesDeleteCart,
-  validacionesPurchaseOrder,
   validacionesDeletOrder,
   validacionesAceptarPedido,
   validacionesCancelarPedido,

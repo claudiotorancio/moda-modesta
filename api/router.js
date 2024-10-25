@@ -9,7 +9,6 @@ import {
   validacionesNotificacionesSinStock,
   validacionesPutProductCart,
   validacionesDeleteCart,
-  validacionesPurchaseOrder,
   validacionesDeletOrder,
   validacionesAceptarPedido,
   validacionesFinalizarPedido,
@@ -288,13 +287,7 @@ router.delete(
 router.delete("/api/limpiarCarrito", limpiarCarrito);
 
 // Compras
-router.get(
-  "/api/listaOrder",
-  validacionesPurchaseOrder,
-  handleValidationErrors,
-  requireAdmin,
-  purchaseOrder
-);
+router.get("/api/listaOrder", requireAdmin, purchaseOrder);
 router.delete(
   "/api/deleteOrder/:id",
   validacionesDeletOrder,
