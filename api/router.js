@@ -1,7 +1,6 @@
 import { fileURLToPath } from "url";
 import express, { Router, urlencoded } from "express";
 import {
-  validacionesGetNotificaciones,
   validacionesNotificacionIngreso,
   validacionesAgregarResena,
   validacionesPutResena,
@@ -100,7 +99,6 @@ import confirmResetpassword from "../backend/routes/login/confirmResetPassword.j
 import { profileControllers } from "../backend/profile/profileControllers.js";
 import { isAuthenticated } from "../backend/isAuthenticated.js";
 import { validationResult } from "express-validator";
-import { kMaxLength } from "buffer";
 
 const router = Router();
 const app = express();
