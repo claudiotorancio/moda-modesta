@@ -1,3 +1,4 @@
+/* Estilos base del modal */
 .modal {
   display: none;
   backdrop-filter: blur(8px);
@@ -6,23 +7,24 @@
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden; /* Sin scroll en el fondo */
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 1050;
 }
 
 .modal-content {
-  position: relative;
+  position: relative; /* Mantener el contenido centrado por defecto */
   background-color: #fff;
   border-radius: 8px;
-  margin: 5% auto;
+  margin: 5% auto; /* Margen para pantallas grandes */
   padding: 2rem;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   max-width: 40%;
   text-align: center;
-  animation: slide-down 0.3s ease-out;
+  animation: slide-down 0.3s ease-out; /* Animación de entrada */
 }
 
+/* Estilo del botón de cierre */
 .modal-close {
   position: absolute;
   top: 1.5rem;
@@ -33,7 +35,7 @@
   border: none;
   cursor: pointer;
   transition: color 0.3s ease;
-  z-index: 1060;
+  z-index: 1060; /* Asegura que el botón esté encima */
 }
 
 .modal-close:hover,
@@ -41,6 +43,7 @@
   color: #333;
 }
 
+/* Animación de deslizamiento */
 @keyframes slide-down {
   from {
     transform: translateY(-20%);
@@ -52,6 +55,7 @@
   }
 }
 
+/* Estilos del texto dentro del modal */
 .modal p {
   font-size: 1rem;
   margin-bottom: 1.5rem;
@@ -62,33 +66,39 @@
 /* Modal para pantallas grandes */
 @media (min-width: 768px) and (max-width: 1200px) {
   .modal-content {
-    max-width: 60%;
+    max-width: 60%; /* Ajuste para pantallas medianas */
   }
 }
 
-/* Modal deslizante para dispositivos móviles */
+/* Modal para dispositivos móviles */
 @media (max-width: 768px) {
   .modal-content {
-    max-width: 90%;
-
-    margin: 15% 0 0 0;
-    padding: 1.5rem;
-    border-radius: 0;
-    transform: translateX(-100%);
-    animation: slide-in 0.3s forwards;
+    position: absolute; /* Cambiado a absolute para permitir el ajuste */
+    left: 0;
+    top: 6%;
+    height: 100%; /* Altura completa del modal en móviles */
+    max-width: 90%; /* Ancho deseado para móviles */
+    max-height: 100%; /* Asegura que no exceda la altura de la ventana */
+    overflow-y: auto; /* Permitir desplazamiento vertical si el contenido es mayor */
+    background-color: #fff; /* Color de fondo del contenido */
+    border-radius: 0; /* Sin bordes redondeados */
+    padding: 1.5rem; /* Ajustado para móviles */
+    animation: slide-in 0.3s forwards; /* Animación de entrada */
   }
 
   .modal-close {
-    top: 4rem;
-    font-size: 2rem;
-    color: black;
+    top: 4rem; /* Ajustado para que sea visible */
+    right: 3rem; /* Ajustado para que sea visible */
+    font-size: 2rem; /* Tamaño ajustado */
+    color: black; /* Color ajustado */
   }
 
   .modal p {
-    font-size: 0.9rem;
+    font-size: 0.9rem; /* Tamaño de texto ajustado */
   }
 }
 
+/* Animación de deslizamiento desde el lado */
 @keyframes slide-in {
   from {
     transform: translateX(-100%);
