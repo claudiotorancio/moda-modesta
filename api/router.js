@@ -100,6 +100,7 @@ import confirmResetpassword from "../backend/routes/login/confirmResetPassword.j
 import { profileControllers } from "../backend/profile/profileControllers.js";
 import { isAuthenticated } from "../backend/isAuthenticated.js";
 import { validationResult } from "express-validator";
+import { kMaxLength } from "buffer";
 
 const router = Router();
 const app = express();
@@ -240,10 +241,15 @@ router.get(
 );
 
 // Notificaciones
-router.post("/api/notificacionSinStock", notificacionSinStock);
+router.post(
+  "/api/notificacionSinStock",
+  validacionesNotificacionesSinStock,
+  handleValidationErrors,
+  notificacionSinStock
+);
 router.get(
   "/api/getNotificaciones",
-  validacionesNotificacionesSinStock,
+  validacionesGetNotificaciones,
   handleValidationErrors,
   authenticateJWT,
   requireAdmin,
