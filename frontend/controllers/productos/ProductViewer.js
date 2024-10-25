@@ -83,7 +83,7 @@ export const mostrarProducto = async (
                 : ""
             }
             </div>`
-              : `<div class="container main-container">
+              : `<div class="main-container">
                   <div class="text-center">
                     <div class="card-form">
                       <p>¡Notificarme cuando ingrese!</p>
