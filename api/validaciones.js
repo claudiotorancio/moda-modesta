@@ -22,21 +22,6 @@ const validacionesNotificacionesSinStock = [
     .escape(), // Sanitizar el ID
 ];
 
-const validacionesGetNotificaciones = [
-  body("email")
-    .notEmpty()
-    .withMessage("El correo electrónico es obligatorio.")
-    .isEmail()
-    .withMessage("Debes proporcionar un correo electrónico válido.")
-    .trim()
-    .escape(),
-  body("id")
-    .notEmpty()
-    .withMessage("El ID del producto es obligatorio.")
-    .trim()
-    .escape(),
-];
-
 const validacionesNotificacionIngreso = [
   body("idProducto")
     .notEmpty()

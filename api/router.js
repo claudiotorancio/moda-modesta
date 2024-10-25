@@ -249,8 +249,6 @@ router.post(
 );
 router.get(
   "/api/getNotificaciones",
-  validacionesGetNotificaciones,
-  handleValidationErrors,
   authenticateJWT,
   requireAdmin,
   getNotificaciones
