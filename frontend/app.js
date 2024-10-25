@@ -140,9 +140,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     await controllers.renderInit();
     cargarReseñas();
-    actualizarUsuario.textContent = `${escapeHtml(
-      user
-    )}  <i class="fa-solid fa-user-pen"></i>`;
+    actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
   } else if (!user && !isAdmin.ok) {
