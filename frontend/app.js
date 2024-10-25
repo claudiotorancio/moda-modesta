@@ -66,6 +66,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const titulo = document.querySelector("[data-titulo]");
 
+  //funcion para escapar
+
+  function escapeHtml(unsafe) {
+    return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
 
   if (user && isAdmin.role === "admin") {
@@ -127,7 +138,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert("Seccion en Construccion");
     });
 
-    actualizarUsuario.innerHTML = `${user}<i class="fa-solid fa-user-pen"></i>`;
+    actualizarUsuario.innerHTML = `${escapeHtml(
+      user
+    )}<i class="fa-solid fa-user-pen"></i>`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
     buscar();
@@ -140,7 +153,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     await controllers.renderInit();
     cargarReseñas();
-    actualizarUsuario.textContent = `${user}  <i class="fa-solid fa-user-pen"></i>`;
+    actualizarUsuario.textContent = `${escapeHtml(
+      user
+    )}  <i class="fa-solid fa-user-pen"></i>`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
   } else if (!user && !isAdmin.ok) {

@@ -17,6 +17,17 @@ import { initializeCategoryControls } from "./controllers/productos/categoryCont
 import { ListaServices } from "./services/lista_services.js";
 import { hashControllers } from "./controllers/hashControllers.js";
 
+//funcion para escapar
+
+function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
   if (hash.startsWith("#product-")) {
@@ -38,7 +49,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       el.style.display = "block";
     });
 
-    actualizarUsuario.textContent = `${user}<i class="fa-solid fa-user-pen"></i>`;
+    actualizarUsuario.innerHTML = `${escapeHtml(
+      user
+    )} <i class="fa-solid fa-user-pen"></i>`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
   }
