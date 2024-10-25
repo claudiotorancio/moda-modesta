@@ -170,9 +170,27 @@ const validacionesUpdateProduct = [
 
   validarCampo("name", "El nombre es obligatorio."),
 
-  validarCampo("price", "El precio es obligatorio."), // true para validar como numérico
+  validarCampo("price", "El precio es obligatorio.", true), // true para validar como numérico
 
   validarCampo("description", "La descripción es obligatoria."),
+
+  validarCampo("section", "La sección es obligatoria."),
+
+  validarCampo("isFeatured", "El campo destacado debe ser booleano.")
+    .optional()
+    .isBoolean(),
+
+  validarCampo(
+    "generalStock",
+    "El stock general debe ser un número.",
+    true
+  ).optional(),
+
+  // Validación para el array de talles si es proporcionado
+  body("sizes")
+    .optional()
+    .isArray()
+    .withMessage("Los talles deben estar en un formato de lista válida."),
 ];
 
 export {
