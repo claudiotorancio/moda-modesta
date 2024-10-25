@@ -75,7 +75,7 @@
   .modal-content {
     position: absolute; /* Cambiado a absolute para permitir el ajuste */
     left: 0;
-    top: 6%;
+    top: 5%;
     height: 100%; /* Altura completa del modal en móviles */
     max-width: 90%; /* Ancho deseado para móviles */
     max-height: calc(
