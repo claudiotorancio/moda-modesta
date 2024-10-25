@@ -365,7 +365,6 @@ export {
   validacionesInfoPersonal,
   validacionesPedidosRecientes,
   validacionesNotificacionesSinStock,
-  validacionesGetNotificaciones,
   validacionesNotificacionIngreso,
   validacionesAgregarResena,
   validacionesPutResena,
