@@ -159,40 +159,6 @@ const validacionesSignin = [
   body("password").notEmpty().withMessage("La contraseña es obligatoria."),
 ];
 
-const validacionesCreateProduct = [
-  validarCampo("name", "El nombre del producto es obligatorio."),
-  validarCampo("price", "El precio es obligatorio."),
-  validarCampo("description", "La descripción es obligatoria."),
-];
-
-const validacionesUpdateProduct = [
-  validarId("id"), // Validación para el ID del producto
-
-  validarCampo("name", "El nombre es obligatorio."),
-
-  validarCampo("price", "El precio es obligatorio.", true), // true para validar como numérico
-
-  validarCampo("description", "La descripción es obligatoria."),
-
-  validarCampo("section", "La sección es obligatoria."),
-
-  validarCampo("isFeatured", "El campo destacado debe ser booleano.")
-    .optional()
-    .isBoolean(),
-
-  validarCampo(
-    "generalStock",
-    "El stock general debe ser un número.",
-    true
-  ).optional(),
-
-  // Validación para el array de talles si es proporcionado
-  body("sizes")
-    .optional()
-    .isArray()
-    .withMessage("Los talles deben estar en un formato de lista válida."),
-];
-
 export {
   validacionesNotificacionesSinStock,
   validacionesAgregarResena,
@@ -214,6 +180,4 @@ export {
   validacionesListaProductos,
   validacionesSignin,
   validacionesSignup,
-  validacionesCreateProduct,
-  validacionesUpdateProduct,
 };

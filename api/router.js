@@ -20,8 +20,6 @@ import {
   validacionesSignup,
   validacionesSignin,
   validacionesUpdatePassword,
-  validacionesCreateProduct,
-  validacionesUpdateProduct,
 } from "../api/validaciones.js";
 import morgan from "morgan";
 // import cors from "cors";
@@ -414,21 +412,12 @@ router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 router.get("/api/renderDestacados", destacadosProduct);
 // router.get("/api/listaProductosUsuario", listaProductosUsuario);
 router.get("/api/listaProductos", listaProductos);
-router.post(
-  "/api/createProduct",
-  validacionesCreateProduct,
-  handleValidationErrors,
-  requireAdmin,
-  uploadSingle,
-  createProduct
-);
+router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
 router.put("/api/activateProduct/:id", requireAdmin, activarProducto);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct/:id",
-  validacionesUpdateProduct,
-  handleValidationErrors,
   requireAdmin,
   uploadSingleUpdate,
   updateProduct
