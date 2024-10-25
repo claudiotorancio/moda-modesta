@@ -2,12 +2,12 @@
 
 const logout = (req, res) => {
   try {
-    // Comprobar si el usuario está autenticado
-    if (!req.isAuthenticated()) {
-      return res
-        .status(401)
-        .json({ success: false, message: "No estás autenticado." });
-    }
+    // // Comprobar si el usuario está autenticado
+    // if (!req.isAuthenticated()) {
+    //   return res
+    //     .status(401)
+    //     .json({ success: false, message: "No estás autenticado." });
+    // }
     //manejo de passport para el logout
     req.logout((err) => {
       if (err) {
