@@ -49,16 +49,7 @@ const validacionesCantidad = body("cantidad")
   .withMessage("Debe ser un número mayor que cero.")
   .customSanitizer(escape); // Usamos escape-html
 
-const validacionesInfoPersonal = [];
-
-const validacionesPedidosRecientes = [];
-
 const validacionesNotificacionesSinStock = [validarEmail(), validarId("id")];
-
-const validacionesNotificacionIngreso = [
-  validarId("idProducto"),
-  validarId("idNotificaciones"),
-];
 
 const validacionesAgregarResena = [
   validarCampo("name", "El nombre es obligatorio."),
@@ -70,59 +61,15 @@ const validacionesAgregarResena = [
 ];
 const validacionesPutResena = [validarId("id"), ...validacionesAgregarResena];
 
-const validacionesDelete = [validacionesIdParam];
-
-const validacionesAddProductCart = [
-  validarId("productId"),
-  validarCampo("name", "El nombre del producto es obligatorio."),
-  validarCampo("price", "El precio es obligatorio.", true),
-  validarCampo("imagePath", "La ruta de la imagen es obligatoria."),
-  validarCampo("size", "La talla es obligatoria."),
-  validacionesCantidad,
-];
-const validacionesGetProductsCart = [
-  validarId("productId"),
-  validacionesCantidad,
-];
-
 const validacionesDeleteCart = [validacionesIdParam];
 
 const validacionesPutProductCart = [validarId("id"), validacionesCantidad];
 
-const validacionesPurchaseOrder = [
-  query("startDate")
-    .optional()
-    .isISO8601()
-    .withMessage("La fecha de inicio debe ser una fecha válida en formato ISO.")
-    .toDate(), // Convertir a objeto Date
-  query("endDate")
-    .optional()
-    .isISO8601()
-    .withMessage("La fecha de fin debe ser una fecha válida en formato ISO.")
-    .toDate(), // Convertir a objeto Date
-  query("userId")
-    .optional()
-    .isMongoId()
-    .withMessage("El ID del usuario no es válido."),
-];
+const validacionesPurchaseOrder = [validarId("userId")];
 
 const validacionesDeletOrder = [validacionesIdParam];
 
-const validacionesCompraPrepare = [
-  validarEmail(),
-  validarCampo("name", "El nombre es obligatorio."),
-  validarCampo("producto", "El producto es obligatorio."),
-];
-
-const validacionesCompraEnCamino = [validacionesIdParam];
-
 const validacionesAceptarPedido = [validacionesIdParam];
-
-const validacionesCorreoEnCamino = [
-  validarEmail(),
-  validarCampo("name", "El nombre es obligatorio."),
-  validarCampo("producto", "El producto es obligatorio."),
-];
 
 const validacionesFinalizarPedido = [validacionesIdParam];
 
@@ -214,24 +161,90 @@ const validacionesSignin = [
   body("password").notEmpty().withMessage("La contraseña es obligatoria."),
 ];
 
+const validacionesCreateProduct = [
+  validarCampo("name", "El nombre del producto es obligatorio."),
+  validarCampo("price", "El precio es obligatorio.", true),
+  validarCampo("description", "La descripción es obligatoria."),
+  validarCampo("section", "La sección es obligatoria."),
+  validarId("user_id"),
+  validacionesCantidad.optional(),
+
+  // Validación para las tallas, si se envían
+  body("sizes")
+    .optional()
+    .custom((value) => {
+      try {
+        const sizesArray = JSON.parse(value);
+        if (!Array.isArray(sizesArray)) throw new Error();
+        sizesArray.forEach((sizeData) => {
+          if (
+            typeof sizeData.size !== "string" ||
+            typeof sizeData.stock !== "number" ||
+            sizeData.stock < 0
+          ) {
+            throw new Error(
+              "Cada entrada debe tener 'size' y 'stock' válidos."
+            );
+          }
+        });
+        return true;
+      } catch (error) {
+        throw new Error("El formato de las tallas es incorrecto.");
+      }
+    }),
+
+  // Validación para las imágenes, en caso de que existan
+  body("files")
+    .optional()
+    .isArray()
+    .withMessage("Las imágenes deben enviarse en un arreglo.")
+    .custom((files) => {
+      files.forEach((file) => {
+        if (typeof file.location !== "string") {
+          throw new Error("Cada archivo debe tener una ubicación válida.");
+        }
+      });
+      return true;
+    }),
+];
+
+const validacionesUpdateProduct = [
+  validarId("id"), // Validación para el ID del producto
+
+  validarCampo("name", "El nombre es obligatorio."),
+
+  validarCampo("price", "El precio es obligatorio.", true), // true para validar como numérico
+
+  validarCampo("description", "La descripción es obligatoria."),
+
+  validarCampo("section", "La sección es obligatoria."),
+
+  validarCampo("isFeatured", "El campo destacado debe ser booleano.")
+    .optional()
+    .isBoolean(),
+
+  validarCampo(
+    "generalStock",
+    "El stock general debe ser un número.",
+    true
+  ).optional(),
+
+  // Validación para el array de talles si es proporcionado
+  body("sizes")
+    .optional()
+    .isArray()
+    .withMessage("Los talles deben estar en un formato de lista válida."),
+];
+
 export {
-  validacionesInfoPersonal,
-  validacionesPedidosRecientes,
   validacionesNotificacionesSinStock,
-  validacionesNotificacionIngreso,
   validacionesAgregarResena,
   validacionesPutResena,
-  validacionesDelete,
-  validacionesAddProductCart,
-  validacionesGetProductsCart,
   validacionesPutProductCart,
   validacionesDeleteCart,
   validacionesPurchaseOrder,
   validacionesDeletOrder,
-  validacionesCompraPrepare,
-  validacionesCompraEnCamino,
   validacionesAceptarPedido,
-  validacionesCorreoEnCamino,
   validacionesCancelarPedido,
   validacionesFinalizarPedido,
   validacionesSendMail,
@@ -245,4 +258,6 @@ export {
   validacionesListaProductos,
   validacionesSignin,
   validacionesSignup,
+  validacionesCreateProduct,
+  validacionesUpdateProduct,
 };

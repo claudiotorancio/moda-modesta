@@ -1,25 +1,17 @@
 import { fileURLToPath } from "url";
 import express, { Router, urlencoded } from "express";
 import {
-  validacionesNotificacionIngreso,
   validacionesAgregarResena,
   validacionesPutResena,
-  validacionesDelete,
-  validacionesGetProductsCart,
   validacionesSendMail,
   validacionesResetPassword,
   validacionesConfirmResetPassword,
-  validacionesListaProductos,
   validacionesNotificacionesSinStock,
-  validacionesAddProductCart,
   validacionesPutProductCart,
   validacionesDeleteCart,
   validacionesPurchaseOrder,
   validacionesDeletOrder,
-  validacionesCompraPrepare,
-  validacionesCompraEnCamino,
   validacionesAceptarPedido,
-  validacionesCorreoEnCamino,
   validacionesFinalizarPedido,
   validacionesCancelarPedido,
   validacionesSuscribeMail,
@@ -29,6 +21,8 @@ import {
   validacionesSignup,
   validacionesSignin,
   validacionesUpdatePassword,
+  validacionesCreateProduct,
+  validacionesUpdateProduct,
 } from "../api/validaciones.js";
 import morgan from "morgan";
 // import cors from "cors";
@@ -253,8 +247,6 @@ router.get(
 );
 router.post(
   "/api/notificacionIngreso/",
-  validacionesNotificacionIngreso,
-  handleValidationErrors,
   authenticateJWT,
   requireAdmin,
   notificacionIngreso
@@ -276,22 +268,11 @@ router.put(
   requireAdmin,
   putResena
 );
-router.delete(
-  "/api/deleteResena/:id",
-  validacionesDelete,
-  handleValidationErrors,
-  requireAdmin,
-  deleteResena
-);
+router.delete("/api/deleteResena/:id", requireAdmin, deleteResena);
 
 // Carrito
 router.get("/api/getProductsCart", getProductsCart);
-router.post(
-  "/api/addProductCart",
-  validacionesAddProductCart,
-  handleValidationErrors,
-  addProductCart
-);
+router.post("/api/addProductCart", addProductCart);
 router.put(
   "/api/putProductCart/:id",
   validacionesPutProductCart,
@@ -323,18 +304,11 @@ router.delete(
 );
 router.post(
   "/api/compraPrepare",
-  validacionesCompraPrepare,
-  handleValidationErrors,
+
   requireAdmin,
   compraPrepare
 );
-router.put(
-  "/api/compraEnCamino/:id",
-  validacionesCompraEnCamino,
-  handleValidationErrors,
-  requireAdmin,
-  compraEnCamino
-);
+router.put("/api/compraEnCamino/:id", requireAdmin, compraEnCamino);
 router.put(
   "/api/aceptarPedido/:id",
   validacionesAceptarPedido,
@@ -342,13 +316,7 @@ router.put(
   requireAdmin,
   aceptarPedido
 );
-router.post(
-  "/api/correoEnCamino",
-  validacionesCorreoEnCamino,
-  handleValidationErrors,
-  requireAdmin,
-  correoEnCamino
-);
+router.post("/api/correoEnCamino", requireAdmin, correoEnCamino);
 router.put(
   "/api/finalizarPedido/:id",
   validacionesFinalizarPedido,
@@ -453,12 +421,21 @@ router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 router.get("/api/renderDestacados", destacadosProduct);
 // router.get("/api/listaProductosUsuario", listaProductosUsuario);
 router.get("/api/listaProductos", listaProductos);
-router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
+router.post(
+  "/api/createProduct",
+  validacionesCreateProduct,
+  handleValidationErrors,
+  requireAdmin,
+  uploadSingle,
+  createProduct
+);
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
 router.put("/api/activateProduct/:id", requireAdmin, activarProducto);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct/:id",
+  validacionesUpdateProduct,
+  handleValidationErrors,
   requireAdmin,
   uploadSingleUpdate,
   updateProduct
