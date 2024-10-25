@@ -11,8 +11,8 @@ import {
   validacionesConfirmResetPassword,
   validacionesListaProductos,
   validacionesNotificacionesSinStock,
-  validacionesAddProdcutCart,
-  validacionesPutProdcutCart,
+  validacionesAddProductCart,
+  validacionesPutProductCart,
   validacionesDeleteCart,
   validacionesPurchaseOrder,
   validacionesDeletOrder,
@@ -288,13 +288,13 @@ router.delete(
 router.get("/api/getProductsCart", getProductsCart);
 router.post(
   "/api/addProductCart",
-  validacionesAddProdcutCart,
+  validacionesAddProductCart,
   handleValidationErrors,
   addProductCart
 );
 router.put(
   "/api/putProductCart/:id",
-  validacionesPutProdcutCart,
+  validacionesPutProductCart,
   handleValidationErrors,
   putProductCart
 );

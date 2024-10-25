@@ -2,6 +2,15 @@ import { ProfileServices } from "../services/profile-services.js";
 import { LoginControllers } from "../controllers/registro/login_controllers.js";
 import { modalControllers } from "../modal/modal.js";
 
+function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export const profileControllers = {
   async InfoPersonal() {
     try {
@@ -21,7 +30,7 @@ export const profileControllers = {
               type="text"
               class="form-control"
               id="username"
-              value="${user.nombre}"
+              value="${escapeHtml(user.nombre)}"
               disabled
             />
           </div>
@@ -31,7 +40,7 @@ export const profileControllers = {
               type="email"
               class="form-control"
               id="email"
-              value="${user.email}"
+              value="${escapeHtml(user.email)}"
               disabled
             />
           </div>

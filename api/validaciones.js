@@ -1,133 +1,93 @@
 //validaciones.js
 
-import { body, param, query, check } from "express-validator";
+import { body, param, query } from "express-validator";
 import escape from "escape-html";
 
-const validacionesInfoPersonal = [];
-
-const validacionesPedidosRecientes = [];
-
-const validacionesNotificacionesSinStock = [
+// Funciones auxiliares
+const validarEmail = () =>
   body("email")
     .notEmpty()
     .withMessage("El correo electrónico es obligatorio.")
     .isEmail()
     .withMessage("Debes proporcionar un correo electrónico válido.")
     .trim()
-    .escape(), // Sanitizar el email
-  body("id")
+    .customSanitizer(escape); // Usamos escape-html
+
+const validarId = (campo = "id") =>
+  body(campo)
     .notEmpty()
-    .withMessage("El ID del producto es obligatorio.")
+    .withMessage(`El ${campo} es obligatorio.`)
+    .isMongoId()
+    .withMessage(`El ${campo} no es válido.`)
     .trim()
-    .escape(), // Sanitizar el ID
-];
+    .customSanitizer(escape); // Usamos escape-html
+
+const validarCampo = (campo, mensaje, isNumeric = false) => {
+  let validador = body(campo)
+    .notEmpty()
+    .withMessage(mensaje)
+    .trim()
+    .customSanitizer(escape); // Usamos escape-html
+  if (isNumeric) {
+    validador = validador
+      .isNumeric()
+      .withMessage(`${campo} debe ser numérico.`);
+  }
+  return validador;
+};
+
+// Validaciones comunes
+const validacionesIdParam = param("id")
+  .isMongoId()
+  .withMessage("El ID no es válido.")
+  .customSanitizer(escape); // Usamos escape-html
+
+const validacionesCantidad = body("cantidad")
+  .notEmpty()
+  .withMessage("La cantidad es obligatoria.")
+  .isInt({ gt: 0 })
+  .withMessage("Debe ser un número mayor que cero.")
+  .customSanitizer(escape); // Usamos escape-html
+
+const validacionesInfoPersonal = [];
+
+const validacionesPedidosRecientes = [];
+
+const validacionesNotificacionesSinStock = [validarEmail(), validarId("id")];
 
 const validacionesNotificacionIngreso = [
-  body("idProducto")
-    .notEmpty()
-    .withMessage("El campo 'idProducto' es obligatorio.")
-    .isMongoId()
-    .withMessage("El 'idProducto' no es válido.")
-    .trim()
-    .escape(),
-  body("idNotificaciones")
-    .notEmpty()
-    .withMessage("El campo 'idNotificaciones' es obligatorio.")
-    .trim()
-    .escape(),
+  validarId("idProducto"),
+  validarId("idNotificaciones"),
 ];
 
 const validacionesAgregarResena = [
-  body("name")
-    .notEmpty()
-    .withMessage("El nombre es obligatorio.")
-    .trim()
-    .escape(),
-  body("redSocial")
-    .notEmpty()
-    .withMessage("La red social es obligatoria.")
-    .trim()
-    .escape(),
-  body("resena")
-    .notEmpty()
-    .withMessage("La reseña es obligatoria.")
-    .trim()
-    .escape(),
+  validarCampo("name", "El nombre es obligatorio."),
+  validarCampo("redSocial", "La red social es obligatoria."),
+  validarCampo("resena", "La reseña es obligatoria."),
   body("estrellas")
     .isInt({ min: 1, max: 5 })
-    .withMessage("Las estrellas deben ser un número entre 1 y 5."),
+    .withMessage("Las estrellas deben ser entre 1 y 5."),
 ];
+const validacionesPutResena = [validarId("id"), ...validacionesAgregarResena];
 
-const validacionesPutResena = [
-  param("id").isMongoId().withMessage("El ID no es válido."),
-  ...validacionesAgregarResena,
+const validacionesDelete = [validacionesIdParam];
+
+const validacionesAddProductCart = [
+  validarId("productId"),
+  validarCampo("name", "El nombre del producto es obligatorio."),
+  validarCampo("price", "El precio es obligatorio.", true),
+  validarCampo("imagePath", "La ruta de la imagen es obligatoria."),
+  validarCampo("size", "La talla es obligatoria."),
+  validacionesCantidad,
 ];
-
-const validacionesDelete = [
-  param("id").isMongoId().withMessage("El ID no es válido."),
-];
-
-const validacionesAddProdcutCart = [
-  body("productId")
-    .notEmpty()
-    .withMessage("El ID del producto es obligatorio.")
-    .isMongoId()
-    .withMessage("El ID del producto no es válido."),
-  body("name")
-    .notEmpty()
-    .withMessage("El nombre del producto es obligatorio.")
-    .trim()
-    .escape(), // Escapar el nombre del producto
-  body("price")
-    .notEmpty()
-    .withMessage("El precio es obligatorio.")
-    .isNumeric()
-    .withMessage("El precio debe ser un número.")
-    .escape(), // Escapar el precio
-  body("imagePath")
-    .notEmpty()
-    .withMessage("La ruta de la imagen es obligatoria.")
-    .trim()
-    .escape(), // Escapar la ruta de la imagen
-  body("size")
-    .notEmpty()
-    .withMessage("La talla es obligatoria.")
-    .trim()
-    .escape(), // Escapar la talla
-  body("cantidad")
-    .notEmpty()
-    .withMessage("La cantidad es obligatoria.")
-    .isInt({ gt: 0 })
-    .withMessage("La cantidad debe ser un número mayor que cero."),
-];
-
 const validacionesGetProductsCart = [
-  param("productId")
-    .notEmpty()
-    .withMessage("El ID del producto es obligatorio.")
-    .isMongoId()
-    .withMessage("El ID del producto no es válido."),
-  param("cantidad")
-    .notEmpty()
-    .withMessage("La cantidad es obligatoria.")
-    .isInt({ gt: 0 })
-    .withMessage("La cantidad debe ser un número mayor que cero."),
+  validarId("productId"),
+  validacionesCantidad,
 ];
 
-const validacionesDeleteCart = [...validacionesDelete];
+const validacionesDeleteCart = [validacionesIdParam];
 
-const validacionesPutProdcutCart = [
-  param("id")
-    .notEmpty()
-    .withMessage("El ID del producto es obligatorio.")
-    .isMongoId()
-    .withMessage("El ID del producto no es válido."),
-  body("cantidad")
-    .notEmpty()
-    .withMessage("La cantidad es obligatoria.")
-    .isInt({ gt: 0 })
-    .withMessage("La cantidad debe ser un número mayor que cero."),
-];
+const validacionesPutProductCart = [validarId("id"), validacionesCantidad];
 
 const validacionesPurchaseOrder = [
   query("startDate")
@@ -146,92 +106,37 @@ const validacionesPurchaseOrder = [
     .withMessage("El ID del usuario no es válido."),
 ];
 
-const validacionesDeletOrder = [...validacionesDelete];
+const validacionesDeletOrder = [validacionesIdParam];
 
 const validacionesCompraPrepare = [
-  body("email")
-    .notEmpty()
-    .withMessage("El correo electrónico es requerido.")
-    .isEmail()
-    .withMessage("El correo electrónico proporcionado no es válido.")
-    .trim()
-    .escape(),
-  body("name")
-    .notEmpty()
-    .withMessage("El nombre es requerido.")
-    .trim()
-    .escape(),
-  body("producto")
-    .notEmpty()
-    .withMessage("El campo 'producto' es requerido.")
-    .trim()
-    .escape(),
+  validarEmail(),
+  validarCampo("name", "El nombre es obligatorio."),
+  validarCampo("producto", "El producto es obligatorio."),
 ];
 
-const validacionesCompraEnCamino = [
-  param("id")
-    .isMongoId()
-    .withMessage("El ID del producto debe ser un ID de Mongo válido."),
-];
+const validacionesCompraEnCamino = [validacionesIdParam];
 
-const validacionesAceptarPedido = [
-  param("id") // Se refiere al parámetro 'id' en la ruta
-    .isMongoId() // Verifica que el 'id' sea un ID de MongoDB válido
-    .withMessage("El ID del producto debe ser un ID de Mongo válido."), // Mensaje de error si la validación falla
-];
+const validacionesAceptarPedido = [validacionesIdParam];
 
 const validacionesCorreoEnCamino = [
-  body("email")
-    .isEmail()
-    .withMessage("El correo electrónico proporcionado no es válido."), // Valida que el email sea un formato correcto
-  body("name").notEmpty().withMessage("El nombre es requerido."), // Valida que el nombre no esté vacío
-  body("producto").notEmpty().withMessage("El producto es requerido."), // Valida que el campo producto no esté vacío
+  validarEmail(),
+  validarCampo("name", "El nombre es obligatorio."),
+  validarCampo("producto", "El producto es obligatorio."),
 ];
 
-const validacionesFinalizarPedido = [
-  param("id") // Se refiere al parámetro 'id' en la ruta
-    .isMongoId() // Verifica que el 'id' sea un ID de MongoDB válido
-    .withMessage("El ID del producto debe ser un ID de Mongo válido."), // Mensaje de error si la validación falla
-];
+const validacionesFinalizarPedido = [validacionesIdParam];
 
-const validacionesCancelarPedido = [
-  param("id") // Se refiere al parámetro 'id' en la ruta
-    .isMongoId() // Verifica que el 'id' sea un ID de MongoDB válido
-    .withMessage("El ID del producto debe ser un ID de Mongo válido."), // Mensaje de error si la validación falla
-];
+const validacionesCancelarPedido = [validacionesIdParam];
 
-const validacionesSendMail = [
-  body("email")
-    .notEmpty()
-    .withMessage("El correo electrónico es obligatorio.")
-    .isEmail()
-    .withMessage("Debes proporcionar un correo electrónico válido.")
-    .trim()
-    .escape(),
-];
+const validacionesSendMail = [validarEmail()];
 
 const validacionesSuscribeMail = [
-  // Verificar que el campo 'nombre' no esté vacío y sanitizar
-  body("nombre")
-    .notEmpty()
-    .withMessage("El nombre es requerido.")
-    .customSanitizer((value) => escape(value)), // Sanitizar el nombre
-
-  // Verificar que el campo 'email' no esté vacío y validar el formato
-  body("email")
-    .notEmpty()
-    .withMessage("El correo electrónico es requerido.")
-    .isEmail()
-    .withMessage("El correo electrónico proporcionado no es válido."),
+  validarCampo("nombre", "El nombre es obligatorio."),
+  validarEmail(),
 ];
 
 const validacionesConfirmMail = [
-  // Verificar que el token esté presente
-  query("token")
-    .notEmpty()
-    .withMessage("Token no proporcionado.")
-    .isString()
-    .withMessage("El token debe ser una cadena de texto."),
+  validarCampo("token", "El token es requerido"),
 ];
 
 const validacionesEnviarPromociones = [
@@ -244,58 +149,17 @@ const validacionesEnviarPromociones = [
 ];
 
 const validacionesCostoEnvio = [
-  body("cpOrigen")
-    .notEmpty()
-    .withMessage("El código postal de origen es requerido.")
-    .isNumeric()
-    .withMessage("El código postal de origen debe ser numérico.")
-    .customSanitizer((value) => escapeHtml(value)),
-
-  body("cpDestino")
-    .notEmpty()
-    .withMessage("El código postal de destino es requerido.")
-    .isNumeric()
-    .withMessage("El código postal de destino debe ser numérico.")
-    .customSanitizer((value) => escapeHtml(value)),
-
-  body("provinciaOrigen")
-    .notEmpty()
-    .withMessage("La provincia de origen es requerida.")
-    .isString()
-    .withMessage("La provincia de origen debe ser una cadena de texto.")
-    .customSanitizer((value) => escapeHtml(value)),
-
-  body("provinciaDestino")
-    .notEmpty()
-    .withMessage("La provincia de destino es requerida.")
-    .isString()
-    .withMessage("La provincia de destino debe ser una cadena de texto.")
-    .customSanitizer((value) => escapeHtml(value)),
-
-  body("peso")
-    .notEmpty()
-    .withMessage("El peso es requerido.")
-    .isNumeric()
-    .withMessage("El peso debe ser numérico.")
-    .customSanitizer((value) => escapeHtml(value)),
+  validarCampo("cpOrigen", "El código postal de origen es requerido.", true), // Campo numérico
+  validarCampo("cpDestino", "El código postal de destino es requerido.", true), // Campo numérico
+  validarCampo("provinciaOrigen", "La provincia de origen es requerida."), // Cadena de texto
+  validarCampo("provinciaDestino", "La provincia de destino es requerida."), // Cadena de texto
+  validarCampo("peso", "El peso es requerido.", true), // Campo numérico
 ];
 
-const validacionesResetPassword = [
-  body("email")
-    .notEmpty()
-    .withMessage("El correo electrónico es obligatorio.")
-    .isEmail()
-    .withMessage("Debes proporcionar un correo electrónico válido.")
-    .trim()
-    .escape(),
-];
+const validacionesResetPassword = [validarEmail()];
 
 const validacionesUpdatePassword = [
-  body("token")
-    .exists()
-    .withMessage("El token es requerido")
-    .isString()
-    .withMessage("El token debe ser una cadena válida"),
+  validarCampo("token", "El token es requerido"),
 
   body("newPassword")
     .exists()
@@ -311,19 +175,10 @@ const validacionesUpdatePassword = [
 ];
 
 const validacionesConfirmResetPassword = [
-  query("token")
-    .notEmpty()
-    .withMessage("El token es obligatorio.")
-    .trim()
-    .escape(),
+  validarCampo("token", "El token es requerido"),
 ];
 
-const validacionesListaProductos = [
-  check("user_id")
-    .optional()
-    .isMongoId()
-    .withMessage("El ID de usuario no es válido."),
-];
+const validacionesListaProductos = [validarId("user_id").optional()];
 const validacionesSignup = [
   // Validar el nombre
   body("nombre")
@@ -351,13 +206,7 @@ const validacionesSignup = [
 ];
 
 const validacionesSignin = [
-  body("email")
-    .notEmpty()
-    .withMessage("El correo electrónico es obligatorio.")
-    .isEmail()
-    .withMessage("Debes proporcionar un correo electrónico válido.")
-    .trim()
-    .escape(),
+  validarEmail(),
   body("password").notEmpty().withMessage("La contraseña es obligatoria."),
 ];
 
@@ -369,9 +218,9 @@ export {
   validacionesAgregarResena,
   validacionesPutResena,
   validacionesDelete,
-  validacionesAddProdcutCart,
+  validacionesAddProductCart,
   validacionesGetProductsCart,
-  validacionesPutProdcutCart,
+  validacionesPutProductCart,
   validacionesDeleteCart,
   validacionesPurchaseOrder,
   validacionesDeletOrder,
