@@ -165,8 +165,53 @@ const validacionesCreateProduct = [
   validarCampo("name", "El nombre del producto es obligatorio."),
   validarCampo("price", "El precio es obligatorio.", true),
   validarCampo("description", "La descripción es obligatoria."),
+  validarCampo("section", "La sección es obligatoria."),
   validarId("user_id"),
   validacionesCantidad.optional(),
+
+  validarCampo(
+    "generalStock",
+    "El stock general debe ser un número.",
+    true
+  ).optional(),
+
+  // Validación para las tallas, si se envían
+  body("sizes")
+    .optional()
+    .custom((value) => {
+      try {
+        const sizesArray = JSON.parse(value);
+        if (!Array.isArray(sizesArray)) throw new Error();
+        sizesArray.forEach((sizeData) => {
+          if (
+            typeof sizeData.size !== "string" ||
+            typeof sizeData.stock !== "number" ||
+            sizeData.stock < 0
+          ) {
+            throw new Error(
+              "Cada entrada debe tener 'size' y 'stock' válidos."
+            );
+          }
+        });
+        return true;
+      } catch (error) {
+        throw new Error("El formato de las tallas es incorrecto.");
+      }
+    }),
+
+  // Validación para las imágenes, en caso de que existan
+  body("imagePaths")
+    .optional()
+    .isArray()
+    .withMessage("Las imágenes deben enviarse en un arreglo.")
+    .custom((files) => {
+      files.forEach((file) => {
+        if (typeof file.location !== "string") {
+          throw new Error("Cada archivo debe tener una ubicación válida.");
+        }
+      });
+      return true;
+    }),
 ];
 
 const validacionesUpdateProduct = [
@@ -178,11 +223,23 @@ const validacionesUpdateProduct = [
 
   validarCampo("description", "La descripción es obligatoria."),
 
+  validarCampo("section", "La sección es obligatoria."),
+
+  validarCampo("isFeatured", "El campo destacado debe ser booleano.")
+    .optional()
+    .isBoolean(),
+
   validarCampo(
     "generalStock",
     "El stock general debe ser un número.",
     true
   ).optional(),
+
+  // Validación para el array de talles si es proporcionado
+  body("sizes")
+    .optional()
+    .isArray()
+    .withMessage("Los talles deben estar en un formato de lista válida."),
 ];
 
 export {
