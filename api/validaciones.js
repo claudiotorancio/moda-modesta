@@ -128,7 +128,11 @@ const validacionesFinalizarPedido = [validacionesIdParam];
 
 const validacionesCancelarPedido = [validacionesIdParam];
 
-const validacionesSendMail = [validarEmail()];
+const validacionesSendMail = [
+  validarEmail(),
+  validarCampo("nombre", "El nombre es obligatorio."),
+  validarCampo("telefono", "El precio es obligatorio.", true),
+];
 
 const validacionesSuscribeMail = [
   validarCampo("nombre", "El nombre es obligatorio."),
