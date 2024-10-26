@@ -73,8 +73,13 @@ export async function agregarEventListenerBotones() {
     boton.addEventListener("click", async (event) => {
       const idProducto = event.target.dataset.id;
       try {
-        // Esperar a que se complete la desactivación
-        await ProductEventHandler.handleActivate(idProducto);
+        const product = await productoServices.detalleProducto(idProducto);
+        if (!product) {
+          throw new Error("Datos del producto no disponibles");
+        }
+
+        // Llamar a handleDesactivate pasando el producto completo
+        await ProductEventHandler.handleDesactivate(product);
 
         // Recargar los productos después de desactivar
         await stockControllersInstance.renderStock();

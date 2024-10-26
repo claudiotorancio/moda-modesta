@@ -31,6 +31,7 @@ export class ProductEditor {
     );
     this.setupImageCheckListeners();
     this.setupGeneralStockCheck();
+    this.setupSizesCheckListeners();
     this.setupFormSubmitHandler(id);
   }
 
@@ -193,10 +194,10 @@ export class ProductEditor {
 
   setupImageCheckListeners() {
     const imageChecks = document.querySelectorAll(
-      "[data-check-image1], [data-check-image2], [data-check-image3]"
+      "[data-check-image1], [data-check-image2]"
     );
     const imageInputs = document.querySelectorAll(
-      "[data-image1], [data-image2], [data-image3]"
+      "[data-image1], [data-image2]"
     );
     const maxSelectable = 2;
 
@@ -223,10 +224,10 @@ export class ProductEditor {
         imageInputs[index].disabled = !check.checked;
       });
     });
+  }
 
-    // Habilitar/Deshabilitar inputs de stock basados en el estado del checkbox
+  setupSizesCheckListeners() {
     const sizeChecks = document.querySelectorAll('input[name="sizes"]');
-    const stockInputs = document.querySelectorAll('input[name^="stock_"]');
 
     sizeChecks.forEach((check) => {
       const size = check.value;
@@ -256,12 +257,12 @@ export class ProductEditor {
       const imagePath1 = imageInput1 ? imageInput1.files[0] : null;
       const imagePath2 = imageInput2 ? imageInput2.files[0] : null;
 
-      if (imagePath1 && imagePath2) {
-        alert(
-          "Solo puedes reemplazar una imagen. Si necesitas reemplazar ambas, debes crear un nuevo producto."
-        );
-        return;
-      }
+      // if (imagePath1 && imagePath2) {
+      //   alert(
+      //     "Solo puedes reemplazar una imagen. Si necesitas reemplazar ambas, debes crear un nuevo producto."
+      //   );
+      //   return;
+      // }
 
       const name = document.querySelector("[data-nombre]").value;
       const price = document.querySelector("[data-precio]").value;
