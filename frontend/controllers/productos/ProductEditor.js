@@ -29,6 +29,8 @@ export class ProductEditor {
       section,
       generalStock
     );
+    this.setupImageCheckListeners();
+    this.setupGeneralStockCheck();
     this.setupFormSubmitHandler(id);
   }
 
@@ -122,11 +124,6 @@ export class ProductEditor {
         <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
       </form>
     `;
-
-    this.productoEdicion.classList.add("modalVisor");
-
-    this.setupImageCheckListeners();
-    this.setupGeneralStockCheck();
   }
 
   setupGeneralStockCheck() {
