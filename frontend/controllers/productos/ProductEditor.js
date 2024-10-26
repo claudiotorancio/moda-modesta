@@ -110,7 +110,9 @@ export class ProductEditor {
             ? `
           <label for="sizes">Modificar talles y stocks </label>
           <div class="form-row">
+           <div class="col-center flex">
             ${this.renderSizeOptions(sizes)}
+            </div>
           </div>`
             : ` 
             ${this.renderGeneralStockHtml(generalStock)}
