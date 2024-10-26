@@ -166,10 +166,12 @@ export class ProductEditor {
       { size: "Talle 5" },
     ];
 
-    return sizes
+    return `
+  <div class="d-flex flex-wrap">
+    ${sizes
       .map(
         ({ size }) => `
-        <div class="form-check form-check-inline d-flex align-items-center mb-2">
+        <div class="form-check form-check-inline d-flex align-items-center me-3">
           <input 
             class="form-check-input me-1" 
             type="checkbox" 
@@ -195,7 +197,9 @@ export class ProductEditor {
         </div>
       `
       )
-      .join("");
+      .join("")}
+  </div>
+`;
   }
 
   setupImageCheckListeners() {
