@@ -109,7 +109,7 @@ export class ProductEditor {
           section !== "opcion3" && sizes
             ? `
           <label for="sizes">Modificar talles y stocks </label>
-          <div class="form-row">
+          <div class="form-row mb-3">
            <div class="col-center flex">
             ${this.renderSizeOptions(sizes)}
             </div>
