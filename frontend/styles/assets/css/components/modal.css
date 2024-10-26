@@ -14,6 +14,7 @@
 
 .modal-content {
   position: relative; /* Mantener el contenido centrado por defecto */
+  overflow-y: auto;
   background-color: #fff;
   border-radius: 8px;
   margin: 5% auto; /* Margen para pantallas grandes */

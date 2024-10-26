@@ -1,5 +1,4 @@
 import productoServices from "../../services/product_services.js";
-import { modalControllers } from "../../modal/modal.js";
 import { ProductEditor } from "./ProductEditor.js";
 import envioServices from "../../services/envio_services.js";
 
