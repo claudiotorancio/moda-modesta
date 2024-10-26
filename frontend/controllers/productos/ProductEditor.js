@@ -169,9 +169,9 @@ export class ProductEditor {
     return sizes
       .map(
         ({ size }) => `
-        <div class="form-check-inline me-3">
+        <div class="form-check form-check-inline d-flex align-items-center mb-2">
           <input 
-            class="form-check-input" 
+            class="form-check-input me-1" 
             type="checkbox" 
             value="${size}" 
             name="sizes" 
@@ -179,17 +179,18 @@ export class ProductEditor {
             ${selectedSizes.some((s) => s.size === size) ? "checked" : ""}
           >
           <label 
-            class="form-check-label" 
+            class="form-check-label me-2" 
             for="${size.replace(" ", "").toLowerCase()}">
             ${size}
           </label>
           <input 
-            class="form-control mt-2" 
+            class="form-control form-control-sm" 
             type="number" 
             placeholder="Sin stock" 
             name="stock_${size.replace(" ", "").toLowerCase()}" 
             value="${selectedSizes.find((s) => s.size === size)?.stock || 0}" 
             disabled
+            style="max-width: 80px;"
           >
         </div>
       `
