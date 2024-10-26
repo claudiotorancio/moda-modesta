@@ -109,7 +109,7 @@ export class ProductEditor {
           section !== "opcion3" && sizes
             ? `
           <label for="sizes">Modificar talles y stocks </label>
-          <div class="form-group mb-4">
+          <div class="form-row">
             ${this.renderSizeOptions(sizes)}
           </div>`
             : ` 
@@ -166,14 +166,12 @@ export class ProductEditor {
       { size: "Talle 5" },
     ];
 
-    return `
-  <div class="d-flex flex-wrap">
-    ${sizes
+    return sizes
       .map(
         ({ size }) => `
-        <div class="form-check form-check-inline d-flex align-items-center me-3">
+        <div class="form-check-inline me-3">
           <input 
-            class="form-check-input me-1" 
+            class="form-check-input" 
             type="checkbox" 
             value="${size}" 
             name="sizes" 
@@ -181,25 +179,22 @@ export class ProductEditor {
             ${selectedSizes.some((s) => s.size === size) ? "checked" : ""}
           >
           <label 
-            class="form-check-label me-2" 
+            class="form-check-label" 
             for="${size.replace(" ", "").toLowerCase()}">
             ${size}
           </label>
           <input 
-            class="form-control form-control-sm" 
+            class="form-control mt-2" 
             type="number" 
             placeholder="Sin stock" 
             name="stock_${size.replace(" ", "").toLowerCase()}" 
             value="${selectedSizes.find((s) => s.size === size)?.stock || 0}" 
             disabled
-            style="max-width: 80px;"
           >
         </div>
       `
       )
-      .join("")}
-  </div>
-`;
+      .join("");
   }
 
   setupImageCheckListeners() {
