@@ -54,7 +54,7 @@ export class ProductEditor {
             .map(
               (path, index) => `
             <div class="me-4 text-center" style="flex: 0 0 auto;">
-              <img class="img-fluid" style="max-width: 10rem;" src="${path}" alt="Imagen ${
+              <img class="img-fluid" style="max-width: 5rem;" src="${path}" alt="Imagen ${
                 index + 1
               }">
               <p class="text-muted">Imagen ${index + 1}</p>
@@ -72,12 +72,12 @@ export class ProductEditor {
           <div class="form-group">
             <input type="checkbox" id="image${
               index + 1
-            }Check" class="form-check-input" name="image${
+            }Check" class="form-check-input mt-2" name="image${
               index + 1
             }Check" data-check-image${index + 1}>
             <label for="image${
               index + 1
-            }Check" class="form-check-label">Actualizar Imagen ${
+            }Check" class="form-check-label mt-2">Actualizar Imagen ${
               index + 1
             }</label>
             <input class="form-control p-2 mt-2" placeholder="imageUrl" type="file" name="imagePath${
@@ -97,7 +97,7 @@ export class ProductEditor {
           <input class="form-control mt-3 mb-3 p-2" placeholder="precio" type="text" value="${price}" required data-precio>
         </div>
         <div class="form-group">
-          <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" required data-description>${description}</textarea>
+          <textarea class="form-control mt-3 mb-2 p-2" placeholder="Descripción" required data-description>${description}</textarea>
         </div>
         <div class="form-group form-check mb-3">
           <input type="checkbox" class="form-check-input" id="isFeatured" name="isFeatured" ${
@@ -112,15 +112,9 @@ export class ProductEditor {
           <div class="form-group mb-4">
             ${this.renderSizeOptions(sizes)}
           </div>`
-            : `
-          <div class="form-group form-check mb-3">
-            <input type="checkbox" class="form-check-input" id="updateGeneralStock" name="updateGeneralStock">
-            <label class="form-check-label" for="updateGeneralStock">Modificar stock general</label>
-          </div>
-          <div class="form-group">
-            <label for="generalStock">Stock general</label>
-            <input class="form-control mt-3 mb-3 p-2" type="number" value="${generalStock}" required data-generalStock disabled>
-          </div>`
+            : ` 
+            ${this.renderGeneralStockHtml(generalStock)}
+          `
         }
         <button type="submit" class="btn btn-primary btn-lg">Editar producto</button>
       </form>
@@ -150,6 +144,17 @@ export class ProductEditor {
 
     // Inicializa el estado del input basado en el estado actual del checkbox
     generalStockInput.disabled = !generalStockCheck.checked;
+  }
+
+  renderGeneralStockHtml(generalStock) {
+    return `<div class="form-group form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="updateGeneralStock" name="updateGeneralStock">
+            <label class="form-check-label" for="updateGeneralStock">Modificar stock general</label>
+          </div>
+          <div class="form-group">
+            <label for="generalStock">Stock general</label>
+            <input class="form-control mt-3 mb-3 p-2" type="number" value="${generalStock}" required data-generalStock disabled>
+          </div>`;
   }
 
   renderSizeOptions(selectedSizes = []) {
