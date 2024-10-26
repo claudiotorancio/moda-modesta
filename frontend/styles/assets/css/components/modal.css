@@ -7,14 +7,13 @@
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* Sin scroll en el fondo */
+  overflow: auto; /* Sin scroll en el fondo */
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 1050;
 }
 
 .modal-content {
   position: relative; /* Mantener el contenido centrado por defecto */
-  overflow-y: auto;
   background-color: #fff;
   border-radius: 8px;
   margin: 5% auto; /* Margen para pantallas grandes */
