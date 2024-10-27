@@ -106,12 +106,11 @@ export class ProductCard {
           await ProductEventHandler.handleDesactivate(productId);
         }
       }
-
       try {
         // Determinar si se activa o desactiva el producto
         const actionConfirmed = await handleToggleProduct(
           this.id,
-          !this.isActive
+          this.isActive
         );
         if (actionConfirmed) {
           if (this.isActive) {
