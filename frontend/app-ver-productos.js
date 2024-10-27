@@ -19,6 +19,16 @@ import { hashControllers } from "./controllers/hashControllers.js";
 import { initializeCategoryControlsAdmin } from "./controllers/productos/categoryControlsAdmin.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
+  if (user && isAdmin.role === "admin") {
+    document.querySelectorAll(".admin-only").forEach((el) => {
+      el.style.display = "block";
+    });
+    initializeCategoryControlsAdmin();
+    actualizarUsuario.textContent = `${user}`;
+    logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+    userActive.style.display = "none";
+  }
   const hash = window.location.hash;
   if (hash.startsWith("#product-")) {
     await hashControllers();
@@ -32,17 +42,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const actualizarUsuario = document.querySelector(".data-user");
   const logoutUsuario = document.querySelector("[data-logOut]");
   const userActive = document.querySelector("[data-log]");
-
-  // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
-  if (user && isAdmin.role === "admin") {
-    document.querySelectorAll(".admin-only").forEach((el) => {
-      el.style.display = "block";
-    });
-    initializeCategoryControlsAdmin();
-    actualizarUsuario.textContent = `${user}`;
-    logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
-    userActive.style.display = "none";
-  }
 
   cargarReseñas();
   userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
