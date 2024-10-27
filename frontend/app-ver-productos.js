@@ -16,7 +16,7 @@ import { cargarReseñas } from "./controllers/reseña/reseñas.js";
 import { initializeCategoryControls } from "./controllers/productos/categoryControls.js";
 import { ListaServices } from "./services/lista_services.js";
 import { hashControllers } from "./controllers/hashControllers.js";
-
+import { initializeCategoryControlsAdmin } from "./controllers/productos/categoryControlsAdmin.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
@@ -34,11 +34,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const userActive = document.querySelector("[data-log]");
 
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
-  if (user && isAdmin) {
+  if (user && isAdmin.role === "admin") {
     document.querySelectorAll(".admin-only").forEach((el) => {
       el.style.display = "block";
     });
-
+    initializeCategoryControlsAdmin();
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";

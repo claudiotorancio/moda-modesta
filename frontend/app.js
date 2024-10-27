@@ -34,7 +34,6 @@ import {
 import { buscar } from "./controllers/buscador/buscador.js";
 import { RenderStock } from "./controllers/stock/RenderStock.js";
 import { ocultarProductos } from "./controllers/ocultarProductos/ocultarProductos.js";
-import { initializeCategoryControlsAdmin } from "./controllers/productos/categoryControlsAdmin.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
@@ -75,7 +74,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     await controllers.renderProducts();
-    initializeCategoryControlsAdmin();
+
     cargarReseñasAdmin();
 
     const envio = document.querySelector("[data-pedidos]");
