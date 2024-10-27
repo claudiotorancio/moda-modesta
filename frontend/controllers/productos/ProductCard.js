@@ -102,7 +102,7 @@ export class ProductCard {
         // Verificar si el producto está en el carrito
 
         // Determinar si se activa o desactiva el producto
-        if (this.isActive) {
+        if (!this.isActive) {
           await handleToggleProduct(this.id, false); // Desactivar producto
           this.isActive = false; // Actualizar estado del producto
           toggleButton.textContent = "Activar"; // Cambiar el texto del botón
