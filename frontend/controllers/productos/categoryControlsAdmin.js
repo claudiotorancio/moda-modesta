@@ -1,7 +1,5 @@
 import productoServices from "../../services/product_services.js";
 import { ProductCard } from "./ProductCard.js";
-import { ProductInit } from "./ProductInit.js";
-import { ListaServices } from "../../services/lista_services.js";
 
 export async function initializeCategoryControlsAdmin() {
   const productos = await productoServices.listaProductos();
@@ -96,50 +94,8 @@ export async function initializeCategoryControlsAdmin() {
         );
 
         let tarjetaProducto;
-        // const listaServicesInstance = new ListaServices();
 
-        // try {
-        //   // Obtener el token del localStorage
-        //   const token = sessionStorage.getItem("token");
-
-        //   // Verificar si el token existe
-        //   if (!token) {
-        //     // Si no hay token, cargar la tarjeta de producto normal
-        //     tarjetaProducto = productCategory.productoInicio();
-        //   } else {
-        //     // Llamar a getAdmin pasando el token en la cabecera
-        //     const usuarioAdmin = await listaServicesInstance.getAdmin(token);
-
-        //     // Si no es administrador, cargar la tarjeta de producto normal
-        //     if (usuarioAdmin.role !== "admin") {
-        //       tarjetaProducto = productCategory.productoInicio();
-        //     } else {
-        //       // Si es administrador, mostrar la tarjeta para administrador
-
-        //       tarjetaProducto = new ProductCard(
-        //         producto._id,
-        //         producto.name,
-        //         producto.price,
-        //         producto.imagePath,
-        //         producto.description,
-        //         producto.sizes,
-        //         hayStock,
-        //         producto.isFeatured,
-        //         producto.isActive,
-        //         producto.inCart,
-        //         producto.section,
-        //         producto.generalStock
-        //       ).render(); // Crear producto para admin
-        //     }
-        //   }
-        // } catch (error) {
-        //   console.error(
-        //     "Error al obtener información de administrador:",
-        //     error.message
-        //   );
-        // Cargar la tarjeta de producto normal en caso de error
         tarjetaProducto = productCategory.render();
-        // }
 
         // Añadir clases a la tarjeta y la imagen
         tarjetaProducto.classList.add("allCard");

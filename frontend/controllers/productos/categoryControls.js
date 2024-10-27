@@ -1,9 +1,7 @@
 import productoServices from "../../services/product_services.js";
-import { ProductCard } from "./ProductCard.js";
 import { ProductInit } from "./ProductInit.js";
-import { ListaServices } from "../../services/lista_services.js";
 
-export async function initializeCategoryControls() {
+export async function initializeCategoryControls(instancia, render) {
   const productos = await productoServices.listaProductos();
 
   // Obtener la opción de la query string
@@ -96,50 +94,8 @@ export async function initializeCategoryControls() {
         );
 
         let tarjetaProducto;
-        // const listaServicesInstance = new ListaServices();
 
-        // try {
-        //   // Obtener el token del localStorage
-        //   const token = sessionStorage.getItem("token");
-
-        //   // Verificar si el token existe
-        //   if (!token) {
-        //     // Si no hay token, cargar la tarjeta de producto normal
-        //     tarjetaProducto = productCategory.productoInicio();
-        //   } else {
-        //     // Llamar a getAdmin pasando el token en la cabecera
-        //     const usuarioAdmin = await listaServicesInstance.getAdmin(token);
-
-        //     // Si no es administrador, cargar la tarjeta de producto normal
-        //     if (usuarioAdmin.role !== "admin") {
-        //       tarjetaProducto = productCategory.productoInicio();
-        //     } else {
-        //       // Si es administrador, mostrar la tarjeta para administrador
-
-        //       tarjetaProducto = new ProductCard(
-        //         producto._id,
-        //         producto.name,
-        //         producto.price,
-        //         producto.imagePath,
-        //         producto.description,
-        //         producto.sizes,
-        //         hayStock,
-        //         producto.isFeatured,
-        //         producto.isActive,
-        //         producto.inCart,
-        //         producto.section,
-        //         producto.generalStock
-        //       ).render(); // Crear producto para admin
-        //     }
-        //   }
-        // } catch (error) {
-        //   console.error(
-        //     "Error al obtener información de administrador:",
-        //     error.message
-        //   );
-        // Cargar la tarjeta de producto normal en caso de error
         tarjetaProducto = productCategory.productoInicio();
-        // }
 
         // Añadir clases a la tarjeta y la imagen
         tarjetaProducto.classList.add("allCard");
@@ -182,16 +138,8 @@ export async function initializeCategoryControls() {
   // Agregar un listener para el evento popstate
   window.addEventListener("popstate", function (event) {
     event.preventDefault();
-    const modal = document.getElementById("modal"); // Cambia #myModal por el ID o clase de tu modal
-    // Verificar si el modal está abierto
-    if ((modal.style.display = "block")) {
-      // Si el modal está abierto, solo ciérralo
-      modal.style.display = "none"; // Aquí depende de cómo cierras tu modal
-      history.pushState(null, null, window.location.href); // Reemplaza el estado actual sin hash
-    } else {
-      // Si el modal no está abierto, redirigir a index.html
-      window.location.href = "index.html"; // Redirigir a index.html
-    }
+
+    history.pushState(null, null, window.location.href); // Reemplaza el estado actual sin hash
   });
 
   // Agregar evento de scroll

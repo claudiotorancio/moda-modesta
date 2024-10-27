@@ -35,7 +35,7 @@ const baseModal = async () => {
 
     // Escuchar el evento 'popstate' para cerrar el modal si se presiona "Atrás"
     window.addEventListener("popstate", (event) => {
-      if (modal.style.display === "block") {
+      if ((modal.style.display = "block")) {
         closeModal(); // Cierra el modal sin modificar el historial
       }
     });

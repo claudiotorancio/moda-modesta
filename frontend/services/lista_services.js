@@ -38,8 +38,7 @@ export class ListaServices {
 
       if (data.ok) {
         // Almacenar el token en localStorage
-        sessionStorage.setItem("token", data.token);
-
+        // sessionStorage.setItem("token", data.token);
         // Aquí podrías redirigir al usuario o actualizar el estado de la aplicación
       } else {
         console.error("Error de inicio de sesión:", data.message);
