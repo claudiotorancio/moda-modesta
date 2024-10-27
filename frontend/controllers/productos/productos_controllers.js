@@ -15,6 +15,7 @@ export const controllers = {
 
         // Renderiza las tarjetas de los productos destacados
         for (const producto of productosDestacados) {
+          `hola todo bien`;
           const hayStock =
             producto.generalStock > 0 || // Verifica stock general para "Diversos"
             producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
@@ -37,7 +38,7 @@ export const controllers = {
         }
       }
 
-      // Carga la lista de productos del admin
+      // Carga la lista de las otras opciones
       const products = await productoServices.listaProductos();
 
       document.querySelectorAll(".productos").forEach((contenedor) => {

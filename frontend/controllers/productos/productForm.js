@@ -68,8 +68,8 @@ export class ProductForm {
             <div class="form-group mb-4 sizes-container"> <!-- Añade una clase aquí -->
                <label for="variation_1">Talles y stock disponibles</label>
               <div class="form-row">
-                <div class="col-center flex">
-                  <div class="form-check-inline nt-2 me-3">
+                <div class="col-center flex mt-2">
+                  <div class="form-check-inline me-3">
                     <input class="form-check-input" type="checkbox" value="Talle 1" name="sizes" id="talle1">
                     <label class="form-check-label" for="talle1">Talle 1</label>
                     <input type="number" min="0" class="form-control mt-2" placeholder="Stock" data-stock-talle1>

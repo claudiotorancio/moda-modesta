@@ -3,7 +3,7 @@ import { ProductCard } from "./ProductCard.js";
 import { ProductInit } from "./ProductInit.js";
 import { ListaServices } from "../../services/lista_services.js";
 
-export async function initializeCategoryControls() {
+export async function initializeCategoryControlsAdmin() {
   const productos = await productoServices.listaProductos();
 
   // Obtener la opción de la query string
@@ -83,7 +83,7 @@ export async function initializeCategoryControls() {
             ? producto.generalStock > 0 // Verifica stock general para "Diversos"
             : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
 
-        const productCategory = new ProductInit(
+        const productCategory = new ProductCard(
           producto._id,
           producto.name,
           producto.price,
@@ -138,7 +138,7 @@ export async function initializeCategoryControls() {
         //     error.message
         //   );
         // Cargar la tarjeta de producto normal en caso de error
-        tarjetaProducto = productCategory.productoInicio();
+        tarjetaProducto = productCategory.render();
         // }
 
         // Añadir clases a la tarjeta y la imagen
