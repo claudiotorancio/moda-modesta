@@ -72,6 +72,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".user-only").forEach((el) => {
       el.style.display = "block";
     });
+    document.querySelectorAll(".admin-only").forEach((el) => {
+      el.style.display = "block";
+    });
 
     await controllers.renderProducts();
 
