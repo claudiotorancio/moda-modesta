@@ -175,26 +175,6 @@ div.card-header h3 {
   margin: 0 auto; /* Centra la imagen horizontalmente */
 }
 
-.loader {
-  border: 8px solid #f3f3f3; /* Color de fondo */
-  border-top: 8px solid #3498db; /* Color del símbolo de carga */
-  border-radius: 50%;
-  width: 50px; /* Tamaño del símbolo */
-  height: 50px; /* Tamaño del símbolo */
-  animation: spin 1s linear infinite; /* Animación */
-  position: relative; /* Posición relativa para centrarlo */
-  margin: auto; /* Centrando el loader */
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes skeleton-loading {
   0% {
     background-color: #e0e0e0;
