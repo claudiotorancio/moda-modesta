@@ -138,16 +138,8 @@ export async function initializeCategoryControlsAdmin() {
   // Agregar un listener para el evento popstate
   window.addEventListener("popstate", function (event) {
     event.preventDefault();
-    const modal = document.getElementById("modal"); // Cambia #myModal por el ID o clase de tu modal
-    // Verificar si el modal está abierto
-    if ((modal.style.display = "block")) {
-      // Si el modal está abierto, solo ciérralo
-      modal.style.display = "none"; // Aquí depende de cómo cierras tu modal
-      history.pushState(null, null, window.location.href); // Reemplaza el estado actual sin hash
-    } else {
-      // Si el modal no está abierto, redirigir a index.html
-      window.location.href = "index.html"; // Redirigir a index.html
-    }
+
+    history.pushState(null, null, window.location.href); // Reemplaza el estado actual sin hash
   });
 
   // Agregar evento de scroll
