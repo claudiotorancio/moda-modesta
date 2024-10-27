@@ -3,12 +3,12 @@ import { ProductEditor } from "./ProductEditor.js";
 import envioServices from "../../services/envio_services.js";
 
 export class ProductEventHandler {
-  static async handleDesactivate(product) {
+  static async handleDesactivate(id) {
     try {
-      const { id, inCart } = product;
-
+      const respuesta = await productoServices.detalleProducto(id);
+      const enCarrito = respuesta.inCart;
       // Verificar si el producto está en el carrito
-      if (inCart) {
+      if (enCarrito) {
         alert(
           "No puedes desactivar este producto porque está en el carrito de compras."
         );
