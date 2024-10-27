@@ -108,8 +108,8 @@ export class ProductCard {
           confirmacion = await ProductEventHandler.handleActivate(this.id);
         }
 
+        // Cambiar el estado del botón solo si el usuario confirma
         if (confirmacion) {
-          // Si se confirma, cambia el estado del botón
           this.isActive = !this.isActive; // Cambiar el estado del producto
           toggleButton.textContent = this.isActive ? "Desactivar" : "Activar"; // Cambiar el texto del botón
           toggleButton.classList.toggle("btn-danger", this.isActive);
