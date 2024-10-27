@@ -98,13 +98,15 @@ export class ProductCard {
     toggleButton.addEventListener("click", async (e) => {
       e.preventDefault();
 
-      try {
-        // Verificar si el producto está en el carrito
-        if (this.inCart) {
-          alert("El producto está en el carrito y no se puede desactivar.");
-          return;
+      // Función para manejar la activación/desactivación del producto
+      async function handleToggleProduct(productId, isActive) {
+        if (isActive) {
+          await ProductEventHandler.handleActivate(productId);
+        } else {
+          await ProductEventHandler.handleDesactivate(productId);
         }
-
+      }
+      try {
         // Determinar si se activa o desactiva el producto
         if (this.isActive) {
           await handleToggleProduct(this.id, false); // Desactivar producto
@@ -123,15 +125,6 @@ export class ProductCard {
         console.error("Error al activar/desactivar producto:", error);
       }
     });
-
-    // Función para manejar la activación/desactivación del producto
-    async function handleToggleProduct(productId, isActive) {
-      if (isActive) {
-        await ProductEventHandler.handleActivate(productId);
-      } else {
-        await ProductEventHandler.handleDesactivate(productId);
-      }
-    }
 
     card.querySelector("[data-edit]").addEventListener("click", (e) => {
       e.preventDefault();
