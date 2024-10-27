@@ -193,7 +193,7 @@ div.card-header h3 {
   }
 
   .card {
-    margin: 5% auto;
+    margin: 2% auto;
     max-width: 100%;
     transition: none;
   }
@@ -242,7 +242,6 @@ div.card-header h3 {
 
   .allCard {
     width: calc(48% - 1px);
-    margin: 0.1rem;
   }
 
   .img-allCard {
