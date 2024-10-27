@@ -103,11 +103,8 @@ export class ProductCard {
         if (isActive) {
           await ProductEventHandler.handleActivate(productId);
         } else {
-          const confirmacion = confirm("¿Desea desactivar el producto?");
-          if (!confirmacion) return false; // Si el usuario cancela, devuelve false.
           await ProductEventHandler.handleDesactivate(productId);
         }
-        return true; // Devuelve true si la operación fue exitosa.
       }
 
       try {
