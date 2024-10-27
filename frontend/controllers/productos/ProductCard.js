@@ -103,23 +103,31 @@ export class ProductCard {
         if (isActive) {
           await ProductEventHandler.handleActivate(productId);
         } else {
+          const confirmacion = confirm("¿Desea desactivar el producto?");
+          if (!confirmacion) return false; // Si el usuario cancela, devuelve false.
           await ProductEventHandler.handleDesactivate(productId);
         }
+        return true; // Devuelve true si la operación fue exitosa.
       }
+
       try {
         // Determinar si se activa o desactiva el producto
-        if (this.isActive) {
-          await handleToggleProduct(this.id, false); // Desactivar producto
-          this.isActive = false; // Actualizar estado del producto
-          toggleButton.textContent = "Activar"; // Cambiar el texto del botón
-          toggleButton.classList.remove("btn-danger");
-          toggleButton.classList.add("btn-success");
-        } else {
-          await handleToggleProduct(this.id, true); // Activar producto
-          this.isActive = true; // Actualizar estado del producto
-          toggleButton.textContent = "Desactivar"; // Cambiar el texto del botón
-          toggleButton.classList.remove("btn-success");
-          toggleButton.classList.add("btn-danger");
+        const actionConfirmed = await handleToggleProduct(
+          this.id,
+          !this.isActive
+        );
+        if (actionConfirmed) {
+          if (this.isActive) {
+            this.isActive = false; // Actualizar estado del producto
+            toggleButton.textContent = "Activar"; // Cambiar el texto del botón
+            toggleButton.classList.remove("btn-danger");
+            toggleButton.classList.add("btn-success");
+          } else {
+            this.isActive = true; // Actualizar estado del producto
+            toggleButton.textContent = "Desactivar"; // Cambiar el texto del botón
+            toggleButton.classList.remove("btn-success");
+            toggleButton.classList.add("btn-danger");
+          }
         }
       } catch (error) {
         console.error("Error al activar/desactivar producto:", error);
