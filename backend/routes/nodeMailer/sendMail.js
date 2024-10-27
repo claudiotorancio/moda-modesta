@@ -7,6 +7,7 @@ import crypto from "crypto";
 import Users from "../../models/User.js";
 import helpers from "../../lib/helpers.js";
 import { baseURL } from "../../baseUrl.js";
+import Sale from "../../models/Sales.js";
 
 const sendMail = async (req, res) => {
   try {
@@ -246,6 +247,24 @@ const sendMail = async (req, res) => {
     });
 
     await newOrder.save();
+
+    // Guardar los datos de la venta
+    const saleData = productos.map((producto) => ({
+      date: new Date(), // Fecha de la venta
+      productId: producto.id,
+      quantity: producto.cantidad,
+      totalPrice: producto.price * producto.cantidad, // Precio total por producto
+      category: producto.category, // Asegúrate de que cada producto tenga una categoría
+      customerId: user._id,
+    }));
+    console.log(saleData);
+    // Guardar cada venta en la base de datos
+    await Promise.all(
+      saleData.map(async (data) => {
+        const newSale = new Sale(data);
+        await newSale.save();
+      })
+    );
 
     // Actualizar el stock de los productos
     await Promise.all(

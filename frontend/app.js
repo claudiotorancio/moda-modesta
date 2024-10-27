@@ -34,6 +34,7 @@ import {
 import { buscar } from "./controllers/buscador/buscador.js";
 import { RenderStock } from "./controllers/stock/RenderStock.js";
 import { ocultarProductos } from "./controllers/ocultarProductos/ocultarProductos.js";
+import { SalesAnalytics } from "./analisisVentas/SalesAnalytics.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
@@ -68,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
 
-  if (user && isAdmin.role === "admin") {
+  if (user) {
     document.querySelectorAll(".user-only").forEach((el) => {
       el.style.display = "block";
     });
@@ -122,9 +123,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       await ListaControllersInstamce.renderLista();
     });
 
-    ventas.addEventListener("click", (e) => {
+    ventas.addEventListener("click", async (e) => {
       e.preventDefault();
-      alert("Seccion en Construccion");
+      ocultarProductos();
+      const SalesAnalyticsinstance = new SalesAnalytics(titulo);
+      await SalesAnalyticsinstance.fetchSalesByPeriod();
     });
 
     actualizarUsuario.innerHTML = `${user}`;

@@ -123,7 +123,8 @@ export class ProductInit {
         this.price,
         this.imagePath,
         this.sizes,
-        talleSeleccionado
+        talleSeleccionado,
+        this.section
       );
     });
   }

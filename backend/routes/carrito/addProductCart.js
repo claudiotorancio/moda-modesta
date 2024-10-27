@@ -4,7 +4,8 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const addProductCart = async (req, res) => {
   try {
-    const { name, price, imagePath, size, productId, cantidad } = req.body;
+    const { name, price, imagePath, size, productId, cantidad, category } =
+      req.body;
     // Conectar a la base de datos
     await connectToDatabase();
 
@@ -32,6 +33,7 @@ const addProductCart = async (req, res) => {
         size,
         cantidad: cantidad, // Usar la cantidad recibida
         productId: productId,
+        category: category,
       });
 
       await newProductInCart.save();
