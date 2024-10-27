@@ -95,54 +95,30 @@ export class ProductCard {
     const toggleButton = card.querySelector(
       ".desactivar-producto, .activar-producto"
     );
+
     toggleButton.addEventListener("click", async (e) => {
       e.preventDefault();
 
       try {
-        // Verificar si el producto está en el carrito
-        const enCarrito = await productoServices
-          .detalleProducto(this.id)
-          .then((res) => res.inCart);
-        if (enCarrito && this.isActive) {
-          alert(
-            "No puedes desactivar este producto porque está en el carrito de compras."
-          );
-          return; // Salir de la función si está en el carrito
+        // Determinar si se activa o desactiva el producto
+        let confirmacion;
+        if (this.isActive) {
+          confirmacion = await ProductEventHandler.handleDesactivate(this.id);
+        } else {
+          confirmacion = await ProductEventHandler.handleActivate(this.id);
         }
 
-        // Determinar si se activa o desactiva el producto
-        if (this.isActive) {
-          const confirmacion = confirm("¿Desea desactivar el producto?");
-          if (confirmacion) {
-            await handleToggleProduct(this.id, false); // Desactivar producto
-            this.isActive = false; // Actualizar estado del producto
-            toggleButton.textContent = "Activar"; // Cambiar el texto del botón
-            toggleButton.classList.remove("btn-danger");
-            toggleButton.classList.add("btn-success");
-          }
-        } else {
-          const confirmacion = confirm("¿Desea activar el producto?");
-          if (confirmacion) {
-            await handleToggleProduct(this.id, true); // Activar producto
-            this.isActive = true; // Actualizar estado del producto
-            toggleButton.textContent = "Desactivar"; // Cambiar el texto del botón
-            toggleButton.classList.remove("btn-success");
-            toggleButton.classList.add("btn-danger");
-          }
+        if (confirmacion) {
+          // Si se confirma, cambia el estado del botón
+          this.isActive = !this.isActive; // Cambiar el estado del producto
+          toggleButton.textContent = this.isActive ? "Desactivar" : "Activar"; // Cambiar el texto del botón
+          toggleButton.classList.toggle("btn-danger", this.isActive);
+          toggleButton.classList.toggle("btn-success", !this.isActive);
         }
       } catch (error) {
         console.error("Error al activar/desactivar producto:", error);
       }
     });
-
-    // Función para manejar la activación/desactivación del producto
-    async function handleToggleProduct(productId, isActive) {
-      if (isActive) {
-        await ProductEventHandler.handleActivate(productId);
-      } else {
-        await ProductEventHandler.handleDesactivate(productId);
-      }
-    }
 
     card.querySelector("[data-edit]").addEventListener("click", (e) => {
       e.preventDefault();
