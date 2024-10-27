@@ -41,9 +41,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
+  } else {
+    initializeCategoryControls();
   }
-
-  initializeCategoryControls();
 
   cargarReseñas();
   userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
