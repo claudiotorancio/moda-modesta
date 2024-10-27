@@ -7,37 +7,38 @@ export class ProductEventHandler {
     try {
       const respuesta = await productoServices.detalleProducto(id);
       const enCarrito = respuesta.inCart;
-      // Verificar si el producto está en el carrito
+
       if (enCarrito) {
         alert(
           "No puedes desactivar este producto porque está en el carrito de compras."
         );
-        return; // Salir de la función si está en el carrito
+        return false; // Salir de la función si está en el carrito
       }
-      const confirmacion = confirm("¿Desea desactivar el producto?");
 
+      const confirmacion = confirm("¿Desea desactivar el producto?");
       if (confirmacion) {
-        // Esperar a que se complete la desactivación
         await productoServices.desactivarProducto(id);
+        return true; // Devolver true si se desactivó con éxito
       }
     } catch (error) {
       console.error("Error al desactivar el producto:", error);
-      alert("Ocurrió un error al desaactivar el producto.");
+      alert("Ocurrió un error al desactivar el producto.");
     }
+    return false; // Devolver false en caso de error o cancelación
   }
 
   static async handleActivate(id) {
     try {
       const confirmacion = confirm("¿Desea activar el producto?");
-
       if (confirmacion) {
-        // Esperar a que se complete la desactivación
         await productoServices.activarProducto(id);
+        return true; // Devolver true si se activó con éxito
       }
     } catch (error) {
       console.error("Error al activar el producto:", error);
       alert("Ocurrió un error al activar el producto.");
     }
+    return false; // Devolver false en caso de error o cancelación
   }
 
   static async handleNotification(idProducto, idNotificaciones) {

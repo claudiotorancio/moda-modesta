@@ -100,7 +100,6 @@ export class ProductCard {
       e.preventDefault();
 
       try {
-        // Determinar si se activa o desactiva el producto
         let confirmacion;
         if (this.isActive) {
           confirmacion = await ProductEventHandler.handleDesactivate(this.id);
