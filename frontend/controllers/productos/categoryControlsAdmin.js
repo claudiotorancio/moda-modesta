@@ -89,6 +89,9 @@ export async function initializeCategoryControlsAdmin() {
           producto.description,
           producto.sizes,
           hayStock,
+          producto.isFeatured,
+          producto.isActive,
+          producto.inCart,
           producto.section,
           producto.generalStock
         );
