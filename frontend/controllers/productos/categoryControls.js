@@ -1,9 +1,7 @@
 import productoServices from "../../services/product_services.js";
 import { ProductInit } from "./ProductInit.js";
 
-export async function initializeCategoryControls(instancia, render) {
-  const productos = await productoServices.listaProductos();
-
+export async function initializeCategoryControls() {
   // Obtener la opción de la query string
   const urlParams = new URLSearchParams(window.location.search);
   const opcion = urlParams.get("section"); // 'section' es la clave de la query string
@@ -19,6 +17,8 @@ export async function initializeCategoryControls(instancia, render) {
       categoria.querySelector(".productos").innerHTML = "";
     }
   });
+
+  const productos = await productoServices.listaProductos();
 
   let productosFiltrados;
 
