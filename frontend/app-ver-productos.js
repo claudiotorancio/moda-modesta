@@ -19,6 +19,11 @@ import { hashControllers } from "./controllers/hashControllers.js";
 import { initializeCategoryControlsAdmin } from "./controllers/productos/categoryControlsAdmin.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const hash = window.location.hash;
+  if (hash.startsWith("#product-")) {
+    await hashControllers();
+  }
+
   const listaServicesInstance = new ListaServices();
   const isAdmin = await listaServicesInstance.getDataUser();
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
@@ -36,11 +41,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
-  }
-
-  const hash = window.location.hash;
-  if (hash.startsWith("#product-")) {
-    await hashControllers();
   }
 
   initializeCategoryControls();
