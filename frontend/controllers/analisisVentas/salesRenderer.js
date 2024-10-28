@@ -1,8 +1,16 @@
 // salesRenderer.js
 
+import { renderTopSellingProducts } from "./renderTopSellingProducts.js";
+
 function createPeriodMenu(container, applyFiltersCallback, menuOptions) {
   const menuContainer = document.createElement("div");
   menuContainer.className = "row mb-3 align-items-center"; // Usa un row para el diseño en columnas
+
+  // Título de Categoría
+  const categoryTitle = document.createElement("h3");
+  categoryTitle.className = "text-center mb-2";
+  categoryTitle.textContent = "Panel de Análisis de Ventas";
+  menuContainer.appendChild(categoryTitle);
 
   // Contenedor de botones de categorías
   const buttonsContainer = document.createElement("div");
@@ -106,7 +114,8 @@ export function renderSalesData(
   data,
   container,
   applyFiltersCallback,
-  selectedPeriod = ""
+  selectedPeriod = "",
+  topSellingProducts = [] // Añadido para recibir los productos más vendidos
 ) {
   container.innerHTML = "";
 
@@ -174,4 +183,18 @@ export function renderSalesData(
     2
   )}</strong>`;
   container.appendChild(totalSalesContainer);
+
+  // Renderizar productos más vendidos después del listado de ventas
+
+  const topSellingContainer = document.querySelector(".top-selling-container");
+
+  if (!topSellingContainer) {
+    const newTopSellingContainer = document.createElement("div");
+    newTopSellingContainer.className = "top-selling-container";
+    container.appendChild(newTopSellingContainer);
+    renderTopSellingProducts(topSellingProducts, ".top-selling-container");
+  } else {
+    // Si ya existe, simplemente renderizar
+    renderTopSellingProducts(topSellingProducts, ".top-selling-container");
+  }
 }

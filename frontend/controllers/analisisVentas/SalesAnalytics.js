@@ -1,8 +1,9 @@
 //SalesAnalytics.js
 
-import salesServices from "../services/sales_services.js";
+import salesServices from "../../services/sales_services.js";
 import { renderSalesData } from "./salesRenderer.js";
 import { showLoading, hideLoading } from "./loading.js";
+import { renderTopSellingProducts } from "./renderTopSellingProducts.js"; // Asegúrate de importar esta función
 
 export class SalesAnalytics {
   constructor(titulo) {
@@ -35,11 +36,16 @@ export class SalesAnalytics {
         this.applyFilters(period, category, startDate, endDate);
       };
 
+      // Llama a la función para obtener productos más vendidos
+      const topSellingProducts = await this.fetchTopSellingProducts();
+
+      // Renderiza los datos de ventas y los productos más vendidos
       renderSalesData(
         salesData,
         this.titulo,
         applyFiltersCallback,
-        this.filters.period
+        this.filters.period,
+        topSellingProducts // Pasar los productos más vendidos
       );
     } catch (error) {
       console.error("Error al obtener los datos de ventas:", error);
@@ -65,15 +71,14 @@ export class SalesAnalytics {
 
     // Realiza la consulta si hay un período definido
     if (this.filters.period) {
-      this.fetchSalesByPeriod(
-        this.filters.period,
-        this.filters.category,
-        this.filters.startDate,
-        this.filters.endDate
-      );
+      this.fetchSalesByPeriod();
     } else {
       // Limpiar los datos si no hay filtros
       renderSalesData([], this.titulo);
     }
+  }
+
+  async fetchTopSellingProducts() {
+    return await this.apiService.fetchTopSellingProducts(this.filters.category);
   }
 }

@@ -5,7 +5,7 @@ const salesSchema = new Schema(
     date: { type: Date, required: true }, // Fecha de la venta
     productId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
+      ref: "Vista",
       required: true,
     }, // ID del producto vendido
     quantity: { type: Number, required: true }, // Cantidad vendida

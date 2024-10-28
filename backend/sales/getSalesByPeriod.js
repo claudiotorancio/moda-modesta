@@ -8,6 +8,7 @@ const getSalesByPeriod = async (req, res) => {
 
     // Obtener filtros del request
     const { period, category, startDate, endDate } = req.query;
+    console.log(req.query);
 
     // Inicializar fechas para la consulta
     let start, end;
@@ -15,14 +16,23 @@ const getSalesByPeriod = async (req, res) => {
     if (startDate && endDate) {
       // Si se proporcionan ambas fechas, las usamos directamente
       start = new Date(startDate);
+      start.setHours(0, 0, 0, 0);
+
+      // Configura 'end' al final de endDate
       end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
     } else {
       end = new Date(); // Esta es la fecha actual
 
       // Ajuste de las fechas si se especifica un periodo
       switch (period) {
         case "daily":
-          start = new Date(end); // Usar la fecha actual para el rango diario
+          // Establecer la fecha de inicio al comienzo del día (medianoche)
+          start = new Date(end);
+          start.setHours(0, 0, 0, 0);
+
+          // Establecer la fecha de fin al final del día (23:59:59)
+          end.setHours(23, 59, 59, 999);
           break;
         case "weekly":
           start = new Date(end);

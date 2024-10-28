@@ -91,6 +91,7 @@ import { profileControllers } from "../backend/profile/profileControllers.js";
 import { isAuthenticated } from "../backend/isAuthenticated.js";
 import { validationResult } from "express-validator";
 import getSalesByPeriod from "../backend/sales/getSalesByPeriod.js";
+import getTopSellingProducts from "../backend/sales/getTopSellingProducts.js";
 
 const router = Router();
 const app = express();
@@ -220,7 +221,8 @@ const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 
 //Sales
 
-router.get("/api/sales", getSalesByPeriod);
+router.get("/api/sales", requireAdmin, getSalesByPeriod);
+router.get("/api/top-selling-products", requireAdmin, getTopSellingProducts);
 
 //profile
 router.get(
