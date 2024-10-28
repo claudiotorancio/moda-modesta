@@ -115,10 +115,22 @@ export function renderSalesData(
   container,
   applyFiltersCallback,
   selectedPeriod = "",
-  topSellingProducts = [] // Añadido para recibir los productos más vendidos
+  topSellingProducts = [],
+  pendingOrders
 ) {
-  container.innerHTML = "";
+  container.innerHTML = ""; // Limpia el contenedor antes de renderizar
 
+  // Muestra notificación si hay órdenes pendientes
+  if (pendingOrders.length > 0) {
+    const notification = document.createElement("div");
+    notification.className = "notification alert alert-warning"; // Asigna clases para el estilo
+    notification.setAttribute("role", "alert"); // Mejora la accesibilidad
+    notification.innerHTML = `Hay ${pendingOrders.length} órdenes que requieren actualización de estado para incluirse en esta sección.`;
+    container.appendChild(notification);
+    // Después de mostrar la notificación, puedes retornar si no deseas continuar
+  }
+
+  // Si no hay órdenes pendientes, continúa con el renderizado normal
   if (!document.querySelector(".btn-group.mb-3")) {
     createPeriodMenu(container, applyFiltersCallback, [
       { name: "Vestidos", category: "opcion1" },
@@ -130,14 +142,6 @@ export function renderSalesData(
   const periodSelect = document.querySelector("select.form-select");
   if (periodSelect) {
     periodSelect.value = selectedPeriod;
-  }
-
-  if (!data || data.length === 0) {
-    const noDataMessage = document.createElement("div");
-    noDataMessage.className = "alert alert-warning text-center";
-    noDataMessage.textContent = "No hay datos para la consulta";
-    container.appendChild(noDataMessage);
-    return;
   }
 
   const totalSalesValue = data.reduce((sum, sale) => sum + sale.totalPrice, 0);
@@ -177,6 +181,14 @@ export function renderSalesData(
   table.appendChild(tbody);
   container.appendChild(table);
 
+  // Si no hay datos para mostrar, termina la función aquí
+  if (!data || data.length === 0) {
+    const noDataMessage = document.createElement("div");
+    noDataMessage.className = "alert alert-warning text-center";
+    noDataMessage.textContent = "No hay datos para la consulta";
+    container.appendChild(noDataMessage);
+  }
+
   const totalSalesContainer = document.createElement("div");
   totalSalesContainer.className = "mt-3 text-center";
   totalSalesContainer.innerHTML = `<strong>Total de Ventas: $${totalSalesValue.toFixed(
@@ -185,7 +197,6 @@ export function renderSalesData(
   container.appendChild(totalSalesContainer);
 
   // Renderizar productos más vendidos después del listado de ventas
-
   const topSellingContainer = document.querySelector(".top-selling-container");
 
   if (!topSellingContainer) {
@@ -194,7 +205,6 @@ export function renderSalesData(
     container.appendChild(newTopSellingContainer);
     renderTopSellingProducts(topSellingProducts, ".top-selling-container");
   } else {
-    // Si ya existe, simplemente renderizar
     renderTopSellingProducts(topSellingProducts, ".top-selling-container");
   }
 }

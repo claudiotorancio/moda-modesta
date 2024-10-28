@@ -66,6 +66,23 @@ export class SalesServices {
     }
   }
 
+  //consultar estado de ordenes
+  async fetchPendingOrders() {
+    try {
+      const response = await fetch(`${this.baseURL}/api/orders-pending`); // Ajusta la ruta a tu API
+      const dataResponse = await response.json();
+
+      if (!response.ok) {
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
+      }
+      // Muestra de éxito en pantalla
+      return dataResponse;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   // Obtener ingresos por categoría
   async fetchRevenueByCategory() {
     try {

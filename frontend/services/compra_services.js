@@ -84,8 +84,10 @@ export class CompraServices {
         throw new Error(dataResponse.error || "Error en la solicitud.");
       }
       // Muestra de éxito en pantalla
-      return dataResponse;
+      modalControllers.modalMsg(dataResponse.message);
+      return dataResponse; // Devuelve los datos recibidos
     } catch (error) {
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
   };

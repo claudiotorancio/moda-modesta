@@ -3,7 +3,6 @@
 import salesServices from "../../services/sales_services.js";
 import { renderSalesData } from "./salesRenderer.js";
 import { showLoading, hideLoading } from "./loading.js";
-import { renderTopSellingProducts } from "./renderTopSellingProducts.js"; // Asegúrate de importar esta función
 
 export class SalesAnalytics {
   constructor(titulo) {
@@ -39,18 +38,33 @@ export class SalesAnalytics {
       // Llama a la función para obtener productos más vendidos
       const topSellingProducts = await this.fetchTopSellingProducts();
 
+      const pendingOrders = await this.checkPendingOrders();
+
       // Renderiza los datos de ventas y los productos más vendidos
       renderSalesData(
         salesData,
         this.titulo,
         applyFiltersCallback,
         this.filters.period,
-        topSellingProducts // Pasar los productos más vendidos
+        topSellingProducts, // Pasar los productos más vendidos
+        pendingOrders
       );
     } catch (error) {
       console.error("Error al obtener los datos de ventas:", error);
     } finally {
       hideLoading(this.titulo);
+    }
+  }
+
+  async checkPendingOrders() {
+    try {
+      const pendingOrders = await this.apiService.fetchPendingOrders(); // Implementa este método en tu servicio
+
+      // Filtra las órdenes que cumplen con los criterios
+      const ordersToUpdate = pendingOrders.filter((order) => !order.finalizado);
+      return ordersToUpdate;
+    } catch (error) {
+      console.error("Error al verificar las órdenes pendientes:", error);
     }
   }
 

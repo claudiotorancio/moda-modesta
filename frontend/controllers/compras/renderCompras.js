@@ -1,12 +1,6 @@
 import { CompraServices } from "../../services/compra_services.js";
 import { ListaServices } from "../../services/lista_services.js";
-import {
-  finalizarPedidoHandler,
-  eliminarPedido,
-  mensajeEnCaminoHandlerCompra,
-  aceptarPedidoHandler,
-  cancelarPedidoHandler, // Asegúrate de importar esta función
-} from "./eventsCompras.js";
+import { crearTarjeta } from "./crearTarjeta.js";
 
 export class RenderCompras {
   constructor(titulo) {
@@ -53,6 +47,18 @@ export class RenderCompras {
     // Limpiar el contenedor antes de renderizar
     this.titulo.querySelector(".row").innerHTML = "";
 
+    // Insertar notificación al principio, si hay pedidos sin aceptar ni cancelar
+    const pedidosPendientes = listado.filter(
+      (order) => !order.aceptar && !order.cancelado
+    );
+    if (pedidosPendientes.length > 0) {
+      const notification = document.createElement("div");
+      notification.className = "notification alert alert-warning";
+      notification.setAttribute("role", "alert");
+      notification.innerHTML = `Hay ${pedidosPendientes.length} nuevos pedidos pendientes de revisión.`;
+      this.titulo.prepend(notification); // Insertar notificación al inicio
+    }
+
     const row = document.createElement("div");
     row.className = "row"; // Contenedor para las columnas
 
@@ -80,16 +86,13 @@ export class RenderCompras {
         created_at: order.createdAt,
         cancelado: order.cancelado,
         emailVerified,
+        renderCompraLista: this.renderCompraLista.bind(this),
       };
 
-      // Mostrar notificación de nuevo pedido
-      if (!order.aceptar && !order.cancelado) {
-        alert(`Nuevo pedido de ${orderData.name} (${orderData.email})`);
-      }
-
       const cardCol = document.createElement("div");
-      cardCol.className = "col-md-6 mb-4"; // 3 columnas en pantallas medianas y más grandes
-      cardCol.appendChild(this.crearTarjeta(orderData));
+      cardCol.className = "col-md-6 mb-4";
+
+      cardCol.appendChild(crearTarjeta(orderData));
 
       row.appendChild(cardCol);
     }
@@ -142,146 +145,5 @@ export class RenderCompras {
     });
 
     this.mostrarCompras(comprasFiltradas);
-  }
-
-  crearTarjeta({
-    id,
-    name,
-    email,
-    phoneNumber,
-    items,
-    aceptar,
-    enCamino,
-    finalizado,
-    created_at,
-    cancelado,
-    emailVerified,
-  }) {
-    const fechaFormateada = new Date(created_at).toLocaleDateString();
-
-    const producto = items
-      .map(
-        (item) =>
-          `<div>
-     ${item.name} | Cantidad: ${item.quantity} | Talle: ${item.size} | <a href="${item.hash}" target="_blank">
-     Ver producto
-      </a>
-    </div>`
-      )
-      .join("<br>");
-
-    let estado;
-    let btnAceptarDisabled = false;
-    let btnEnCaminoDisabled = true;
-    let btnFinDisabled = true;
-    let btnCancelarDisabled = false;
-
-    if (cancelado) {
-      estado = "Compra Cancelada";
-      btnAceptarDisabled = true;
-      btnEnCaminoDisabled = true;
-      btnFinDisabled = true;
-      btnCancelarDisabled = true;
-    } else if (finalizado) {
-      estado = "Compra finalizada";
-      btnAceptarDisabled = true;
-      btnEnCaminoDisabled = true;
-      btnFinDisabled = true;
-      btnCancelarDisabled = true;
-    } else if (enCamino) {
-      estado = "en proceso de entrega";
-      btnAceptarDisabled = true;
-      btnEnCaminoDisabled = true;
-      btnFinDisabled = false;
-      btnCancelarDisabled = false;
-    } else if (aceptar) {
-      estado = "aceptado y enviado correo (en preparación)";
-      btnAceptarDisabled = true;
-      btnEnCaminoDisabled = false;
-      btnFinDisabled = true;
-      btnCancelarDisabled = false;
-    } else {
-      estado = "en espera de aceptación";
-      btnAceptarDisabled = false;
-      btnEnCaminoDisabled = true;
-      btnFinDisabled = true;
-      btnCancelarDisabled = false;
-    }
-    const verified = emailVerified ? "SI" : "NO";
-    const card = document.createElement("div");
-    card.className = "card";
-
-    card.innerHTML = `
-    <div class="card-body w-100">
-      <button type="button" class="btn-close btn-close-black position-absolute top-0 end-0" aria-label="Eliminar" data-eliminarPedido="${id}"></button>
-      <p class="card-text"><strong>Orden N°:</strong> ${id}</p>
-      <h5 class="card-title">Cliente: ${name}</h5>
-      <p class="card-text"><strong>Email:</strong> ${email}</p>
-      <p class="card-text"><strong>Teléfono:</strong> ${phoneNumber}</p>
-      <p class="card-text"><strong>Fecha de creación:</strong> ${fechaFormateada}</p>
-      <p class="card-text"><strong>Productos:</strong><br> ${producto}</p>
-      <p class="card-text"><strong>Email verificado:</strong> ${verified}</p>
-      <p class="card-text"><strong>Estado:  <h5 class="card-title">${estado}</h5></p>
-    </div>
-    <div class="card-footer text-center">
-      <p class="card-text"> Alertas</p>
-      <button type="button" class="btn btn-primary" data-aceptarPedido="${id}" ${
-      btnAceptarDisabled ? "disabled" : ""
-    }>Aceptar Pedido</button>
-      <button type="button" class="btn btn-primary" data-compraEnCamino="${id}" ${
-      btnEnCaminoDisabled ? "disabled" : ""
-    }>En camino</button>
-      <button type="button" class="btn btn-danger" data-compraFin="${id}" ${
-      btnFinDisabled ? "disabled" : ""
-    }>Fin</button>
-      <button type="button" class="btn btn-warning" data-compraCancelada="${id}" ${
-      btnCancelarDisabled ? "disabled" : ""
-    }>Compra Cancelada</button>
-    </div>
-  `;
-
-    card
-      .querySelector("[data-compraFin]")
-      .addEventListener("click", async () => {
-        await finalizarPedidoHandler(id);
-        await this.renderCompraLista();
-      });
-
-    card
-      .querySelector("[data-aceptarPedido]")
-      .addEventListener("click", async () => {
-        await aceptarPedidoHandler(email, name, producto, id);
-        await this.renderCompraLista();
-      });
-
-    card
-      .querySelector("[data-compraEnCamino]")
-      .addEventListener("click", async () => {
-        await mensajeEnCaminoHandlerCompra(email, name, producto, id);
-        await this.renderCompraLista();
-      });
-
-    card
-      .querySelector("[data-compraCancelada]")
-      .addEventListener("click", async () => {
-        const productos = items.map((item) => ({
-          productId: item.productId,
-          quantity: item.quantity,
-          size: item.size,
-        }));
-
-        console.log(productos);
-        await cancelarPedidoHandler(id, productos); // Maneja la lógica para cancelar la compra y devolver el producto al stock
-        await this.renderCompraLista(); // Vuelve a renderizar la lista de compras
-      });
-
-    card
-      .querySelector("[data-eliminarPedido]")
-      .addEventListener("click", async () => {
-        await eliminarPedido(id);
-        await this.renderCompraLista();
-      });
-
-    return card;
   }
 }
