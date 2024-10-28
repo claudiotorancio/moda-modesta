@@ -34,7 +34,7 @@ import {
 import { buscar } from "./controllers/buscador/buscador.js";
 import { RenderStock } from "./controllers/stock/RenderStock.js";
 import { ocultarProductos } from "./controllers/ocultarProductos/ocultarProductos.js";
-import { SalesAnalytics } from "./analisisVentas/SalesAnalytics.js";
+import { SalesAnalytics } from "./controllers/analisisVentas/SalesAnalytics.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const hash = window.location.hash;
