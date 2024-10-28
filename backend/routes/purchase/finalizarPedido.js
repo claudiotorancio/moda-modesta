@@ -23,7 +23,7 @@ const finalizarPedido = async (req, res) => {
 
     // Actualizar el campo compraConfirmada en los registros de ventas relacionados
     await Sale.updateMany(
-      { productId: productId }, // Filtra solo las ventas relacionadas con este producto
+      { _id: productId }, // Filtra solo las ventas relacionadas con este producto
       { $set: { compraConfirmada: true } } // Actualiza el estado de compraConfirmada
     );
 
