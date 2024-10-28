@@ -17,6 +17,12 @@ const salesSchema = new Schema(
       required: true,
     }, // Cliente que realizó la compra
     compraConfirmada: { type: Boolean, default: false }, // Confirmación de compra
+    orderId: {
+      // Agregar el campo orderId
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order", // Asegúrate de que coincida con el nombre del modelo de tu orden
+      required: true, // O puedes hacerlo opcional según tus necesidades
+    },
   },
   { timestamps: true }
 );

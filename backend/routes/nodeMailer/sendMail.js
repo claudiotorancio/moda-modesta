@@ -256,6 +256,7 @@ const sendMail = async (req, res) => {
       totalPrice: producto.price * producto.cantidad, // Precio total por producto
       category: producto.category, // Asegúrate de que cada producto tenga una categoría
       customerId: user._id,
+      orderId: newOrder._id,
     }));
     console.log(saleData);
     // Guardar cada venta en la base de datos

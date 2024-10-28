@@ -8,11 +8,11 @@ const finalizarPedido = async (req, res) => {
     await connectToDatabase();
 
     // Obtener el ID del producto desde los parámetros de la solicitud
-    const productId = req.params.id;
+    const orderId = req.params.id;
 
     // Actualizar el estado del pedido en la colección Order
     const updatedProduct = await Order.findByIdAndUpdate(
-      productId,
+      orderId,
       { finalizado: true },
       { new: true }
     );
@@ -23,7 +23,7 @@ const finalizarPedido = async (req, res) => {
 
     // Actualizar el campo compraConfirmada en los registros de ventas relacionados
     await Sale.updateMany(
-      { _id: productId }, // Filtra solo las ventas relacionadas con este producto
+      { orderId: orderId }, // Filtra solo las ventas relacionadas con este producto
       { $set: { compraConfirmada: true } } // Actualiza el estado de compraConfirmada
     );
 
