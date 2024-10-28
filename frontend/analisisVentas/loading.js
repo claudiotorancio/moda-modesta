@@ -1,3 +1,5 @@
+//loading.js
+
 export function showLoading(titulo) {
   const loadingMessage = document.createElement("div");
   loadingMessage.className = "alert alert-info";

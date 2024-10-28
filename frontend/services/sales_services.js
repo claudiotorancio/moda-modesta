@@ -12,7 +12,6 @@ export class SalesServices {
     startDate = null,
     endDate = null
   ) {
-    console.log("Consultando ventas para el periodo:", period, category);
     try {
       // Construir la URL, asegurándose de que las fechas no se envíen como cadenas vacías
       const url = new URL(`${this.baseURL}/api/sales`);
