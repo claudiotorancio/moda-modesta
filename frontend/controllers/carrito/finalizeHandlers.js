@@ -146,7 +146,6 @@ export async function handleFinalizePurchase() {
         codigoPostal: this.cpDestino,
         checked: this.isChecked,
       };
-      console.log(datosCompra.productos);
       try {
         await mailServices.sendMail(datosCompra);
       } catch (error) {

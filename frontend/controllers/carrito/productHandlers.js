@@ -95,7 +95,6 @@ export async function agregarProducto(product, size) {
           productId: sanitizedProductId,
           category: product.section,
         };
-        console.log(productoNuevo);
         await carritoServices.addProductCart(productoNuevo);
         this.items.push(productoNuevo);
       } else {
