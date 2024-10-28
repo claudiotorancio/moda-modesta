@@ -10,34 +10,31 @@ const finalizarPedido = async (req, res) => {
     // Obtener el ID del producto desde los parámetros de la solicitud
     const productId = req.params.id;
 
-    // Actualizar el estado del pedido (ejemplo: cambiar 'checked' a true para indicar que el pedido ha sido aceptado)
+    // Actualizar el estado del pedido en la colección Order
     const updatedProduct = await Order.findByIdAndUpdate(
       productId,
-      { finalizado: true }, // Aquí actualizamos el campo 'enCamino' a true
-      { new: true } // Opción para devolver el documento actualizado
+      { finalizado: true },
+      { new: true }
     );
 
-    // Crear un registro de venta en la colección Sales
-    const saleEntries = updatedOrder.items.map((item) => ({
-      compraConfirmada: true, // Confirmación de que la compra fue finalizada
-    }));
-
-    // Insertar las ventas en la colección Sales
-    await Sale.insertMany(saleEntries);
-
-    console.log(updatedProduct);
     if (!updatedProduct) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
+    // Actualizar el campo compraConfirmada en los registros de ventas relacionados
+    await Sale.updateMany(
+      { productId: productId }, // Filtra solo las ventas relacionadas con este producto
+      { $set: { compraConfirmada: true } } // Actualiza el estado de compraConfirmada
+    );
+
     // Responder con la información actualizada del pedido
     res.json({
-      message: "Pedido finalizado",
+      message: "Pedido finalizado y ventas confirmadas",
       product: updatedProduct,
     });
   } catch (error) {
     console.error("Error al finalizar el pedido:", error);
-    res.status(500).json({ message: "Error al finalzar el pedido" });
+    res.status(500).json({ message: "Error al finalizar el pedido" });
   }
 };
 
