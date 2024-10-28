@@ -16,6 +16,7 @@ const salesSchema = new Schema(
       ref: "Customer",
       required: true,
     }, // Cliente que realizó la compra
+    compraConfirmada: { type: Boolean, default: false }, // Confirmación de compra
   },
   { timestamps: true }
 );

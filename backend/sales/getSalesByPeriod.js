@@ -62,6 +62,7 @@ const getSalesByPeriod = async (req, res) => {
         $gte: start,
         $lte: end,
       },
+      compraConfirmada: true, // Filtrar solo las ventas confirmadas
     };
 
     if (category) {

@@ -14,6 +14,9 @@ const getTopSellingProducts = async (req, res) => {
     // Realizar la agregación para acumular las ventas por producto
     const topSelling = await Sale.aggregate([
       {
+        $match: { compraConfirmada: true }, // Filtrar solo ventas confirmadas
+      },
+      {
         $group: {
           _id: "$productId", // Agrupar por productId
           totalSales: { $sum: "$quantity" }, // Sumar las cantidades vendidas

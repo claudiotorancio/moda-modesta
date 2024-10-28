@@ -1,4 +1,5 @@
 import Order from "../../models/Order.js";
+import Sale from "../../models/Sales.js";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const finalizarPedido = async (req, res) => {
@@ -15,6 +16,15 @@ const finalizarPedido = async (req, res) => {
       { finalizado: true }, // Aquí actualizamos el campo 'enCamino' a true
       { new: true } // Opción para devolver el documento actualizado
     );
+
+    // Crear un registro de venta en la colección Sales
+    const saleEntries = updatedOrder.items.map((item) => ({
+      compraConfirmada: true, // Confirmación de que la compra fue finalizada
+    }));
+
+    // Insertar las ventas en la colección Sales
+    await Sale.insertMany(saleEntries);
+
     console.log(updatedProduct);
     if (!updatedProduct) {
       return res.status(404).json({ message: "Producto no encontrado" });
