@@ -47,7 +47,6 @@ export class SalesServices {
 
   // Obtener productos más vendidos (con opción de filtro por categoría)
   async fetchTopSellingProducts(category = null) {
-    console.log(category);
     const url = category
       ? `${this.baseURL}/api/top-selling-products?category=${category}`
       : `${this.baseURL}/api/top-selling-products`;
@@ -58,7 +57,6 @@ export class SalesServices {
       }
 
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (error) {
       console.error("Error al obtener productos más vendidos:", error);

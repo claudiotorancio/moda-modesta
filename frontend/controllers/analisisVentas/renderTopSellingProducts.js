@@ -1,8 +1,6 @@
 import Chart from "chart.js/auto";
 
 export function renderTopSellingProducts(products, titulo) {
-  console.log(products);
-
   // Seleccionar el contenedor y renderizar la tabla y el espacio para el gráfico
   const container = document.querySelector(titulo);
   container.innerHTML = `

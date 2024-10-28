@@ -61,7 +61,9 @@ export class SalesAnalytics {
       const pendingOrders = await this.apiService.fetchPendingOrders(); // Implementa este método en tu servicio
 
       // Filtra las órdenes que cumplen con los criterios
-      const ordersToUpdate = pendingOrders.filter((order) => !order.finalizado);
+      const ordersToUpdate = pendingOrders.filter(
+        (order) => !order.finalizado && !order.cancelado
+      );
       return ordersToUpdate;
     } catch (error) {
       console.error("Error al verificar las órdenes pendientes:", error);
