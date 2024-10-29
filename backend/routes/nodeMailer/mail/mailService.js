@@ -108,7 +108,7 @@ export const sendThankYouEmail = async (
 
     <p style="font-size: 16px;">Si tienes alguna pregunta, no dudes en contactarnos.</p>
         ${
-          !user.emailVerificado
+          !user.emailVerified
             ? `
     <p style="font-size: 16px;">Hemos creado una cuenta para ti con la dirección de correo <strong>${orderData.email}</strong>.</p>
     
