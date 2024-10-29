@@ -13,8 +13,6 @@ import {
   validacionesAceptarPedido,
   validacionesFinalizarPedido,
   validacionesCancelarPedido,
-  validacionesSuscribeMail,
-  validacionesConfirmMail,
   validacionesEnviarPromociones,
   validacionesCostoEnvio,
   validacionesSignup,
@@ -339,19 +337,8 @@ router.post(
   purchaseLimiter,
   sendMail
 );
-router.post(
-  "/api/suscribeMail",
-  validacionesSuscribeMail,
-  handleValidationErrors,
-  purchaseLimiter,
-  suscribeMail
-);
-router.get(
-  "/api/confirmMail",
-  validacionesConfirmMail,
-  handleValidationErrors,
-  confirmMail
-);
+router.post("/api/suscribeMail", purchaseLimiter, suscribeMail);
+router.get("/api/confirmMail", confirmMail);
 router.get("/success", success);
 router.get("/error", error);
 router.post(

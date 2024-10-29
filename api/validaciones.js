@@ -79,15 +79,6 @@ const validacionesSendMail = [
   validarCampo("telefono", "El telefono es obligatorio.", true),
 ];
 
-const validacionesSuscribeMail = [
-  validarCampo("nombre", "El nombre es obligatorio."),
-  validarEmail(),
-];
-
-const validacionesConfirmMail = [
-  validarCampo("token", "El token es requerido"),
-];
-
 const validacionesEnviarPromociones = [
   body("myContent")
     .notEmpty()
@@ -170,8 +161,6 @@ export {
   validacionesCancelarPedido,
   validacionesFinalizarPedido,
   validacionesSendMail,
-  validacionesSuscribeMail,
-  validacionesConfirmMail,
   validacionesEnviarPromociones,
   validacionesCostoEnvio,
   validacionesResetPassword,
