@@ -79,7 +79,9 @@ export const sendThankYouEmail = async (
   // Contenido HTML del correo de agradecimiento
   const thankYouHTML = `
   <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-    <h1 style="color: #28a745; font-size: 24px;">¡Gracias por tu compra, ${user.nombre}!</h1>
+    <h1 style="color: #28a745; font-size: 24px;">¡Gracias por tu compra, ${
+      user.nombre
+    }!</h1>
     <p style="font-size: 16px;">Tu orden ha sido procesada con éxito. A continuación, los detalles de tu compra:</p>
 
     <h2 style="font-size: 20px; border-bottom: 2px solid #28a745;">Detalles de la Orden</h2>
@@ -105,9 +107,17 @@ export const sendThankYouEmail = async (
     </table>
 
     <p style="font-size: 16px;">Si tienes alguna pregunta, no dudes en contactarnos.</p>
+        ${
+          !user.emailVerificado
+            ? `
     <p style="font-size: 16px;">Hemos creado una cuenta para ti con la dirección de correo <strong>${orderData.email}</strong>.</p>
-    <p style="font-size: 16px;">Para activar tu cuenta, haz clic en el siguiente botón:</p>
-    <a href="${confirmUrl}" style="display: inline-block; padding: 10px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">Confirmar correo</a>
+    
+
+      <p style="font-size: 16px;">Para activar tu cuenta, haz clic en el siguiente botón:</p>
+      <a href="${confirmUrl}" style="display: inline-block; padding: 10px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">Confirmar correo</a>
+    `
+            : ""
+        }
 
     <p style="font-size: 16px; margin-top: 20px;">Gracias por confiar en nosotros,</p>
     <p style="font-size: 16px;">El equipo de Moda Modesta</p>
