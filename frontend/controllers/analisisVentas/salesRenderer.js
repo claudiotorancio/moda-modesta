@@ -120,7 +120,6 @@ export function renderSalesData(
   pendingOrders,
   customerAnalytics
 ) {
-  console.log(customerAnalytics);
   container.innerHTML = ""; // Limpia el contenedor antes de renderizar
 
   // Muestra notificación si hay órdenes pendientes

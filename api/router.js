@@ -91,6 +91,7 @@ import { validationResult } from "express-validator";
 import getSalesByPeriod from "../backend/sales/getSalesByPeriod.js";
 import getTopSellingProducts from "../backend/sales/getTopSellingProducts.js";
 import gefetchPendingOrders from "../backend/sales/getFetchPendingOrders.js";
+import getCustomerAnalytics from "../backend/sales/getCustomerAnalytics.js";
 
 const router = Router();
 const app = express();
@@ -223,6 +224,7 @@ const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 router.get("/api/sales", requireAdmin, getSalesByPeriod);
 router.get("/api/top-selling-products", requireAdmin, getTopSellingProducts);
 router.get("/api/orders-pending", requireAdmin, gefetchPendingOrders);
+router.get("/api/customer-analytics", getCustomerAnalytics);
 //profile
 router.get(
   "/api/infoPersonal",

@@ -1,7 +1,7 @@
-// controllers/mail/orderService.js
 import Order from "../../../models/Order.js";
 import Sale from "../../../models/Sales.js";
 import Vista from "../../../models/Vista.js";
+import CustomerAnalytic from "../../../models/CustomerAnalytics.js";
 
 export const createOrder = async (data, userId) => {
   const {
@@ -18,7 +18,9 @@ export const createOrder = async (data, userId) => {
     enCamino = false,
     finalizado = false,
   } = data;
+
   console.log(data);
+
   const newOrder = new Order({
     customer: {
       name: nombre,
@@ -45,9 +47,53 @@ export const createOrder = async (data, userId) => {
     enCamino,
     finalizado,
   });
+
   console.log(newOrder);
   await newOrder.save();
+
+  // Lógica para guardar datos de análisis de clientes
+  await saveCustomerAnalytics(userId, productos, total);
+
   return newOrder;
+};
+
+const saveCustomerAnalytics = async (userId, productos, total) => {
+  // Obtener el cliente y sus compras previas
+  const analytics = await CustomerAnalytic.findOne({ customerId: userId });
+
+  const totalCompras = productos.reduce(
+    (acc, producto) => acc + producto.cantidad,
+    0
+  );
+  const totalGastado = productos.reduce(
+    (acc, producto) => acc + producto.price * producto.cantidad,
+    0
+  );
+  const now = new Date();
+
+  if (analytics) {
+    // Actualizar datos del cliente existente
+    analytics.totalSpent += totalGastado;
+    analytics.totalOrders += 1;
+    analytics.lastOrderDate = now;
+    analytics.frecuencia = analytics.frecuencia + 1; // O lógica personalizada para la frecuencia
+    analytics.valorPromedio = analytics.totalSpent / analytics.totalOrders;
+
+    await analytics.save();
+  } else {
+    // Crear un nuevo registro de análisis del cliente
+    const newAnalytics = new CustomerAnalytic({
+      customerId: userId,
+      totalSpent: totalGastado,
+      totalOrders: 1,
+      averageOrderValue: totalGastado,
+      lastOrderDate: now,
+      frecuencia: 1,
+      valorPromedio: totalGastado, // O personalizar según tus necesidades
+    });
+
+    await newAnalytics.save();
+  }
 };
 
 export const saveSalesData = async (productos, userId, orderId) => {

@@ -34,26 +34,31 @@ export function renderCustomerAnalysis(cliente, containerId) {
       (cliente) => `
         <tr>
           <td class="text-start">${cliente.nombre}</td>
-          <td class="text-center">$${cliente.total_compras.toFixed(2)}</td>
+          <td class="text-center">$${(cliente.total_compras || 0).toFixed(
+            2
+          )}</td>
           <td class="text-center">${cliente.frecuencia}</td>
-          <td class="text-end">$${cliente.valor_promedio.toFixed(2)}</td>
+          <td class="text-end">$${(cliente.valor_promedio || 0).toFixed(2)}</td>
         </tr>
       `
     )
     .join("");
 
-  // Renderizar estadísticas adicionales
-  document.getElementById("recurrentPercentage").textContent =
-    cliente.porcentaje_recurrentes.toFixed(2);
-  document.getElementById("averagePerCustomer").textContent =
-    cliente.promedio_por_cliente.toFixed(2);
-  document.getElementById("totalSales").textContent =
-    cliente.total_ventas.toFixed(2);
+  // Convertir las propiedades a número antes de usar toFixed
+  document.getElementById("recurrentPercentage").textContent = (
+    parseFloat(cliente.porcentaje_recurrentes) || 0
+  ).toFixed(2);
+  document.getElementById("averagePerCustomer").textContent = (
+    parseFloat(cliente.promedio_por_cliente) || 0
+  ).toFixed(2);
+  document.getElementById("totalSales").textContent = (
+    parseFloat(cliente.total_ventas) || 0
+  ).toFixed(2);
 
   // Preparar datos para el gráfico
   const nombresClientes = cliente.cliente_data.map((cliente) => cliente.nombre);
   const totalComprasClientes = cliente.cliente_data.map(
-    (cliente) => cliente.total_compras
+    (cliente) => cliente.total_compras || 0
   );
 
   // Crear gráfico de barras
