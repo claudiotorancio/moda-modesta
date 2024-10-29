@@ -1,117 +1,299 @@
-// sendMail.js
-import { validateOrderData } from "./mail/validation.js";
-import {
-  createTransporter,
-  sendVerificationEmail,
-  sendThankYouEmail,
-} from "./mail/mailService.js";
-import { findOrCreateUser } from "./mail/userService.js";
-import {
-  createOrder,
-  saveSalesData,
-  updateStock,
-} from "./mail/orderService.js";
+import nodemailer from "nodemailer";
+import Order from "../../models/Order.js";
+import Vista from "../../models/Vista.js";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import Users from "../../models/User.js";
+import helpers from "../../lib/helpers.js";
+import { baseURL } from "../../baseUrl.js";
+import Sale from "../../models/Sales.js";
 
 const sendMail = async (req, res) => {
   try {
-    const orderData = req.body;
+    const {
+      nombre,
+      email,
+      telefono,
+      provincia,
+      codigoPostal,
+      productos,
+      total,
+      costoEnvio,
+      checked,
+      aceptar = false,
+      enCamino = false,
+      finalizado = false,
+    } = req.body;
 
-    await connectToDatabase(); // Ensure the connection is established
-
-    // Validate order data
-    validateOrderData(orderData);
-
-    // Set up the transporter for nodemailer
-    const transporter = createTransporter();
-
-    // Find or create the user
-    const { user, token, existsButNotVerified } = await findOrCreateUser(
-      orderData.email,
-      orderData.nombre
-    );
-
-    // Handle email verification if the user exists but is not verified
-    if (existsButNotVerified) {
-      await sendVerificationEmail(
-        transporter,
-        orderData.email,
-        orderData.nombre,
-        token
-      );
-      return res.json({
-        success: true,
-        message:
-          "Tu cuenta ya existe, pero no ha sido verificada. Se ha enviado un correo para confirmar tu dirección.",
-      });
+    // Verificar que todos los campos requeridos están presentes
+    if (
+      !nombre ||
+      !email ||
+      !telefono ||
+      !provincia === undefined ||
+      !codigoPostal === undefined ||
+      !productos ||
+      !total ||
+      !costoEnvio == undefined ||
+      checked === undefined ||
+      aceptar === undefined ||
+      enCamino === undefined ||
+      finalizado === undefined
+    ) {
+      return res
+        .status(400)
+        .send({ error: "Todos los campos son requeridos." });
     }
 
-    // Create new order
-    const newOrder = await createOrder(orderData, user._id);
-
-    // Save sales data
-    await saveSalesData(orderData.productos, user._id, newOrder._id);
-
-    // Update stock
-    await updateStock(orderData.productos);
-
-    // Send thank you email
-    await sendThankYouEmail(transporter, orderData, user, token);
-
-    // Build HTML for the products
-    const productosHTML = orderData.productos
+    // Construir la lista de productos en formato HTML
+    const productosHTML = productos
       .map(
         (producto) => `
-      <tr>
-        <td>${producto.name}</td>
-        <td>${producto.cantidad}</td>
-        <td>${producto.size}</td>
-        <td>$${producto.price.toFixed(2)}</td>
-        <td><a href="https://moda-modesta.vercel.app/#product-${
-          producto.hash
-        }">Ver producto</a></td>
-      </tr>
-    `
+        <tr>
+          <td>${producto.name}</td>
+          <td>${producto.cantidad}</td>
+          <td>${producto.size}</td>
+          <td>$${producto.price.toFixed(2)}</td>
+          <td><a href="https://moda-modesta.vercel.app/#product-${
+            producto.hash
+          }">Ver producto</a></td>
+        </tr>
+      `
       )
       .join("");
 
-    // Build HTML content for the order email
+    // Construir el contenido HTML del correo
     const contentHTML = `
-      <h1>Información de la Compra</h1>
+        <h1>Información de la Compra</h1>
+        <ul>
+          <li><strong>Nombre:</strong> ${nombre}</li>
+          <li><strong>Email:</strong> ${email}</li>
+          <li><strong>Teléfono:</strong> ${telefono}</li>
+          <li><strong>Provincia:</strong> ${provincia}</li>
+          <li><strong>Código Postal:</strong> ${codigoPostal}</li>
+          <li><strong>Total:</strong> $${total}</li>
+          <li><strong>Costo de Envío:</strong> $${costoEnvio}</li>
+          <li><strong>Coordinar envio:</strong> ${checked ? "Sí" : "No"}</li>
+        </ul>
+        <h2>Productos</h2>
+        <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+          <thead>
+            <tr>
+              <th>Nombre del Producto</th>
+              <th>Cantidad</th>
+              <th>Talle</th>
+              <th>Precio</th>
+              <th>Enlace</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${productosHTML}
+          </tbody>
+        </table>
+      `;
+
+    // Configurar el transportador de nodemailer
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.ACCESS_KEY_ID,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    // Conectar a la base de datos
+    await connectToDatabase();
+
+    // Buscar si el usuario existe
+    let user = await Users.findOne({
+      email: email,
+    });
+
+    // Si el usuario existe pero no ha verificado su correo, enviar correo de verificación
+    if (user && !user.emailVerified) {
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+
+      // Actualizar el usuario con el resetToken y la expiración
+      user.resetToken = token;
+      user.resetTokenExpires = Date.now() + 3600000; // Token válido por 1 hora
+
+      const savedUser = await user.save();
+      if (!savedUser) {
+        throw new Error("No se pudo guardar el usuario con el token.");
+      }
+
+      const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;
+
+      const verificationMailHTML = `
+      <h3>Datos de Contacto</h3>
       <ul>
-        <li><strong>Nombre:</strong> ${orderData.nombre}</li>
-        <li><strong>Email:</strong> ${orderData.email}</li>
-        <li><strong>Teléfono:</strong> ${orderData.telefono}</li>
-        <li><strong>Provincia:</strong> ${orderData.provincia}</li>
-        <li><strong>Código Postal:</strong> ${orderData.codigoPostal}</li>
-        <li><strong>Total:</strong> $${orderData.total}</li>
-        <li><strong>Costo de Envío:</strong> $${orderData.costoEnvio}</li>
-        <li><strong>Coordinar envio:</strong> ${
-          orderData.checked ? "Sí" : "No"
-        }</li>
+        <li><strong>Correo:</strong> ${email}</li>
+        <li><strong>Nombre:</strong> ${nombre}</li>
       </ul>
-      <h2>Productos</h2>
-      <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">
-        <thead>
-          <tr>
-            <th>Nombre del Producto</th>
-            <th>Cantidad</th>
-            <th>Talle</th>
-            <th>Precio</th>
-            <th>Enlace</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${productosHTML}
-        </tbody>
-      </table>
+      <p>Tu cuenta ya existe pero aún no ha sido verificada. Para disfrutar de todos los beneficios, te hemos enviado un nuevo correo para confirmar tu dirección.</p>
+      <p><strong>¡Importante!</strong> Al verificar tu correo electrónico, podrás acceder a descuentos exclusivos, promociones especiales y las últimas novedades de nuestros productos. ¡No te lo pierdas!</p>
+      <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
+      <p>Gracias por confiar en nosotros,</p>
+      <p>El equipo de Moda Modesta</p>
     `;
 
-    // Email options for order notification
+      const mailOptionsUser = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: `¡Hola ${nombre}! Confirma tu correo`,
+        html: verificationMailHTML,
+      };
+
+      await transporter.sendMail(mailOptionsUser);
+
+      // No se detiene aquí, se continúa generando la orden
+    }
+
+    // Si no existe el usuario, crearlo y enviar el correo de bienvenida
+    if (!user) {
+      const generateRandomPassword = (length = 12) =>
+        crypto.randomBytes(length).toString("hex").slice(0, length);
+
+      const plainPassword = generateRandomPassword();
+      const hashedPassword = await helpers.encryptPassword(plainPassword);
+
+      const newUser = new Users({
+        nombre: nombre,
+        email: email,
+        password: hashedPassword,
+      });
+
+      user = await newUser.save();
+
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+
+      // Actualizar el usuario con el resetToken y la expiración
+      newUser.resetToken = token;
+      newUser.resetTokenExpires = Date.now() + 3600000; // Token válido por 1 hora
+
+      const savedUser = await newUser.save();
+      if (!savedUser) {
+        throw new Error("No se pudo guardar el usuario con el token.");
+      }
+
+      const confirmUrl = `${baseURL}/api/confirmMail?token=${token}`;
+
+      const welcomeMailHTML = `
+        <h3>Datos de Contacto</h3>
+        <ul>
+          <li>Correo: ${email}</li>
+          <li>Nombre: ${nombre}</li>
+        </ul>
+        <p>¡Gracias por tu compra! Tu orden ha sido generada con éxito.</p>
+        <p>Hemos creado una cuenta para ti con la dirección de correo <strong>${email}</strong>.</p>
+        <p>Para acceder a tu cuenta, deberás crear una contraseña. Sigue estos pasos:</p>
+        <ol>
+          <li>Visita nuestra tienda en línea y accede a la opción "Reset password".</li>
+          <li>Ingresa tu correo electrónico (${email}) para generar un enlace de restablecimiento de contraseña.</li>
+          <li>Haz clic en el enlace que recibirás por correo y sigue las instrucciones para crear una nueva contraseña.</li>
+        </ol>
+        <p>Haz clic en el siguiente botón para confirmar tu correo electrónico y activar tu cuenta:</p>
+        <a href="${confirmUrl}" style="display: inline-block; padding: 10px 20px; margin: 10px 0; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">Confirmar correo</a>
+        <p>Gracias por confiar en nosotros,</p>
+        <p>El equipo de Moda Modesta</p>
+      `;
+
+      const mailOptionsUser = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: `¡Hola ${nombre}! Confirma tu correo`,
+        html: welcomeMailHTML,
+      };
+
+      await transporter.sendMail(mailOptionsUser);
+    }
+
+    // Generar y guardar la orden en la base de datos
+    const newOrder = new Order({
+      customer: {
+        name: nombre,
+        email: email,
+        phoneNumber: telefono,
+        userId: user._id,
+      },
+      items: productos.map((producto) => ({
+        productId: producto.id,
+        name: producto.name,
+        price: producto.price,
+        quantity: producto.cantidad,
+        size: producto.size,
+        hash: `https://moda-modesta.vercel.app/#product-${producto.hash}`,
+      })),
+      totalAmount: total,
+      shippingCost: costoEnvio,
+      destination: {
+        province: provincia,
+        postalCode: codigoPostal,
+      },
+      checked,
+      aceptar,
+      enCamino,
+      finalizado,
+    });
+
+    await newOrder.save();
+
+    // Guardar los datos de la venta
+    const saleData = productos.map((producto) => ({
+      date: new Date(), // Fecha de la venta
+      productId: producto.id,
+      quantity: producto.cantidad,
+      totalPrice: producto.price * producto.cantidad, // Precio total por producto
+      category: producto.category, // Asegúrate de que cada producto tenga una categoría
+      customerId: user._id,
+      orderId: newOrder._id,
+    }));
+    console.log(saleData);
+    // Guardar cada venta en la base de datos
+    await Promise.all(
+      saleData.map(async (data) => {
+        const newSale = new Sale(data);
+        await newSale.save();
+      })
+    );
+
+    // Actualizar el stock de los productos
+    await Promise.all(
+      productos.map(async (producto) => {
+        const product = await Vista.findById(producto.id);
+        if (product) {
+          if (product.sizes && product.sizes.length > 0) {
+            // Si el producto tiene talles
+            const size = product.sizes.find((s) => s.size === producto.size);
+            if (size) {
+              size.stock -= producto.cantidad;
+              size.stock = Math.max(size.stock, 0); // Asegurarse de que el stock no sea negativo
+              await product.save();
+            }
+          } else {
+            // Si el producto NO tiene talles, actualizar el generalStock
+            product.generalStock -= producto.cantidad;
+            product.generalStock = Math.max(product.generalStock, 0); // Asegurarse de que el stock no sea negativo
+            await product.save();
+          }
+        }
+      })
+    );
+
     const mailOptionsOrder = {
-      from: process.env.EMAIL,
-      to: process.env.EMAIL, // Send to your configured email
-      subject: `Nueva compra de ${orderData.nombre}`,
+      from: email,
+      to: process.env.EMAIL,
+      subject: `Nueva compra de ${nombre}`,
       html: contentHTML,
     };
 
@@ -126,7 +308,7 @@ const sendMail = async (req, res) => {
     console.error("Error al enviar el correo:", error);
     res.status(500).json({
       error:
-        "Orden no generada. Por favor, intenta más tarde. Disculpa las molestias.",
+        "Orden no generada, porfavor intenta mas tarde, Disculpe las molestias.",
     });
   }
 };
