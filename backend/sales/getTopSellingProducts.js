@@ -1,4 +1,3 @@
-import TopSellingProduct from "../models/TopSellingProduct..js";
 import Sale from "../models/Sales.js";
 import { connectToDatabase } from "../db/connectToDatabase.js";
 
@@ -24,10 +23,10 @@ const getTopSellingProducts = async (req, res) => {
       },
       {
         $lookup: {
-          from: "vistas", // Asegúrate de que este nombre coincida con la colección en MongoDB
-          localField: "_id", // Campo en la colección de ventas (Sale)
-          foreignField: "_id", // Campo en la colección de vistas (Vista)
-          as: "productInfo", // Nombre del campo resultante
+          from: "vistas",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productInfo",
         },
       },
       {

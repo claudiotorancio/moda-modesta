@@ -1,5 +1,6 @@
 // salesRenderer.js
 
+import { renderCustomerAnalysis } from "./renderCustsdomerAnalysis.js";
 import { renderTopSellingProducts } from "./renderTopSellingProducts.js";
 
 function createPeriodMenu(container, applyFiltersCallback, menuOptions) {
@@ -116,8 +117,10 @@ export function renderSalesData(
   applyFiltersCallback,
   selectedPeriod = "",
   topSellingProducts = [],
-  pendingOrders
+  pendingOrders,
+  customerAnalytics
 ) {
+  console.log(customerAnalytics);
   container.innerHTML = ""; // Limpia el contenedor antes de renderizar
 
   // Muestra notificación si hay órdenes pendientes
@@ -206,5 +209,12 @@ export function renderSalesData(
     renderTopSellingProducts(topSellingProducts, ".top-selling-container");
   } else {
     renderTopSellingProducts(topSellingProducts, ".top-selling-container");
+  }
+  // Comprobar si hay datos de analytics de clientes para renderizar
+  if (customerAnalytics) {
+    const newCustomerContainer = document.createElement("div");
+    newCustomerContainer.className = "customer-container";
+    container.appendChild(newCustomerContainer);
+    renderCustomerAnalysis(customerAnalytics, ".customer-container");
   }
 }

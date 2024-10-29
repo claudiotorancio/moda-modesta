@@ -40,6 +40,32 @@ export class SalesAnalytics {
 
       const pendingOrders = await this.checkPendingOrders();
 
+      const customerAnalytics = {
+        cliente_data: [
+          {
+            nombre: "Cliente A",
+            total_compras: 350,
+            frecuencia: 2,
+            valor_promedio: 175,
+          },
+          {
+            nombre: "Cliente B",
+            total_compras: 300,
+            frecuencia: 1,
+            valor_promedio: 300,
+          },
+          {
+            nombre: "Cliente C",
+            total_compras: 200,
+            frecuencia: 1,
+            valor_promedio: 200,
+          },
+        ],
+        porcentaje_recurrentes: 66.67,
+        promedio_por_cliente: 283.33,
+        total_ventas: 850,
+      };
+
       // Renderiza los datos de ventas y los productos más vendidos
       renderSalesData(
         salesData,
@@ -47,7 +73,8 @@ export class SalesAnalytics {
         applyFiltersCallback,
         this.filters.period,
         topSellingProducts, // Pasar los productos más vendidos
-        pendingOrders
+        pendingOrders,
+        customerAnalytics
       );
     } catch (error) {
       console.error("Error al obtener los datos de ventas:", error);
@@ -96,5 +123,9 @@ export class SalesAnalytics {
 
   async fetchTopSellingProducts() {
     return await this.apiService.fetchTopSellingProducts(this.filters.category);
+  }
+
+  async fetchCustomerAnalytics() {
+    return await this.apiService.fetchCustomerAnalytics();
   }
 }

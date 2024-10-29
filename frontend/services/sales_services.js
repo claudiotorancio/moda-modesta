@@ -98,7 +98,7 @@ export class SalesServices {
   // Obtener análisis de clientes (frecuencia, valor promedio de compra, etc.)
   async fetchCustomerAnalytics() {
     try {
-      const response = await fetch(`${this.baseURL}/customer-analytics`);
+      const response = await fetch(`${this.baseURL}/api/customer-analytics`);
       if (!response.ok) {
         throw new Error(`Error en la respuesta: ${response.statusText}`);
       }
