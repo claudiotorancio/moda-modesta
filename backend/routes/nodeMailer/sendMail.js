@@ -1,8 +1,9 @@
-//sendMail.js
+// sendMail.js
 import { validateOrderData } from "./mail/validation.js";
 import {
   createTransporter,
   sendVerificationEmail,
+  sendThankYouEmail,
 } from "./mail/mailService.js";
 import { findOrCreateUser } from "./mail/userService.js";
 import {
@@ -10,28 +11,27 @@ import {
   saveSalesData,
   updateStock,
 } from "./mail/orderService.js";
-
 import { connectToDatabase } from "../../db/connectToDatabase.js";
-import { sendThankYouEmail } from "./mail/mailService.js";
 
 const sendMail = async (req, res) => {
   try {
     const orderData = req.body;
 
-    connectToDatabase();
-    // Validar datos de la orden
+    await connectToDatabase(); // Ensure the connection is established
+
+    // Validate order data
     validateOrderData(orderData);
 
-    // Configurar el transportador de nodemailer
+    // Set up the transporter for nodemailer
     const transporter = createTransporter();
 
-    // Buscar o crear usuario
+    // Find or create the user
     const { user, token, existsButNotVerified } = await findOrCreateUser(
       orderData.email,
       orderData.nombre
     );
 
-    // Si el usuario ya existe pero no ha verificado su correo
+    // Handle email verification if the user exists but is not verified
     if (existsButNotVerified) {
       await sendVerificationEmail(
         transporter,
@@ -46,71 +46,71 @@ const sendMail = async (req, res) => {
       });
     }
 
-    // Si el usuario fue creado, enviar el correo de agradecimiento
+    // Create new order
     const newOrder = await createOrder(orderData, user._id);
 
-    // Guardar los datos de la venta
+    // Save sales data
     await saveSalesData(orderData.productos, user._id, newOrder._id);
 
-    // Actualizar el stock de los productos
+    // Update stock
     await updateStock(orderData.productos);
 
-    // Enviar el correo de agradecimiento
+    // Send thank you email
     await sendThankYouEmail(transporter, orderData, user, token);
 
-    // Construir la lista de productos en formato HTML
+    // Build HTML for the products
     const productosHTML = orderData.productos
       .map(
         (producto) => `
-        <tr>
-          <td>${producto.name}</td>
-          <td>${producto.cantidad}</td>
-          <td>${producto.size}</td>
-          <td>$${producto.price.toFixed(2)}</td>
-          <td><a href="https://moda-modesta.vercel.app/#product-${
-            producto.hash
-          }">Ver producto</a></td>
-        </tr>
-      `
+      <tr>
+        <td>${producto.name}</td>
+        <td>${producto.cantidad}</td>
+        <td>${producto.size}</td>
+        <td>$${producto.price.toFixed(2)}</td>
+        <td><a href="https://moda-modesta.vercel.app/#product-${
+          producto.hash
+        }">Ver producto</a></td>
+      </tr>
+    `
       )
       .join("");
 
-    // Construir el contenido HTML del correo
+    // Build HTML content for the order email
     const contentHTML = `
-     <h1>Información de la Compra</h1>
-     <ul>
-       <li><strong>Nombre:</strong> ${orderData.nombre}</li>
-       <li><strong>Email:</strong> ${orderData.email}</li>
-       <li><strong>Teléfono:</strong> ${orderData.telefono}</li>
-       <li><strong>Provincia:</strong> ${orderData.provincia}</li>
-       <li><strong>Código Postal:</strong> ${orderData.codigoPostal}</li>
-       <li><strong>Total:</strong> $${orderData.total}</li>
-       <li><strong>Costo de Envío:</strong> $${orderData.costoEnvio}</li>
-       <li><strong>Coordinar envio:</strong> ${
-         orderData.checked ? "Sí" : "No"
-       }</li>
-     </ul>
-     <h2>Productos</h2>
-     <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">
-       <thead>
-         <tr>
-           <th>Nombre del Producto</th>
-           <th>Cantidad</th>
-           <th>Talle</th>
-           <th>Precio</th>
-           <th>Enlace</th>
-         </tr>
-       </thead>
-       <tbody>
-         ${productosHTML}
-       </tbody>
-     </table>
-   `;
+      <h1>Información de la Compra</h1>
+      <ul>
+        <li><strong>Nombre:</strong> ${orderData.nombre}</li>
+        <li><strong>Email:</strong> ${orderData.email}</li>
+        <li><strong>Teléfono:</strong> ${orderData.telefono}</li>
+        <li><strong>Provincia:</strong> ${orderData.provincia}</li>
+        <li><strong>Código Postal:</strong> ${orderData.codigoPostal}</li>
+        <li><strong>Total:</strong> $${orderData.total}</li>
+        <li><strong>Costo de Envío:</strong> $${orderData.costoEnvio}</li>
+        <li><strong>Coordinar envio:</strong> ${
+          orderData.checked ? "Sí" : "No"
+        }</li>
+      </ul>
+      <h2>Productos</h2>
+      <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+        <thead>
+          <tr>
+            <th>Nombre del Producto</th>
+            <th>Cantidad</th>
+            <th>Talle</th>
+            <th>Precio</th>
+            <th>Enlace</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${productosHTML}
+        </tbody>
+      </table>
+    `;
 
-    // Enviar correo de notificación de nueva compra
+    // Email options for order notification
     const mailOptionsOrder = {
-      from: orderData.email, // Cambiado a tu correo electrónico configurado en las variables de entorno
-      to: process.env.EMAIL, // Enviar al correo del usuario
+      from: process.env.EMAIL,
+      to: process.env.EMAIL, // Send to your configured email
       subject: `Nueva compra de ${orderData.nombre}`,
       html: contentHTML,
     };
@@ -126,7 +126,7 @@ const sendMail = async (req, res) => {
     console.error("Error al enviar el correo:", error);
     res.status(500).json({
       error:
-        "Orden no generada, porfavor intenta mas tarde, Disculpe las molestias.",
+        "Orden no generada. Por favor, intenta más tarde. Disculpa las molestias.",
     });
   }
 };

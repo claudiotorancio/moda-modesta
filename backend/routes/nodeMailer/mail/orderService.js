@@ -14,11 +14,11 @@ export const createOrder = async (data, userId) => {
     total,
     costoEnvio,
     checked,
-    aceptar,
-    enCamino,
-    finalizado,
+    aceptar = false,
+    enCamino = false,
+    finalizado = false,
   } = data;
-
+  console.log(data);
   const newOrder = new Order({
     customer: {
       name: nombre,
