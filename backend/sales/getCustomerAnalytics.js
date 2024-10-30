@@ -7,7 +7,7 @@ const getCustomerAnalytics = async (req, res) => {
     // Conectar a la base de datos
     await connectToDatabase();
 
-    // Obtener los datos de análisis del cliente
+    // Obtener los datos de análisis del cliente con el customerId populado
     const analytics = await CustomerAnalytic.find().populate("customerId");
 
     // Verificar si hay datos de análisis
@@ -17,73 +17,75 @@ const getCustomerAnalytics = async (req, res) => {
       });
     }
 
-    // Obtener las compras confirmadas y calcular estadísticas
+    // Procesar cada análisis para obtener datos de compra confirmada
     const cliente_data = await Promise.all(
       analytics.map(async (analytic) => {
+        // Verificar si customerId es válido
+        if (!analytic.customerId || !analytic.customerId._id) return null;
+
+        // Obtener compras confirmadas para este cliente
         const comprasConfirmadas = await Sale.find({
           customerId: analytic.customerId._id,
-          compraConfirmada: true, // Filtra solo las compras confirmadas
+          compraConfirmada: true,
         });
 
-        // Solo procesar si hay compras confirmadas
-        if (comprasConfirmadas.length > 0) {
-          const totalGastadoConfirmado = comprasConfirmadas.reduce(
-            (acc, compra) => acc + compra.totalPrice,
-            0
-          );
-          const frecuenciaConfirmada = comprasConfirmadas.length;
-          const valorPromedioConfirmado =
-            frecuenciaConfirmada > 0
-              ? totalGastadoConfirmado / frecuenciaConfirmada
-              : 0;
+        // Si no hay compras confirmadas, retorna null
+        if (!comprasConfirmadas.length) return null;
 
-          return {
-            nombre: analytic.customerId
-              ? analytic.customerId.nombre
-              : "Cliente Desconocido",
-            total_compras: totalGastadoConfirmado,
-            frecuencia: frecuenciaConfirmada,
-            valor_promedio: valorPromedioConfirmado,
-          };
-        }
-        return null; // Retornar null si no hay compras confirmadas
+        // Calcular datos agregados
+        const totalGastadoConfirmado = comprasConfirmadas.reduce(
+          (acc, compra) => acc + compra.totalPrice,
+          0
+        );
+        const frecuenciaConfirmada = comprasConfirmadas.length;
+        const valorPromedioConfirmado =
+          frecuenciaConfirmada > 0
+            ? (totalGastadoConfirmado / frecuenciaConfirmada).toFixed(2)
+            : 0;
+
+        return {
+          nombre: analytic.customerId.nombre || "Cliente Desconocido",
+          total_compras: totalGastadoConfirmado.toFixed(2),
+          frecuencia: frecuenciaConfirmada,
+          valor_promedio: valorPromedioConfirmado,
+        };
       })
     );
 
-    // Filtrar los resultados para eliminar los null
-    const validClienteData = cliente_data.filter((cliente) => cliente !== null);
+    // Filtrar los datos válidos
+    const validClienteData = cliente_data.filter(Boolean);
 
-    // Si no hay datos válidos, devolver un mensaje
-    if (validClienteData.length === 0) {
+    // Si no hay clientes con compras confirmadas, responder con mensaje
+    if (!validClienteData.length) {
       return res.status(404).json({
         message: "No se encontraron clientes con compras confirmadas.",
       });
     }
 
-    // Calcular estadísticas adicionales para el reporte general
+    // Cálculos generales
     const totalVentas = validClienteData.reduce(
-      (sum, cliente) => sum + cliente.total_compras,
+      (sum, cliente) => sum + parseFloat(cliente.total_compras),
       0
     );
     const totalClientes = validClienteData.length;
     const recurrentes = validClienteData.filter(
       (cliente) => cliente.frecuencia > 1
     ).length;
-
-    const porcentaje_recurrentes = (recurrentes / totalClientes) * 100 || 0;
+    const porcentaje_recurrentes = totalClientes
+      ? ((recurrentes / totalClientes) * 100).toFixed(2)
+      : 0;
     const promedio_por_cliente = totalClientes
-      ? totalVentas / totalClientes
+      ? (totalVentas / totalClientes).toFixed(2)
       : 0;
 
-    // Estructurar la respuesta
+    // Responder con los datos estructurados
     const responseData = {
       cliente_data: validClienteData,
-      porcentaje_recurrentes: porcentaje_recurrentes.toFixed(2),
-      promedio_por_cliente: promedio_por_cliente.toFixed(2),
+      porcentaje_recurrentes,
+      promedio_por_cliente,
       total_ventas: totalVentas.toFixed(2),
     };
 
-    // Devolver la respuesta
     res.status(200).json(responseData);
   } catch (error) {
     console.error("Error al obtener los datos de análisis del cliente:", error);
