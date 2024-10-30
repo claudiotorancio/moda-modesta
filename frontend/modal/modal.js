@@ -169,7 +169,7 @@ const modalMsgReload = (message) => {
   showModal(
     message,
     "",
-    "Volver",
+    "ir a inicio",
 
     () => {
       window.location.replace("/index.html");
