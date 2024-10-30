@@ -8,8 +8,8 @@ const getCustomerAnalytics = async (req, res) => {
     await connectToDatabase();
 
     // Obtener los datos de análisis del cliente
-    const analytics = await CustomerAnalytic.find().populate("customerId");
-    console.log(analytics.customerId);
+    const analytics = await CustomerAnalytic.find().populate("usersId");
+    console.log(analytics.usersId);
     // Verificar si hay datos de análisis
     if (!analytics.length) {
       return res.status(404).json({
