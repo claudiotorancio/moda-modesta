@@ -4,6 +4,7 @@ import {
   validacionesAgregarResena,
   validacionesPutResena,
   validacionesSendMail,
+  validacionesSuscribeMail,
   validacionesResetPassword,
   validacionesConfirmResetPassword,
   validacionesNotificacionesSinStock,
@@ -224,7 +225,7 @@ const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
 router.get("/api/sales", requireAdmin, getSalesByPeriod);
 router.get("/api/top-selling-products", requireAdmin, getTopSellingProducts);
 router.get("/api/orders-pending", requireAdmin, gefetchPendingOrders);
-router.get("/api/customer-analytics", getCustomerAnalytics);
+router.get("/api/customer-analytics", requireAdmin, getCustomerAnalytics);
 //profile
 router.get(
   "/api/infoPersonal",
@@ -293,7 +294,7 @@ router.delete(
 router.delete("/api/limpiarCarrito", limpiarCarrito);
 
 // Compras
-router.get("/api/listaOrder", requireAdmin, purchaseOrder);
+router.get("/api/purchaseOrder", requireAdmin, purchaseOrder);
 router.delete(
   "/api/deleteOrder/:id",
   validacionesDeletOrder,
@@ -339,7 +340,13 @@ router.post(
   purchaseLimiter,
   sendMail
 );
-router.post("/api/suscribeMail", purchaseLimiter, suscribeMail);
+router.post(
+  "/api/suscribeMail",
+  validacionesSuscribeMail,
+  handleValidationErrors,
+  purchaseLimiter,
+  suscribeMail
+);
 router.get("/api/confirmMail", confirmMail);
 router.get("/success", success);
 router.get("/error", error);

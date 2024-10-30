@@ -30,7 +30,7 @@ export class RenderCompras {
       searchInput.addEventListener("input", () => this.filtrarCompras());
 
       // Obtener el listado completo de compras
-      this.listado = await this.compraServicesHelpers.listaOrder();
+      this.listado = await this.compraServicesHelpers.purchaseOrder();
 
       // Ordenar las compras por la fecha de creación (createdAt) en orden descendente
       this.listado.sort(

@@ -8,7 +8,6 @@ const customerAnalyticsSchema = new Schema({
   },
   totalSpent: { type: Number, required: true }, // Total gastado por el cliente
   totalOrders: { type: Number, required: true }, // Número total de pedidos
-  averageOrderValue: { type: Number, required: true }, // Valor promedio por pedido
   lastOrderDate: { type: Date, required: true }, // Fecha del último pedido
   frecuencia: { type: Number, required: true }, // Añadir frecuencia si es relevante
   valorPromedio: { type: Number, required: true }, // Añadir valor promedio si es relevante

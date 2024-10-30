@@ -3,13 +3,13 @@ import { validateOrderData } from "./mail/validation.js";
 import {
   createTransporter,
   sendVerificationEmail,
-  sendThankYouEmail,
 } from "./mail/mailService.js";
 import { findOrCreateUser } from "./mail/userService.js";
 import {
   createOrder,
   saveSalesData,
   updateStock,
+  saveCustomerAnalytics,
 } from "./mail/orderService.js";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
 
@@ -26,25 +26,21 @@ const sendMail = async (req, res) => {
     const transporter = createTransporter();
 
     // Find or create the user
-    const { user, token, existsButNotVerified } = await findOrCreateUser(
+    const { user, token } = await findOrCreateUser(
       orderData.email,
       orderData.nombre
     );
 
     // Handle email verification if the user exists but is not verified
-    if (existsButNotVerified) {
-      await sendVerificationEmail(
-        transporter,
-        orderData.email,
-        orderData.nombre,
-        token
-      );
-      return res.json({
-        success: true,
-        message:
-          "Tu cuenta ya existe, pero no ha sido verificada. Se ha enviado un correo para confirmar tu dirección.",
-      });
-    }
+
+    await sendVerificationEmail(
+      transporter,
+      orderData.email,
+      orderData.nombre,
+      orderData,
+      user,
+      token
+    );
 
     // Create new order
     const newOrder = await createOrder(orderData, user._id);
@@ -55,8 +51,8 @@ const sendMail = async (req, res) => {
     // Update stock
     await updateStock(orderData.productos);
 
-    // Send thank you email
-    await sendThankYouEmail(transporter, orderData, user, token);
+    // Lógica para guardar datos de análisis de clientes
+    await saveCustomerAnalytics(user._id, orderData.productos);
 
     // Build HTML for the products
     const productosHTML = orderData.productos

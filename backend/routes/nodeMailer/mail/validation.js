@@ -13,6 +13,7 @@ export const validateOrderData = (data) => {
     aceptar = false,
     enCamino = false,
     finalizado = false,
+    cancelado = false,
   } = data;
 
   // Verificar que todos los campos requeridos están presentes
@@ -28,7 +29,8 @@ export const validateOrderData = (data) => {
     checked === undefined ||
     aceptar === undefined ||
     enCamino === undefined ||
-    finalizado === undefined
+    finalizado === undefined ||
+    cancelado === undefined
   ) {
     throw new Error("Todos los campos son requeridos.");
   }

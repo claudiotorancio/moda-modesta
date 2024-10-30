@@ -100,12 +100,17 @@ export class SalesServices {
     try {
       const response = await fetch(`${this.baseURL}/api/customer-analytics`);
       if (!response.ok) {
+        // Si la respuesta no es 200, puedes devolver un array vacío o un objeto predeterminado
+        if (response.status === 404) {
+          console.warn("No se encontraron datos de análisis de clientes.");
+          return []; // Devuelve un array vacío
+        }
         throw new Error(`Error en la respuesta: ${response.statusText}`);
       }
-      return response.json();
+      return await response.json();
     } catch (error) {
       console.error("Error al obtener análisis de clientes:", error);
-      throw error;
+      return []; // Asegúrate de devolver un array vacío en caso de error
     }
   }
 }

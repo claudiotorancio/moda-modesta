@@ -17,6 +17,7 @@ export const createOrder = async (data, userId) => {
     aceptar = false,
     enCamino = false,
     finalizado = false,
+    cancelado = false,
   } = data;
 
   console.log(data);
@@ -46,25 +47,19 @@ export const createOrder = async (data, userId) => {
     aceptar,
     enCamino,
     finalizado,
+    cancelado,
   });
 
   console.log(newOrder);
   await newOrder.save();
 
-  // Lógica para guardar datos de análisis de clientes
-  await saveCustomerAnalytics(userId, productos, total);
-
   return newOrder;
 };
 
-const saveCustomerAnalytics = async (userId, productos, total) => {
+export const saveCustomerAnalytics = async (userId, productos) => {
   // Obtener el cliente y sus compras previas
   const analytics = await CustomerAnalytic.findOne({ customerId: userId });
 
-  const totalCompras = productos.reduce(
-    (acc, producto) => acc + producto.cantidad,
-    0
-  );
   const totalGastado = productos.reduce(
     (acc, producto) => acc + producto.price * producto.cantidad,
     0
@@ -86,7 +81,6 @@ const saveCustomerAnalytics = async (userId, productos, total) => {
       customerId: userId,
       totalSpent: totalGastado,
       totalOrders: 1,
-      averageOrderValue: totalGastado,
       lastOrderDate: now,
       frecuencia: 1,
       valorPromedio: totalGastado, // O personalizar según tus necesidades

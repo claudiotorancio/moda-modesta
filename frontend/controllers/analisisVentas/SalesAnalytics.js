@@ -40,7 +40,11 @@ export class SalesAnalytics {
 
       const pendingOrders = await this.checkPendingOrders();
 
+      // Aquí se asegura de que se manejen correctamente los datos de analytics
       const customerAnalytics = await this.fetchCustomerAnalytics();
+      if (!customerAnalytics || customerAnalytics.length === 0) {
+        console.warn("No hay análisis de clientes disponibles.");
+      }
 
       // Renderiza los datos de ventas y los productos más vendidos
       renderSalesData(

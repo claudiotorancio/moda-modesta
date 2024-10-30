@@ -29,9 +29,9 @@ export class CompraServices {
     }
   }
 
-  listaOrder = async () => {
+  purchaseOrder = async () => {
     try {
-      const response = await fetch(`${this.baseURL}/api/listaOrder`);
+      const response = await fetch(`${this.baseURL}/api/purchaseOrder`);
 
       const dataResponse = await response.json();
 

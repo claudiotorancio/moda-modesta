@@ -79,6 +79,11 @@ const validacionesSendMail = [
   validarCampo("telefono", "El telefono es obligatorio.", true),
 ];
 
+const validacionesSuscribeMail = [
+  validarCampo("nombre", "El nombre es obligatorio."),
+  validarEmail(),
+];
+
 const validacionesEnviarPromociones = [
   body("myContent")
     .notEmpty()
@@ -161,6 +166,7 @@ export {
   validacionesCancelarPedido,
   validacionesFinalizarPedido,
   validacionesSendMail,
+  validacionesSuscribeMail,
   validacionesEnviarPromociones,
   validacionesCostoEnvio,
   validacionesResetPassword,
