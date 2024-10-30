@@ -7,27 +7,29 @@ const getCustomerAnalytics = async (req, res) => {
     // Conectar a la base de datos
     await connectToDatabase();
 
-    // Obtener los datos de análisis del cliente
+    // Obtener los datos de análisis del cliente y solo procesar aquellos con un customerId válido
     const analytics = await CustomerAnalytic.find().populate("customerId");
 
-    analytics.forEach((analytic) => {
-      if (analytic.customerId) {
-        console.log("Customer Name:", analytic.customerId.nombre);
-      } else {
-        console.log("Este análisis no tiene un customerId válido.");
-      }
-    });
+    // Filtrar solo los análisis que tienen un customerId válido
+    const validAnalytics = analytics.filter(
+      (analytic) => analytic.customerId !== null
+    );
 
-    // Verificar si hay datos de análisis
-    if (!analytics.length) {
+    // Si no hay análisis válidos, devolver un mensaje
+    if (!validAnalytics.length) {
       return res.status(404).json({
-        message: "No se encontraron datos de análisis de clientes.",
+        message: "No se encontraron datos de análisis de clientes válidos.",
       });
     }
 
+    // Log para depuración
+    validAnalytics.forEach((analytic) => {
+      console.log("Customer Name:", analytic.customerId.nombre);
+    });
+
     // Obtener las compras confirmadas y calcular estadísticas
     const cliente_data = await Promise.all(
-      analytics.map(async (analytic) => {
+      validAnalytics.map(async (analytic) => {
         const comprasConfirmadas = await Sale.find({
           customerId: analytic.customerId._id,
           compraConfirmada: true, // Filtra solo las compras confirmadas
@@ -46,9 +48,7 @@ const getCustomerAnalytics = async (req, res) => {
               : 0;
 
           return {
-            nombre: analytic.customerId
-              ? analytic.customerId.nombre
-              : "Cliente Desconocido",
+            nombre: analytic.customerId.nombre,
             total_compras: totalGastadoConfirmado,
             frecuencia: frecuenciaConfirmada,
             valor_promedio: valorPromedioConfirmado,
