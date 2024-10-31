@@ -71,31 +71,42 @@ const updateProduct = async (req, res) => {
       }
     }
 
+    // Verificar si se recibió sizes o generalStock
     const sizesWithStock = [];
-
-    // Verificar si sizes es una cadena JSON y parsearla
     let sizesParsed;
 
-    try {
-      sizesParsed = JSON.parse(sizes);
-    } catch (error) {
-      return res.status(400).json({
-        error: "El formato de sizes no es válido. Debe ser un array.",
-      });
-    }
+    // Si se proporcionó generalStock, no se procesará sizes
+    if (generalStock !== undefined && generalStock !== null) {
+      // Asegúrate de que sea un número
+      const parsedGeneralStock = Number(generalStock);
+      if (isNaN(parsedGeneralStock)) {
+        return res.status(400).json({
+          error: "El generalStock debe ser un número.",
+        });
+      }
+    } else if (sizes) {
+      // Si no se proporciona generalStock, procesa sizes
+      try {
+        sizesParsed = JSON.parse(sizes);
+      } catch (error) {
+        return res.status(400).json({
+          error: "El formato de sizes no es válido. Debe ser un array.",
+        });
+      }
 
-    // Verificar si sizesParsed es un array y tiene elementos
-    if (Array.isArray(sizesParsed) && sizesParsed.length > 0) {
-      sizesParsed.forEach(({ size, stock }) => {
-        if (size) {
-          const parsedStock = Number(stock) || 0; // Asumir que el stock ya es un número válido
-          sizesWithStock.push({ size, stock: parsedStock });
-        }
-      });
-    } else {
-      return res.status(400).json({
-        error: "El formato de sizes no es válido. Debe ser un array.",
-      });
+      // Verificar si sizesParsed es un array y tiene elementos
+      if (Array.isArray(sizesParsed) && sizesParsed.length > 0) {
+        sizesParsed.forEach(({ size, stock }) => {
+          if (size) {
+            const parsedStock = Number(stock) || 0; // Asumir que el stock ya es un número válido
+            sizesWithStock.push({ size, stock: parsedStock });
+          }
+        });
+      } else {
+        return res.status(400).json({
+          error: "El formato de sizes no es válido. Debe ser un array.",
+        });
+      }
     }
 
     // Datos a actualizar
@@ -103,13 +114,14 @@ const updateProduct = async (req, res) => {
       name,
       price,
       description,
-      sizes: sizesWithStock.length > 0 ? sizesWithStock : [],
       isFeatured,
       imagePath: updatedImagePath.length ? updatedImagePath : undefined,
     };
 
-    // Si no hay talles, incluir generalStock
-    if (sizesWithStock.length === 0 && generalStock !== undefined) {
+    // Si hay talles, se actualizan; de lo contrario, se incluye generalStock
+    if (sizesWithStock.length > 0) {
+      updateData.sizes = sizesWithStock;
+    } else if (generalStock !== undefined) {
       updateData.generalStock = Number(generalStock) || 0; // Guardar generalStock si no hay talles
     }
 
