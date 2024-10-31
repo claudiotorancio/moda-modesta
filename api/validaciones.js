@@ -236,6 +236,7 @@ const validacionesProductoActualizacion = [
       }
     })
     .withMessage("El formato de talles y stocks no es válido."),
+  validarCampo("isFeatured", "El precio es obligatorio."),
 ];
 
 export {

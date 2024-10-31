@@ -24,7 +24,7 @@ const updateProduct = async (req, res) => {
       isFeatured,
       id,
     } = req.body;
-
+    console.log(req.body);
     await connectToDatabase();
 
     const model = esAdministrador(req.user) ? Vista : Product;
