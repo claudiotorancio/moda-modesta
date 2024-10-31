@@ -233,6 +233,10 @@ const validacionesProductoActualizacion = [
   validarCampo("price", "El precio es obligatorio.", true),
   validarCampo("description", "La descripción es obligatoria."),
   validarCampo("isFeatured", "El estado de destacado es obligatorio."),
+  body("generalStock")
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage("El stock general debe ser un número positivo."),
 
   // Validación para imagePath, que es opcional
   body("imagePath")

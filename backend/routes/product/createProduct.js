@@ -8,7 +8,7 @@ const createProduct = async (req, res) => {
     const imagePaths = req.files ? req.files.map((file) => file.location) : [];
     const { name, price, description, section, isFeatured, generalStock } =
       req.body;
-
+    console.log(imagePaths);
     // Procesa los tamaños y el stock si la sección NO es "Diversos"
     let sizes = [];
     if (section !== "opcion3") {
@@ -22,7 +22,6 @@ const createProduct = async (req, res) => {
       description,
       section,
       isFeatured: isFeatured || false,
-      imagePath: imagePaths,
       user_id: req.user._id,
       isActive: true, // La propiedad isActive es true por defecto
     };
@@ -30,12 +29,16 @@ const createProduct = async (req, res) => {
     // Si la sección es "Diversos", agrega el stock general
     if (section === "opcion3") {
       createProductData.generalStock = parseInt(generalStock) || 0;
+      // Asegúrate de que imagePath esté vacío o asigne imágenes específicas si es necesario
+      createProductData.imagePath = []; // O asigna imágenes específicas aquí si es necesario
     } else {
       // Si no es "Diversos", agrega las tallas y el stock por talla
       createProductData.sizes = sizes.map((sizeData) => ({
         size: sizeData.size,
         stock: sizeData.stock,
       }));
+      // Asignar las rutas de imagen
+      createProductData.imagePath = imagePaths;
     }
 
     // Crear y guardar el producto
