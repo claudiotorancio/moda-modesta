@@ -44,7 +44,11 @@ class ProductService {
       modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {
       modalControllers.modalMsgReload(error.message);
-      console.error(error);
+      // Asegúrate de que el error se imprima correctamente en la consola
+      console.error(
+        "Error al actualizar el producto:",
+        JSON.stringify(error, null, 2)
+      ); // Esto mostrará más detalles
     }
   }
 
