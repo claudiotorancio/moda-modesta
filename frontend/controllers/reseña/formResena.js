@@ -87,6 +87,8 @@ export class FormResena {
       // Agregar reseña a la lista
       await resenaServices.agregarResena(nuevaResena);
       await cargarReseñasAdmin();
+
+      form.reset();
     } catch (error) {
       console.error("Error al agregar la reseña:", error);
     }
