@@ -1,6 +1,6 @@
 import { modalControllers } from "../../modal/modal.js";
 import resenaServices from "../../services/resena_services.js";
-import { cargarReseñas } from "./reseñas.js";
+import { cargarReseñas, cargarReseñasAdmin } from "./reseñas.js";
 
 export async function editarResena(resenaId) {
   modalControllers.baseModal();
@@ -62,7 +62,7 @@ export async function editarResena(resenaId) {
     try {
       // Agregar reseña a la lista
       await resenaServices.putResena(nuevaResena);
-      await cargarReseñas();
+      await cargarReseñasAdmin();
     } catch (error) {
       console.error("Error al agregar la reseña:", error);
     }
@@ -73,6 +73,6 @@ export async function eliminarReseña(resenaId) {
   const confirmacion = confirm("¿Está seguro que desea eliminar esta reseña?");
   if (confirmacion) {
     await resenaServices.deleteResena(resenaId);
-    await cargarReseñas();
+    await cargarReseñasAdmin();
   }
 }
