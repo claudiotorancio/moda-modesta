@@ -427,10 +427,10 @@ router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/listaProductos", listaProductos);
 router.post(
   "/api/createProduct",
-  uploadSingle,
   validacionesProducto,
   handleValidationErrors,
   requireAdmin,
+  uploadSingle,
   createProduct
 );
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);

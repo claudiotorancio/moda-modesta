@@ -2,7 +2,6 @@ import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
 import AWS from "aws-sdk";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
-import { uploadSingleUpdate } from "../../../api/router.js"; // Asegúrate de que esto sea una función
 
 const s3 = new AWS.S3({
   region: process.env.S3_BUCKET_REGION,
