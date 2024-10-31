@@ -1,8 +1,8 @@
-// Código del archivo updateProduct.js
 import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
 import AWS from "aws-sdk";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
+import { uploadSingleUpdate } from "../../../api/router.js"; // Asegúrate de que esto sea una función
 
 const s3 = new AWS.S3({
   region: process.env.S3_BUCKET_REGION,
@@ -41,21 +41,17 @@ const updateProduct = async (req, res) => {
 
     // Eliminar imágenes antiguas si se proporcionan
     if (oldImagePath) {
-      // Si oldImagePath es un solo string, conviértelo en un array
       const oldImages = Array.isArray(oldImagePath)
         ? oldImagePath
         : [oldImagePath];
 
       for (const path of oldImages) {
-        // Verificar si la imagen está en el producto
         const imageIndex = updatedImagePath.indexOf(path);
         if (imageIndex !== -1) {
-          // Reemplazar la imagen antigua con la nueva si se está subiendo una
           if (req.file) {
             updatedImagePath[imageIndex] = req.file.location; // Reemplazar la imagen en la posición correcta
           } else {
-            // Si no se está subiendo una nueva imagen, solo eliminarla
-            updatedImagePath.splice(imageIndex, 1);
+            updatedImagePath.splice(imageIndex, 1); // Eliminar si no se sube una nueva imagen
           }
 
           // Eliminar la imagen de S3 si ha sido eliminada
@@ -83,24 +79,27 @@ const updateProduct = async (req, res) => {
     try {
       sizesParsed = JSON.parse(sizes);
     } catch (error) {
-      throw new Error("El formato de sizes no es válido. Debe ser un array.");
+      return res
+        .status(400)
+        .json({
+          error: "El formato de sizes no es válido. Debe ser un array.",
+        });
     }
 
     // Verificar si sizesParsed es un array y tiene elementos
     if (Array.isArray(sizesParsed) && sizesParsed.length > 0) {
       sizesParsed.forEach(({ size, stock }) => {
         if (size) {
-          // Asumir que el stock ya es un número válido
-          const parsedStock =
-            stock !== undefined && stock !== null ? Number(stock) : 0;
-
-          // Agregar el tamaño y stock al array sizesWithStock
+          const parsedStock = Number(stock) || 0; // Asumir que el stock ya es un número válido
           sizesWithStock.push({ size, stock: parsedStock });
         }
       });
     } else {
-      // Si sizes no es un array, lanzar un error o manejarlo como consideres necesario
-      throw new Error("El formato de sizes no es válido. Debe ser un array.");
+      return res
+        .status(400)
+        .json({
+          error: "El formato de sizes no es válido. Debe ser un array.",
+        });
     }
 
     // Datos a actualizar
@@ -108,12 +107,12 @@ const updateProduct = async (req, res) => {
       name,
       price,
       description,
-      sizes: sizesWithStock.length > 0 ? sizesWithStock : [], // Si no hay talles, se guarda un array vacío
+      sizes: sizesWithStock.length > 0 ? sizesWithStock : [],
       isFeatured,
       imagePath: updatedImagePath.length ? updatedImagePath : undefined,
     };
 
-    // Si no hay talles, incluir `generalStock`
+    // Si no hay talles, incluir generalStock
     if (sizesWithStock.length === 0 && generalStock !== undefined) {
       updateData.generalStock = Number(generalStock) || 0; // Guardar generalStock si no hay talles
     }

@@ -222,7 +222,9 @@ const upload = () =>
   });
 
 export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 3);
-const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single("imagePath");
+export const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single(
+  "imagePath"
+);
 
 // Rutas
 
@@ -425,7 +427,6 @@ router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/listaProductos", listaProductos);
 router.post(
   "/api/createProduct",
-  uploadNone.none(),
   validacionesProducto,
   handleValidationErrors,
   requireAdmin,
@@ -437,7 +438,7 @@ router.put("/api/activateProduct/:id", requireAdmin, activarProducto);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct",
-  uploadNone.none(),
+  uploadSingleUpdate,
   (req, res, next) => {
     console.log("Datos recibidos:", req.body); // Muestra los datos que se reciben
     next();
@@ -445,7 +446,6 @@ router.put(
   validacionesProductoActualizacion,
   handleValidationErrors,
   requireAdmin,
-  // uploadSingleUpdate,
   updateProduct
 );
 router.get("/api/productoSimilar/:id", productoSimilar);
