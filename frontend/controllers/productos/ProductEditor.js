@@ -329,11 +329,6 @@ export class ProductEditor {
         dataEdit.append("sizes", JSON.stringify(selectedSizes));
       }
 
-      // Mostrar los datos del FormData en la consola
-      for (let [key, value] of dataEdit.entries()) {
-        console.log(`${key}:`, value);
-      }
-
       try {
         await productoServices.actualizarProducto(dataEdit);
       } catch (err) {
