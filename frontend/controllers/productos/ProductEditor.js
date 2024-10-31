@@ -294,6 +294,8 @@ export class ProductEditor {
 
       const dataEdit = new FormData();
 
+      dataEdit.append("id", id);
+
       if (imagePath1) {
         dataEdit.append("imagePath", imagePath1);
         dataEdit.append(
@@ -324,7 +326,7 @@ export class ProductEditor {
       });
 
       try {
-        await productoServices.actualizarProducto(dataEdit, id);
+        await productoServices.actualizarProducto(dataEdit);
       } catch (err) {
         console.error("Error al actualizar el producto:", err);
         alert(

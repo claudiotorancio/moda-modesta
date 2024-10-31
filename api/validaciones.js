@@ -161,6 +161,100 @@ const validacionesSignin = [
   body("password").notEmpty().withMessage("La contraseña es obligatoria."),
 ];
 
+const validacionesProducto = [
+  validarCampo("name", "El nombre es obligatorio."),
+  validarCampo("price", "El precio es obligatorio.", true)
+    .isFloat({ gt: 0 })
+    .withMessage("El precio debe ser mayor que 0."),
+  validarCampo("description", "La descripción es obligatoria."),
+  body("images")
+    .custom((value, { req }) => {
+      const images = req.files?.images || [];
+      if (images.length > 2) {
+        throw new Error("Por favor, selecciona un máximo de 2 imágenes.");
+      }
+      return true;
+    })
+    .withMessage("Las imágenes son opcionales, pero no pueden exceder de 2."),
+  body("generalStock")
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage("El stock general debe ser un número positivo."),
+  body("sizes")
+    .optional()
+    .custom((value) => {
+      try {
+        const sizesObj = JSON.parse(value);
+        if (
+          typeof sizesObj === "object" &&
+          Object.values(sizesObj).every(
+            (stock) => Number.isInteger(stock) && stock >= 0
+          )
+        ) {
+          return true;
+        } else {
+          throw new Error("Formato incorrecto en talles y cantidades.");
+        }
+      } catch (error) {
+        throw new Error("Formato JSON inválido en talles.");
+      }
+    })
+    .withMessage("Los talles y sus stocks deben ser un JSON válido."),
+];
+
+export const validacionesProductoActualizacion = [
+  validarId("id"),
+  body("name")
+    .notEmpty()
+    .withMessage("El nombre es obligatorio.")
+    .trim()
+    .customSanitizer(escape),
+  body("price")
+    .notEmpty()
+    .withMessage("El precio es obligatorio.")
+    .isFloat({ gt: 0 })
+    .withMessage("El precio debe ser un número mayor que 0.")
+    .customSanitizer(escape),
+  body("description")
+    .notEmpty()
+    .withMessage("La descripción es obligatoria.")
+    .trim()
+    .customSanitizer(escape),
+  body("imagePath")
+    .optional()
+    .custom((value, { req }) => {
+      const images = req.files?.imagePath || [];
+      if (images.length > 2) {
+        throw new Error("Por favor, selecciona un máximo de 2 imágenes.");
+      }
+      return true;
+    })
+    .withMessage("Solo se permiten hasta 2 imágenes."),
+  body("generalStock")
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage("El stock general debe ser un número positivo."),
+  body("sizes")
+    .optional()
+    .custom((value, { req }) => {
+      const sizes = JSON.parse(value); // Suponiendo que se recibe un JSON
+      if (
+        Array.isArray(sizes) &&
+        sizes.every(
+          (size) =>
+            typeof size.size === "string" &&
+            Number.isInteger(Number(size.stock)) &&
+            Number(size.stock) >= 0
+        )
+      ) {
+        return true;
+      } else {
+        throw new Error("Los talles y sus stocks deben ser válidos.");
+      }
+    })
+    .withMessage("El formato de talles y stocks no es válido."),
+];
+
 export {
   validacionesNotificacionesSinStock,
   validacionesAgregarResena,
@@ -181,4 +275,6 @@ export {
   validacionesListaProductos,
   validacionesSignin,
   validacionesSignup,
+  validacionesProducto,
+  validacionesProductoActualizacion,
 };

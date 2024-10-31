@@ -19,6 +19,8 @@ import {
   validacionesSignup,
   validacionesSignin,
   validacionesUpdatePassword,
+  validacionesProducto,
+  validacionesProductoActualizacion,
 } from "../api/validaciones.js";
 import morgan from "morgan";
 // import cors from "cors";
@@ -274,7 +276,7 @@ router.put(
   requireAdmin,
   putResena
 );
-router.delete("/api/deleteResena/:id", requireAdmin, deleteResena);
+router.delete("/api/deleteResena", requireAdmin, deleteResena);
 
 // Carrito
 router.get("/api/getProductsCart", getProductsCart);
@@ -417,12 +419,21 @@ router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 router.get("/api/renderDestacados", destacadosProduct);
 // router.get("/api/listaProductosUsuario", listaProductosUsuario);
 router.get("/api/listaProductos", listaProductos);
-router.post("/api/createProduct", requireAdmin, uploadSingle, createProduct);
+router.post(
+  "/api/createProduct",
+  validacionesProducto,
+  handleValidationErrors,
+  requireAdmin,
+  uploadSingle,
+  createProduct
+);
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
 router.put("/api/activateProduct/:id", requireAdmin, activarProducto);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
-  "/api/updateProduct/:id",
+  "/api/updateProduct",
+  validacionesProductoActualizacion,
+  handleValidationErrors,
   requireAdmin,
   uploadSingleUpdate,
   updateProduct

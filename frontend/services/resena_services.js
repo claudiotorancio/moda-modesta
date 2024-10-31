@@ -34,8 +34,9 @@ class ResenaService {
 
   async deleteResena(id) {
     try {
-      await fetch(`${this.baseURL}/api/deleteResena/${id}`, {
+      await fetch(`${this.baseURL}/api/deleteResena`, {
         method: "DELETE",
+        body: id,
       });
     } catch (error) {
       console.error(error);

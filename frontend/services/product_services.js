@@ -110,9 +110,9 @@ class ProductService {
     }
   }
 
-  async actualizarProducto(product, id) {
+  async actualizarProducto(product) {
     try {
-      const response = await fetch(`${this.baseURL}/api/updateProduct/${id}`, {
+      const response = await fetch(`${this.baseURL}/api/updateProduct`, {
         method: "PUT",
         body: product,
       });

@@ -7,7 +7,7 @@ const deleteResena = async (req, res) => {
 
     await connectToDatabase();
 
-    const resenaId = req.params.id;
+    const { resenaId } = req.body;
 
     const deleteResena = await Resena.findByIdAndDelete(resenaId);
 

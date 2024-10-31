@@ -8,13 +8,6 @@ const agregarResena = async (req, res) => {
 
     const { name, redSocial, resena, estrellas } = req.body;
 
-    // Validar datos
-    if (!name || !redSocial || !resena || !estrellas) {
-      return res
-        .status(400)
-        .json({ error: "Todos los campos son requeridos." });
-    }
-
     // Crear los datos de la reseña
     const createResenaData = {
       name,

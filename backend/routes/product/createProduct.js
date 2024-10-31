@@ -9,19 +9,10 @@ const createProduct = async (req, res) => {
     const { name, price, description, section, isFeatured, generalStock } =
       req.body;
 
-    console.log(imagePaths);
-
     // Procesa los tamaños y el stock si la sección NO es "Diversos"
     let sizes = [];
     if (section !== "opcion3") {
       sizes = JSON.parse(req.body.sizes || "[]"); // Convierte el JSON de vuelta a un array si hay tallas
-    }
-
-    // Validaciones básicas
-    if (!name || !price || !description || !section || !imagePaths.length) {
-      return res
-        .status(400)
-        .json({ error: "Todos los campos son requeridos." });
     }
 
     // Crear datos del producto según la sección
