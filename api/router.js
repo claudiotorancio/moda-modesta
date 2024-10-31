@@ -432,10 +432,11 @@ router.post(
     console.log("Datos entrantes touter.js:", req.body);
     next(); // Continúa al siguiente middleware
   },
-  uploadSingle,
+
   validacionesProducto,
   handleValidationErrors,
   requireAdmin,
+  uploadSingle,
   createProduct
 );
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
