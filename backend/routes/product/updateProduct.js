@@ -105,13 +105,6 @@ const updateProduct = async (req, res) => {
       });
     }
 
-    // Si sizes no se proporciona, simplemente retornamos un error
-    if (!sizes || sizes.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Se debe proporcionar sizes o generalStock." });
-    }
-
     // Lógica para manejar sizes si se proporciona
     const sizesWithStock = [];
     let sizesParsed;
