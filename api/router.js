@@ -427,6 +427,7 @@ router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/listaProductos", listaProductos);
 router.post(
   "/api/createProduct",
+  uploadNone.none(),
   validacionesProducto,
   handleValidationErrors,
   requireAdmin,
