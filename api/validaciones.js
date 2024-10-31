@@ -162,11 +162,17 @@ const validacionesSignin = [
 ];
 
 const validacionesProducto = [
+  (req, res, next) => {
+    // Ver los datos que están llegando a la validación
+    console.log("Datos entrantes:", req.body);
+    next(); // Continúa al siguiente middleware
+  },
   validarCampo("name", "El nombre es obligatorio."),
   validarCampo("price", "El precio es obligatorio.", true)
     .isFloat({ gt: 0 })
     .withMessage("El precio debe ser mayor que 0."),
   validarCampo("description", "La descripción es obligatoria."),
+  validarCampo("isFeatured", "El estado de destacado es obligatorio."),
   body("images")
     .custom((value, { req }) => {
       const images = req.files?.images || [];

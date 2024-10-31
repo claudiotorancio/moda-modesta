@@ -427,11 +427,15 @@ router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/listaProductos", listaProductos);
 router.post(
   "/api/createProduct",
-  uploadNone.none(),
+  (req, res, next) => {
+    // Ver los datos que están llegando a la validación
+    console.log("Datos entrantes touter.js:", req.body);
+    next(); // Continúa al siguiente middleware
+  },
+  uploadSingle,
   validacionesProducto,
   handleValidationErrors,
   requireAdmin,
-  uploadSingle,
   createProduct
 );
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
