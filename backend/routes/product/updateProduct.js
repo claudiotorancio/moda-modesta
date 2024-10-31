@@ -35,31 +35,69 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    // Mantener el array de imágenes actualizado
+    // Prepara los datos de actualización
+    const updateData = {
+      name,
+      price,
+      description,
+      isFeatured,
+    };
+
+    if (generalStock !== undefined) {
+      const parsedGeneralStock = Number(generalStock);
+      if (isNaN(parsedGeneralStock)) {
+        return res
+          .status(400)
+          .json({ error: "El generalStock debe ser un número." });
+      }
+      updateData.generalStock = parsedGeneralStock;
+    }
+
+    if (sizes) {
+      try {
+        const sizesParsed = JSON.parse(sizes);
+        if (Array.isArray(sizesParsed) && sizesParsed.length > 0) {
+          updateData.sizes = sizesParsed.map(({ size, stock }) => ({
+            size,
+            stock: Number(stock) || 0,
+          }));
+        }
+      } catch (error) {
+        return res.status(400).json({
+          error: "El formato de sizes no es válido. Debe ser un array.",
+        });
+      }
+    }
+
+    // Actualizar el producto en la base de datos sin incluir aún las imágenes
+    const result = await model.findByIdAndUpdate(id, updateData, { new: true });
+
+    if (!result) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    // Si el producto se actualizó, actualizamos las imágenes
     let updatedImagePath = product.imagePath || [];
 
-    // Eliminar imágenes antiguas si se proporcionan
     if (oldImagePath) {
       const oldImages = Array.isArray(oldImagePath)
         ? oldImagePath
         : [oldImagePath];
-
       for (const path of oldImages) {
         const imageIndex = updatedImagePath.indexOf(path);
         if (imageIndex !== -1) {
           if (req.file) {
-            updatedImagePath[imageIndex] = req.file.location; // Reemplazar la imagen en la posición correcta
+            updatedImagePath[imageIndex] = req.file.location; // Reemplaza la imagen en la posición correcta
           } else {
-            updatedImagePath.splice(imageIndex, 1); // Eliminar si no se sube una nueva imagen
+            updatedImagePath.splice(imageIndex, 1); // Elimina la imagen si no hay una nueva
           }
 
-          // Eliminar la imagen de S3 si ha sido eliminada
+          // Elimina la imagen de S3
           const nombreDeArchivo = path.split("/").pop();
           const params = {
             Bucket: process.env.BUCKET_AWS,
             Key: nombreDeArchivo,
           };
-
           try {
             await s3.deleteObject(params).promise();
             console.log("Imagen eliminada con éxito en S3:", nombreDeArchivo);
@@ -70,110 +108,9 @@ const updateProduct = async (req, res) => {
       }
     }
 
-    // Verificar si se proporciona generalStock
-    if (generalStock !== undefined) {
-      // Asegúrate de que sea un número
-      const parsedGeneralStock = Number(generalStock);
-      if (isNaN(parsedGeneralStock)) {
-        return res
-          .status(400)
-          .json({ error: "El generalStock debe ser un número." });
-      }
-
-      // Datos a actualizar
-      const updateData = {
-        name,
-        price,
-        description,
-        generalStock: parsedGeneralStock || 0, // Guardar generalStock
-        isFeatured,
-        imagePath: updatedImagePath.length ? updatedImagePath : undefined,
-      };
-
-      // Actualizar el producto en la base de datos
-      const result = await model.findByIdAndUpdate(id, updateData, {
-        new: true,
-      });
-
-      if (!result) {
-        return res.status(404).json({ message: "Producto no encontrado" });
-      }
-
-      return res.json({
-        message: "Producto actualizado",
-        updatedProduct: result,
-      });
-    }
-
-    // Si sizes no se proporciona, permitimos la actualización del producto
-    // incluyendo la imagen, si se está utilizando la opción 3
-    if (!sizes || sizes.length === 0) {
-      // Si generalStock no está definido o sizes está vacío, solo actualiza la imagen y los demás datos
-      const updateData = {
-        name,
-        price,
-        description,
-        isFeatured,
-        imagePath: updatedImagePath.length ? updatedImagePath : undefined,
-      };
-
-      // Actualizar el producto en la base de datos
-      const result = await model.findByIdAndUpdate(id, updateData, {
-        new: true,
-      });
-
-      if (!result) {
-        return res.status(404).json({ message: "Producto no encontrado" });
-      }
-
-      return res.json({
-        message: "Producto actualizado sin tamaños",
-        updatedProduct: result,
-      });
-    }
-
-    // Lógica para manejar sizes si se proporciona
-    const sizesWithStock = [];
-    let sizesParsed;
-
-    try {
-      sizesParsed = JSON.parse(sizes);
-    } catch (error) {
-      return res.status(400).json({
-        error: "El formato de sizes no es válido. Debe ser un array.",
-      });
-    }
-
-    // Verificar si sizesParsed es un array y tiene elementos
-    if (Array.isArray(sizesParsed) && sizesParsed.length > 0) {
-      sizesParsed.forEach(({ size, stock }) => {
-        if (size) {
-          const parsedStock = Number(stock) || 0; // Asumir que el stock ya es un número válido
-          sizesWithStock.push({ size, stock: parsedStock });
-        }
-      });
-    } else {
-      return res.status(400).json({
-        error: "El formato de sizes no es válido. Debe ser un array.",
-      });
-    }
-
-    // Datos a actualizar
-    const updateData = {
-      name,
-      price,
-      description,
-      sizes: sizesWithStock.length > 0 ? sizesWithStock : [], // Solo se incluye sizes si hay datos
-      isFeatured,
-      imagePath: updatedImagePath.length ? updatedImagePath : undefined,
-    };
-
-    // Actualizar el producto en la base de datos
-    const result = await model.findByIdAndUpdate(id, updateData, { new: true });
-
-    if (!result) {
-      return res.status(404).json({ message: "Producto no encontrado" });
-    }
+    // Asigna las nuevas rutas de imagen y guarda los cambios
+    result.imagePath = updatedImagePath.length ? updatedImagePath : undefined;
+    await result.save();
 
     res.json({ message: "Producto actualizado", updatedProduct: result });
   } catch (error) {

@@ -4,11 +4,9 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const createProduct = async (req, res) => {
   try {
-    // Obtén las rutas de las imágenes
-    const imagePaths = req.files ? req.files.map((file) => file.location) : [];
     const { name, price, description, section, isFeatured, generalStock } =
       req.body;
-    console.log;
+
     // Procesa los tamaños y el stock si la sección NO es "Diversos"
     let sizes = [];
     if (section !== "opcion3") {
@@ -29,16 +27,12 @@ const createProduct = async (req, res) => {
     // Si la sección es "Diversos", agrega el stock general
     if (section === "opcion3") {
       createProductData.generalStock = parseInt(generalStock) || 0;
-      // Asegúrate de que imagePath esté vacío o asigne imágenes específicas si es necesario
-      createProductData.imagePath = imagePaths; // O asigna imágenes específicas aquí si es necesario
     } else {
       // Si no es "Diversos", agrega las tallas y el stock por talla
       createProductData.sizes = sizes.map((sizeData) => ({
         size: sizeData.size,
         stock: sizeData.stock,
       }));
-      // Asignar las rutas de imagen
-      createProductData.imagePath = imagePaths;
     }
 
     // Crear y guardar el producto
@@ -51,6 +45,11 @@ const createProduct = async (req, res) => {
 
     await connectToDatabase();
     await newProduct.save();
+
+    // Si el producto se guarda exitosamente, entonces guarda las rutas de las imágenes
+    const imagePaths = req.files ? req.files.map((file) => file.location) : [];
+    newProduct.imagePath = imagePaths; // Asigna las rutas de imagen al producto
+    await newProduct.save(); // Guarda el producto con las rutas de imagen
 
     res.json({ message: "Producto guardado" });
   } catch (error) {
