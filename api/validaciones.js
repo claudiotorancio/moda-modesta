@@ -171,7 +171,7 @@ const validacionesProducto = [
   validarCampo("price", "El precio es obligatorio.", true),
   validarCampo("description", "La descripción es obligatoria."),
   validarCampo("isFeatured", "El estado de destacado es obligatorio."),
-  body("images").custom((value) => {
+  body("images[]").custom((value) => {
     // Validar que sea un objeto File
     if (value instanceof File) {
       // Puedes agregar más validaciones aquí si es necesario, por ejemplo:
