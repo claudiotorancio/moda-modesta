@@ -73,11 +73,6 @@ const updateProduct = async (req, res) => {
       }
     }
 
-    // Agregar la nueva imagen al array imagePath si se proporciona
-    if (req.file) {
-      // La nueva imagen ya se ha agregado en el ciclo anterior
-    }
-
     const sizesWithStock = [];
 
     // Verificar si sizes es un array o un valor válido

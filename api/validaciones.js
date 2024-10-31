@@ -200,36 +200,19 @@ const validacionesProducto = [
       }
     })
     .withMessage("Los talles y sus stocks deben ser un JSON válido."),
+  validarCampo("isFeatured", "El nombre es obligatorio."),
 ];
 
 const validacionesProductoActualizacion = [
   validarId("id"),
-  body("name")
-    .notEmpty()
-    .withMessage("El nombre es obligatorio.")
-    .trim()
-    .customSanitizer(escape),
-  body("price")
-    .notEmpty()
-    .withMessage("El precio es obligatorio.")
-    .isFloat({ gt: 0 })
-    .withMessage("El precio debe ser un número mayor que 0.")
-    .customSanitizer(escape),
-  body("description")
-    .notEmpty()
-    .withMessage("La descripción es obligatoria.")
-    .trim()
-    .customSanitizer(escape),
-  body("imagePath")
+  validarCampo("name", "El nombre es obligatorio."),
+  validarCampo("price", "El precio es obligatorio.", true),
+  validarCampo("description", "La descripción es obligatoria."),
+  body("oldImagePath")
     .optional()
-    .custom((value, { req }) => {
-      const images = req.files?.imagePath || [];
-      if (images.length > 2) {
-        throw new Error("Por favor, selecciona un máximo de 2 imágenes.");
-      }
-      return true;
-    })
-    .withMessage("Solo se permiten hasta 2 imágenes."),
+    .isString()
+    .withMessage("La ruta de la imagen antigua debe ser una cadena.")
+    .trim(),
   body("generalStock")
     .optional()
     .isInt({ min: 0 })
