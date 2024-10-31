@@ -86,7 +86,6 @@ export class FormResena {
     try {
       // Agregar reseña a la lista
       await resenaServices.agregarResena(nuevaResena);
-      modalControllers.modalProductoCreado();
     } catch (error) {
       console.error("Error al agregar la reseña:", error);
     }

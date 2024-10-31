@@ -50,15 +50,20 @@ class ResenaService {
         },
         body: JSON.stringify(resena),
       });
+      const dataResponse = await response.json();
+
       if (!response.ok) {
-        throw new Error("No fue posible actualizar la reseña");
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
       }
-      return response;
+
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
   }
-
   async agregarResena(nuevaResena) {
     try {
       const response = await fetch(`${this.baseURL}/api/agregarResena`, {
@@ -69,13 +74,17 @@ class ResenaService {
         body: JSON.stringify(nuevaResena),
       });
 
+      const dataResponse = await response.json();
+
       if (!response.ok) {
-        throw new Error("No fue posible crear la reseña");
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(dataResponse.error || "Error en la solicitud.");
       }
 
-      const responseData = await response.json(); // Parsear la respuesta como JSON
-      return responseData; // Devolver los datos recibidos
+      // Muestra de éxito en pantalla
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
+      modalControllers.modalMsg(error.message);
       console.error(error);
     }
   }

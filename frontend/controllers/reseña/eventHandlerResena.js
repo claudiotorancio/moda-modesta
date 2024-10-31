@@ -61,8 +61,6 @@ export async function editarResena(resenaId) {
     try {
       // Agregar reseña a la lista
       await resenaServices.putResena(nuevaResena);
-
-      modalControllers.modalProductoCreado();
     } catch (error) {
       console.error("Error al agregar la reseña:", error);
     }
