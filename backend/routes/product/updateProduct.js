@@ -15,7 +15,6 @@ const s3 = new AWS.S3({
 const updateProduct = async (req, res) => {
   try {
     const {
-      id,
       name,
       price,
       description,
@@ -23,8 +22,11 @@ const updateProduct = async (req, res) => {
       sizes,
       generalStock,
       isFeatured,
+      id,
     } = req.body;
+
     console.log(req.body);
+
     await connectToDatabase();
 
     const model = esAdministrador(req.user) ? Vista : Product;
@@ -71,6 +73,11 @@ const updateProduct = async (req, res) => {
           }
         }
       }
+    }
+
+    // Agregar la nueva imagen al array imagePath si se proporciona
+    if (req.file) {
+      // La nueva imagen ya se ha agregado en el ciclo anterior
     }
 
     const sizesWithStock = [];

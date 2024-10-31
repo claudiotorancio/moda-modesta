@@ -203,15 +203,15 @@ const validacionesProducto = [
   validarCampo("isFeatured", "El nombre es obligatorio."),
 ];
 
-// Middleware de validaciones
 const validacionesProductoActualizacion = [
+  (req, res, next) => {
+    // Ver los datos que están llegando a la validación
+    console.log("Datos entrantes:", req.body);
+    next(); // Continúa al siguiente middleware
+  },
   validarId("id"),
   validarCampo("name", "El nombre es obligatorio."),
-  body("price")
-    .exists()
-    .withMessage("El precio es obligatorio.")
-    .isNumeric()
-    .withMessage("El precio debe ser un número."),
+  validarCampo("price", "El precio es obligatorio.", true),
   validarCampo("description", "La descripción es obligatoria."),
   validarCampo("isFeatured", "El estado de destacado es obligatorio."),
 
@@ -221,6 +221,7 @@ const validacionesProductoActualizacion = [
     .custom((value) => {
       // Validar que sea un objeto File
       if (value instanceof File) {
+        // Puedes agregar más validaciones aquí si es necesario, por ejemplo:
         const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
         if (!allowedTypes.includes(value.type)) {
           throw new Error(
@@ -228,6 +229,7 @@ const validacionesProductoActualizacion = [
           );
         }
         if (value.size > 2 * 1024 * 1024) {
+          // Ejemplo: límite de 2MB
           throw new Error("El tamaño de la imagen debe ser inferior a 2MB.");
         }
         return true; // Validación correcta
@@ -253,6 +255,7 @@ const validacionesProductoActualizacion = [
   body("sizes")
     .optional()
     .custom((value, { req }) => {
+      // Verificar si el value es una cadena JSON y parsear
       try {
         const sizes = JSON.parse(value); // Suponiendo que se recibe un JSON
         if (

@@ -438,6 +438,10 @@ router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct",
   uploadNone.none(),
+  (req, res, next) => {
+    console.log("Datos recibidos:", req.body); // Muestra los datos que se reciben
+    next();
+  },
   validacionesProductoActualizacion,
   handleValidationErrors,
   requireAdmin,
