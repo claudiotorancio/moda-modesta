@@ -1,4 +1,5 @@
 import { baseURL } from "../../backend/baseUrl.js";
+import { modalControllers } from "../modal/modal.js";
 
 class ResenaService {
   constructor(baseURL) {
