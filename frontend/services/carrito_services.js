@@ -75,18 +75,15 @@ export class CarritoServices {
   };
 
   // Actualizar cantidad del producto en el carrito
-  putProductCart = async (data, id) => {
+  putProductCart = async (data) => {
     try {
-      const respuesta = await fetch(
-        `${this.baseURL}/api/putProductCart/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const respuesta = await fetch(`${this.baseURL}/api/putProductCart`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
       if (!respuesta.ok) {
         throw new Error("Error en la solicitud");
       }

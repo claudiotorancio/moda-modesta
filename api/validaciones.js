@@ -47,7 +47,7 @@ const validacionesCantidad = body("cantidad")
   .withMessage("La cantidad es obligatoria.")
   .isInt({ gt: 0 })
   .withMessage("Debe ser un número mayor que cero.")
-  .customSanitizer(escape); // Usamos escape-html
+  .escape(); // Usamos escape-html
 
 const validacionesNotificacionesSinStock = [validarEmail(), validarId("id")];
 
@@ -59,11 +59,17 @@ const validacionesAgregarResena = [
     .isInt({ min: 1, max: 5 })
     .withMessage("Las estrellas deben ser entre 1 y 5."),
 ];
-const validacionesPutResena = [validarId("id"), ...validacionesAgregarResena];
+const validacionesPutResena = [
+  validarId("resenaId"),
+  ...validacionesAgregarResena,
+];
 
 const validacionesDeleteCart = [validacionesIdParam];
 
-const validacionesPutProductCart = [validarId("id"), validacionesCantidad];
+const validacionesPutProductCart = [
+  validarId("productId"),
+  validacionesCantidad,
+];
 
 const validacionesDeletOrder = [validacionesIdParam];
 

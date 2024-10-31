@@ -3,8 +3,9 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const putProductCart = async (req, res) => {
   try {
-    const productId = req.params.id;
-    const { cantidad } = req.body; // Corregido: se cambia 'prodcutId' a 'productId' para ser coherente con el context
+    const { cantidad, productId } = req.body;
+    console.log(req.body);
+
     // Conexión a la base de datos
 
     await connectToDatabase();

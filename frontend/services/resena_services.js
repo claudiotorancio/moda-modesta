@@ -41,9 +41,9 @@ class ResenaService {
     }
   }
 
-  async putResena(resena, id) {
+  async putResena(resena) {
     try {
-      const response = await fetch(`${this.baseURL}/api/putResena/${id}`, {
+      const response = await fetch(`${this.baseURL}/api/putResena`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

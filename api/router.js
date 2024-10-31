@@ -52,7 +52,7 @@ import getUser from "../backend/routes/list/getUser.js";
 import getDataUser from "../backend/routes/list/getDataUser.js";
 import destacadosProduct from "../backend/routes/product/destacados.js";
 import sendMail from "../backend/routes/nodeMailer/sendMail.js";
-import suscribeMail from "../backend/routes/nodeMailer/contactMail.js";
+import suscribeMail from "../backend/routes/nodeMailer/suscribeMail.js";
 import confirmMail from "../backend/routes/nodeMailer/confirmMail.js";
 import success from "../backend/routes/nodeMailer/success.js";
 import error from "../backend/routes/nodeMailer/error.js";
@@ -268,7 +268,7 @@ router.post(
 );
 router.get("/api/getResena", getResena);
 router.put(
-  "/api/putResena/:id",
+  "/api/putResena",
   validacionesPutResena,
   handleValidationErrors,
   requireAdmin,
@@ -279,8 +279,9 @@ router.delete("/api/deleteResena/:id", requireAdmin, deleteResena);
 // Carrito
 router.get("/api/getProductsCart", getProductsCart);
 router.post("/api/addProductCart", addProductCart);
+console.log(handleValidationErrors);
 router.put(
-  "/api/putProductCart/:id",
+  "/api/putProductCart",
   validacionesPutProductCart,
   handleValidationErrors,
   putProductCart

@@ -3,15 +3,12 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const putResena = async (req, res) => {
   try {
-    const resenaId = req.params.id;
-    // Conectar a la base de datos si no está ya conectada
-
     await connectToDatabase();
 
-    const { name, redSocial, resena, estrellas } = req.body;
+    const { name, redSocial, resena, estrellas, resenaId } = req.body;
 
     // Validar datos
-    if (!name || !redSocial || !resena || !estrellas) {
+    if (!name || !redSocial || !resena || !estrellas || !resenaId) {
       return res
         .status(400)
         .json({ error: "Todos los campos son requeridos." });

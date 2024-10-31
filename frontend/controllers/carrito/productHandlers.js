@@ -76,13 +76,13 @@ export async function agregarProducto(product, size) {
           `Solo hay ${product.stock} unidades disponibles para el talle seleccionado.`
         );
       }
-
+      console.log(productoExistente.cantidad);
       // Actualizar cantidad si hay stock disponible
       productoExistente.cantidad = nuevaCantidad;
-      await carritoServices.putProductCart(
-        { cantidad: productoExistente.cantidad },
-        productoExistente._id
-      );
+      await carritoServices.putProductCart({
+        cantidad: productoExistente.cantidad,
+        productId: productoExistente._id,
+      });
     } else {
       // Si es un nuevo producto, verificar que haya stock para agregar
       if (product.stock >= 1) {
@@ -95,6 +95,7 @@ export async function agregarProducto(product, size) {
           productId: sanitizedProductId,
           category: product.section,
         };
+        console.log(productoNuevo);
         await carritoServices.addProductCart(productoNuevo);
         this.items.push(productoNuevo);
       } else {

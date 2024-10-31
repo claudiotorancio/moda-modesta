@@ -55,11 +55,12 @@ export async function editarResena(resenaId) {
       redSocial,
       resena,
       estrellas,
+      resenaId,
     };
 
     try {
       // Agregar reseña a la lista
-      await resenaServices.putResena(nuevaResena, resenaId);
+      await resenaServices.putResena(nuevaResena);
 
       modalControllers.modalProductoCreado();
     } catch (error) {
