@@ -6,7 +6,7 @@ const createProduct = async (req, res) => {
   try {
     const { name, price, description, section, isFeatured, generalStock } =
       req.body;
-
+    console.log(req.file);
     // Procesa los tamaños y el stock si la sección NO es "Diversos"
     let sizes = [];
     if (section !== "opcion3") {
@@ -48,6 +48,7 @@ const createProduct = async (req, res) => {
 
     // Si el producto se guarda exitosamente, entonces guarda las rutas de las imágenes
     const imagePaths = req.files ? req.files.map((file) => file.location) : [];
+    console.log(imagePaths);
     newProduct.imagePath = imagePaths; // Asigna las rutas de imagen al producto
     await newProduct.save(); // Guarda el producto con las rutas de imagen
 
