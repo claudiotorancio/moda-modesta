@@ -71,42 +71,72 @@ const updateProduct = async (req, res) => {
       }
     }
 
-    // Verificar si se recibió sizes o generalStock
-    const sizesWithStock = [];
-    let sizesParsed;
-
-    // Si se proporcionó generalStock, no se procesará sizes
-    if (generalStock !== undefined && generalStock !== null) {
+    // Verificar si se proporciona generalStock
+    if (generalStock !== undefined) {
       // Asegúrate de que sea un número
       const parsedGeneralStock = Number(generalStock);
       if (isNaN(parsedGeneralStock)) {
-        return res.status(400).json({
-          error: "El generalStock debe ser un número.",
-        });
-      }
-    } else if (sizes) {
-      // Si no se proporciona generalStock, procesa sizes
-      try {
-        sizesParsed = JSON.parse(sizes);
-      } catch (error) {
-        return res.status(400).json({
-          error: "El formato de sizes no es válido. Debe ser un array.",
-        });
+        return res
+          .status(400)
+          .json({ error: "El generalStock debe ser un número." });
       }
 
-      // Verificar si sizesParsed es un array y tiene elementos
-      if (Array.isArray(sizesParsed) && sizesParsed.length > 0) {
-        sizesParsed.forEach(({ size, stock }) => {
-          if (size) {
-            const parsedStock = Number(stock) || 0; // Asumir que el stock ya es un número válido
-            sizesWithStock.push({ size, stock: parsedStock });
-          }
-        });
-      } else {
-        return res.status(400).json({
-          error: "El formato de sizes no es válido. Debe ser un array.",
-        });
+      // Datos a actualizar
+      const updateData = {
+        name,
+        price,
+        description,
+        generalStock: parsedGeneralStock || 0, // Guardar generalStock
+        isFeatured,
+        imagePath: updatedImagePath.length ? updatedImagePath : undefined,
+      };
+
+      // Actualizar el producto en la base de datos
+      const result = await model.findByIdAndUpdate(id, updateData, {
+        new: true,
+      });
+
+      if (!result) {
+        return res.status(404).json({ message: "Producto no encontrado" });
       }
+
+      return res.json({
+        message: "Producto actualizado",
+        updatedProduct: result,
+      });
+    }
+
+    // Si sizes no se proporciona, simplemente retornamos un error
+    if (!sizes || sizes.length === 0) {
+      return res
+        .status(400)
+        .json({ error: "Se debe proporcionar sizes o generalStock." });
+    }
+
+    // Lógica para manejar sizes si se proporciona
+    const sizesWithStock = [];
+    let sizesParsed;
+
+    try {
+      sizesParsed = JSON.parse(sizes);
+    } catch (error) {
+      return res.status(400).json({
+        error: "El formato de sizes no es válido. Debe ser un array.",
+      });
+    }
+
+    // Verificar si sizesParsed es un array y tiene elementos
+    if (Array.isArray(sizesParsed) && sizesParsed.length > 0) {
+      sizesParsed.forEach(({ size, stock }) => {
+        if (size) {
+          const parsedStock = Number(stock) || 0; // Asumir que el stock ya es un número válido
+          sizesWithStock.push({ size, stock: parsedStock });
+        }
+      });
+    } else {
+      return res.status(400).json({
+        error: "El formato de sizes no es válido. Debe ser un array.",
+      });
     }
 
     // Datos a actualizar
@@ -114,16 +144,10 @@ const updateProduct = async (req, res) => {
       name,
       price,
       description,
+      sizes: sizesWithStock.length > 0 ? sizesWithStock : [], // Solo se incluye sizes si hay datos
       isFeatured,
       imagePath: updatedImagePath.length ? updatedImagePath : undefined,
     };
-
-    // Si hay talles, se actualizan; de lo contrario, se incluye generalStock
-    if (sizesWithStock.length > 0) {
-      updateData.sizes = sizesWithStock;
-    } else if (generalStock !== undefined) {
-      updateData.generalStock = Number(generalStock) || 0; // Guardar generalStock si no hay talles
-    }
 
     // Actualizar el producto en la base de datos
     const result = await model.findByIdAndUpdate(id, updateData, { new: true });
