@@ -171,32 +171,37 @@ const validacionesProducto = [
   validarCampo("price", "El precio es obligatorio.", true),
   validarCampo("description", "La descripción es obligatoria."),
   validarCampo("isFeatured", "El estado de destacado es obligatorio."),
-  body("images[]").custom((value) => {
-    // Validar que sea un objeto File
-    if (value instanceof File) {
-      // Puedes agregar más validaciones aquí si es necesario, por ejemplo:
+  body("images").custom((value) => {
+    // Validar que sea un array de objetos File
+    if (!Array.isArray(value) || value.length === 0) {
+      throw new Error(
+        "El campo de imágenes es obligatorio y debe ser un array."
+      );
+    }
+    value.forEach((file) => {
+      if (!(file instanceof File)) {
+        throw new Error("Cada imagen debe ser un archivo.");
+      }
       const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-      if (!allowedTypes.includes(value.type)) {
+      if (!allowedTypes.includes(file.type)) {
         throw new Error(
           "El tipo de imagen no es válido. Solo se permiten JPEG, PNG y GIF."
         );
       }
-      if (value.size > 2 * 1024 * 1024) {
+      if (file.size > 2 * 1024 * 1024) {
         // Ejemplo: límite de 2MB
         throw new Error("El tamaño de la imagen debe ser inferior a 2MB.");
       }
-      return true; // Validación correcta
-    } else {
-      throw new Error("El campo imagePath debe ser un archivo.");
-    }
+    });
+    return true; // Validación correcta
   }),
   // Validación para sizes, que es opcional
   body("sizes")
     .optional()
-    .custom((value, { req }) => {
+    .custom((value) => {
       // Verificar si el value es una cadena JSON y parsear
       try {
-        const sizes = JSON.parse(value); // Suponiendo que se recibe un JSON
+        const sizes = typeof value === "string" ? JSON.parse(value) : value;
         if (
           Array.isArray(sizes) &&
           sizes.every(
