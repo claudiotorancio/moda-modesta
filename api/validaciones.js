@@ -203,45 +203,76 @@ const validacionesProducto = [
   validarCampo("isFeatured", "El nombre es obligatorio."),
 ];
 
+// Middleware de validaciones
 const validacionesProductoActualizacion = [
   validarId("id"),
   validarCampo("name", "El nombre es obligatorio."),
-  validarCampo("price", "El precio es obligatorio.", true),
+  body("price")
+    .exists()
+    .withMessage("El precio es obligatorio.")
+    .isNumeric()
+    .withMessage("El precio debe ser un número."),
   validarCampo("description", "La descripción es obligatoria."),
+  validarCampo("isFeatured", "El estado de destacado es obligatorio."),
+
+  // Validación para imagePath, que es opcional
   body("imagePath")
     .optional()
-    .isString()
-    .withMessage("La ruta de la imagen antigua debe ser una cadena.")
-    .trim(),
+    .custom((value) => {
+      // Validar que sea un objeto File
+      if (value instanceof File) {
+        const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+        if (!allowedTypes.includes(value.type)) {
+          throw new Error(
+            "El tipo de imagen no es válido. Solo se permiten JPEG, PNG y GIF."
+          );
+        }
+        if (value.size > 2 * 1024 * 1024) {
+          throw new Error("El tamaño de la imagen debe ser inferior a 2MB.");
+        }
+        return true; // Validación correcta
+      } else {
+        throw new Error("El campo imagePath debe ser un archivo.");
+      }
+    }),
+
+  // Validación para oldImagePath, que es opcional
   body("oldImagePath")
     .optional()
     .isString()
     .withMessage("La ruta de la imagen antigua debe ser una cadena.")
     .trim(),
+
+  // Validación para generalStock, que es opcional
   body("generalStock")
     .optional()
     .isInt({ min: 0 })
     .withMessage("El stock general debe ser un número positivo."),
+
+  // Validación para sizes, que es opcional
   body("sizes")
     .optional()
     .custom((value, { req }) => {
-      const sizes = JSON.parse(value); // Suponiendo que se recibe un JSON
-      if (
-        Array.isArray(sizes) &&
-        sizes.every(
-          (size) =>
-            typeof size.size === "string" &&
-            Number.isInteger(Number(size.stock)) &&
-            Number(size.stock) >= 0
-        )
-      ) {
-        return true;
-      } else {
-        throw new Error("Los talles y sus stocks deben ser válidos.");
+      try {
+        const sizes = JSON.parse(value); // Suponiendo que se recibe un JSON
+        if (
+          Array.isArray(sizes) &&
+          sizes.every(
+            (size) =>
+              typeof size.size === "string" &&
+              Number.isInteger(Number(size.stock)) &&
+              Number(size.stock) >= 0
+          )
+        ) {
+          return true; // Validación correcta
+        } else {
+          throw new Error("Los talles y sus stocks deben ser válidos.");
+        }
+      } catch (error) {
+        throw new Error("El formato de talles debe ser un JSON válido.");
       }
     })
     .withMessage("El formato de talles y stocks no es válido."),
-  validarCampo("isFeatured", "El precio es obligatorio."),
 ];
 
 export {

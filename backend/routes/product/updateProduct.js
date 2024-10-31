@@ -15,6 +15,7 @@ const s3 = new AWS.S3({
 const updateProduct = async (req, res) => {
   try {
     const {
+      id,
       name,
       price,
       description,
@@ -22,7 +23,6 @@ const updateProduct = async (req, res) => {
       sizes,
       generalStock,
       isFeatured,
-      id,
     } = req.body;
     console.log(req.body);
     await connectToDatabase();

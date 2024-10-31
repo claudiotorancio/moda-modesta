@@ -109,12 +109,14 @@ const outputPath = path.join(__dirname, "../public");
 // Middlewares
 // Middleware para manejo de errores de validación
 const handleValidationErrors = (req, res, next) => {
+  console.log("Datos en handleValidationErrors:", req.body); // Log para verificar
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     return res.status(400).json({
       error: errors.array().map((err) => ({
-        field: err.param, // El campo que causó el error
-        message: err.msg, // El mensaje de error proporcionado
+        field: err.param,
+        message: err.msg,
       })),
     });
   }
@@ -200,6 +202,8 @@ const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   },
 });
+
+const uploadNone = multer();
 
 const upload = () =>
   multer({
@@ -421,6 +425,7 @@ router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/listaProductos", listaProductos);
 router.post(
   "/api/createProduct",
+  uploadNone.none(),
   validacionesProducto,
   handleValidationErrors,
   requireAdmin,
@@ -432,6 +437,7 @@ router.put("/api/activateProduct/:id", requireAdmin, activarProducto);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct",
+  uploadNone.none(),
   validacionesProductoActualizacion,
   handleValidationErrors,
   requireAdmin,

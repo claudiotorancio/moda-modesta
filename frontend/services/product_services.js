@@ -27,7 +27,6 @@ class ProductService {
   }
 
   async crearProducto(product) {
-    console.log(product);
     try {
       const response = await fetch(`${this.baseURL}/api/createProduct`, {
         method: "POST",
@@ -127,8 +126,12 @@ class ProductService {
       // Muestra de éxito en pantalla
       modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {
-      modalControllers.modalMsgReload(error.message);
-      console.error(error);
+      modalControllers.modalMsgReload(JSON.stringify(error.message));
+      // Asegúrate de que el error se imprima correctamente en la consola
+      console.error(
+        "Error al actualizar el producto:",
+        JSON.stringify(error, null, 2)
+      ); // Esto mostrará más detalles
     }
   }
 
