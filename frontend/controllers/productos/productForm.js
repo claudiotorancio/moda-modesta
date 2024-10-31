@@ -211,7 +211,7 @@ export class ProductForm {
     }
 
     // Mostrar los datos del FormData en la consola
-    for (let [key, value] of dataEdit.entries()) {
+    for (let [key, value] of productData.entries()) {
       console.log(`${key}:`, value);
     }
 
