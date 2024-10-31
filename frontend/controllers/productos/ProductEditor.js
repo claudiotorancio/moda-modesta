@@ -278,6 +278,7 @@ export class ProductEditor {
         ).value;
         return { size, stock: Number(stock) }; // Asegúrate de que el stock sea un número
       });
+
       // Verificar si el checkbox existe antes de acceder a él
       const generalStockCheckElement =
         document.getElementById("updateGeneralStock");
@@ -314,10 +315,19 @@ export class ProductEditor {
       dataEdit.append("description", description);
       dataEdit.append("isFeatured", isFeatured);
 
+      // Lógica para manejar sizes y generalStock
+      if (selectedSizes.length > 0 && generalStock !== null) {
+        console.error("Solo puedes enviar 'sizes' o 'generalStock', no ambos.");
+        alert("Por favor, elige entre 'sizes' o 'generalStock', no ambos.");
+        return; // Detiene la ejecución si ambos están presentes
+      }
+
+      // Agrega solo uno de los dos
       if (generalStock !== null) {
         dataEdit.append("generalStock", generalStock);
+      } else if (selectedSizes.length > 0) {
+        dataEdit.append("sizes", JSON.stringify(selectedSizes));
       }
-      dataEdit.append("sizes", JSON.stringify(selectedSizes));
 
       // Mostrar los datos del FormData en la consola
       for (let [key, value] of dataEdit.entries()) {

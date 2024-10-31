@@ -427,10 +427,10 @@ router.get("/api/renderDestacados", destacadosProduct);
 router.get("/api/listaProductos", listaProductos);
 router.post(
   "/api/createProduct",
+  uploadSingle,
   validacionesProducto,
   handleValidationErrors,
   requireAdmin,
-  uploadSingle,
   createProduct
 );
 router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
@@ -439,10 +439,6 @@ router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct",
   uploadSingleUpdate,
-  (req, res, next) => {
-    console.log("Datos recibidos:", req.body); // Muestra los datos que se reciben
-    next();
-  },
   validacionesProductoActualizacion,
   handleValidationErrors,
   requireAdmin,
