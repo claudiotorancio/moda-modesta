@@ -105,6 +105,33 @@ const updateProduct = async (req, res) => {
       });
     }
 
+    // Si sizes no se proporciona, permitimos la actualización del producto
+    // incluyendo la imagen, si se está utilizando la opción 3
+    if (!sizes || sizes.length === 0) {
+      // Si generalStock no está definido o sizes está vacío, solo actualiza la imagen y los demás datos
+      const updateData = {
+        name,
+        price,
+        description,
+        isFeatured,
+        imagePath: updatedImagePath.length ? updatedImagePath : undefined,
+      };
+
+      // Actualizar el producto en la base de datos
+      const result = await model.findByIdAndUpdate(id, updateData, {
+        new: true,
+      });
+
+      if (!result) {
+        return res.status(404).json({ message: "Producto no encontrado" });
+      }
+
+      return res.json({
+        message: "Producto actualizado sin tamaños",
+        updatedProduct: result,
+      });
+    }
+
     // Lógica para manejar sizes si se proporciona
     const sizesWithStock = [];
     let sizesParsed;
