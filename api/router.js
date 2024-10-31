@@ -445,7 +445,7 @@ router.put(
   validacionesProductoActualizacion,
   handleValidationErrors,
   requireAdmin,
-  uploadSingleUpdate,
+
   updateProduct
 );
 router.get("/api/productoSimilar/:id", productoSimilar);
