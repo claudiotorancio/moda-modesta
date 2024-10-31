@@ -276,9 +276,8 @@ export class ProductEditor {
         const stock = document.querySelector(
           `input[name="stock_${size.replace(" ", "").toLowerCase()}"]`
         ).value;
-        return { size, stock };
+        return { size, stock: Number(stock) }; // Asegúrate de que el stock sea un número
       });
-
       // Verificar si el checkbox existe antes de acceder a él
       const generalStockCheckElement =
         document.getElementById("updateGeneralStock");
@@ -318,12 +317,7 @@ export class ProductEditor {
       if (generalStock !== null) {
         dataEdit.append("generalStock", generalStock);
       }
-
-      selectedSizes.forEach(({ size, stock }) => {
-        const normalizedSize = size.replace(" ", "_").toLowerCase();
-        dataEdit.append("sizes[]", size);
-        dataEdit.append(`stock_${normalizedSize}`, stock);
-      });
+      dataEdit.append("sizes", JSON.stringify(selectedSizes));
 
       // Mostrar los datos del FormData en la consola
       for (let [key, value] of dataEdit.entries()) {

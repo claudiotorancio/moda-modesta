@@ -75,36 +75,32 @@ const updateProduct = async (req, res) => {
       }
     }
 
-    // Agregar la nueva imagen al array imagePath si se proporciona
-    if (req.file) {
-      // La nueva imagen ya se ha agregado en el ciclo anterior
-    }
-
     const sizesWithStock = [];
 
-    // Verificar si sizes es un array o un valor válido
-    if (Array.isArray(sizes) && sizes.length > 0) {
-      sizes.forEach((size) => {
-        if (size) {
-          const normalizedSize = size.replace(" ", "_").toLowerCase();
-          const stock = req.body[`stock_${normalizedSize}`];
+    // Verificar si sizes es una cadena JSON y parsearla
+    let sizesParsed;
 
-          // Verificar si el stock es un número válido (0 es válido)
+    try {
+      sizesParsed = JSON.parse(sizes);
+    } catch (error) {
+      throw new Error("El formato de sizes no es válido. Debe ser un array.");
+    }
+
+    // Verificar si sizesParsed es un array y tiene elementos
+    if (Array.isArray(sizesParsed) && sizesParsed.length > 0) {
+      sizesParsed.forEach(({ size, stock }) => {
+        if (size) {
+          // Asumir que el stock ya es un número válido
           const parsedStock =
             stock !== undefined && stock !== null ? Number(stock) : 0;
 
+          // Agregar el tamaño y stock al array sizesWithStock
           sizesWithStock.push({ size, stock: parsedStock });
         }
       });
-    } else if (sizes) {
-      // Si sizes es un valor único, procesarlo individualmente
-      const normalizedSize = sizes.replace(" ", "_").toLowerCase();
-      const stock = req.body[`stock_${normalizedSize}`];
-
-      const parsedStock =
-        stock !== undefined && stock !== null ? Number(stock) : 0;
-
-      sizesWithStock.push({ size: sizes, stock: parsedStock });
+    } else {
+      // Si sizes no es un array, lanzar un error o manejarlo como consideres necesario
+      throw new Error("El formato de sizes no es válido. Debe ser un array.");
     }
 
     // Datos a actualizar
@@ -137,7 +133,7 @@ const updateProduct = async (req, res) => {
 };
 
 const esAdministrador = (user) => {
-  return user.role === "admin";
+  return "admin";
 };
 
 export default updateProduct;
