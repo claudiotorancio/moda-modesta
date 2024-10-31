@@ -325,6 +325,11 @@ export class ProductEditor {
         dataEdit.append(`stock_${normalizedSize}`, stock);
       });
 
+      // Mostrar los datos del FormData en la consola
+      for (let [key, value] of dataEdit.entries()) {
+        console.log(`${key}:`, value);
+      }
+
       try {
         await productoServices.actualizarProducto(dataEdit);
       } catch (err) {

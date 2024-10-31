@@ -208,6 +208,11 @@ const validacionesProductoActualizacion = [
   validarCampo("name", "El nombre es obligatorio."),
   validarCampo("price", "El precio es obligatorio.", true),
   validarCampo("description", "La descripción es obligatoria."),
+  body("imagePath")
+    .optional()
+    .isString()
+    .withMessage("La ruta de la imagen antigua debe ser una cadena.")
+    .trim(),
   body("oldImagePath")
     .optional()
     .isString()
