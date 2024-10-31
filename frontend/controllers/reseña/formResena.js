@@ -1,5 +1,5 @@
 import resenaServices from "../../services/resena_services.js";
-import { modalControllers } from "../../modal/modal.js";
+import { cargarReseñas } from "./reseñas.js";
 
 export class FormResena {
   constructor(titulo) {
@@ -86,6 +86,7 @@ export class FormResena {
     try {
       // Agregar reseña a la lista
       await resenaServices.agregarResena(nuevaResena);
+      await cargarReseñas();
     } catch (error) {
       console.error("Error al agregar la reseña:", error);
     }
