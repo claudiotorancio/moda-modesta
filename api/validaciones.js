@@ -202,7 +202,7 @@ const validacionesProducto = [
     .withMessage("Los talles y sus stocks deben ser un JSON válido."),
 ];
 
-export const validacionesProductoActualizacion = [
+const validacionesProductoActualizacion = [
   validarId("id"),
   body("name")
     .notEmpty()
