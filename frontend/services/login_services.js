@@ -41,34 +41,34 @@ export class LoginServices {
         headers: {
           "Content-Type": "application/json",
         },
-        // credentials: "include", // Mantener comentado si solo usas JWT en local
+        // Habilita las credenciales solo si es necesario para cookies
+        credentials: "include",
         body: JSON.stringify(dataUser),
       });
 
       const dataResponse = await response.json();
 
       if (!response.ok) {
-        // Aquí manejas el mensaje de error que envía el backend
         throw new Error(dataResponse.error || "Error en la solicitud.");
       }
 
-      // Extraer y guardar el token JWT en sessionStorage o localStorage
-      const token = dataResponse.token;
-      if (token) {
-        sessionStorage.setItem("authToken", token); // o localStorage.setItem("authToken", token);
-      } else {
-        throw new Error("Token no recibido en la respuesta.");
+      // En desarrollo, almacena el token en sessionStorage o localStorage
+      if (process.env.NODE_ENV === "development") {
+        const token = dataResponse.token;
+        if (token) {
+          sessionStorage.setItem("authToken", token);
+        } else {
+          throw new Error("Token no recibido en la respuesta.");
+        }
       }
 
-      // Almacenar el nombre del usuario o cualquier información adicional
+      // Almacenar información del usuario
       const userName = dataResponse.user.nombre;
       sessionStorage.setItem("user", JSON.stringify(userName));
 
-      // Mostrar el mensaje del servidor
       modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {
-      // Captura cualquier error que ocurra
-      modalControllers.modalMsgReload(error.message); // Muestra el mensaje de error
+      modalControllers.modalMsgReload(error.message);
       console.error(error);
     }
   }
