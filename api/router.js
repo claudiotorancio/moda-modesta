@@ -450,13 +450,13 @@ router.get("/api/listaProductos", authenticateToken, listaProductos);
 router.post(
   "/api/createProduct",
   uploadSingle,
-  // (req, res) => {
-  //   // Ahora puedes acceder a los datos en req.body y req.file
-  //   console.log("Datos recibidos:", req.body);
-  //   console.log("Archivo recibido:", req.file);
+  (req, res) => {
+    // Ahora puedes acceder a los datos en req.body y req.file
+    console.log("Datos recibidos:", req.body);
+    console.log("Archivo recibido:", req.file);
 
-  //   // Aquí puedes proceder con tus validaciones
-  // },
+    // Aquí puedes proceder con tus validaciones
+  },
 
   validacionesProducto,
   handleValidationErrors,
@@ -473,12 +473,12 @@ router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct",
   uploadSingleUpdate,
-  // (req, res) => {
-  //   // Ahora puedes acceder a los datos en req.body y req.file
-  //   console.log("Datos recibidos:", req.body);
+  (req, res) => {
+    // Ahora puedes acceder a los datos en req.body y req.file
+    console.log("Datos recibidos:", req.body);
 
-  //   // Aquí puedes proceder con tus validaciones
-  // },
+    // Aquí puedes proceder con tus validaciones
+  },
 
   validacionesProductoActualizacion,
   handleValidationErrors,
