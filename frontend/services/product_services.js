@@ -56,9 +56,8 @@ class ProductService {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Agrega el token aquí
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify(product), // Asegúrate de convertir el producto a JSON
+        body: product, // Asegúrate de convertir el producto a JSON
       });
 
       const dataResponse = await response.json();
@@ -161,9 +160,8 @@ class ProductService {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`, // Agrega el token aquí
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify(product), // Asegúrate de convertir el producto a JSON
+        body: product, // Asegúrate de convertir el producto a JSON
       });
 
       const dataResponse = await response.json();

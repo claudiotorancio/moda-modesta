@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken"; // Asegúrate de tener esta dependencia instalad
 
 const getDataUser = async (req, res) => {
   try {
-    console.log(req.user);
     // Verificar si el usuario está autenticado
     if (!req.isAuthenticated()) {
       return res.status(401).json({ ok: false, message: "No autenticado" });
