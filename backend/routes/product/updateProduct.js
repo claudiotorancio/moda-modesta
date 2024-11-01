@@ -12,6 +12,7 @@ const s3 = new AWS.S3({
 });
 
 const updateProduct = async (req, res) => {
+  console.log(req.file);
   try {
     const {
       name,

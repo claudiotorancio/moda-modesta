@@ -91,7 +91,8 @@ export class LoginServices {
       }
 
       const data = await response.json();
-      return data.user.user; // Manejar los datos protegidos aquí
+
+      return data.user; // Manejar los datos protegidos aquí
     } catch (error) {
       console.error("Error al obtener datos protegidos:", error);
       // Aquí puedes manejar el error, como redirigir a la página de inicio de sesión

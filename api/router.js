@@ -110,7 +110,7 @@ const outputPath = path.join(__dirname, "../public");
 // Middlewares
 // Middleware para manejo de errores de validación
 const handleValidationErrors = (req, res, next) => {
-  console.log(req.user);
+  // console.log(req.user);
   // console.log("Datos en handleValidationErrors:", req.body); // Log para verificar
   const errors = validationResult(req);
 
@@ -251,11 +251,13 @@ router.get("/api/customer-analytics", authenticateToken, getCustomerAnalytics);
 //profile
 router.get(
   "/api/infoPersonal",
+  authenticateToken,
   isAuthenticated,
   profileControllers.InfoPersonal
 );
 router.get(
   "/api/pedidosRecientes",
+  authenticateToken,
   isAuthenticated,
   profileControllers.pedidosRecientes
 );
@@ -263,45 +265,48 @@ router.get(
 // Notificaciones
 router.post(
   "/api/notificacionSinStock",
+  authenticateToken,
   validacionesNotificacionesSinStock,
   handleValidationErrors,
   notificacionSinStock
 );
 router.get(
   "/api/getNotificaciones",
+  authenticateToken,
   authenticateJWT,
-  requireAdmin,
   getNotificaciones
 );
 router.post(
   "/api/notificacionIngreso/",
+  authenticateToken,
+
   authenticateJWT,
-  requireAdmin,
   notificacionIngreso
 );
 
 // Reseñas
 router.post(
   "/api/agregarResena",
+  authenticateToken,
   validacionesAgregarResena,
   handleValidationErrors,
-  requireAdmin,
+
   agregarResena
 );
 router.get("/api/getResena", getResena);
 router.put(
   "/api/putResena",
+  authenticateToken,
   validacionesPutResena,
   handleValidationErrors,
-  requireAdmin,
   putResena
 );
-router.delete("/api/deleteResena", requireAdmin, deleteResena);
+router.delete("/api/deleteResena", authenticateToken, deleteResena);
 
 // Carrito
 router.get("/api/getProductsCart", getProductsCart);
 router.post("/api/addProductCart", addProductCart);
-console.log(handleValidationErrors);
+
 router.put(
   "/api/putProductCart",
   validacionesPutProductCart,
@@ -317,9 +322,10 @@ router.delete(
 router.delete("/api/limpiarCarrito", limpiarCarrito);
 
 // Compras
-router.get("/api/purchaseOrder", requireAdmin, purchaseOrder);
+router.get("/api/purchaseOrder", authenticateToken, purchaseOrder);
 router.delete(
   "/api/deleteOrder/:id",
+  authenticateToken,
   validacionesDeletOrder,
   handleValidationErrors,
   requireAdmin,
@@ -327,31 +333,31 @@ router.delete(
 );
 router.post(
   "/api/compraPrepare",
-
+  authenticateToken,
   requireAdmin,
   compraPrepare
 );
-router.put("/api/compraEnCamino/:id", requireAdmin, compraEnCamino);
+router.put("/api/compraEnCamino/:id", authenticateToken, compraEnCamino);
 router.put(
   "/api/aceptarPedido/:id",
+  authenticateToken,
   validacionesAceptarPedido,
   handleValidationErrors,
-  requireAdmin,
   aceptarPedido
 );
-router.post("/api/correoEnCamino", requireAdmin, correoEnCamino);
+router.post("/api/correoEnCamino", authenticateToken, correoEnCamino);
 router.put(
   "/api/finalizarPedido/:id",
+  authenticateToken,
   validacionesFinalizarPedido,
   handleValidationErrors,
-  requireAdmin,
   finalizarPedido
 );
 router.put(
   "/api/compraCancelada/:id",
+  authenticateToken,
   validacionesCancelarPedido,
   handleValidationErrors,
-  requireAdmin,
   compraCancelada
 );
 
@@ -375,8 +381,8 @@ router.get("/success", success);
 router.get("/error", error);
 router.post(
   "/api/enviarPromocion/",
+  authenticateToken,
   validacionesEnviarPromociones,
-  handleValidationErrors,
   requireAdmin,
   enviarPromocion
 );
@@ -431,11 +437,11 @@ router.get(
 // Rutas listado
 router.get("/api/getDataUser", authenticateToken, getDataUser);
 router.get("/api/getAdmin", getAdmin);
-router.get("/api/getUser/:id", requireAdmin, getUser);
-router.get("/api/renderLista", requireAdmin, listaAdmin);
-router.delete("/api/deleteUser/:id", requireAdmin, deleteUser);
-router.put("/api/updateUser/:id", requireAdmin, updateUser);
-router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
+router.get("/api/getUser/:id", authenticateToken, getUser);
+router.get("/api/renderLista", authenticateToken, listaAdmin);
+router.delete("/api/deleteUser/:id", authenticateToken, deleteUser);
+router.put("/api/updateUser/:id", authenticateToken, updateUser);
+router.get("/api/contadorProductos/:id", authenticateToken, contadorProductos);
 
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
@@ -444,21 +450,39 @@ router.get("/api/listaProductos", authenticateToken, listaProductos);
 router.post(
   "/api/createProduct",
   uploadSingle,
+  // (req, res) => {
+  //   // Ahora puedes acceder a los datos en req.body y req.file
+  //   console.log("Datos recibidos:", req.body);
+  //   console.log("Archivo recibido:", req.file);
+
+  //   // Aquí puedes proceder con tus validaciones
+  // },
+
   validacionesProducto,
   handleValidationErrors,
-  requireAdmin,
-
+  authenticateToken,
   createProduct
 );
-router.put("/api/desactivateProduct/:id", requireAdmin, desactivateProduct);
-router.put("/api/activateProduct/:id", requireAdmin, activarProducto);
+router.put(
+  "/api/desactivateProduct/:id",
+  authenticateToken,
+  desactivateProduct
+);
+router.put("/api/activateProduct/:id", authenticateToken, activarProducto);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct",
   uploadSingleUpdate,
+  // (req, res) => {
+  //   // Ahora puedes acceder a los datos en req.body y req.file
+  //   console.log("Datos recibidos:", req.body);
+
+  //   // Aquí puedes proceder con tus validaciones
+  // },
+
   validacionesProductoActualizacion,
   handleValidationErrors,
-  requireAdmin,
+  authenticateToken,
   updateProduct
 );
 router.get("/api/productoSimilar/:id", productoSimilar);

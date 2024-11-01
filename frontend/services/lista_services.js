@@ -6,8 +6,7 @@ export class ListaServices {
     this.baseURL = baseURL;
   }
 
-  //validar admin en session
-
+  // Validar admin en session
   getAdmin = async (token) => {
     try {
       const respuesta = await fetch(`${this.baseURL}/api/getAdmin`, {
@@ -29,8 +28,7 @@ export class ListaServices {
     }
   };
 
-  //validar user en session
-
+  // Validar user en session
   getDataUser = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
@@ -44,8 +42,6 @@ export class ListaServices {
       const data = await respuesta.json();
 
       if (data.ok) {
-        // Almacenar el token en localStorage
-        // sessionStorage.setItem("token", data.token);
         // Aquí podrías redirigir al usuario o actualizar el estado de la aplicación
       } else {
         console.error("Error de inicio de sesión:", data.message);
@@ -64,10 +60,12 @@ export class ListaServices {
 
   enviarPromocion = async (myContent) => {
     try {
+      const token = sessionStorage.getItem("authToken");
       const response = await fetch(`${this.baseURL}/api/enviarPromocion/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
         },
         body: JSON.stringify({ myContent }),
       });
@@ -87,15 +85,17 @@ export class ListaServices {
     }
   };
 
-  //extraer userId de Users
-
+  // Extraer userId de Users
   getUser = async (userId) => {
-    // console.log(`getUser id:`, userId);
     try {
-      const respuesta = await fetch(`${this.baseURL}/api/getUser/${userId}`);
+      const token = sessionStorage.getItem("authToken");
+      const respuesta = await fetch(`${this.baseURL}/api/getUser/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
+        },
+      });
       const data = await respuesta.json();
 
-      // console.log(`getUser user:`, data);
       return data; // Simplificado para devolver solo el usuario
     } catch (error) {
       console.error("Error al obtener usuario:", error);
@@ -103,25 +103,32 @@ export class ListaServices {
     }
   };
 
-  //extraer listado de Users
-
+  // Extraer listado de Users
   listaUsers = async () => {
     try {
-      const respuesta = await fetch(`${this.baseURL}/api/renderLista`);
+      const token = sessionStorage.getItem("authToken");
+      const respuesta = await fetch(`${this.baseURL}/api/renderLista`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
+        },
+      });
       const data = await respuesta.json();
-      const listado = data;
-      return listado;
+      return data; // Retornar listado de usuarios
     } catch (error) {
       console.error("Error al obtener la lista de usuarios:", error);
       throw error;
     }
   };
-  //eliminar usuario
 
+  // Eliminar usuario
   eliminarUser = async (id) => {
     try {
+      const token = sessionStorage.getItem("authToken");
       const response = await fetch(`${this.baseURL}/api/deleteUser/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
+        },
       });
       const dataResponse = await response.json();
 
@@ -137,14 +144,16 @@ export class ListaServices {
       console.error(error);
     }
   };
-  //actualizar usuario
 
+  // Actualizar usuario
   updateUser = async (dataUser, id) => {
     try {
+      const token = sessionStorage.getItem("authToken");
       const response = await fetch(`${this.baseURL}/api/updateUser/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
         },
         body: JSON.stringify(dataUser),
       });
@@ -163,8 +172,8 @@ export class ListaServices {
       console.error(error);
     }
   };
-  //extraer cantidad de productos de Products
 
+  // Extraer cantidad de productos de Products
   // totalProductos = async (id) => {
   //   try {
   //     const respuesta = await fetch(

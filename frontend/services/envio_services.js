@@ -1,5 +1,3 @@
-// envio_services.js
-
 import { baseURL } from "../../backend/baseUrl.js";
 import { modalControllers } from "../modal/modal.js";
 
@@ -9,12 +7,12 @@ export class EnvioService {
   }
 
   async calcularCostoEnvio(datosEnvio) {
-    // console.log(datosEnvio);
     try {
       const response = await fetch(`${this.baseURL}/api/costoEnvio`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
         },
         body: JSON.stringify(datosEnvio),
       });
@@ -33,6 +31,7 @@ export class EnvioService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
         },
         body: JSON.stringify(datos),
       });
@@ -57,16 +56,19 @@ export class EnvioService {
   // Obtener productos del carrito
   async getNotificaciones() {
     try {
-      const response = await fetch(`${this.baseURL}/api/getNotificaciones`);
+      const response = await fetch(`${this.baseURL}/api/getNotificaciones`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
+        },
+      });
       if (!response.ok) {
         throw new Error("Error en la solicitud");
       }
 
       const data = await response.json();
-
       return data;
     } catch (error) {
-      console.error("Error al obtener lwsa notificaciones", error);
+      console.error("Error al obtener las notificaciones", error);
       throw error;
     }
   }
@@ -77,8 +79,8 @@ export class EnvioService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
         },
-
         body: JSON.stringify({ idProducto, idNotificaciones }),
       });
 

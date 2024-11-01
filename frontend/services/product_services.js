@@ -6,9 +6,9 @@ class ProductService {
     this.baseURL = baseURL;
   }
 
-  async fetchJSON(url) {
+  async fetchJSON(url, options = {}) {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, options);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -41,14 +41,24 @@ class ProductService {
   }
 
   async detalleProducto(id) {
-    return await this.fetchJSON(`${this.baseURL}/api/detailsProduct/${id}`);
+    const token = sessionStorage.getItem("authToken"); // Asegúrate de que el token está presente
+    return await this.fetchJSON(`${this.baseURL}/api/detailsProduct/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   async crearProducto(product) {
+    const token = sessionStorage.getItem("authToken"); // Asegúrate de que el token está presente
     try {
       const response = await fetch(`${this.baseURL}/api/createProduct`, {
         method: "POST",
-        body: product,
+        headers: {
+          Authorization: `Bearer ${token}`, // Agrega el token aquí
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product), // Asegúrate de convertir el producto a JSON
       });
 
       const dataResponse = await response.json();
@@ -64,18 +74,22 @@ class ProductService {
       modalControllers.modalMsgReload(error.message);
       // Asegúrate de que el error se imprima correctamente en la consola
       console.error(
-        "Error al actualizar el producto:",
+        "Error al crear el producto:",
         JSON.stringify(error, null, 2)
       ); // Esto mostrará más detalles
     }
   }
 
   async desactivarProducto(id) {
+    const token = sessionStorage.getItem("authToken"); // Asegúrate de que el token está presente
     try {
       const response = await fetch(
         `${this.baseURL}/api/desactivateProduct/${id}`,
         {
           method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`, // Agrega el token aquí
+          },
         }
       );
       const dataResponse = await response.json();
@@ -94,11 +108,15 @@ class ProductService {
   }
 
   async activarProducto(id) {
+    const token = sessionStorage.getItem("authToken"); // Asegúrate de que el token está presente
     try {
       const response = await fetch(
         `${this.baseURL}/api/activateProduct/${id}`,
         {
           method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`, // Agrega el token aquí
+          },
         }
       );
       const dataResponse = await response.json();
@@ -117,8 +135,13 @@ class ProductService {
   }
 
   async destacadosProducto() {
+    const token = sessionStorage.getItem("authToken"); // Asegúrate de que el token está presente
     try {
-      const response = await fetch(`${this.baseURL}/api/renderDestacados`);
+      const response = await fetch(`${this.baseURL}/api/renderDestacados`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Agrega el token aquí
+        },
+      });
       if (!response.ok) {
         throw new Error("Network response was not ok.");
       }
@@ -132,10 +155,15 @@ class ProductService {
   }
 
   async actualizarProducto(product) {
+    const token = sessionStorage.getItem("authToken"); // Asegúrate de que el token está presente
     try {
       const response = await fetch(`${this.baseURL}/api/updateProduct`, {
         method: "PUT",
-        body: product,
+        headers: {
+          Authorization: `Bearer ${token}`, // Agrega el token aquí
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product), // Asegúrate de convertir el producto a JSON
       });
 
       const dataResponse = await response.json();
@@ -158,8 +186,16 @@ class ProductService {
   }
 
   async productoSimilar(id) {
+    const token = sessionStorage.getItem("authToken"); // Asegúrate de que el token está presente
     try {
-      const response = await fetch(`${this.baseURL}/api/productoSimilar/${id}`);
+      const response = await fetch(
+        `${this.baseURL}/api/productoSimilar/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Agrega el token aquí
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok.");
       }

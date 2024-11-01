@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const listaServicesInstance = new ListaServices();
     isAdmin = await listaServicesInstance.getDataUser();
   }
-
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
   // const divUsuario = document.querySelector(".rounded-circle");

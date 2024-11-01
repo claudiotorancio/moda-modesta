@@ -10,8 +10,13 @@ export class CompraServices {
 
   async aceptarPedido(id) {
     try {
+      const token = sessionStorage.getItem("authToken"); // O donde tengas almacenado el token
       const response = await fetch(`${this.baseURL}/api/aceptarPedido/${id}`, {
         method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
+          "Content-Type": "application/json", // Agregar Content-Type si envías datos en JSON
+        },
       });
       const dataResponse = await response.json();
 
@@ -31,7 +36,13 @@ export class CompraServices {
 
   purchaseOrder = async () => {
     try {
-      const response = await fetch(`${this.baseURL}/api/purchaseOrder`);
+      const token = sessionStorage.getItem("authToken"); // O donde tengas almacenado el token
+      const response = await fetch(`${this.baseURL}/api/purchaseOrder`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
+          "Content-Type": "application/json", // Agregar Content-Type si envías datos en JSON
+        },
+      });
 
       const dataResponse = await response.json();
 
@@ -39,18 +50,25 @@ export class CompraServices {
         // Aquí manejas el mensaje de error que envía el backend
         throw new Error(dataResponse.error || "Error en la solicitud.");
       }
+
       // Muestra de éxito en pantalla
       return dataResponse;
     } catch (error) {
       console.error(error);
     }
   };
+
   //eliminar compra
 
   eliminarCompra = async (id) => {
     try {
+      const token = sessionStorage.getItem("authToken"); // O donde tengas almacenado el token
       const response = await fetch(`${this.baseURL}/api/deleteOrder/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
+          "Content-Type": "application/json", // Este encabezado puede ser opcional para solicitudes DELETE
+        },
       });
       const dataResponse = await response.json();
 
@@ -71,10 +89,15 @@ export class CompraServices {
 
   finalizarPedido = async (id) => {
     try {
+      const token = sessionStorage.getItem("authToken"); // O donde tengas almacenado el token
       const response = await fetch(
         `${this.baseURL}/api/finalizarPedido/${id}`,
         {
           method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`, // Agregar el token aquí
+            "Content-Type": "application/json", // Este encabezado puede ser opcional
+          },
         }
       );
       const dataResponse = await response.json();
@@ -83,6 +106,7 @@ export class CompraServices {
         // Aquí manejas el mensaje de error que envía el backend
         throw new Error(dataResponse.error || "Error en la solicitud.");
       }
+
       // Muestra de éxito en pantalla
       modalControllers.modalMsg(dataResponse.message);
       return dataResponse; // Devuelve los datos recibidos
@@ -96,12 +120,14 @@ export class CompraServices {
 
   cancelarPedidoHandler = async (id, productos) => {
     try {
+      const token = sessionStorage.getItem("authToken"); // Obtener el token de sessionStorage
       const response = await fetch(
         `${this.baseURL}/api/compraCancelada/${id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json", // Indica que el cuerpo es JSON
+            Authorization: `Bearer ${token}`, // Agregar el token aquí
           },
           body: JSON.stringify({ productos }), // Convierte el objeto a JSON
         }
@@ -121,14 +147,17 @@ export class CompraServices {
       console.error(error);
     }
   };
+
   //correo pedido en preparacion
 
   async compraPrepare(email, name, producto) {
     try {
+      const token = sessionStorage.getItem("authToken"); // Obtener el token de sessionStorage
       const response = await fetch(`${this.baseURL}/api/compraPrepare`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
         },
         body: JSON.stringify({ email, name, producto }),
       });
@@ -148,13 +177,24 @@ export class CompraServices {
   }
 
   //actualiza estado compra en camino
-
   async compraEnCamino(id) {
     try {
+      const token = sessionStorage.getItem("authToken"); // Obtener el token de sessionStorage
       const response = await fetch(`${this.baseURL}/api/compraEnCamino/${id}`, {
         method: "PUT",
+        headers: {
+          "Content-Type": "application/json", // Asegúrate de incluir el tipo de contenido
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
+        },
       });
+
       const data = await response.json();
+
+      if (!response.ok) {
+        // Aquí manejas el mensaje de error que envía el backend
+        throw new Error(data.error || "Error en la solicitud.");
+      }
+
       return data;
     } catch (error) {
       console.error("Error al aceptar el pedido:", error);
@@ -162,14 +202,16 @@ export class CompraServices {
     }
   }
 
-  async correoEnCaminoe(email, name, producto) {
+  async correoEnCamino(email, name, producto) {
     try {
+      const token = sessionStorage.getItem("authToken"); // Obtener el token de sessionStorage
       const response = await fetch(`${this.baseURL}/api/correoEnCamino`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // Indica que el cuerpo es JSON
+          Authorization: `Bearer ${token}`, // Agregar el token aquí
         },
-        body: JSON.stringify({ email, name, producto }),
+        body: JSON.stringify({ email, name, producto }), // Convierte el objeto a JSON
       });
 
       const dataResponse = await response.json();

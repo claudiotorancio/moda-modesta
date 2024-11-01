@@ -6,9 +6,9 @@ class ResenaService {
     this.baseURL = baseURL;
   }
 
-  async fetchJSON(url) {
+  async fetchJSON(url, options = {}) {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, options);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -20,7 +20,11 @@ class ResenaService {
 
   async getResena() {
     try {
-      const response = await fetch(`${this.baseURL}/api/getResena`);
+      const response = await fetch(`${this.baseURL}/api/getResena`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
+        },
+      });
       if (!response.ok) {
         throw new Error("No se pudo obtener las reseñas");
       }
@@ -36,7 +40,10 @@ class ResenaService {
     try {
       await fetch(`${this.baseURL}/api/deleteResena`, {
         method: "DELETE",
-        body: id,
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
+        },
+        body: JSON.stringify({ id }), // Asegúrate de enviar el id como un objeto JSON
       });
     } catch (error) {
       console.error(error);
@@ -49,6 +56,7 @@ class ResenaService {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
         },
         body: JSON.stringify(resena),
       });
@@ -66,12 +74,14 @@ class ResenaService {
       console.error(error);
     }
   }
+
   async agregarResena(nuevaResena) {
     try {
       const response = await fetch(`${this.baseURL}/api/agregarResena`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
         },
         body: JSON.stringify(nuevaResena),
       });
@@ -92,7 +102,7 @@ class ResenaService {
   }
 }
 
-// Instancia de la clase ProductService
+// Instancia de la clase ResenaService
 const resenaServices = new ResenaService(baseURL);
 
 export default resenaServices;

@@ -35,9 +35,10 @@ const signin = (req, res) => {
 
       // Verifica si estamos en modo local o producción
       if (process.env.NODE_ENV === "development") {
+        const { _id, email, role, nombre } = user;
         // Autenticación con JWT en modo local
         const token = jwt.sign(
-          { user },
+          { user: { _id, email, role, nombre } },
           process.env.JWT_SECRET, // Usa una clave secreta segura
           { expiresIn: "1h" } // Expiración del token
         );
