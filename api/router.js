@@ -240,10 +240,14 @@ router.get("/api/protected-route", authenticateToken, (req, res) => {
 
 //Sales
 
-router.get("/api/sales", requireAdmin, getSalesByPeriod);
-router.get("/api/top-selling-products", requireAdmin, getTopSellingProducts);
-router.get("/api/orders-pending", requireAdmin, gefetchPendingOrders);
-router.get("/api/customer-analytics", requireAdmin, getCustomerAnalytics);
+router.get("/api/sales", authenticateToken, getSalesByPeriod);
+router.get(
+  "/api/top-selling-products",
+  authenticateToken,
+  getTopSellingProducts
+);
+router.get("/api/orders-pending", authenticateToken, gefetchPendingOrders);
+router.get("/api/customer-analytics", authenticateToken, getCustomerAnalytics);
 //profile
 router.get(
   "/api/infoPersonal",

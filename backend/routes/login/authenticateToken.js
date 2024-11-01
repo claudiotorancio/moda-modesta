@@ -19,8 +19,12 @@ const authenticateToken = (req, res, next) => {
     });
   } else {
     // En producción, usar sesión de Passport
-
-    return next(); // El usuario está autenticado, continúa
+    if (!req.isAuthenticated() || req.user.role !== "admin") {
+      return res.status(403).json({
+        error: "Acceso denegado: Solo usuarios administradores pueden acceder",
+      });
+    }
+    next();
   }
 };
 

@@ -32,7 +32,18 @@ export class SalesServices {
         url.searchParams.append(key, params[key])
       );
 
-      const response = await fetch(url);
+      // Obtener el token desde el sessionStorage
+      const token = sessionStorage.getItem("authToken");
+
+      // Hacer la solicitud fetch con el token en los encabezados
+      const response = await fetch(url, {
+        method: "GET", // Asumimos que es un GET, cambia según sea necesario
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Añadir el token aquí
+        },
+      });
+
       if (!response.ok) {
         throw new Error(`Error en la respuesta: ${response.statusText}`);
       }
@@ -46,12 +57,24 @@ export class SalesServices {
   }
 
   // Obtener productos más vendidos (con opción de filtro por categoría)
+  // Obtener productos más vendidos (con opción de filtro por categoría)
   async fetchTopSellingProducts(category = null) {
     const url = category
       ? `${this.baseURL}/api/top-selling-products?category=${category}`
       : `${this.baseURL}/api/top-selling-products`;
     try {
-      const response = await fetch(url);
+      // Obtener el token desde el sessionStorage
+      const token = sessionStorage.getItem("authToken");
+
+      // Hacer la solicitud fetch con el token en los encabezados
+      const response = await fetch(url, {
+        method: "GET", // Asumimos que es un GET, cambia según sea necesario
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Añadir el token aquí
+        },
+      });
+
       if (!response.ok) {
         throw new Error(`Error en la respuesta: ${response.statusText}`);
       }
@@ -65,40 +88,52 @@ export class SalesServices {
   }
 
   //consultar estado de ordenes
+  // Consultar estado de órdenes pendientes
   async fetchPendingOrders() {
     try {
-      const response = await fetch(`${this.baseURL}/api/orders-pending`); // Ajusta la ruta a tu API
+      // Obtener el token desde el sessionStorage
+      const token = sessionStorage.getItem("authToken");
+
+      // Hacer la solicitud fetch con el token en los encabezados
+      const response = await fetch(`${this.baseURL}/api/orders-pending`, {
+        method: "GET", // Asumimos que es un GET, cambia según sea necesario
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Añadir el token aquí
+        },
+      });
+
       const dataResponse = await response.json();
 
       if (!response.ok) {
         // Aquí manejas el mensaje de error que envía el backend
         throw new Error(dataResponse.error || "Error en la solicitud.");
       }
+
       // Muestra de éxito en pantalla
       return dataResponse;
     } catch (error) {
-      console.error(error);
-    }
-  }
-
-  // Obtener ingresos por categoría
-  async fetchRevenueByCategory() {
-    try {
-      const response = await fetch(`${this.baseURL}/revenue-by-category`);
-      if (!response.ok) {
-        throw new Error(`Error en la respuesta: ${response.statusText}`);
-      }
-      return response.json();
-    } catch (error) {
-      console.error("Error al obtener ingresos por categoría:", error);
-      throw error;
+      console.error("Error al obtener órdenes pendientes:", error);
+      throw error; // Propagar el error para manejarlo más arriba
     }
   }
 
   // Obtener análisis de clientes (frecuencia, valor promedio de compra, etc.)
+  // Obtener análisis de clientes (frecuencia, valor promedio de compra, etc.)
   async fetchCustomerAnalytics() {
     try {
-      const response = await fetch(`${this.baseURL}/api/customer-analytics`);
+      // Obtener el token desde el sessionStorage
+      const token = sessionStorage.getItem("authToken");
+
+      // Hacer la solicitud fetch con el token en los encabezados
+      const response = await fetch(`${this.baseURL}/api/customer-analytics`, {
+        method: "GET", // Asumimos que es un GET, cambia según sea necesario
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Añadir el token aquí
+        },
+      });
+
       if (!response.ok) {
         // Si la respuesta no es 200, puedes devolver un array vacío o un objeto predeterminado
         if (response.status === 404) {
@@ -107,6 +142,7 @@ export class SalesServices {
         }
         throw new Error(`Error en la respuesta: ${response.statusText}`);
       }
+
       return await response.json();
     } catch (error) {
       console.error("Error al obtener análisis de clientes:", error);

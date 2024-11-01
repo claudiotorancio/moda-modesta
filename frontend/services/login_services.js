@@ -42,7 +42,7 @@ export class LoginServices {
           "Content-Type": "application/json",
         },
         // Habilita las credenciales solo si es necesario para cookies
-        credentials: "include",
+        // credentials: "include",
         body: JSON.stringify(dataUser),
       });
 
@@ -55,6 +55,7 @@ export class LoginServices {
       // En desarrollo, almacena el token en sessionStorage o localStorage
       if (process.env.NODE_ENV === "development") {
         const token = dataResponse.token;
+
         if (token) {
           sessionStorage.setItem("authToken", token);
         } else {
@@ -90,7 +91,6 @@ export class LoginServices {
       }
 
       const data = await response.json();
-      console.log(data);
       return data.user.user; // Manejar los datos protegidos aquí
     } catch (error) {
       console.error("Error al obtener datos protegidos:", error);
