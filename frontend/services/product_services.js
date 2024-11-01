@@ -54,10 +54,10 @@ class ProductService {
     try {
       const response = await fetch(`${this.baseURL}/api/createProduct`, {
         method: "POST",
+        body: product, // Asegúrate de convertir el producto a JSON
         headers: {
           Authorization: `Bearer ${token}`, // Agrega el token aquí
         },
-        body: product, // Asegúrate de convertir el producto a JSON
       });
 
       const dataResponse = await response.json();
@@ -158,10 +158,10 @@ class ProductService {
     try {
       const response = await fetch(`${this.baseURL}/api/updateProduct`, {
         method: "PUT",
+        body: product, // Asegúrate de convertir el producto a JSON
         headers: {
           Authorization: `Bearer ${token}`, // Agrega el token aquí
         },
-        body: product, // Asegúrate de convertir el producto a JSON
       });
 
       const dataResponse = await response.json();
