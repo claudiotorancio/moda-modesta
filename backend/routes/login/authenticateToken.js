@@ -1,19 +1,28 @@
-//
-
 import jwt from "jsonwebtoken";
 
 // Middleware de autenticación
 const authenticateToken = (req, res, next) => {
+  // Lista de rutas públicas que no requieren autenticación
+  const publicRoutes = ["/api/listaProductos"]; // Agrega más rutas públicas si es necesario
+
+  // Verificar si la ruta es pública
+  if (publicRoutes.includes(req.path)) {
+    return next(); // Permitir acceso a rutas públicas
+  }
+
   // Solo aplicar lógica de token en desarrollo
   if (process.env.NODE_ENV === "development") {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    if (!token)
+    if (!token) {
       return res.status(401).json({ error: "Token no proporcionado" });
+    }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) return res.status(403).json({ error: "Token inválido" });
+      if (err) {
+        return res.status(403).json({ error: "Token inválido" });
+      }
       req.user = user; // Añadir el usuario al request
       next();
     });
