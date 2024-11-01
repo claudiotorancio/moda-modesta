@@ -19,7 +19,25 @@ class ProductService {
   }
 
   async listaProductos() {
-    return await this.fetchJSON(`${this.baseURL}/api/listaProductos`);
+    const token = sessionStorage.getItem("authToken"); // Asegúrate de que el token está presente
+    try {
+      const response = await fetch(`${this.baseURL}/api/listaProductos`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`, // Agrega el token aquí
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al obtener la lista de productos.");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error al obtener productos:", error);
+    }
   }
 
   async detalleProducto(id) {

@@ -24,8 +24,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     await hashControllers();
   }
 
-  const listaServicesInstance = new ListaServices();
-  const isAdmin = await listaServicesInstance.getDataUser();
+  let isAdmin;
+  if (process.env.NODE_ENV === "development") {
+    const loginServicesInstance = new LoginServices();
+    isAdmin = await loginServicesInstance.fetchProtectedData();
+  } else {
+    const listaServicesInstance = new ListaServices();
+    isAdmin = await listaServicesInstance.getDataUser();
+  }
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
   const actualizarUsuario = document.querySelector(".data-user");

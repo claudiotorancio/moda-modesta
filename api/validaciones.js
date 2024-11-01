@@ -162,40 +162,19 @@ const validacionesSignin = [
 ];
 
 const validacionesProducto = [
-  (req, res, next) => {
-    // Ver los datos que están llegando a la validación
-    console.log("Datos entrantes:", req.body);
-    next(); // Continúa al siguiente middleware
-  },
+  // (req, res, next) => {
+  //   // Ver los datos que están llegando a la validación
+  //   console.log("Datos entrantes:", req.body);
+  //   next(); // Continúa al siguiente middleware
+  // },
   validarCampo("name", "El nombre es obligatorio."),
   validarCampo("price", "El precio es obligatorio.", true),
   validarCampo("description", "La descripción es obligatoria."),
   validarCampo("isFeatured", "El estado de destacado es obligatorio."),
-  // body("images").custom((value) => {
-  //   // Validar que sea un array de objetos File
-  //   if (!Array.isArray(value) || value.length === 0) {
-  //     throw new Error(
-  //       "El campo de imágenes es obligatorio y debe ser un array."
-  //     );
-  //   }
-  //   value.forEach((file) => {
-  //     if (!(file instanceof File)) {
-  //       throw new Error("Cada imagen debe ser un archivo.");
-  //     }
-  //     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-  //     if (!allowedTypes.includes(file.type)) {
-  //       throw new Error(
-  //         "El tipo de imagen no es válido. Solo se permiten JPEG, PNG y GIF."
-  //       );
-  //     }
-  //     if (file.size > 2 * 1024 * 1024) {
-  //       // Ejemplo: límite de 2MB
-  //       throw new Error("El tamaño de la imagen debe ser inferior a 2MB.");
-  //     }
-  //   });
-  //   return true; // Validación correcta
-  // }),
-  // Validación para sizes, que es opcional
+  body("generalStock")
+    .optional()
+    .isInt({ min: 0 })
+    .withMessage("El stock general debe ser un número positivo."),
   body("sizes")
     .optional()
     .custom((value) => {
@@ -223,11 +202,11 @@ const validacionesProducto = [
 ];
 
 const validacionesProductoActualizacion = [
-  (req, res, next) => {
-    // Ver los datos que están llegando a la validación
-    console.log("Datos entrantes:", req.body);
-    next(); // Continúa al siguiente middleware
-  },
+  // (req, res, next) => {
+  //   // Ver los datos que están llegando a la validación
+  //   console.log("Datos entrantes:", req.body);
+  //   next(); // Continúa al siguiente middleware
+  // },
   validarId("id"),
   validarCampo("name", "El nombre es obligatorio."),
   validarCampo("price", "El precio es obligatorio.", true),

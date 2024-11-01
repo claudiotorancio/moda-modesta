@@ -1,4 +1,5 @@
 import passport from "../../lib/passport.js";
+import jwt from "jsonwebtoken";
 
 const signin = (req, res) => {
   // Verificar que los datos requeridos estén presentes
@@ -32,19 +33,36 @@ const signin = (req, res) => {
           .json({ error: "Usuario o contraseña incorrectos" });
       }
 
-      // Inicia sesión y maneja la sesión
-      req.logIn(user, (err) => {
-        if (err) {
-          console.error("Error al iniciar sesión:", err);
-          return res.status(500).json({ error: "Error al iniciar sesión" });
-        }
+      // Verifica si estamos en modo local o producción
+      if (process.env.NODE_ENV === "development") {
+        // Autenticación con JWT en modo local
+        const token = jwt.sign(
+          { user },
+          process.env.JWT_SECRET, // Usa una clave secreta segura
+          { expiresIn: "1h" } // Expiración del token
+        );
 
-        // Responde con el usuario autenticado
+        // Responde con el usuario autenticado y el token
         return res.json({
-          user: req.user,
-          message: "Inicio de sesión exitoso",
+          token,
+          user,
+          message: "Inicio de sesión exitoso con JWT",
         });
-      });
+      } else {
+        // Autenticación de sesión en producción
+        req.logIn(user, (err) => {
+          if (err) {
+            console.error("Error al iniciar sesión:", err);
+            return res.status(500).json({ error: "Error al iniciar sesión" });
+          }
+
+          // Responde con el usuario autenticado
+          return res.json({
+            user: req.user,
+            message: "Inicio de sesión exitoso",
+          });
+        });
+      }
     })(req, res);
   } catch (error) {
     console.error("Error inesperado:", error);

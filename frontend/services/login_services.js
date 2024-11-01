@@ -33,7 +33,7 @@ export class LoginServices {
     }
   }
 
-  //abrir session
+  // Abrir sesión
   async signin(dataUser) {
     try {
       const response = await fetch(`${this.baseURL}/api/signin`, {
@@ -41,7 +41,7 @@ export class LoginServices {
         headers: {
           "Content-Type": "application/json",
         },
-        // credentials: "include",
+        // credentials: "include", // Mantener comentado si solo usas JWT en local
         body: JSON.stringify(dataUser),
       });
 
@@ -52,9 +52,16 @@ export class LoginServices {
         throw new Error(dataResponse.error || "Error en la solicitud.");
       }
 
-      // Manejo de la respuesta
+      // Extraer y guardar el token JWT en sessionStorage o localStorage
+      const token = dataResponse.token;
+      if (token) {
+        sessionStorage.setItem("authToken", token); // o localStorage.setItem("authToken", token);
+      } else {
+        throw new Error("Token no recibido en la respuesta.");
+      }
+
+      // Almacenar el nombre del usuario o cualquier información adicional
       const userName = dataResponse.user.nombre;
-      // Uso de sessionStorage para guardar usuario (puedes guardar más información si es necesario)
       sessionStorage.setItem("user", JSON.stringify(userName));
 
       // Mostrar el mensaje del servidor
@@ -63,6 +70,31 @@ export class LoginServices {
       // Captura cualquier error que ocurra
       modalControllers.modalMsgReload(error.message); // Muestra el mensaje de error
       console.error(error);
+    }
+  }
+
+  async fetchProtectedData() {
+    const token = sessionStorage.getItem("authToken");
+    try {
+      const response = await fetch(`${this.baseURL}/api/protected-route`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        // Manejo de errores si la respuesta no es exitosa
+        throw new Error("No se pudo obtener datos protegidos.");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      return data.user.user; // Manejar los datos protegidos aquí
+    } catch (error) {
+      console.error("Error al obtener datos protegidos:", error);
+      // Aquí puedes manejar el error, como redirigir a la página de inicio de sesión
     }
   }
 

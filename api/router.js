@@ -95,6 +95,7 @@ import getSalesByPeriod from "../backend/sales/getSalesByPeriod.js";
 import getTopSellingProducts from "../backend/sales/getTopSellingProducts.js";
 import gefetchPendingOrders from "../backend/sales/getFetchPendingOrders.js";
 import getCustomerAnalytics from "../backend/sales/getCustomerAnalytics.js";
+import authenticateToken from "../backend/routes/login/authenticateToken.js";
 
 const router = Router();
 const app = express();
@@ -109,7 +110,8 @@ const outputPath = path.join(__dirname, "../public");
 // Middlewares
 // Middleware para manejo de errores de validación
 const handleValidationErrors = (req, res, next) => {
-  console.log("Datos en handleValidationErrors:", req.body); // Log para verificar
+  console.log(req.user);
+  // console.log("Datos en handleValidationErrors:", req.body); // Log para verificar
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -130,7 +132,8 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Configuración de la sesión
-const store = new MongoDBStore(session)({
+const MongoStore = MongoDBStore(session);
+const store = new MongoStore({
   uri: MONGODB_URI,
   collection: "mySessions",
 });
@@ -144,7 +147,7 @@ app.use(
     store: store,
     cookie: {
       expires: 600000, // 10 minutos
-      secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
+      secure: process.env.NODE_ENV === "production", // Asegura que las cookies sean seguras en producción
       httpOnly: true, // Previene acceso JavaScript a la cookie
       sameSite: "lax", // Protección contra CSRF
     },
@@ -227,6 +230,13 @@ export const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single(
 );
 
 // Rutas
+
+router.get("/api/protected-route", authenticateToken, (req, res) => {
+  res.json({
+    message: "Datos protegidos obtenidos con éxito",
+    user: req.user,
+  });
+});
 
 //Sales
 
@@ -383,6 +393,7 @@ router.post(
   purchaseLimiter,
   signup
 );
+
 router.post(
   "/api/signin",
   validacionesSignin,
@@ -390,6 +401,7 @@ router.post(
   purchaseLimiter,
   signin
 );
+
 router.delete("/api/logout", logout);
 router.post(
   "/api/send-reset-password",
@@ -413,7 +425,7 @@ router.get(
 );
 
 // Rutas listado
-router.get("/api/getDataUser", getDataUser);
+router.get("/api/getDataUser", authenticateToken, getDataUser);
 router.get("/api/getAdmin", getAdmin);
 router.get("/api/getUser/:id", requireAdmin, getUser);
 router.get("/api/renderLista", requireAdmin, listaAdmin);
@@ -424,16 +436,10 @@ router.get("/api/contadorProductos/:id", requireAdmin, contadorProductos);
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
 // router.get("/api/listaProductosUsuario", listaProductosUsuario);
-router.get("/api/listaProductos", listaProductos);
+router.get("/api/listaProductos", authenticateToken, listaProductos);
 router.post(
   "/api/createProduct",
   uploadSingle,
-  (req, res, next) => {
-    // Ver los datos que están llegando a la validación
-    console.log("Datos entrantes router.js:", req.body);
-    next(); // Continúa al siguiente middleware
-  },
-
   validacionesProducto,
   handleValidationErrors,
   requireAdmin,

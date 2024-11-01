@@ -33,7 +33,14 @@ export class ListaServices {
 
   getDataUser = async () => {
     try {
-      const respuesta = await fetch(`${this.baseURL}/api/getDataUser`);
+      const token = sessionStorage.getItem("authToken");
+      const respuesta = await fetch(`${this.baseURL}/api/getDataUser`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`, // Incluir el token en el encabezado
+          "Content-Type": "application/json",
+        },
+      });
       const data = await respuesta.json();
 
       if (data.ok) {
