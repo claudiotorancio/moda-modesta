@@ -252,13 +252,11 @@ router.get("/api/customer-analytics", authenticateToken, getCustomerAnalytics);
 router.get(
   "/api/infoPersonal",
   authenticateToken,
-  isAuthenticated,
   profileControllers.InfoPersonal
 );
 router.get(
   "/api/pedidosRecientes",
   authenticateToken,
-  isAuthenticated,
   profileControllers.pedidosRecientes
 );
 
