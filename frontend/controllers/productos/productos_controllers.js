@@ -93,7 +93,7 @@ export const controllers = {
         const hayStock =
           producto.generalStock > 0 || // Verifica stock general para "Diversos"
           producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
-
+        console.log(producto.sizes.some((item) => item.stock > 0));
         const card = new ProductInit(
           producto._id,
           producto.name,

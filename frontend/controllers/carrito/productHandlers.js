@@ -38,19 +38,19 @@ function actualizarNotificacionCarrito() {
   carritoMonto.textContent = total > 0 ? `$${total.toFixed(2)}` : "$0.00";
 }
 
-export async function agregarProducto(product, size) {
+export async function agregarProducto(product, size, messageElement) {
   try {
     // Sanitizar datos de entrada
     const sanitizedProductId = validator.escape(product._id);
     const sanitizedSize = validator.escape(size);
 
-    if (!this.items) {
-      await cargarCarritoDesdeStorage.call(this);
-    }
+    // Cargar el carrito desde la base de datos antes de agregar el producto
+    await cargarCarritoDesdeStorage.call(this);
 
     // Obtener el producto existente en el carrito
     const productoExistente = this.items.find(
-      (item) => item.productId === product._id && item.size === sanitizedSize
+      (item) =>
+        item.productId === sanitizedProductId && item.size === sanitizedSize
     );
 
     // Verificar si el producto ya no tiene stock
@@ -71,13 +71,21 @@ export async function agregarProducto(product, size) {
       }
 
       if (nuevaCantidad > product.stock) {
-        console.error("Cantidad solicitada supera el stock disponible.");
-        return alert(
-          `Solo hay ${product.stock} unidades disponibles para el talle seleccionado.`
+        console.warn(
+          "Cantidad excede stock disponible:",
+          nuevaCantidad,
+          ">",
+          product.stock
         );
+        if (messageElement) {
+          messageElement.textContent = `Solo hay ${product.stock} unidades disponibles para el producto seleccionado.`;
+          document.getElementById("messageContainer").style.display = "block"; // Mostrar el contenedor del mensaje
+        }
+        // Esperar antes de continuar
+        await new Promise((resolve) => setTimeout(resolve, 3000)); // Espera de 3 segundos
+        return; // Salir de la función para no continuar con la lógica
       }
-      console.log(productoExistente.cantidad);
-      // Actualizar cantidad si hay stock disponible
+
       productoExistente.cantidad = nuevaCantidad;
       await carritoServices.putProductCart({
         cantidad: productoExistente.cantidad,
@@ -95,7 +103,6 @@ export async function agregarProducto(product, size) {
           productId: sanitizedProductId,
           category: product.section,
         };
-        console.log(productoNuevo);
         await carritoServices.addProductCart(productoNuevo);
         this.items.push(productoNuevo);
       } else {

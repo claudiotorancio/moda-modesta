@@ -72,14 +72,15 @@ export const mostrarProducto = async (
               section !== "opcion3"
                 ? `
               <label for="variation_1" class="form-label">Talles disponibles</label>
-              <select id="variation_1" class="form-select mb-3">  
-                ${sizes
-                  .map(
-                    (item) =>
-                      `<option value="${item.size}">${item.size}</option>`
-                  )
-                  .join("")}
-              </select>`
+      <select id="variation_1" class="form-select mb-3">
+        ${sizes
+          .filter((item) => item.stock > 0)
+          .map(
+            (item) =>
+              `<option value="${item.size}">${item.size} -  <span class="badge bg-secondary">( Stock: ${item.stock} )</span></option>`
+          )
+          .join("")}
+      </select>`
                 : ""
             }
             </div>`
@@ -103,7 +104,8 @@ export const mostrarProducto = async (
             hayStock
               ? `<div class="d-flex justify-content-center mt-3">
             <button type="button" class="btn btn-primary me-2" data-carrito 
-              >Añadir carrito</button>`
+              >Añadir carrito</button>
+               `
               : ""
           }
            ${
@@ -113,6 +115,9 @@ export const mostrarProducto = async (
             </a>`
                : ""
            }
+           </div><div id="messageContainer" style="display: none;">
+  <p id="message" class="alert alert-warning mt-3 text-center"></p>
+</div>
           </div>
         </div>
       </div>
@@ -149,6 +154,9 @@ export const mostrarProducto = async (
     </div>
   `;
 
+  // Obtener el elemento del mensaje
+  const messageElement = modal.querySelector("#message");
+
   // Manejar eventos para los botones
   eventListenerBotones(
     id,
@@ -157,6 +165,7 @@ export const mostrarProducto = async (
     imagePath,
     sizes,
     section,
-    generalStock
+    generalStock,
+    messageElement
   );
 };

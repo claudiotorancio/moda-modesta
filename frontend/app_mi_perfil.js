@@ -15,20 +15,11 @@ import { ListaServices } from "./services/lista_services.js";
 import { RenderProfile } from "./profile/RenderProfile.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  let isAdmin;
-  if (process.env.NODE_ENV === "development") {
-    const loginServicesInstance = new LoginServices();
-    isAdmin = await loginServicesInstance.fetchProtectedData();
-  } else {
-    const listaServicesInstance = new ListaServices();
-    isAdmin = await listaServicesInstance.getDataUser();
-  }
+  // Obtener rol del usuario y datos
+  const isAdmin = await obtenerRolUsuario();
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
-  const actualizarUsuario = document.querySelector(".data-user");
-  const logoutUsuario = document.querySelector("[data-logOut]");
-  const userActive = document.querySelector("[data-log]");
-
+  // Elementos del DOM para manipulación de interfaz de usuario
   const infoPersonal = document.getElementById("info-personal");
   const pedidosRecientes = document.getElementById("pedidos-recientes");
 
@@ -37,21 +28,47 @@ document.addEventListener("DOMContentLoaded", async () => {
     pedidosRecientes
   );
 
-  // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
-  if (user && isAdmin) {
-    document.querySelectorAll(".admin-only").forEach((el) => {
-      el.style.display = "block";
-    });
+  // Configurar la interfaz del usuario según autenticación y permisos
+  configurarInterfazUsuario(user, isAdmin, renderProfileInstance);
 
+  // Configuración de eventos de inicio y cierre de sesión
+  configurarEventosGlobales();
+});
+
+// Función para obtener el rol del usuario según el entorno
+async function obtenerRolUsuario() {
+  if (process.env.NODE_ENV === "development") {
+    const loginServicesInstance = new LoginServices();
+    return await loginServicesInstance.fetchProtectedData();
+  } else {
+    const listaServicesInstance = new ListaServices();
+    return await listaServicesInstance.getDataUser();
+  }
+}
+
+// Configura la interfaz de usuario según autenticación y rol
+function configurarInterfazUsuario(user, isAdmin, renderProfileInstance) {
+  const actualizarUsuario = document.querySelector(".data-user");
+  const logoutUsuario = document.querySelector("[data-logOut]");
+  const userActive = document.querySelector("[data-log]");
+
+  if (user) {
+    if (isAdmin) {
+      document
+        .querySelectorAll(".admin-only")
+        .forEach((el) => (el.style.display = "block"));
+    }
     renderProfileInstance.render();
-
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
+  } else {
+    userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   }
+}
 
-  userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
-
+// Configura eventos globales para login y logout
+function configurarEventosGlobales() {
   const login = document.querySelector("[data-log]");
   login.addEventListener("click", (e) => {
     e.preventDefault();
@@ -65,4 +82,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     const loginServicesInstance = new LoginServices();
     loginServicesInstance.logout();
   });
-});
+}

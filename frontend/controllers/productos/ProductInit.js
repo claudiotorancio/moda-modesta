@@ -46,13 +46,19 @@ export class ProductInit {
       <select id="variation_1" class="form-select mb-3">
         ${this.sizes
           .filter((item) => item.stock > 0)
-          .map((item) => `<option value="${item.size}">${item.size}</option>`)
+          .map(
+            (item) =>
+              `<option value="${item.size}">${item.size} -  <span class="badge bg-secondary">( Stock disponible: ${item.stock} )</span></option>`
+          )
           .join("")}
       </select>
       <div class="text-center">
         <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>
       </div>
-      <p id="message" class="mt-3 text-center"></p>`;
+      <div id="messageContainer" style="display: none;">
+        <p id="message" class="alert alert-warning mt-3 text-center"></p>
+      </div>
+    `;
   }
 
   getAmountSelectHTML() {
@@ -69,8 +75,9 @@ export class ProductInit {
       </select>
       <div class="text-center">
         <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>
-      </div>
-      <p id="message" class="mt-3 text-center"></p>`;
+      </div><div id="messageContainer" style="display: none;">
+  <p id="message" class="alert alert-warning mt-3 text-center"></p>
+</div>`;
   }
 
   getZoomImageHtml() {
@@ -115,7 +122,10 @@ export class ProductInit {
 
     this.updateModalContent(content);
 
-    document.querySelector("[data-carrito]").addEventListener("click", () => {
+    const messageElement = document.getElementById("message");
+    const carritoButton = document.querySelector("[data-carrito]");
+
+    carritoButton.addEventListener("click", () => {
       const talleSeleccionado = document.getElementById("variation_1").value;
       comprarProducto(
         this.id,
@@ -124,7 +134,9 @@ export class ProductInit {
         this.imagePath,
         this.sizes,
         talleSeleccionado,
-        this.section
+        this.section,
+        this.generalStock,
+        messageElement
       );
     });
   }
@@ -133,9 +145,14 @@ export class ProductInit {
     const content = this.getAmountSelectHTML();
 
     this.updateModalContent(content);
+    const messageElement = document.getElementById("message");
+    const carritoButton = document.querySelector("[data-carrito]");
 
-    document.querySelector("[data-carrito]").addEventListener("click", () => {
+    // Agregar evento de clic al botón para agregar al carrito
+    carritoButton.addEventListener("click", () => {
       const cantidadSeleccionada = document.getElementById("quantity").value;
+
+      // Lógica para comprar producto
       comprarProducto(
         this.id,
         this.name,
@@ -144,7 +161,8 @@ export class ProductInit {
         this.sizes,
         cantidadSeleccionada,
         this.section,
-        this.generalStock
+        this.generalStock,
+        messageElement
       );
     });
   }

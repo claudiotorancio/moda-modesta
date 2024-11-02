@@ -139,7 +139,7 @@ export class LoginServices {
       }
 
       sessionStorage.removeItem("user");
-      // sessionStorage.removeItem("token");
+      sessionStorage.removeItem("authToken");
       // Muestra de éxito en pantalla
       modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {

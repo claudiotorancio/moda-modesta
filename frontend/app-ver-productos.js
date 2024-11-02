@@ -19,41 +19,69 @@ import { hashControllers } from "./controllers/hashControllers.js";
 import { initializeCategoryControlsAdmin } from "./controllers/productos/categoryControlsAdmin.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+  // Cargar producto según el hash si está presente
   const hash = window.location.hash;
   if (hash.startsWith("#product-")) {
     await hashControllers();
   }
 
-  let isAdmin;
-  if (process.env.NODE_ENV === "development") {
-    const loginServicesInstance = new LoginServices();
-    isAdmin = await loginServicesInstance.fetchProtectedData();
-  } else {
-    const listaServicesInstance = new ListaServices();
-    isAdmin = await listaServicesInstance.getDataUser();
-  }
+  // Determinar rol del usuario
+  const isAdmin = await obtenerRolUsuario();
   const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
+  // Configurar la interfaz de usuario según rol y autenticación
+  configurarInterfazUsuario(user, isAdmin);
+
+  // Cargar reseñas y otros elementos de la interfaz
+  cargarReseñas();
+
+  // Configurar eventos de inicio de sesión y suscripción
+  configurarEventosGlobales();
+});
+
+// Función para obtener el rol del usuario
+async function obtenerRolUsuario() {
+  if (process.env.NODE_ENV === "development") {
+    const loginServicesInstance = new LoginServices();
+    return await loginServicesInstance.fetchProtectedData();
+  } else {
+    const listaServicesInstance = new ListaServices();
+    return await listaServicesInstance.getDataUser();
+  }
+}
+
+// Configura la interfaz según el rol y la autenticación
+function configurarInterfazUsuario(user, isAdmin) {
   const actualizarUsuario = document.querySelector(".data-user");
   const logoutUsuario = document.querySelector("[data-logOut]");
   const userActive = document.querySelector("[data-log]");
 
-  // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
-  if (user && isAdmin.role === "admin") {
-    document.querySelectorAll(".admin-only").forEach((el) => {
-      el.style.display = "block";
-    });
-    initializeCategoryControlsAdmin();
+  if (user) {
+    if (isAdmin.role === "admin") {
+      mostrarElementos(".admin-only", "block");
+      initializeCategoryControlsAdmin();
+    } else {
+      mostrarElementos(".admin-only", "none");
+      initializeCategoryControls();
+    }
     actualizarUsuario.textContent = `${user}`;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
     userActive.style.display = "none";
   } else {
     initializeCategoryControls();
+    userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
   }
+}
 
-  cargarReseñas();
-  userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
+// Muestra u oculta elementos según el selector y el estilo de display
+function mostrarElementos(selector, displayStyle) {
+  document.querySelectorAll(selector).forEach((el) => {
+    el.style.display = displayStyle;
+  });
+}
 
+// Configura eventos globales de inicio de sesión y suscripción
+function configurarEventosGlobales() {
   const initButton = document.querySelector("[data-init]");
   initButton.addEventListener("click", (e) => {
     modalControllers.modalSuscribe();
@@ -72,4 +100,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     const loginServicesInstance = new LoginServices();
     loginServicesInstance.logout();
   });
-});
+}

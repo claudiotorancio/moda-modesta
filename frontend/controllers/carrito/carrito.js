@@ -45,9 +45,9 @@ class Carrito {
     }
   }
 
-  async agregarProducto({ product, size }) {
+  async agregarProducto({ product, size, messageElement }) {
     try {
-      await agregarProducto.call(this, product, size);
+      await agregarProducto.call(this, product, size, messageElement);
       await this.cargarCarrito(); // Recargar carrito después de agregar producto
     } catch (error) {
       console.error("Error al agregar producto:", error);

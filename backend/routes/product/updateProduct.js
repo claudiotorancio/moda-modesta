@@ -55,10 +55,19 @@ const updateProduct = async (req, res) => {
       try {
         const sizesParsed = JSON.parse(sizes);
         if (Array.isArray(sizesParsed) && sizesParsed.length > 0) {
-          updateData.sizes = sizesParsed.map(({ size, stock }) => ({
-            size,
-            stock: Number(stock) || 0,
-          }));
+          // Filtrar y mapear talles
+          const orderedSizes = sizesParsed
+            .filter(({ stock }) => stock > 0) // Filtrar talles con stock disponible
+            .map(({ size, stock }) => ({
+              size,
+              stock: Number(stock) || 0,
+            }))
+            .sort((a, b) => {
+              const order = ["Talle1", "Talle2", "Talle3", "Talle4", "Talle5"];
+              return order.indexOf(a.size) - order.indexOf(b.size); // Ordenar según el array `order`
+            });
+
+          updateData.sizes = orderedSizes; // Asignar los talles ordenados a updateData
         }
       } catch (error) {
         return res.status(400).json({
@@ -69,6 +78,8 @@ const updateProduct = async (req, res) => {
 
     // Actualizar el producto en la base de datos sin incluir aún las imágenes
     const result = await model.findByIdAndUpdate(id, updateData, { new: true });
+
+    console.log(result);
 
     if (!result) {
       return res.status(404).json({ message: "Producto no encontrado" });

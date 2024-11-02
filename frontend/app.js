@@ -1,3 +1,4 @@
+// Importación de estilos y módulos
 import "./styles/assets/css/base/reset.css";
 import "./styles/assets/css/base/base.css";
 import "./styles/assets/css/base/variables.css";
@@ -37,142 +38,164 @@ import { ocultarProductos } from "./controllers/ocultarProductos/ocultarProducto
 import { SalesAnalytics } from "./controllers/analisisVentas/SalesAnalytics.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const hash = window.location.hash;
-  if (hash.startsWith("#product-")) {
-    await hashControllers();
-  }
-  cargarReseñas();
-  // initializeCategoryControls();
+  const user = JSON.parse(sessionStorage.getItem("user")) || null;
+  const isAdmin = await getUserRole();
 
+  const hash = window.location.hash;
+
+  if (hash.startsWith("#product-")) {
+    await hashControllers(hash.replace("#product-", ""));
+  }
+
+  // Inicializar componentes básicos
+  await initializeBanner();
+  await initializeUserControls(user, isAdmin);
+  await initializeEventListeners(user, isAdmin);
+});
+
+async function getUserRole() {
+  if (process.env.NODE_ENV === "development") {
+    const loginServicesInstance = new LoginServices();
+    return await loginServicesInstance.fetchProtectedData();
+  } else {
+    const listaServicesInstance = new ListaServices();
+    return await listaServicesInstance.getDataUser();
+  }
+}
+
+async function initializeBanner() {
   loadBannerText();
   loadLogoImage();
   loadBannerImage();
   loadColorSettings();
   loadColorSettingsCard();
+}
 
-  let isAdmin;
-  if (process.env.NODE_ENV === "development") {
-    const loginServicesInstance = new LoginServices();
-    isAdmin = await loginServicesInstance.fetchProtectedData();
-  } else {
-    const listaServicesInstance = new ListaServices();
-    isAdmin = await listaServicesInstance.getDataUser();
-  }
-  const user = JSON.parse(sessionStorage.getItem("user")) || null;
-
-  // const divUsuario = document.querySelector(".rounded-circle");
+async function initializeUserControls(user, isAdmin) {
   const actualizarUsuario = document.querySelector(".data-user");
   const logoutUsuario = document.querySelector("[data-logOut]");
   const userActive = document.querySelector("[data-log]");
-  // const contactUser = document.querySelector("[data-contact]");
-  const resenas = document.querySelector("[data-resenas]");
-  const ventas = document.querySelector("[data-ventas]");
-  const estilosDiseno = document.querySelector("[data-estilosDiseno]");
-  const susxriptores = document.querySelector("[data-suscriptores]");
-  const listaStock = document.querySelector("[data-stock]");
 
+  if (user && isAdmin?.role === "admin") {
+    showAdminControls();
+    actualizarUsuario.innerHTML = user;
+    logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+    userActive.style.display = "none";
+    buscar();
+    await controllers.renderProducts();
+    cargarReseñasAdmin();
+  } else if (user && isAdmin?.role === "user") {
+    showUserControls();
+    actualizarUsuario.textContent = user;
+    logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
+    userActive.style.display = "none";
+    await controllers.renderInit();
+    cargarReseñas();
+  } else {
+    controllers.renderInit();
+    userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
+  }
+}
+
+function showAdminControls() {
+  document
+    .querySelectorAll(".user-only")
+    .forEach((el) => (el.style.display = "block"));
+  document
+    .querySelectorAll(".admin-only")
+    .forEach((el) => (el.style.display = "block"));
+}
+
+function showUserControls() {
+  document
+    .querySelectorAll(".admin-only")
+    .forEach((el) => (el.style.display = "none"));
+  document
+    .querySelectorAll(".user-only")
+    .forEach((el) => (el.style.display = "block"));
+}
+
+async function initializeEventListeners(user, isAdmin) {
   const titulo = document.querySelector("[data-titulo]");
 
-  // Mostrar u ocultar elementos según si hay un usuario autenticado y es admin
+  // Eventos para roles de usuario
+  if (user && isAdmin?.role === "admin") {
+    setupAdminEventListeners(titulo);
+  }
 
-  if (user && isAdmin.role === "admin") {
-    document.querySelectorAll(".user-only").forEach((el) => {
-      el.style.display = "block";
-    });
-    document.querySelectorAll(".admin-only").forEach((el) => {
-      el.style.display = "block";
-    });
+  // Eventos comunes
+  document.querySelector("[data-init]").addEventListener("click", (e) => {
+    modalControllers.modalSuscribe();
+  });
 
-    await controllers.renderProducts();
+  document.querySelector("[data-log]").addEventListener("click", (e) => {
+    e.preventDefault();
+    const loginControllersInstance = new LoginControllers();
+    loginControllersInstance.renderSignin();
+  });
 
-    cargarReseñasAdmin();
+  document.querySelector("[data-logOut]").addEventListener("click", (e) => {
+    e.preventDefault();
+    const loginServicesInstance = new LoginServices();
+    loginServicesInstance.logout();
+  });
+}
 
-    const envio = document.querySelector("[data-pedidos]");
-    envio.addEventListener("click", (e) => {
-      e.preventDefault();
-      ocultarProductos();
-      const comprasInstance = new Compras(titulo);
-      comprasInstance.renderLista();
-    });
+function setupAdminEventListeners(titulo) {
+  document.querySelector("[data-pedidos]").addEventListener("click", (e) => {
+    e.preventDefault();
+    ocultarProductos();
+    const comprasInstance = new Compras(titulo);
+    comprasInstance.renderLista();
+  });
 
-    const crearProducto = document.querySelector("[data-crearProductos]");
-    crearProducto.addEventListener("click", async (e) => {
+  document
+    .querySelector("[data-crearProductos]")
+    .addEventListener("click", async (e) => {
       e.preventDefault();
       const productForm = new ProductForm(titulo);
       await productForm.render();
     });
 
-    resenas.addEventListener("click", (e) => {
-      e.preventDefault();
-      ocultarProductos();
-      const formResena = new FormResena(titulo);
-      formResena.render();
-    });
+  document.querySelector("[data-resenas]").addEventListener("click", (e) => {
+    e.preventDefault();
+    ocultarProductos();
+    const formResena = new FormResena(titulo);
+    formResena.render();
+  });
 
-    estilosDiseno.addEventListener("click", (e) => {
+  document
+    .querySelector("[data-estilosDiseno]")
+    .addEventListener("click", (e) => {
       e.preventDefault();
       const estilosInstance = new Estilos(titulo);
       estilosInstance.render();
     });
 
-    listaStock.addEventListener("click", async (e) => {
+  document
+    .querySelector("[data-stock]")
+    .addEventListener("click", async (e) => {
       e.preventDefault();
       ocultarProductos();
       const stockInstance = new RenderStock(titulo);
       await stockInstance.render();
     });
 
-    susxriptores.addEventListener("click", async (e) => {
+  document
+    .querySelector("[data-suscriptores]")
+    .addEventListener("click", async (e) => {
       e.preventDefault();
       ocultarProductos();
-      const ListaControllersInstamce = new ListaControllers(titulo);
-      await ListaControllersInstamce.renderLista();
+      const listaControllersInstance = new ListaControllers(titulo);
+      await listaControllersInstance.renderLista();
     });
 
-    ventas.addEventListener("click", async (e) => {
+  document
+    .querySelector("[data-ventas]")
+    .addEventListener("click", async (e) => {
       e.preventDefault();
       ocultarProductos();
-      const SalesAnalyticsinstance = new SalesAnalytics(titulo);
-      await SalesAnalyticsinstance.fetchSalesByPeriod();
+      const salesAnalyticsInstance = new SalesAnalytics(titulo);
+      await salesAnalyticsInstance.fetchSalesByPeriod();
     });
-
-    actualizarUsuario.innerHTML = `${user}`;
-    logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
-    userActive.style.display = "none";
-    buscar();
-  } else if (user && isAdmin.role === "user") {
-    document.querySelectorAll(".admin-only").forEach((el) => {
-      el.style.display = "none";
-    });
-    document.querySelectorAll(".user-only").forEach((el) => {
-      el.style.display = "block";
-    });
-    await controllers.renderInit();
-    cargarReseñas();
-    actualizarUsuario.textContent = `${user}`;
-    logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
-    userActive.style.display = "none";
-  } else if (!user && !isAdmin.ok) {
-    controllers.renderInit();
-    userActive.innerHTML = '<i class="fa-solid fa-user-pen"></i>';
-  }
-  userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
-  const initButton = document.querySelector("[data-init]");
-  initButton.addEventListener("click", (e) => {
-    modalControllers.modalSuscribe();
-  });
-
-  const login = document.querySelector("[data-log]");
-  login.addEventListener("click", (e) => {
-    e.preventDefault();
-    const loginControllersInstance = new LoginControllers();
-    loginControllersInstance.renderSignin();
-  });
-
-  const logOut = document.querySelector("[data-logOut]");
-  logOut.addEventListener("click", (e) => {
-    e.preventDefault();
-    const loginServicesInstance = new LoginServices();
-    loginServicesInstance.logout();
-  });
-});
+}

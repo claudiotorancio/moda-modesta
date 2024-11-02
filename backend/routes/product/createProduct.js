@@ -6,14 +6,12 @@ const createProduct = async (req, res) => {
   try {
     const { name, price, description, section, isFeatured, generalStock } =
       req.body;
-    console.log(req.files);
-    // Procesa los tamaños y el stock si la sección NO es "Diversos"
+
     let sizes = [];
     if (section !== "opcion3") {
-      sizes = JSON.parse(req.body.sizes || "[]"); // Convierte el JSON de vuelta a un array si hay tallas
+      sizes = JSON.parse(req.body.sizes || "[]");
     }
 
-    // Crear datos del producto según la sección
     const createProductData = {
       name,
       price,
@@ -21,35 +19,38 @@ const createProduct = async (req, res) => {
       section,
       isFeatured: isFeatured || false,
       user_id: req.user._id,
-      isActive: true, // La propiedad isActive es true por defecto
+      isActive: true,
     };
 
-    // Si la sección es "Diversos", agrega el stock general
     if (section === "opcion3") {
       createProductData.generalStock = parseInt(generalStock) || 0;
     } else {
-      // Si no es "Diversos", agrega las tallas y el stock por talla
       createProductData.sizes = sizes.map((sizeData) => ({
         size: sizeData.size,
         stock: sizeData.stock,
       }));
     }
 
-    // Crear y guardar el producto
     let newProduct;
     if (esAdministrador(req.user)) {
-      newProduct = new Vista(createProductData); // Crear en el modelo Vista si es admin
+      newProduct = new Vista(createProductData);
     } else {
-      newProduct = new Product(createProductData); // Crear en el modelo Product si no es admin
+      newProduct = new Product(createProductData);
     }
 
     await connectToDatabase();
     await newProduct.save();
 
-    // Si el producto se guarda exitosamente, entonces guarda las rutas de las imágenes
     const imagePaths = req.files ? req.files.map((file) => file.location) : [];
-    console.log(imagePaths);
-    newProduct.imagePath = imagePaths; // Asigna las rutas de imagen al producto
+
+    // Comprobación de imágenes para agregar la imagen predeterminada
+    if (imagePaths.length === 1) {
+      const defaultImage =
+        "https://moda-modesta.s3.us-east-2.amazonaws.com/23058b8b-7991-4030-8511-9e137592c1f0.jpg"; // Reemplaza con la URL de tu imagen predeterminada
+      imagePaths.push(defaultImage); // Agrega la imagen predeterminada si solo hay una imagen
+    }
+
+    newProduct.imagePath = imagePaths;
     await newProduct.save(); // Guarda el producto con las rutas de imagen
 
     res.json({ message: "Producto guardado" });
