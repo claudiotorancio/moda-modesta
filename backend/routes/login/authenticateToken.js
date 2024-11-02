@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 // Middleware de autenticación
 const authenticateToken = (req, res, next) => {
   // Lista de rutas públicas que no requieren autenticación
-
   const publicRoutes = ["/api/listaProductos"]; // Agrega más rutas públicas si es necesario
 
   // Verificar si la ruta es pública
@@ -11,11 +10,11 @@ const authenticateToken = (req, res, next) => {
     return next(); // Permitir acceso a rutas públicas
   }
 
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
   // Solo aplicar lógica de token en desarrollo
   if (process.env.NODE_ENV === "development") {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-
     if (!token) {
       return res.status(401).json({ error: "Token no proporcionado" });
     }
@@ -37,13 +36,31 @@ const authenticateToken = (req, res, next) => {
       next();
     });
   } else {
-    // En producción, usar sesión de Passport
-    if (!req.isAuthenticated() || req.user.role !== "admin") {
+    // En producción, verificar autenticación
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: "Usuario no autenticado" });
+    }
+
+    // Permitir acceso solo a administradores y usuarios normales
+    const isAdmin = req.user.role === "admin";
+    const isUser = req.user.role === "user"; // Asumiendo que tienes un rol "user"
+
+    if (!isAdmin && !isUser) {
+      return res.status(403).json({
+        error: "Acceso denegado: Solo usuarios autenticados pueden acceder",
+      });
+    }
+
+    // Si el usuario es un administrador, puede continuar
+    if (isAdmin) {
+      next(); // Administrador tiene acceso
+    } else if (isUser) {
+      next(); // Usuario normal tiene acceso
+    } else {
       return res.status(403).json({
         error: "Acceso denegado: Solo usuarios administradores pueden acceder",
       });
     }
-    next();
   }
 };
 
