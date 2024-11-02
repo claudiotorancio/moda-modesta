@@ -37,7 +37,7 @@ export class SalesServices {
 
       // Hacer la solicitud fetch con el token en los encabezados
       const response = await fetch(url, {
-        method: "GET", // Asumimos que es un GET, cambia según sea necesario
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Añadir el token aquí
@@ -56,7 +56,6 @@ export class SalesServices {
     }
   }
 
-  // Obtener productos más vendidos (con opción de filtro por categoría)
   // Obtener productos más vendidos (con opción de filtro por categoría)
   async fetchTopSellingProducts(category = null) {
     const url = category
@@ -87,7 +86,6 @@ export class SalesServices {
     }
   }
 
-  //consultar estado de ordenes
   // Consultar estado de órdenes pendientes
   async fetchPendingOrders() {
     try {
@@ -119,7 +117,6 @@ export class SalesServices {
   }
 
   // Obtener análisis de clientes (frecuencia, valor promedio de compra, etc.)
-  // Obtener análisis de clientes (frecuencia, valor promedio de compra, etc.)
   async fetchCustomerAnalytics() {
     try {
       // Obtener el token desde el sessionStorage
@@ -135,7 +132,6 @@ export class SalesServices {
       });
 
       if (!response.ok) {
-        // Si la respuesta no es 200, puedes devolver un array vacío o un objeto predeterminado
         if (response.status === 404) {
           console.warn("No se encontraron datos de análisis de clientes.");
           return []; // Devuelve un array vacío
