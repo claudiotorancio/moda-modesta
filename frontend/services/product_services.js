@@ -54,7 +54,7 @@ class ProductService {
     try {
       const response = await fetch(`${this.baseURL}/api/createProduct`, {
         method: "POST",
-        body: product, // Asegúrate de convertir el producto a JSON
+        body: product, // formData
         headers: {
           Authorization: `Bearer ${token}`, // Agrega el token aquí
         },
@@ -158,7 +158,7 @@ class ProductService {
     try {
       const response = await fetch(`${this.baseURL}/api/updateProduct`, {
         method: "PUT",
-        body: product, // Asegúrate de convertir el producto a JSON
+        body: product, // formData
         headers: {
           Authorization: `Bearer ${token}`, // Agrega el token aquí
         },

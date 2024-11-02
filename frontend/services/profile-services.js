@@ -10,10 +10,10 @@ export class ProfileServices {
     try {
       const token = sessionStorage.getItem("authToken"); // Obtener el token desde sessionStorage
       const respuesta = await fetch(`${this.baseURL}/api/infoPersonal`, {
-        method: "GET", // Método de la solicitud
+        method: "GET",
         headers: {
-          "Content-Type": "application/json", // Tipo de contenido
-          Authorization: `Bearer ${token}`, // Añadir el token aquí
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -34,10 +34,10 @@ export class ProfileServices {
     try {
       const token = sessionStorage.getItem("authToken"); // Obtener el token desde sessionStorage
       const respuesta = await fetch(`${this.baseURL}/api/pedidosRecientes`, {
-        method: "GET", // Método de la solicitud
+        method: "GET",
         headers: {
-          "Content-Type": "application/json", // Tipo de contenido
-          Authorization: `Bearer ${token}`, // Añadir el token aquí
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
