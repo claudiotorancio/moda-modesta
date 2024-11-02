@@ -61,7 +61,7 @@ function configurarInterfazUsuario(user, isAdmin) {
       mostrarElementos(".admin-only", "block");
       initializeCategoryControlsAdmin();
     } else {
-      mostrarElementos(".admin-only", "none");
+      mostrarElementos(".admin-only", "block");
       initializeCategoryControls();
     }
     actualizarUsuario.textContent = `${user}`;
