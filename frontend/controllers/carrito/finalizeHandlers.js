@@ -63,31 +63,35 @@ export async function handleFinalizePurchase() {
 
   try {
     const listaServicesInstance = new ListaServices();
-    const userData = await listaServicesInstance.getDataUser();
+    const data = await listaServicesInstance.getDataUser();
 
-    if (userData && userData.user) {
-      // Si el usuario está logueado, llenamos los campos y los deshabilitamos
-      document.getElementById("name").value = userData.user.nombre || "";
-      document.getElementById("name").disabled = true; // Deshabilitar el campo
+    // Asegurarse de que la respuesta sea válida y contenga los datos del usuario
+    if (data.ok && data.user) {
+      const userData = data.userData;
 
-      document.getElementById("email").value = userData.user.email || "";
-      document.getElementById("email").disabled = true; // Deshabilitar el campo
+      // Si el usuario está autenticado, llena los campos y los deshabilita
+      document.getElementById("name").value = userData.nombre || "";
+      document.getElementById("name").disabled = true;
+
+      document.getElementById("email").value = userData.email || "";
+      document.getElementById("email").disabled = true;
     } else {
-      // Si no está logueado, dejamos los campos habilitados
+      // Si no está autenticado, asegura que los campos queden habilitados
       document.getElementById("name").value = "";
-      document.getElementById("name").disabled = false; // Asegurarse de que no esté deshabilitado
+      document.getElementById("name").disabled = false;
 
       document.getElementById("email").value = "";
-      document.getElementById("email").disabled = false; // Asegurarse de que no esté deshabilitado
+      document.getElementById("email").disabled = false;
     }
   } catch (error) {
     console.log("Error obteniendo los datos del usuario:", error);
-    // Si ocurre un error o no está logueado, los campos siguen habilitados para edición
+
+    // Habilita los campos en caso de error
     document.getElementById("name").value = "";
-    document.getElementById("name").disabled = false; // Asegurarse de que no esté deshabilitado
+    document.getElementById("name").disabled = false;
 
     document.getElementById("email").value = "";
-    document.getElementById("email").disabled = false; // Asegurarse de que no esté deshabilitado
+    document.getElementById("email").disabled = false;
   }
 
   // Validar inputs al perder el foco
@@ -163,6 +167,7 @@ export async function handleFinalizePurchase() {
     .addEventListener("click", (event) => {
       console.log("Evento Click Disparado", event.target.dataset.step); // Verifica que el evento se esté disparando
       if (event.target.dataset.step === "1") {
+        this.costoEnvio = 0;
         this.mostrarCarrito();
       }
     });
