@@ -1,6 +1,5 @@
 import { baseURL } from "../../backend/baseUrl.js";
 import { modalControllers } from "../modal/modal.js";
-import { jwtDecode } from "jwt-decode";
 
 export class ListaServices {
   constructor() {
@@ -33,34 +32,29 @@ export class ListaServices {
   getDataUser = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
-
-      // Llamada a la API para validar o actualizar el token si es necesario
       const respuesta = await fetch(`${this.baseURL}/api/getDataUser`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Incluir el token en el encabezado
           "Content-Type": "application/json",
         },
       });
       const data = await respuesta.json();
 
-      if (!data.ok) {
-        console.error("Error de autenticación:", data.message);
-        return { ok: false, message: data.message };
+      if (data.ok) {
+        // Aquí podrías redirigir al usuario o actualizar el estado de la aplicación
+      } else {
+        console.error("Error de inicio de sesión:", data.message);
       }
-      const tokenUser = data.token;
-      // Decodificar el token para extraer datos del usuario
-      const decodedToken = jwtDecode(tokenUser);
-      const userData = {
-        nombre: decodedToken.nombre || "", // Asegúrate de que los campos coincidan con los del token
-        email: decodedToken.email || "",
-        role: data.role || decodedToken.role || "user", // Obtener el rol desde el token o la respuesta
-      };
 
-      return { ok: true, user: userData.role, userData };
+      // Devolver un objeto con la propiedad 'ok' y el 'role'
+      return {
+        ok: data.ok,
+        role: data.role || "user", // Si no tiene role, asumir que es 'user'
+      };
     } catch (error) {
-      console.error("Error al obtener datos del usuario:", error);
-      return { ok: false, message: "Error en la solicitud" };
+      console.error("Error al obtener usuario:", error);
+      throw error;
     }
   };
 
