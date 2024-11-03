@@ -85,7 +85,6 @@ async function initializeUserControls(user, isAdmin) {
     await controllers.renderProducts();
     cargarReseñasAdmin();
   } else if (user && isAdmin?.role === "user") {
-    console.log(isAdmin);
     showUserControls();
     actualizarUsuario.textContent = user;
     logoutUsuario.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';

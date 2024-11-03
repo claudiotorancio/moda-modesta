@@ -52,7 +52,7 @@ export async function agregarProducto(product, size) {
 
     if (productoExistente) {
       // Incrementa la cantidad deseada (aquí usando 1 como incremento predeterminado)
-      const nuevaCantidad = productoExistente.cantidad + 1;
+      const nuevaCantidad = productoExistente.cantidad + product.cantidad;
 
       // Llama a actualizarCantidad para validar y aplicar la lógica de stock
       await actualizarCantidad.call(
@@ -66,7 +66,7 @@ export async function agregarProducto(product, size) {
         const productoNuevo = {
           name: product.name,
           price: parseFloat(product.price),
-          cantidad: 1,
+          cantidad: product.cantidad,
           size: size,
           imagePath: product.imagePath[0],
           productId: sanitizedProductId,
@@ -122,7 +122,7 @@ export async function actualizarCantidad(id, cantidad, product) {
     if (nuevaCantidad > product.stock) {
       const messageElement = document.getElementById("message");
       if (messageElement) {
-        messageElement.textContent = `Solo hay ${producto.stock} unidades disponibles para el producto seleccionado.`;
+        messageElement.textContent = `Solo hay ${product.stock} unidades disponibles para el producto seleccionado.`;
         document.getElementById("messageContainer").style.display = "block";
       }
 
