@@ -34,15 +34,6 @@ export class ListaServices {
     try {
       const token = sessionStorage.getItem("authToken");
 
-      // Verifica si el token existe antes de hacer la petición
-      if (!token) {
-        console.error("No se encontró un token en sessionStorage.");
-        return {
-          ok: false,
-          message: "No se encontró un token de autenticación.",
-        };
-      }
-
       const respuesta = await fetch(`${this.baseURL}/api/getDataUser`, {
         method: "GET",
         headers: {
