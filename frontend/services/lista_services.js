@@ -33,28 +33,44 @@ export class ListaServices {
   getDataUser = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
+
+      // Verifica si el token existe antes de hacer la petición
+      if (!token) {
+        console.error("No se encontró un token en sessionStorage.");
+        return {
+          ok: false,
+          message: "No se encontró un token de autenticación.",
+        };
+      }
+
       const respuesta = await fetch(`${this.baseURL}/api/getDataUser`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`, // Incluir el token en el encabezado
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
+
       const data = await respuesta.json();
 
-      if (data.ok) {
-        // Aquí podrías redirigir al usuario o actualizar el estado de la aplicación
-      } else {
+      if (!data.ok) {
         console.error("Error de inicio de sesión:", data.message);
+        return { ok: false, message: data.message };
       }
 
       const tokenData = data.token;
+
+      // Verificar que tokenData sea una cadena válida
+      if (typeof tokenData !== "string" || !tokenData.trim()) {
+        console.error("Token inválido recibido del servidor.");
+        return { ok: false, message: "Token inválido." };
+      }
+
       const user = jwtDecode(tokenData);
 
-      // Devolver un objeto con la propiedad 'ok' y el 'role'
       return {
         ok: data.ok,
-        role: data.role, // Si no tiene role, asumir que es 'user'
+        role: data.role || "user",
         user,
       };
     } catch (error) {
@@ -177,18 +193,4 @@ export class ListaServices {
       console.error(error);
     }
   };
-
-  // Extraer cantidad de productos de Products
-  // totalProductos = async (id) => {
-  //   try {
-  //     const respuesta = await fetch(
-  //       `${this.baseURL}/api/contadorProductos/${id}`
-  //     );
-  //     console.log(respuesta);
-  //     return respuesta.json();
-  //   } catch (error) {
-  //     console.error("Error al obtener el total de productos:", error);
-  //     throw error;
-  //   }
-  // };
 }
