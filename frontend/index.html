@@ -43,15 +43,40 @@
     </nav>
 
     <script>
-      const container = document.querySelector("#menu-mobile");
+const container = document.querySelector("#menu-mobile");
 const menu = document.querySelector(".main-menu");
 const checkBox = document.querySelector("#check");
 
+// Función para abrir y cerrar el menú
+function toggleMenu(open) {
+  if (open) {
+    menu.classList.add("open"); // Muestra el menú
+  } else {
+    menu.classList.remove("open"); // Oculta el menú
+  }
+}
+
+// Evento para cerrar el menú al hacer clic fuera de él
 document.addEventListener("click", (e) => {
   if (!container.contains(e.target) && checkBox.checked) {
-    checkBox.checked = false; // Desmarca el checkbox para cerrar el menú
+    checkBox.checked = false;
+    toggleMenu(false);
   }
 });
+
+// Evento para cerrar el menú al hacer scroll
+window.addEventListener("scroll", () => {
+  if (checkBox.checked) {
+    checkBox.checked = false;
+    toggleMenu(false);
+  }
+});
+
+// Detecta cambios en el estado del checkbox
+checkBox.addEventListener("change", (e) => {
+  toggleMenu(e.target.checked);
+});
+
     </script>
     
     </div>

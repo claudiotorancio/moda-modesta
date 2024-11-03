@@ -48,7 +48,7 @@ export class ProductInit {
           .filter((item) => item.stock > 0)
           .map(
             (item) =>
-              `<option value="${item.size}">${item.size} -  <span class="badge bg-secondary">( Stock disponible: ${item.stock} )</span></option>`
+              `<option value="${item.size}">${item.size} - ( Stock disponible: ${item.stock} )</option>`
           )
           .join("")}
       </select>
@@ -121,8 +121,6 @@ export class ProductInit {
     const content = this.getTallesSelectHTML();
 
     this.updateModalContent(content);
-
-    const messageElement = document.getElementById("message");
     const carritoButton = document.querySelector("[data-carrito]");
 
     carritoButton.addEventListener("click", () => {
@@ -135,8 +133,7 @@ export class ProductInit {
         this.sizes,
         talleSeleccionado,
         this.section,
-        this.generalStock,
-        messageElement
+        this.generalStock
       );
     });
   }
@@ -145,7 +142,6 @@ export class ProductInit {
     const content = this.getAmountSelectHTML();
 
     this.updateModalContent(content);
-    const messageElement = document.getElementById("message");
     const carritoButton = document.querySelector("[data-carrito]");
 
     // Agregar evento de clic al botón para agregar al carrito
@@ -161,8 +157,7 @@ export class ProductInit {
         this.sizes,
         cantidadSeleccionada,
         this.section,
-        this.generalStock,
-        messageElement
+        this.generalStock
       );
     });
   }

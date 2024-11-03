@@ -6,12 +6,6 @@ export function calcularSubtotal() {
   );
 }
 
-export function calcularParcial() {
-  return this.items.reduce(
-    (cantidad, producto) => cantidad * producto.price,
-    0
-  );
-}
 export function calcularTotal() {
   return this.calcularSubtotal() + this.costoEnvio;
 }

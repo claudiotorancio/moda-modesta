@@ -94,6 +94,8 @@ export async function handleEnvioFormSubmission(event) {
 }
 
 export function handleCoordinarVendedorChange(event) {
+  event.preventDefault();
+  // disabled a todos los inputs
   const isChecked = event.target.checked;
   const shippingFields = [
     document.querySelector("#provinciaDestino"),
@@ -101,8 +103,6 @@ export function handleCoordinarVendedorChange(event) {
     document.getElementById("calcular-envio"),
     document.getElementById("shipping-total"),
   ];
-
-  this.isChecked = isChecked;
 
   shippingFields.forEach((field) => {
     field.disabled = isChecked;

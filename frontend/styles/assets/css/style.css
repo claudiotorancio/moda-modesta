@@ -628,6 +628,41 @@ ul li a {
     top: 3%;
     width: 10rem;
   }
+  /* Estilos para el icono del menú */
+  .toogle-menu {
+    display: flex;
+    font-size: large;
+  }
+
+  /* Oculta el menú por defecto */
+  ul.main-menu {
+    position: fixed;
+    background-color: #fff;
+    display: grid;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0rem;
+    z-index: 9;
+    line-height: 0;
+    margin-top: 4rem;
+    align-items: center;
+    height: 12vh;
+    top: 0;
+    font-size: 1.2rem;
+  }
+
+  /* Estilo para los elementos del menú */
+  li.menu-item {
+    margin: 0;
+  }
+
+  /* Estado activado del menú */
+  #check:checked ~ ul.main-menu {
+    max-height: 500px; /* Ajusta según el contenido del menú */
+    display: grid;
+  }
 
   .logo-header img {
     overflow: hidden;

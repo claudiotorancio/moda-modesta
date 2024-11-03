@@ -10,8 +10,7 @@ export async function comprarProducto(
   sizes,
   talleSeleccionado, // Cantidad cuando es de 'opcion3'
   section,
-  generalStock,
-  messageElement
+  generalStock
 ) {
   try {
     let stockSeleccionado;
@@ -61,7 +60,6 @@ export async function comprarProducto(
     await carrito.agregarProducto({
       product: producto,
       size: section === "opcion3" ? "Un." : talleSeleccionado, // Si es opcion3, no hay talles
-      messageElement: messageElement,
     });
   } catch (error) {
     console.error("Error al comprar producto:", error);

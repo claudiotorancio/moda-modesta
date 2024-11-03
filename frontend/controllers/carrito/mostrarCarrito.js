@@ -114,7 +114,7 @@ export function mostrarCarrito() {
                 <tr>
                   <td class="table-price">TOTAL</td>
                   <td class="text-right table-price">
-                    <span id="final-total">$ ${total.toFixed(2)}</span>
+                    <span id="final-total">$${total.toFixed(2)}</span>
                   </td>
                 </tr>
               </tfoot>

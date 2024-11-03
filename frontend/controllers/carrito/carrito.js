@@ -1,3 +1,5 @@
+//Carrito.js
+
 import { modalControllers } from "../../modal/modal.js";
 import { mostrarCarrito } from "./mostrarCarrito.js";
 import {
@@ -21,6 +23,7 @@ class Carrito {
     try {
       // Carga los productos del carrito desde la API
       this.items = await this.carritoServices.getProductsCart();
+      this.costoEnvio = 0;
       this.mostrarCarrito(); // Muestra el carrito una vez cargado
     } catch (error) {
       console.error("Error al cargar el carrito:", error);
@@ -45,9 +48,9 @@ class Carrito {
     }
   }
 
-  async agregarProducto({ product, size, messageElement }) {
+  async agregarProducto({ product, size }) {
     try {
-      await agregarProducto.call(this, product, size, messageElement);
+      await agregarProducto.call(this, product, size);
       await this.cargarCarrito(); // Recargar carrito después de agregar producto
     } catch (error) {
       console.error("Error al agregar producto:", error);

@@ -77,7 +77,7 @@ export const mostrarProducto = async (
           .filter((item) => item.stock > 0)
           .map(
             (item) =>
-              `<option value="${item.size}">${item.size} -  <span class="badge bg-secondary">( Stock: ${item.stock} )</span></option>`
+              `<option value="${item.size}">${item.size} - ( Stock: ${item.stock} )</option>`
           )
           .join("")}
       </select>`
@@ -154,9 +154,6 @@ export const mostrarProducto = async (
     </div>
   `;
 
-  // Obtener el elemento del mensaje
-  const messageElement = modal.querySelector("#message");
-
   // Manejar eventos para los botones
   eventListenerBotones(
     id,
@@ -165,7 +162,6 @@ export const mostrarProducto = async (
     imagePath,
     sizes,
     section,
-    generalStock,
-    messageElement
+    generalStock
   );
 };

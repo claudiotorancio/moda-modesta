@@ -94,6 +94,7 @@ async function initializeUserControls(user, isAdmin) {
   } else {
     controllers.renderInit();
     userActive.innerHTML = '<i class="fa-solid fa-user"></i>';
+    cargarReseñas();
   }
 }
 

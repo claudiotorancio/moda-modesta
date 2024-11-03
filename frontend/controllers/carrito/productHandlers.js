@@ -38,66 +38,35 @@ function actualizarNotificacionCarrito() {
   carritoMonto.textContent = total > 0 ? `$${total.toFixed(2)}` : "$0.00";
 }
 
-export async function agregarProducto(product, size, messageElement) {
+export async function agregarProducto(product, size) {
   try {
-    // Sanitizar datos de entrada
     const sanitizedProductId = validator.escape(product._id);
     const sanitizedSize = validator.escape(size);
 
-    // Cargar el carrito desde la base de datos antes de agregar el producto
     await cargarCarritoDesdeStorage.call(this);
 
-    // Obtener el producto existente en el carrito
     const productoExistente = this.items.find(
       (item) =>
         item.productId === sanitizedProductId && item.size === sanitizedSize
     );
 
-    // Verificar si el producto ya no tiene stock
-    if (product.stock <= 0) {
-      console.error("Producto sin stock.");
-      return alert("Este producto ya no tiene stock disponible.");
-    }
-
-    // Verificar si la cantidad en el carrito más la nueva supera el stock disponible
     if (productoExistente) {
-      let nuevaCantidad;
+      // Incrementa la cantidad deseada (aquí usando 1 como incremento predeterminado)
+      const nuevaCantidad = productoExistente.cantidad + 1;
 
-      // Si el producto es de opcion3, usa la cantidad del producto directamente
-      if (product.section === "opcion3") {
-        nuevaCantidad = productoExistente.cantidad + product.cantidad; // Agrega la cantidad seleccionada
-      } else {
-        nuevaCantidad = productoExistente.cantidad + 1; // Incrementa la cantidad normal para otros productos
-      }
-
-      if (nuevaCantidad > product.stock) {
-        console.warn(
-          "Cantidad excede stock disponible:",
-          nuevaCantidad,
-          ">",
-          product.stock
-        );
-        if (messageElement) {
-          messageElement.textContent = `Solo hay ${product.stock} unidades disponibles para el producto seleccionado.`;
-          document.getElementById("messageContainer").style.display = "block"; // Mostrar el contenedor del mensaje
-        }
-        // Esperar antes de continuar
-        await new Promise((resolve) => setTimeout(resolve, 3000)); // Espera de 3 segundos
-        return; // Salir de la función para no continuar con la lógica
-      }
-
-      productoExistente.cantidad = nuevaCantidad;
-      await carritoServices.putProductCart({
-        cantidad: productoExistente.cantidad,
-        productId: productoExistente._id,
-      });
+      // Llama a actualizarCantidad para validar y aplicar la lógica de stock
+      await actualizarCantidad.call(
+        this,
+        productoExistente.productId,
+        nuevaCantidad,
+        product
+      );
     } else {
-      // Si es un nuevo producto, verificar que haya stock para agregar
       if (product.stock >= 1) {
         const productoNuevo = {
           name: product.name,
           price: parseFloat(product.price),
-          cantidad: product.section === "opcion3" ? product.cantidad : 1, // Asigna la cantidad del producto si es opcion3, de lo contrario 1
+          cantidad: 1,
           size: size,
           imagePath: product.imagePath[0],
           productId: sanitizedProductId,
@@ -111,7 +80,6 @@ export async function agregarProducto(product, size, messageElement) {
       }
     }
 
-    // Mostrar carrito actualizado y notificaciones
     this.mostrarCarrito();
     actualizarNotificacionCarrito.call(this);
   } catch (error) {
@@ -135,18 +103,41 @@ export async function eliminarProducto(id) {
   }
 }
 
-export async function actualizarCantidad(id, cantidad) {
+export async function actualizarCantidad(id, cantidad, product) {
   try {
-    if (!this.items) {
-      await cargarCarritoDesdeStorage.call(this);
+    // Cargar el carrito desde la base de datos
+    await cargarCarritoDesdeStorage.call(this);
+
+    // Encontrar el producto en el carrito
+    const producto = this.items.find((item) => item.productId === id);
+    if (!producto) {
+      console.error("Producto no encontrado en el carrito.");
+      return;
     }
 
-    await carritoServices.putProductCart({ cantidad }, id);
-    const productoExistente = this.items.find((item) => item._id === id);
-    if (productoExistente) {
-      productoExistente.cantidad = cantidad;
+    // Validar la cantidad ingresada
+    const nuevaCantidad = Math.max(0, parseInt(cantidad, 10)); // Asegura que la cantidad sea un número positivo
+
+    // Verificar stock disponible
+    if (nuevaCantidad > product.stock) {
+      const messageElement = document.getElementById("message");
+      if (messageElement) {
+        messageElement.textContent = `Solo hay ${producto.stock} unidades disponibles para el producto seleccionado.`;
+        document.getElementById("messageContainer").style.display = "block";
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 3000)); // Espera de 3 segundos
+      return;
     }
 
+    // Actualizar la cantidad en el carrito y en el almacenamiento
+    producto.cantidad = nuevaCantidad;
+    await carritoServices.putProductCart({
+      cantidad: nuevaCantidad,
+      productId: producto._id,
+    });
+
+    // Actualizar las notificaciones y mostrar el carrito actualizado
     this.mostrarCarrito();
     actualizarNotificacionCarrito.call(this);
   } catch (error) {
