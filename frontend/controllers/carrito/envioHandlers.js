@@ -104,6 +104,8 @@ export function handleCoordinarVendedorChange(event) {
     document.getElementById("shipping-total"),
   ];
 
+  this.isChecked = isChecked;
+
   shippingFields.forEach((field) => {
     field.disabled = isChecked;
   });
@@ -131,6 +133,7 @@ export function handleCoordinarVendedorChange(event) {
   );
 }
 
+//fcion para calcular envio en detalles de productViewer
 export async function handleEnvioFormProduct(event) {
   event.preventDefault();
 

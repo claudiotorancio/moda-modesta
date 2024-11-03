@@ -1,5 +1,6 @@
 import { modalControllers } from "../modal/modal.js";
 import { baseURL } from "../../backend/baseUrl.js";
+import Carrito from "../controllers/carrito/carrito.js";
 
 export class LoginServices {
   constructor() {
@@ -140,6 +141,9 @@ export class LoginServices {
 
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("authToken");
+      const carritoInstance = new Carrito();
+      carritoInstance.limpiarCarrito();
+
       // Muestra de éxito en pantalla
       modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {

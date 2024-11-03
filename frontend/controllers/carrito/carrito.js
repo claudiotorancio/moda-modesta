@@ -6,6 +6,7 @@ import {
   agregarProducto,
   eliminarProducto,
   actualizarCantidad,
+  actualizarNotificacionCarrito,
 } from "./productHandlers.js";
 import { calcularSubtotal, calcularTotal } from "./calculos.js";
 import { CarritoServices } from "../../services/carrito_services.js";
@@ -40,18 +41,13 @@ class Carrito {
         this.mostrarCarrito();
       });
     }
-    const closeModal = document.querySelector(".js-close-modal");
-    if (closeModal) {
-      closeModal.addEventListener("click", () => {
-        // Realiza cualquier limpieza adicional si es necesario
-      });
-    }
   }
 
   async agregarProducto({ product, size }) {
     try {
       await agregarProducto.call(this, product, size);
       await this.cargarCarrito(); // Recargar carrito después de agregar producto
+      await actualizarNotificacionCarrito;
     } catch (error) {
       console.error("Error al agregar producto:", error);
     }
@@ -81,6 +77,10 @@ class Carrito {
 
   calcularTotal() {
     return calcularTotal.call(this);
+  }
+
+  actualizarNotificacion() {
+    return actualizarNotificacionCarrito.call(this);
   }
 
   mostrarCarrito() {

@@ -9,8 +9,8 @@ const getDataUser = async (req, res) => {
 
     // Crear un payload con información del usuario
     const payload = {
-      id: req.user.id,
-      role: req.user.role,
+      nombre: req.user.nombre,
+      email: req.user.email,
     };
 
     // Generar un token (ajusta la clave secreta y el tiempo de expiración según sea necesario)

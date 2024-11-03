@@ -15,7 +15,7 @@ export async function cargarCarritoDesdeStorage() {
   }
 }
 
-function actualizarNotificacionCarrito() {
+export function actualizarNotificacionCarrito() {
   const items = this.items;
 
   const carritoContainer = document.querySelector(".carrito-link");

@@ -3,24 +3,9 @@ import { valida } from "./validaciones.js";
 import mailServices from "../../services/mail_services.js";
 import { ListaServices } from "../../services/lista_services.js";
 
-export async function handleFinalizePurchase() {
-  // Obtener o crear progresoCompra
-  const progresoCompra = document.querySelector("#progreso-compra");
-  if (!progresoCompra) {
-    console.error("El contenedor de la barra de progreso no se encontró.");
-    return;
-  }
-
-  // Marca el paso "Pago" como completado
-  const pasos = progresoCompra.querySelectorAll(".paso");
-  if (pasos.length < 3) {
-    console.error("No se encontraron los pasos en la barra de progreso.");
-    return;
-  }
-  pasos[2].classList.add("completado"); // Activa la casilla "Pago"
-
-  // Mostrar el formulario de datos personales pero mantener la barra de progreso
-  const formularioDatosPersonales = `
+// html datos personales
+function getFormDatosPersonalesHTML() {
+  return `
   <form id="personal-info-form" action="/api/sendmail" enctype="multipart/form-data" method="POST">
 <div class="main-container">
     <h4>Datos personales</h4>
@@ -53,6 +38,26 @@ export async function handleFinalizePurchase() {
 </div>
  </form>
 `;
+}
+
+export async function handleFinalizePurchase() {
+  // Obtener o crear progresoCompra
+  const progresoCompra = document.querySelector("#progreso-compra");
+  if (!progresoCompra) {
+    console.error("El contenedor de la barra de progreso no se encontró.");
+    return;
+  }
+
+  // Marca el paso "Pago" como completado
+  const pasos = progresoCompra.querySelectorAll(".paso");
+  if (pasos.length < 3) {
+    console.error("No se encontraron los pasos en la barra de progreso.");
+    return;
+  }
+  pasos[2].classList.add("completado"); // Activa la casilla "Pago"
+
+  // Mostrar el formulario de datos personales pero mantener la barra de progreso
+  const formularioDatosPersonales = getFormDatosPersonalesHTML();
 
   const summaryDetails = document.querySelector("[data-table]");
   summaryDetails.innerHTML = ""; // Limpiar contenido actual
@@ -98,38 +103,49 @@ export async function handleFinalizePurchase() {
     });
   });
 
-  // Agregar evento para validar todo el formulario antes de enviar
-  document
-    .getElementById("personal-info-form")
-    .addEventListener("submit", async (event) => {
-      event.preventDefault();
+  // Obtén el formulario y el botón de finalizar
+  const form = document.getElementById("personal-info-form");
+  const botonFinalizar = document.getElementById("finalize-order");
 
-      let formularioValido = true;
-      const inputs = document.querySelectorAll("input");
-      inputs.forEach((input) => {
-        valida(input);
-        if (!input.validity.valid) {
-          formularioValido = false;
-        }
-      });
+  // Desactiva el botón inicialmente
+  botonFinalizar.disabled = true;
 
-      if (!formularioValido) {
-        return;
+  // Función para verificar la validez de todos los campos del formulario
+  function verificarFormulario() {
+    let formularioValido = true;
+
+    // Verifica cada input dentro del formulario
+    const inputs = form.querySelectorAll("input");
+    inputs.forEach((input) => {
+      if (!input.validity.valid) {
+        formularioValido = false;
       }
+    });
 
+    // Habilita o deshabilita el botón en función de la validez
+    botonFinalizar.disabled = !formularioValido;
+  }
+
+  // Agrega un listener para verificar el formulario cuando se cambia cualquier campo
+  form.addEventListener("input", verificarFormulario);
+
+  // Evento de envío del formulario
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!botonFinalizar.disabled) {
       const nombre = document.querySelector("#name").value;
       const email = document.querySelector("#email").value;
       const telefono = document.querySelector("#phoneNumber").value;
 
       const productos = this.items.map((item) => {
-        // Verifica si el producto tiene talla
-        const size = item.size ? item.size : null; // O puedes usar null si prefieres
+        const size = item.size ? item.size : null;
         return {
           id: item.productId,
           name: item.name,
           price: item.price,
           cantidad: item.cantidad,
-          size: size, // Asigna el valor de la talla
+          size: size,
           hash: item.productId,
           category: item.category,
         };
@@ -144,8 +160,9 @@ export async function handleFinalizePurchase() {
         costoEnvio: this.costoEnvio,
         provincia: this.provinciaDestino,
         codigoPostal: this.cpDestino,
-        checked: this.isChecked,
+        checked: this.isChecked || false,
       };
+
       try {
         await mailServices.sendMail(datosCompra);
       } catch (error) {
@@ -155,7 +172,8 @@ export async function handleFinalizePurchase() {
         );
       }
       this.limpiarCarrito();
-    });
+    }
+  });
 
   // Evento para navegar a la etapa de "Entrega" al hacer clic en el paso de "Entrega"
   document
@@ -167,8 +185,4 @@ export async function handleFinalizePurchase() {
         this.mostrarCarrito();
       }
     });
-
-  document.querySelector(
-    ".carrito-monto"
-  ).textContent = `$${this.calcularTotal().toFixed(2)}`;
 }

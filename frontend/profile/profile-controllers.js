@@ -1,3 +1,4 @@
+import { ListaServices } from "../services/lista_services.js";
 import { ProfileServices } from "../services/profile-services.js";
 import { LoginControllers } from "../controllers/registro/login_controllers.js";
 import { modalControllers } from "../modal/modal.js";
@@ -14,8 +15,8 @@ function escapeHtml(unsafe) {
 export const profileControllers = {
   async InfoPersonal() {
     try {
-      const profileServicesInstance = new ProfileServices();
-      const user = await profileServicesInstance.getUser();
+      const listaServicesInstance = new ListaServices();
+      const userData = await listaServicesInstance.getDataUser();
 
       const divInfoPersonal = document.getElementById("info-personal");
       divInfoPersonal.innerHTML = "";
@@ -30,7 +31,7 @@ export const profileControllers = {
               type="text"
               class="form-control"
               id="username"
-              value="${escapeHtml(user.nombre)}"
+              value="${escapeHtml(userData.user.nombre)}"
               disabled
             />
           </div>
@@ -40,7 +41,7 @@ export const profileControllers = {
               type="email"
               class="form-control"
               id="email"
-              value="${escapeHtml(user.email)}"
+              value="${escapeHtml(userData.user.email)}"
               disabled
             />
           </div>

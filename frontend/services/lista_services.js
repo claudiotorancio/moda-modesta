@@ -1,5 +1,6 @@
 import { baseURL } from "../../backend/baseUrl.js";
 import { modalControllers } from "../modal/modal.js";
+import { jwtDecode } from "jwt-decode";
 
 export class ListaServices {
   constructor() {
@@ -47,10 +48,14 @@ export class ListaServices {
         console.error("Error de inicio de sesión:", data.message);
       }
 
+      const tokenData = data.token;
+      const user = jwtDecode(tokenData);
+
       // Devolver un objeto con la propiedad 'ok' y el 'role'
       return {
         ok: data.ok,
-        role: data.role || "user", // Si no tiene role, asumir que es 'user'
+        role: data.role, // Si no tiene role, asumir que es 'user'
+        user,
       };
     } catch (error) {
       console.error("Error al obtener usuario:", error);

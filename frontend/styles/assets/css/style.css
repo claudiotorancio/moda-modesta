@@ -18,41 +18,16 @@ header.main-header {
   height: 6rem;
 }
 
-.wrap-logo-header {
+.wrap-logo-header,
+.nav-header {
   display: flex;
   align-items: center;
   flex-basis: 15%;
 }
 
-.logo-header {
-  overflow: hidden;
-  object-fit: cover;
-  font-weight: bold;
-  font: 1.5rem;
-  color: var(--contrast-dark-color);
-}
-
-.logo-header span {
-  display: none;
-}
-
 .logo-header img {
   border-radius: 50%;
-}
-
-.cabecera_logo {
-  max-width: 5rem;
-}
-
-.nav-header {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.nav-wrap-header {
-  display: flex;
-  flex-basis: 50%;
+  max-width: 3rem;
 }
 
 ul.main-menu {
@@ -63,22 +38,6 @@ ul.main-menu {
   padding: 0;
   justify-content: space-between;
   font-size: 1.1rem;
-}
-
-ul.main-menu-login {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  z-index: 99;
-  margin: 0;
-  padding: 0;
-  justify-content: space-between;
-  font-size: 1.1rem;
-}
-
-li.menu-item {
-  margin: 0.75rem;
-  display: flex;
 }
 
 li.menu-item a {
@@ -97,17 +56,8 @@ i.toogle-menu {
   z-index: 9999;
 }
 
-i.toogle-menu img {
-  width: 27px;
-  z-index: 99;
-}
-
 input#check {
   display: none;
-}
-
-#login {
-  font-size: 1rem;
 }
 
 .busqueda {
@@ -122,10 +72,6 @@ input#check {
   border-radius: 1.25rem;
   border: none;
   background-color: var(--background-blanco);
-}
-
-.busqueda_campo:focus {
-  outline: none;
 }
 
 .carrito-link {
@@ -159,14 +105,6 @@ input#check {
   margin-top: 5px;
 }
 
-p.help a {
-  text-decoration: underline;
-}
-.div-usuario a {
-  list-style-type: none;
-  text-decoration: none;
-  color: var(--fondo-usuario);
-}
 .banner {
   display: flex;
   flex-direction: column;
@@ -222,10 +160,6 @@ p.help a {
   background-color: var(--background-blanco);
 }
 
-.button-busqueda-login {
-  display: none;
-}
-
 .footer {
   width: 100%;
   text-align: center;
@@ -252,13 +186,9 @@ p.help a {
 }
 
 .card-lista {
-  max-height: 50rem; /* Altura máxima del contenedor */
+  max-height: 50rem;
   overflow-x: hidden;
   margin: 1rem;
-}
-
-.js-toggle-cart {
-  text-decoration: none;
 }
 
 .form-check {
@@ -303,23 +233,6 @@ p.help a {
   flex-direction: column;
   align-items: center;
   text-decoration: none; /* Quitar subrayado */
-}
-
-.icono-compartir i {
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #6c757d;
-  transition: color 0.3s ease;
-}
-
-.icono-compartir p {
-  color: #6c757d;
-  margin-top: 0.2rem; /* Espacio entre el ícono y el texto */
-}
-
-.icono-compartir:hover i,
-.icono-compartir:hover p {
-  color: #007bff; /* Color al pasar el mouse */
 }
 
 /*paginas success y error*/
@@ -376,28 +289,6 @@ p.help a {
   display: block; /* Mostrar cuando sea necesario */
 }
 
-.btn-volver:hover {
-  background: #fff;
-  color: #000;
-  text-decoration: none;
-}
-
-.collapse {
-  display: none;
-}
-
-.collapse.show {
-  display: block;
-}
-
-.form-control {
-  border: 1px solid #9e9e9e;
-}
-
-.form-select {
-  border: 1px solid #9e9e9e;
-}
-
 /*Reseñas*/
 
 .reseñas-container {
@@ -408,6 +299,12 @@ p.help a {
 }
 
 .reseña {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.25rem;
   background-color: #f8f9fa;
   border-radius: 10px;
   padding: 15px;
@@ -427,11 +324,7 @@ p.help a {
   color: #666;
 }
 
-/* estilo de tabal carrito */
-
-div.table-subtotal td {
-  vertical-align: baseline;
-}
+/* estilo de tabla carrito */
 
 .table td {
   vertical-align: middle;
@@ -443,45 +336,8 @@ div.table-subtotal td {
   height: auto; /* Mantiene la proporción de la imagen */
 }
 
-.reseña {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1.25rem;
-}
-
 span#final-total {
   font-weight: 700;
-}
-
-/* tabla Users */
-
-div.card-lista div.col-md-12 th,
-div.card-lista div.col-md-12 td {
-  width: 100px; /* Ancho fijo para todas las celdas */
-  height: 50px; /* Altura fija para todas las celdas */
-  text-align: center; /* Centra el contenido horizontalmente */
-  vertical-align: middle; /* Centra el contenido verticalmente */
-  overflow: auto; /* Oculta cualquier desbordamiento */
-
-  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
-}
-
-div.card-lista div.col-md-12 table {
-  table-layout: fixed; /* Hace que todas las columnas tengan el mismo ancho */
-  width: 100%; /* Asegura que la tabla ocupe todo el ancho disponible */
-  border-collapse: collapse; /* Elimina el espacio entre bordes de celdas */
-}
-
-div.card-lista div.col-md-12 th,
-div.card-lista div.col-md-12 td {
-  border: 1px solid #ddd; /* Añade un borde a las celdas */
-}
-
-div.card-lista div.col-md-12 th {
-  background-color: #f2f2f2; /* Color de fondo para las cabeceras */
 }
 
 .hidden {
@@ -493,18 +349,6 @@ div.card-lista div.col-md-12 th {
   height: 300px; /* Ajusta la altura según tus necesidades */
   object-fit: cover;
 }
-
-/* ul {
-  line-height: 5rem;
-  list-style-type: none; 
-ul li {
-  margin-bottom: 10px; 
-}
-
-ul li a {
-  text-decoration: none; 
-  color: #333; 
-} */
 
 .botones-admin {
   display: flex;
@@ -532,61 +376,6 @@ ul li a {
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
-  #menu-mobile {
-    z-index: 1;
-    font-size: 1.8vw;
-  }
-
-  #menuBtn {
-    /* position: fixed; 
-      left: 0; */
-    position: absolute;
-    width: 100vw;
-    margin-left: 0rem;
-    padding: 1.5rem;
-    cursor: pointer;
-
-    border: none;
-  }
-
-  .busqueda {
-    margin-right: 10%;
-  }
-
-  .busqueda_campo {
-    display: none;
-  }
-
-  .texto h1 {
-    font-size: 2rem;
-  }
-
-  .texto p {
-    font-size: 1rem;
-  }
-
-  .button-busqueda {
-    display: none;
-  }
-
-  .cabecera_container {
-    height: 8vh;
-  }
-  .cabecera_logo {
-    width: 9.5rem;
-  }
-
-  .quienesSomos {
-    background-color: var(--fuente-quienesSomos);
-  }
-
-  .quienesSomos_container {
-    height: 50%;
-    align-items: center;
-  }
-  .quienesSomos_logo {
-    flex-direction: column;
-  }
 }
 
 @media (min-width: 320px) and (max-width: 768px) {
@@ -621,19 +410,10 @@ ul li a {
     flex-basis: 40%;
   }
 
-  .logo-header span {
-    position: fixed;
-    display: none;
-    left: 10%;
-    top: 3%;
-    width: 10rem;
-  }
-
   .logo-header img {
     overflow: hidden;
     position: fixed;
-    display: block;
-    left: 10%;
+    left: 13%;
     top: 1%;
   }
 
@@ -675,10 +455,6 @@ ul li a {
     font-size: 1.2rem;
   }
 
-  li.menu-item {
-    margin: 0;
-  }
-
   /* Estado activado del menú */
   #check:checked ~ ul.main-menu {
     max-height: 500px; /* Ajusta según el contenido del menú */
@@ -689,43 +465,12 @@ ul li a {
     margin-top: 4rem;
   }
 
-  .card-lista {
-    max-height: 50rem; /* Altura máxima del contenedor */
-    overflow-y: auto; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
-  }
-  .table-container {
-    max-height: 50rem; /* Altura máxima del contenedor */
-    overflow-y: auto; /* Hace que la barra de desplazamiento vertical aparezca cuando el contenido excede la altura máxima */
-  }
-
   .consolas {
     margin-left: 1rem;
     width: 7rem;
     height: 3rem;
     font-size: 14px;
     text-align: center;
-  }
-
-  .button-busqueda {
-    display: none;
-  }
-
-  .div-contenedor {
-    max-width: 30%;
-    margin-left: 3rem;
-    margin-top: 1.5rem;
-  }
-
-  .cabecera_logo {
-    max-width: 3rem;
-  }
-
-  .carousel-item img {
-    height: 450px; /* Ajusta la altura según tus necesidades */
-  }
-
-  .quienesSomos {
-    background-color: var(--fuente-quienesSomos);
   }
 
   .quienesSomos_container {
@@ -744,10 +489,6 @@ ul li a {
     margin-left: 1rem;
   }
 
-  p.help {
-    font-size: 1.2rem;
-  }
-
   .profile-notificacion {
     width: auto;
     font-size: 1rem;
@@ -757,18 +498,6 @@ ul li a {
     font-weight: bold;
   }
 
-  .div-usuario {
-    margin-right: 1rem;
-  }
-
-  .div-usuario a {
-    text-align: center;
-    width: auto;
-  }
-
-  .button-busqueda-login img {
-    display: none;
-  }
   */ .reseña {
     margin-bottom: 0;
   }
@@ -782,23 +511,9 @@ ul li a {
 
   /* estilo de tabal carrito */
 
-  div.table-subtotal tr {
-    margin-bottom: 2rem;
-  }
-
   .table td {
     font-size: 0.9rem;
     padding: 0.35rem;
-  }
-
-  td.summary-img-wrap {
-    vertical-align: middle;
-  }
-
-  .summary-img-wrap img {
-    justify-content: center;
-    max-width: 100px; /* Ajusta el tamaño máximo según sea necesario */
-    height: auto; /* Mantiene la proporción de la imagen */
   }
 
   /* tabla Users */
@@ -810,19 +525,11 @@ ul li a {
     height: 30px;
   }
 
-  div.table-subtotal td {
-    font-weight: 600;
+  div.card-lista div.col-md-12 table {
+    font-size: 14px; /* Tamaño de fuente más pequeño para pantallas móviles */
   }
+
   /* CSS para dispositivos móviles */
-
-  .d-flex {
-    align-items: center;
-  }
-
-  ul li a {
-    text-decoration: none;
-    color: var(--fondo-usuario);
-  }
 
   .botones-admin {
     align-items: center;

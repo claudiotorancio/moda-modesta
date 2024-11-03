@@ -89,7 +89,6 @@ import sendResetPassword from "../backend/routes/login/sendResetPassword.js";
 import updatePassword from "../backend/routes/login/updatePassword.js";
 import confirmResetpassword from "../backend/routes/login/confirmResetPassword.js";
 import { profileControllers } from "../backend/profile/profileControllers.js";
-import { isAuthenticated } from "../backend/isAuthenticated.js";
 import { validationResult } from "express-validator";
 import getSalesByPeriod from "../backend/sales/getSalesByPeriod.js";
 import getTopSellingProducts from "../backend/sales/getTopSellingProducts.js";
@@ -249,11 +248,6 @@ router.get(
 router.get("/api/orders-pending", authenticateToken, gefetchPendingOrders);
 router.get("/api/customer-analytics", authenticateToken, getCustomerAnalytics);
 //profile
-router.get(
-  "/api/infoPersonal",
-  authenticateToken,
-  profileControllers.InfoPersonal
-);
 router.get(
   "/api/pedidosRecientes",
   authenticateToken,
