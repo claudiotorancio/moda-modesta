@@ -34,11 +34,6 @@ export class ListaServices {
     try {
       const token = sessionStorage.getItem("authToken");
 
-      if (!token) {
-        console.error("No se encontró el token de autenticación.");
-        return { ok: false, message: "No autenticado" };
-      }
-
       // Llamada a la API para validar o actualizar el token si es necesario
       const respuesta = await fetch(`${this.baseURL}/api/getDataUser`, {
         method: "GET",
