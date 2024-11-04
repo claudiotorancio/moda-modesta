@@ -106,22 +106,59 @@ input#check {
 }
 
 .banner {
+  background-image: url(https://moda-modesta.s3.us-east-2.amazonaws.com/1723777096394.jpeg); /* Cambia esta URL por tu imagen */
+  background-size: cover;
+  background-position: center;
+  height: 400px; /* Ajusta la altura según tu preferencia */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  position: relative; /* Para posicionar elementos absolutos dentro */
+}
+
+.texto {
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Fondo semitransparente para el texto */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Sombra para dar profundidad */
+}
+
+#bannerTitle {
+  font-size: 3rem; /* Ajusta el tamaño del título */
+  font-weight: bold;
+}
+
+#bannerSubtitle {
+  font-size: 1.5rem; /* Ajusta el tamaño del subtítulo */
+  margin-bottom: 20px;
+}
+
+.consolas {
+  padding: 10px 20px; /* Ajusta el padding del botón */
+  font-size: 1.2rem; /* Aumenta el tamaño del texto del botón */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s, transform 0.3s; /* Transiciones suaves */
+}
+
+.consolas:hover {
+  background-color: #0056b3; /* Cambia el color de fondo al pasar el mouse */
+  transform: scale(1.05); /* Aumenta el tamaño del botón al pasar el mouse */
+}
+
+/* .banner {
   display: flex;
   flex-direction: column;
   background: url(https://moda-modesta.s3.us-east-2.amazonaws.com/1723777096394.jpeg)
     center / cover no-repeat;
   position: static;
   justify-content: center;
-}
-
-.texto h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--fuente-banner);
-  margin-top: 80px;
-  margin-left: 120px;
-  margin-bottom: 30px;
-  text-align: left;
 }
 
 .texto p {
@@ -133,13 +170,6 @@ input#check {
   text-align: left;
 }
 
-.admin-only {
-  display: none;
-}
-
-.user-only {
-  display: none;
-}
 .consolas {
   width: 6.8rem;
   height: 3rem;
@@ -151,6 +181,24 @@ input#check {
   margin-bottom: 1.5rem;
   text-align: left;
   border: none;
+} */
+
+.texto h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--fuente-banner);
+  margin-top: 80px;
+
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.admin-only {
+  display: none;
+}
+
+.user-only {
+  display: none;
 }
 
 .button-busqueda {

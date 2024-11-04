@@ -165,27 +165,39 @@ export class ProductInit {
   productoInicio() {
     const card = document.createElement("div");
     const contenido = `
-     <div class="container mx-auto mt-4">
-  <div class="img-card position-relative"> <!-- Añadir 'position-relative' -->
+    <div class="container mx-auto mt-4">
+  <div class="img-card position-relative">
     <img class="card-img-top" src="${
       this.imagePath[0]
     }" alt="imagen del producto">
-    <!-- Ícono de lupa -->
     <div class="overlay-icon">
       <i class="fas fa-search-plus"></i>
+    </div>
+    <div class="offer-badge">
+      <span>¡20% de Descuento!</span>
     </div>
   </div>
   <div class="card-body text-center">
     <h3 class="card-text text-muted mb-2">${this.name}</h3>
-    <p class="card-title text-center font-weight-bold">$${this.price}</p>
+    <p class="card-title text-center font-weight-bold">
+      <span class="text-decoration-line-through text-muted">$${this.price.toFixed(
+        2
+      )}</span> 
+      $${(this.price * 0.8).toFixed(2)} <!-- Precio con descuento -->
+    </p>
     <div class="d-flex justify-content-center">
-      <a href="#">Ver Detalles</a>
+      <a href="#" class="btn btn-primary">Ver Detalles</a>
     </div>
     <div>
       ${this.getMensajeStockHtml()}
     </div>
+    <ul class="list-unstyled mt-2">
+      <li><i class="fas fa-check-circle"></i> Material de alta calidad</li>
+      <li><i class="fas fa-check-circle"></i> Disponible en múltiples colores</li>
+    </ul>
   </div>
 </div>
+
 
     `;
 
