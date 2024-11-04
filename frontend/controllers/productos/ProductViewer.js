@@ -60,6 +60,7 @@ export const mostrarProducto = async (
         </button>
       </div>
     </div>
+
 <div class="col-md-6">
   <h2 class="product-title-bold mt-2" style="font-size: 1.3rem;">${name}</h2>
   <h3 class="product-price text-primary-bold mt-2" style="font-weight: bold; font-size: 1.25em;">$${price}</h3>
@@ -123,44 +124,43 @@ export const mostrarProducto = async (
       ${
         hayStock
           ? `
-     <div class="row mt-4 align-items-center">
+       <div class="row mt-4 align-items-center">
   <h5 class="col-12">Calcular envío</h5>
   
   <div class="col-md-8 mt-2">
     <div class="input-container">
-      <input type="number" class="input form-control" id="cpDestino" name="cpDestino" placeholder="" data-tipo="cpDestino" required>
+      <input type="number" class="input form-control" id="cpDestino" name="cpDestino" placeholder="" data-tipo="cpDestino">
       <label class="input-label" for="cpDestino">Código Postal</label>
       <span class="input-message-error">Este campo no es válido</span>
     </div>
   </div>
   
   <div class="col-md-4 mt-2">
-    <button class="btn btn-secondary w-100" id="calcular-envio">Calcular</button>
+    <button class="btn btn-secondary w-100" id="calcular-envio">
+      Calcular
+    </button>
   </div>
 
   <div class="col-12 mt-2">
     <div id="shipping-total"></div>
   </div>
 </div>
-
 `
           : ""
       }
 
-     <div class="row mt-4">
-  <div class="col-12">
-    <h4>Productos Similares</h4>
-    <button id="toggle-similares" class="btn btn-link">
-      <i class="fa-solid fa-chevron-down"></i>
-    </button>
-    <div id="similares-Container" class="collapse">
-      <div id="productos-similares" class="d-flex flex-wrap justify-content-center gap-2">
-        <!-- Aquí puedes insertar un bucle para cargar productos similares -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <h4>Productos Similares</h4>
+          <button id="toggle-similares" class="btn btn-link">
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div id="similares-Container" class="collapse">
+            <div id="productos-similares" class="d-flex flex-wrap justify-content-center gap-2"></div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
   `;
 
   // Manejar eventos para los botones

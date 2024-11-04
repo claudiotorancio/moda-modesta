@@ -107,28 +107,33 @@ const modalSuscribe = () => {
   const modal = document.getElementById("modal");
   const suscribe = modal.querySelector("[data-table]");
   suscribe.innerHTML = `
-   <div class="main-container">
-    <div class="text-center">
-      <div class="card-header">
-        <h4>¡Ofertas y Novedades!</h4>
-      </div>
-      <div class="card-form">
-        <p>¡Suscribite para no perderte las novedades y recibir descuentos exclusivos!</p>
-        <form id="subscribe-form" action="/api/suscribeMail" enctype="multipart/form-data" method="POST">
-          <div class="form-group mb-2">
-            <label class="mb-2" for="email">Email:</label>
-            <input type="email" id="email" class="input" required>
-          </div>
-          <div class="form-group mb-4">
-            <label class="mb-2" for="nombre">Nombre:</label>
-            <input type="text" id="nombre" class="input" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Suscribirme</button>
-        </form>
-        <em style="font-size: 10pt; font-family: Arial, sans-serif; font-style: italic; background-color: transparent; vertical-align: baseline;">Recibirás un correo para validar tu email.</em>
-      </div>
+   <div class="main-container text-center mb-4">
+  <h4>¡Ofertas y Novedades!</h4>
+  <p class="lead mb-4">¡Suscríbete para no perderte las novedades y recibir descuentos exclusivos!</p>
+  
+  <div class="business-details mb-3">
+    <p><strong>Acerca de Nosotros:</strong></p>
+    <p>En [Nombre del Negocio], nos dedicamos a ofrecerte los mejores productos de alta calidad. Nos apasiona brindarte una experiencia de compra excepcional y nos aseguramos de que estés siempre al tanto de nuestras últimas novedades y promociones.</p>
+    <p>¡No te pierdas la oportunidad de recibir ofertas exclusivas directamente en tu correo!</p>
+  </div>
+
+  <form id="subscribe-form" action="/api/suscribeMail" method="POST">
+    <div class="form-group mb-2">
+      <label for="email">Email:</label>
+      <input type="email" id="email" class="input" required placeholder="tuemail@ejemplo.com">
     </div>
+    <div class="form-group mb-4">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" class="input" required placeholder="Tu Nombre">
     </div>
+    <button type="submit" class="btn btn-primary">Suscribirme</button>
+  </form>
+  
+  <small class="form-text text-muted">
+    Recibirás un correo para validar tu email.
+  </small>
+</div>
+
   `;
 
   const subscribeForm = suscribe.querySelector("#subscribe-form");

@@ -42,22 +42,34 @@ export class ProductInit {
 
   getTallesSelectHTML() {
     return `
-      <label for="variation_1" class="form-label">Talles disponibles</label>
-      <select id="variation_1" class="input mb-2">
-        ${this.sizes
-          .filter((item) => item.stock > 0)
-          .map(
-            (item) =>
-              `<option value="${item.size}">${item.size} - ( Stock disponible: ${item.stock} )</option>`
-          )
-          .join("")}
-      </select>
-      <div class="text-center">
-        <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>
-      </div>
-      <div id="messageContainer" style="display: none;">
-        <p id="message" class="alert alert-warning mt-3 text-center"></p>
-      </div>
+<div class="form-group mb-4">
+  <label for="variation_1" class="form-label">Talles Disponibles</label>
+  <select id="variation_1" class="form-select" aria-label="Selecciona un talle" required>
+    <option value="" disabled selected>Selecciona un talle...</option>
+    ${this.sizes
+      .filter((item) => item.stock > 0)
+      .map(
+        (item) =>
+          `<option value="${item.size}">${item.size} - (Stock Disponible: ${item.stock})</option>`
+      )
+      .join("")}
+  </select>
+  <small class="form-text text-muted">Selecciona un talle antes de agregar el producto al carrito.</small>
+</div>
+
+<div class="text-center">
+  <button type="button" class="btn btn-primary btn-lg" data-carrito>
+    <i class="fas fa-shopping-cart"></i> Agregar al Carrito
+  </button>
+  <div class="spinner-border text-primary" id="loadingSpinner" style="display: none;" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+</div>
+
+<div id="messageContainer" style="display: none;" class="mt-3">
+  <p id="message" class="alert alert-warning text-center"></p>
+</div>
+
     `;
   }
 
@@ -69,15 +81,29 @@ export class ProductInit {
     ).join("");
 
     return `
-      <label for="quantity" class="form-label">Seleccione la cantidad</label>
-      <select id="quantity" class="input mb-2">
-        ${options}
-      </select>
-      <div class="text-center">
-        <button type="button" class="btn btn-primary btn-block" data-carrito>Agregar al carrito</button>
-      </div><div id="messageContainer" style="display: none;">
-  <p id="message" class="alert alert-warning mt-3 text-center"></p>
-</div>`;
+    <div class="form-group mb-4">
+  <label for="quantity" class="form-label">Seleccione la Cantidad</label>
+  <select id="quantity" class="form-select" aria-label="Cantidad de producto" required>
+    <option value="" disabled selected>Elige una cantidad...</option>
+    ${options}
+  </select>
+  <small class="form-text text-muted">Por favor, selecciona cuántos productos deseas agregar al carrito.</small>
+</div>
+
+<div class="text-center">
+  <button type="button" class="btn btn-primary btn-lg" data-carrito>
+    <i class="fas fa-shopping-cart"></i> Agregar al Carrito
+  </button>
+  <div class="spinner-border text-primary" id="loadingSpinner" style="display: none;" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+</div>
+
+<div id="messageContainer" style="display: none;" class="mt-3">
+  <p id="message" class="alert alert-warning text-center"></p>
+</div>
+
+`;
   }
 
   getZoomImageHtml() {
