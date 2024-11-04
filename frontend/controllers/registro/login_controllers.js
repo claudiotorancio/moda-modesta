@@ -18,7 +18,7 @@ export class LoginControllers {
       "password",
       "",
       "Sign In",
-      "Don't have an account?",
+      "No tienes una cuenta?",
       this.signinSubmitHandler
     );
 
@@ -53,13 +53,13 @@ export class LoginControllers {
     // Si namePlaceholder está presente, renderiza el input de nombre
     const nombreInput = namePlaceholder
       ? `<div class="form-group mt-3">
-        <input type="text" id="nombre" name="nombre" placeholder="${namePlaceholder}" class="form-control" required>
+        <input type="text" id="nombre" name="nombre" placeholder="${namePlaceholder}" class="input" required>
      </div>`
       : ""; // Si no, deja el campo vacío
 
     // Si submitHandler está presente, renderiza el boton
     const btnSignup = submitHandler
-      ? `  <p class="help">${helpText} <a href="" data-btn>Sign Up</a></p>`
+      ? `  <p class="help">${helpText} <a href="" data-btn>Sign Up <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>`
       : ""; // Si no, deja el campo vacío
 
     loginInicio.innerHTML = `
@@ -71,17 +71,20 @@ export class LoginControllers {
                     <form action="${action}" method="post" data-signin>
                      ${nombreInput} <!-- Input de nombre solo si es SignUp -->
                         <div class="form-group mt-3">
-                            <input type="email" id="email" name="email" placeholder="${emailPlaceholder}" class="form-control" required >
+                            <input type="email" id="email" name="email" placeholder="${emailPlaceholder}" class="input" required >
                         </div>
                         <div class="form-group mt-3">
-                            <input type="password" id="password" name="password" placeholder="${passwordPlaceholder}" class="form-control" required  minlength="8"
+                            <input type="password" id="password" name="password" placeholder="${passwordPlaceholder}" class="input" required  minlength="8"
     pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"  title="${titleHolder}"
    autocomplete="current-password">
                         </div>
                         <div class="form-group mt-3">
                             <button class="btn btn-primary btn-block" >${buttonLabel}</button>
                             ${btnSignup} <!-- Input de nombre solo si es SignUp -->
-                            <p class="help mt-2"><a href="#" data-reset-password>Forgot your password? Reset password</a></p>
+                         <p class="help mt-2">
+    <a href="#" data-reset-password>Olvidaste tu contraseña <span class="underline">Restablecer contraseña <i class="fa-solid fa-arrow-up-right-from-square"></i></span></a>
+</p>
+
                         </div>
                     </form>
                 </div>
@@ -115,15 +118,15 @@ export class LoginControllers {
     resetModal.innerHTML = `
       <div class="text-center">
         <div class="card-header">
-          <h3>Reset Password</h3>
+          <h3>Restablecer contraseña</h3>
         </div>
         <div class="card-form">
           <form action="/api/send-reset-password" method="post" data-reset-password-form>
             <div class="form-group mt-3">
-              <input type="email" id="email" name="email" placeholder="Enter your email" class="form-control" required>
+              <input type="email" id="email" name="email" placeholder="Ingrese su email" class="input" required>
             </div>
             <div class="form-group mt-3">
-              <button class="btn btn-primary btn-block">Send Reset Link</button>
+              <button class="btn btn-primary btn-block">Enviar enlace</button>
             </div>
           </form>
         </div>

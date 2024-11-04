@@ -90,21 +90,18 @@ export function mostrarCarrito() {
                           <label for="coordinar-vendedor">Coordinar con vendedor</label>
                         </div>
                         <div class="input-container">
-                          <select class="input" id="provinciaDestino" name="provinciaDestino" placeholder="Codigo Postal" data-tipo="Provincia" required>
+                          <select class="input" id="provinciaDestino" name="provinciaDestino" data-tipo="Provincia" required>
                             <!-- Options -->
                           </select>
                         </div>
                         <div class="input-container">
-                          <div class="postal-input-container">
-                            <input type="number" class="input" id="cpDestino" name="cpDestino" placeholder="Codigo Postal" data-tipo="cpDestino" required>
-                            <label class="input-label" for="cpDestino">Codigo Postal</label>
+                            <input type="number" class="input" id="cpDestino" name="cpDestino"  placeholder="Codigo Postal" data-tipo="cpDestino" required>
                             <span class="input-message-error">Este campo no es válido</span>
                             <i class="fa fa-arrow-right postal-arrow" id="calcular-envio"></i>
-                          </div>
                         </div>
                       </form>
                       <div class="input-container">
-                        <input type="number" class="form-control" id="shipping-total" name="shipping-options" placeholder="0" required readonly>
+                        <input type="number" class="input" id="shipping-total" name="shipping-options" placeholder="0" required readonly>
                       </div>
                     </div>
                   </td>

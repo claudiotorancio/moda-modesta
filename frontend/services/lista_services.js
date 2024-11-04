@@ -1,6 +1,5 @@
 import { baseURL } from "../../backend/baseUrl.js";
 import { modalControllers } from "../modal/modal.js";
-import { jwtDecode } from "jwt-decode";
 
 export class ListaServices {
   constructor() {
@@ -49,19 +48,11 @@ export class ListaServices {
         return { ok: false, message: data.message };
       }
 
-      const tokenData = data.token;
-
-      // Verificar que tokenData sea una cadena válida
-      if (typeof tokenData !== "string" || !tokenData.trim()) {
-        console.error("Token inválido recibido del servidor.");
-        return { ok: false, message: "Token inválido." };
-      }
-
-      const user = jwtDecode(tokenData);
+      const user = data.token;
 
       return {
         ok: data.ok,
-        role: data.role || "user",
+        role: data.role,
         user,
       };
     } catch (error) {

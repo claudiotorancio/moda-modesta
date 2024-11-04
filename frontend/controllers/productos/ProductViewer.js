@@ -72,7 +72,7 @@ export const mostrarProducto = async (
               section !== "opcion3"
                 ? `
               <label for="variation_1" class="form-label">Talles disponibles</label>
-      <select id="variation_1" class="form-select mb-3">
+      <select id="variation_1" class="input mb-3">
         ${sizes
           .filter((item) => item.stock > 0)
           .map(
@@ -91,7 +91,7 @@ export const mostrarProducto = async (
                       <form id="notificacion-form" action="/api/notificacionSinStock" enctype="multipart/form-data" method="POST">
                         <div class="form-group">
                           <label for="email">Email:</label>
-                          <input type="email" id="email" class="form-control mt-2" required>
+                          <input type="email" id="email" class="input" placeholder="nombre@gmail.com " required>
                         </div>
                         <button type="submit" class="btn btn-primary mt-2">Enviar</button>
                       </form>
@@ -125,18 +125,28 @@ export const mostrarProducto = async (
       ${
         hayStock
           ? `
-        <div class="row mt-4">
-          <h5>Calcular envío</h5>
-          <div class="input-container mt-2">
-            <div class="postal-input-container">
-              <input type="number" class="input" id="cpDestino" name="cpDestino" placeholder="Codigo Postal" data-tipo="cpDestino">
-              <label class="input-label" for="cpDestino">Codigo Postal</label>
-              <span class="input-message-error">Este campo no es válido</span>
-              <i class="btn btn-secondary fa fa-arrow-right postal-arrow" id="calcular-envio"></i>
-              <div id="shipping-total"></div>
-            </div>
-          </div>
-        </div>`
+       <div class="row mt-4 align-items-center">
+  <h5 class="col-12">Calcular envío</h5>
+  
+  <div class="col-md-8 mt-2">
+    <div class="input-container">
+      <input type="number" class="input form-control" id="cpDestino" name="cpDestino" placeholder="" data-tipo="cpDestino">
+      <label class="input-label" for="cpDestino">Código Postal</label>
+      <span class="input-message-error">Este campo no es válido</span>
+    </div>
+  </div>
+  
+  <div class="col-md-4 mt-2">
+    <button class="btn btn-secondary w-100" id="calcular-envio">
+      Calcular
+    </button>
+  </div>
+
+  <div class="col-12 mt-2">
+    <div id="shipping-total"></div>
+  </div>
+</div>
+`
           : ""
       }
 

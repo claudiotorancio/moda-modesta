@@ -95,6 +95,7 @@ export async function handleEnvioFormSubmission(event) {
 
 export function handleCoordinarVendedorChange(event) {
   event.preventDefault();
+
   // disabled a todos los inputs
   const isChecked = event.target.checked;
   const shippingFields = [
@@ -108,6 +109,7 @@ export function handleCoordinarVendedorChange(event) {
 
   shippingFields.forEach((field) => {
     field.disabled = isChecked;
+    field.parentElement.classList.remove("input-container--invalid");
   });
 
   // Actualizar el costo de envío y el total del carrito
@@ -140,25 +142,6 @@ export async function handleEnvioFormProduct(event) {
   // Seleccionar el icono de la flecha
   const arrowIcon = document.getElementById("calcular-envio");
 
-  // Valida los campos del formulario
-  const inputs = document.querySelectorAll("input");
-  let formularioValido = true;
-
-  inputs.forEach((input) => {
-    valida(input);
-    if (!input.validity.valid) {
-      formularioValido = false;
-    }
-  });
-
-  if (!formularioValido) {
-    console.log("Formulario inválido. Verifica los campos.");
-    return; // Detener la ejecución si el formulario no es válido
-  }
-
-  // Ocultar la flecha mientras se realiza el cálculo
-  arrowIcon.style.display = "none";
-
   // Preparar los datos para la API
   const cpOrigen = 6300;
   const cpDestinoInput = document.getElementById("cpDestino");
@@ -179,26 +162,8 @@ export async function handleEnvioFormProduct(event) {
 
     const valorEnvio = data.paqarClasico.aDomicilio;
     const shippingTotalInput = document.getElementById("shipping-total");
-    shippingTotalInput.innerHTML = `
-      <div style="display: flex; align-items: center;">
-        <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/vecteezy_delivery-and-courier-motorbike-logo_12665408.jpg" 
-             alt="Moto de cadete" 
-             style="width: 4rem; flex-shrink: 0; margin-right: 0.5rem;">
-        <span style="font-size: 0.8rem;">Entrega a Domicilio: Pago en destino. (horario comercial)</span>
-      </div>
-      <div style="display: flex; align-items: center;">
-        <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/correo-argentino.svg" 
-             alt="Correo Argentino" 
-             style="width: 4rem;  flex-shrink: 0; margin-right: 0.5rem;">
-        <span style="font-size: 0.8rem;">Correo Argentino: $${valorEnvio}. - 3 a 6 días hábiles. (despues del despacho)</span>
-      </div>
-      <div style="display: flex; align-items: center;">
-        <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/ubicacion.png" 
-             alt="Retiro en tienda" 
-             style="width: 4rem; flex-shrink: 0; margin-right: 0.5rem;">
-        <span style="font-size: 0.8rem;">Retiro en Local: Gratis. Disponible en nuestro local.</span>
-      </div>
-    `;
+
+    shippingTotalInput.innerHTML = getShipingTotalHtml(valorEnvio);
 
     // Mostrar la flecha de nuevo si el cálculo fue exitoso
     arrowIcon.style.display = "none";
@@ -228,4 +193,27 @@ export async function handleEnvioFormProduct(event) {
       arrowIcon.style.display = "block";
     });
   }
+}
+
+function getShipingTotalHtml(valorEnvio) {
+  return `
+      <div style="display: flex; align-items: center;">
+        <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/vecteezy_delivery-and-courier-motorbike-logo_12665408.jpg" 
+             alt="Moto de cadete" 
+             style="width: 4rem; flex-shrink: 0; margin-right: 0.5rem;">
+        <span style="font-size: 0.8rem;">Entrega a Domicilio: Pago en destino. (horario comercial)</span>
+      </div>
+      <div style="display: flex; align-items: center;">
+        <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/correo-argentino.svg" 
+             alt="Correo Argentino" 
+             style="width: 4rem;  flex-shrink: 0; margin-right: 0.5rem;">
+        <span style="font-size: 0.8rem;">Correo Argentino: $${valorEnvio}. - 3 a 6 días hábiles. (despues del despacho)</span>
+      </div>
+      <div style="display: flex; align-items: center;">
+        <img src="https://moda-modesta.s3.us-east-2.amazonaws.com/ubicacion.png" 
+             alt="Retiro en tienda" 
+             style="width: 4rem; flex-shrink: 0; margin-right: 0.5rem;">
+        <span style="font-size: 0.8rem;">Retiro en Local: Gratis. Disponible en nuestro local.</span>
+      </div>
+    `;
 }

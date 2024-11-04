@@ -15,16 +15,11 @@
 
 .input {
   box-sizing: border-box;
-  padding: 1.375rem 0.5rem 0.5rem;
-  height: 3.25rem;
+  padding: 1rem 0.5rem 0.5rem;
   width: 100%;
-  border: 1px solid #9e9e9e;
+  border: 1.5px solid #9e9e9e;
   border-radius: 7px;
-}
-
-.input::placeholder {
-  visibility: hidden;
-  color: #00000000;
+  line-height: 1.5;
 }
 
 .input:focus {

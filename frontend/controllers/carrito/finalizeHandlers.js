@@ -12,17 +12,17 @@ function getFormDatosPersonalesHTML() {
   
      <fieldset>
         <div class="input-container mt-2">
-            <input name="name" id="name" type="text" class="input" placeholder="Nombre" data-tipo="nombre" required>
+            <input name="name" id="name" type="text" class="input" placeholder="" data-tipo="nombre" required>
             <label class="input-label" for="name">Nombre</label>
               <span class="input-message-error">Este campo no es valido</span>
         </div>
         <div class="input-container">
-            <input name="email" type="email" id="email" class="input" placeholder="Email" data-tipo="email" required>
+            <input name="email" type="email" id="email" class="input" placeholder="" data-tipo="email" required>
             <label class="input-label" for="email">Email</label>
               <span class="input-message-error">Este campo no es valido</span>
         </div>
         <div class="input-container">
-            <input name="phoneNumber" type="tel" id="phoneNumber" class="input" placeholder="Número telefónico" pattern="\\d{10}" required maxlength="10" data-tipo="numero">
+            <input name="phoneNumber" type="tel" id="phoneNumber" class="input" placeholder="" pattern="\\d{10}" required maxlength="10" data-tipo="numero">
             <label class="input-label" for="phoneNumber">Número telefónico</label>
               <span class="input-message-error">Este campo no es valido</span>
         </div>

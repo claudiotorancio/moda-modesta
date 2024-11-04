@@ -60,7 +60,7 @@ const mensajeDeError = {
   },
   cpDestino: {
     valueMissing: "",
-    customError: `Código Postal inválido - <a Href="https://www.correoargentino.com.ar/formularios/cpa"> Buscar CP <i class="fa-solid fa-arrow-right"></i></a>`,
+    customError: `Código Postal inválido - <a Href="https://www.correoargentino.com.ar/formularios/cpa"> Buscar CP <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`,
   },
 };
 

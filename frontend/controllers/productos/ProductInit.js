@@ -43,7 +43,7 @@ export class ProductInit {
   getTallesSelectHTML() {
     return `
       <label for="variation_1" class="form-label">Talles disponibles</label>
-      <select id="variation_1" class="form-select mb-3">
+      <select id="variation_1" class="input mb-2">
         ${this.sizes
           .filter((item) => item.stock > 0)
           .map(
@@ -70,7 +70,7 @@ export class ProductInit {
 
     return `
       <label for="quantity" class="form-label">Seleccione la cantidad</label>
-      <select id="quantity" class="form-select mb-3">
+      <select id="quantity" class="input mb-2">
         ${options}
       </select>
       <div class="text-center">

@@ -115,13 +115,13 @@ const modalSuscribe = () => {
       <div class="card-form">
         <p>¡Suscribite para no perderte las novedades y recibir descuentos exclusivos!</p>
         <form id="subscribe-form" action="/api/suscribeMail" enctype="multipart/form-data" method="POST">
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" class="form-control" required>
+          <div class="form-group mb-2">
+            <label class="mb-2" for="email">Email:</label>
+            <input type="email" id="email" class="input" required>
           </div>
           <div class="form-group mb-4">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" class="form-control" required>
+            <label class="mb-2" for="nombre">Nombre:</label>
+            <input type="text" id="nombre" class="input" required>
           </div>
           <button type="submit" class="btn btn-primary">Suscribirme</button>
         </form>
