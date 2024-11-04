@@ -144,14 +144,24 @@ div.card-header h3 {
 }
 
 .overlay-icon {
-  position: absolute;
-  top: 50%;
-  left: 85%;
-  transform: translate(-50%, -50%);
-  font-size: 1.7rem; /* Tamaño del ícono */
-  color: white; /* Color del ícono */
-  opacity: 0.8; /* Transparencia del ícono */
-  pointer-events: none; /* Hace que el ícono no interfiera con los clics */
+  position: absolute; /* Posiciona el ícono absolutamente dentro del contenedor */
+  top: 10px; /* Ajusta la posición vertical (desde la parte superior) */
+  right: 10px; /* Ajusta la posición horizontal (desde la derecha) */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.7
+  ); /* Fondo semi-transparente para mejor visibilidad */
+  border-radius: 50%; /* Hace que el fondo sea redondo */
+  pointer-events: none;
+  cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+  z-index: 10; /* Asegúrate de que el ícono esté por encima de la imagen */
+}
+
+.overlay-icon i {
+  font-size: 24px; /* Tamaño del ícono */
+  color: #333; /* Color del ícono */
 }
 
 .btn-close-black {
@@ -294,10 +304,5 @@ div.card-header h3 {
 
   .icon-down {
     animation: moveDown 0.3s forwards;
-  }
-
-  .overlay-icon {
-    top: 50%;
-    left: 80%;
   }
 }

@@ -165,29 +165,28 @@ export class ProductInit {
   productoInicio() {
     const card = document.createElement("div");
     const contenido = `
-      <div class="container mx-auto mt-4">
-        <div class="img-card">
-          <img class="card-img-top" src="${
-            this.imagePath[0]
-          }" alt="imagen del producto">
-          <!-- Ícono de lupa -->
-          <div class="overlay-icon">
-            <i class="fas fa-search-plus"></i>
-          </div>
-        </div>
-        <div class="card-body text-center">
-          <h3 class="card-text text-muted mb-2">${this.name}</h3>
-          <p class="card-title text-center font-weight-bold">${
-            "$" + this.price
-          }</p>
-          <div class="d-flex justify-content-center">
-            <a href="#">Ver Detalles</a>
-          </div>
-          <div>
-            ${this.getMensajeStockHtml()}
-          </div>
-        </div>
-      </div>
+     <div class="container mx-auto mt-4">
+  <div class="img-card position-relative"> <!-- Añadir 'position-relative' -->
+    <img class="card-img-top" src="${
+      this.imagePath[0]
+    }" alt="imagen del producto">
+    <!-- Ícono de lupa -->
+    <div class="overlay-icon">
+      <i class="fas fa-search-plus"></i>
+    </div>
+  </div>
+  <div class="card-body text-center">
+    <h3 class="card-text text-muted mb-2">${this.name}</h3>
+    <p class="card-title text-center font-weight-bold">$${this.price}</p>
+    <div class="d-flex justify-content-center">
+      <a href="#">Ver Detalles</a>
+    </div>
+    <div>
+      ${this.getMensajeStockHtml()}
+    </div>
+  </div>
+</div>
+
     `;
 
     card.innerHTML = contenido;

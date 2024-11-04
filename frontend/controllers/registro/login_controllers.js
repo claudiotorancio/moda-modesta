@@ -82,7 +82,7 @@ export class LoginControllers {
                             <button class="btn btn-primary btn-block" >${buttonLabel}</button>
                             ${btnSignup} <!-- Input de nombre solo si es SignUp -->
                          <p class="help mt-2">
-    <a href="#" data-reset-password>Olvidaste tu contraseña <span class="underline">Restablecer contraseña <i class="fa-solid fa-arrow-up-right-from-square"></i></span></a>
+    <a href="#" data-reset-password>Olvidaste tu contraseña? <span class="underline">Restablecer contraseña <i class="fa-solid fa-arrow-up-right-from-square"></i></span></a>
 </p>
 
                         </div>
