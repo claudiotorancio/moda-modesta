@@ -17,6 +17,7 @@ export async function cargarCarritoDesdeStorage() {
 
 export function actualizarNotificacionCarrito() {
   const items = this.items;
+  console.log(items);
 
   const carritoContainer = document.querySelector(".carrito-link");
   if (!carritoContainer) {

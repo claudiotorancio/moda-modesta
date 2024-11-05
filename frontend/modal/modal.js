@@ -110,12 +110,6 @@ const modalSuscribe = () => {
    <div class="main-container text-center mb-4">
   <h4>¡Ofertas y Novedades!</h4>
   <p class="lead mb-4">¡Suscríbete para no perderte las novedades y recibir descuentos exclusivos!</p>
-  
-  <div class="business-details mb-3">
-    <p><strong>Acerca de Nosotros:</strong></p>
-    <p>En [Nombre del Negocio], nos dedicamos a ofrecerte los mejores productos de alta calidad. Nos apasiona brindarte una experiencia de compra excepcional y nos aseguramos de que estés siempre al tanto de nuestras últimas novedades y promociones.</p>
-    <p>¡No te pierdas la oportunidad de recibir ofertas exclusivas directamente en tu correo!</p>
-  </div>
 
   <form id="subscribe-form" action="/api/suscribeMail" method="POST">
     <div class="form-group mb-2">

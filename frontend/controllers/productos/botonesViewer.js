@@ -10,8 +10,7 @@ export async function eventListenerBotones(
   imagePath,
   sizes,
   section,
-  generalStock,
-  messageElement
+  generalStock
 ) {
   //evento productos similares
   const botonSimilares = document.getElementById("toggle-similares");
@@ -45,16 +44,31 @@ export async function eventListenerBotones(
   // Agregar al carrito
   const agregarCarritoBtn = document.querySelector("[data-carrito]");
   if (agregarCarritoBtn) {
-    agregarCarritoBtn.addEventListener("click", async () => {
+    agregarCarritoBtn.addEventListener("click", async (event) => {
       let talleSeleccionado;
+      let quantity;
 
       // Comprobar si la sección es 'opcion3'
       if (section === "opcion3") {
         // No hay talle seleccionado, puedes asignar un valor predeterminado
-        talleSeleccionado = 1; // O 'Sin talla' si prefieres
+        quantity = document.getElementById("quantity").value || 1;
       } else {
         // Obtener el talle seleccionado del select
-        talleSeleccionado = document.getElementById("variation_1").value;
+
+        const sizeSelect = document.getElementById("variation_1");
+        const quantityInput = document.getElementById("quantity");
+
+        talleSeleccionado = sizeSelect.value;
+        quantity = parseInt(quantityInput.value, 10);
+
+        if (event.target.id === "addToCartBtn") {
+          const messageElement = document.getElementById("message");
+          console.log(messageElement);
+          if (!talleSeleccionado) {
+            messageElement.textContent = `Debes seleccionar un talle`;
+            document.getElementById("messageContainer").style.display = "block";
+          }
+        }
       }
 
       await comprarProducto(
@@ -66,7 +80,7 @@ export async function eventListenerBotones(
         talleSeleccionado,
         section,
         generalStock,
-        messageElement
+        quantity
       );
     });
   } else {

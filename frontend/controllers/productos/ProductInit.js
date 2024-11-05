@@ -1,4 +1,8 @@
-import { mostrarProducto } from "./ProductViewer.js";
+import {
+  getAmountSelectHTML,
+  getSizesSelectHTML,
+  mostrarProducto,
+} from "./ProductViewer.js";
 import { comprarProducto } from "../carrito/comprarProducto.js";
 import { modalControllers } from "../../modal/modal.js";
 
@@ -36,82 +40,19 @@ export class ProductInit {
 
   getMensajeStockHtml() {
     return this.hayStock
-      ? `<button type="button" class="btn btn-primary btn-block mt-2" data-compra>Comprar</button>`
+      ? `<button type="button" class="btn btn-primary " data-compra>Comprar</button>`
       : `<span class="text-danger mt-2 font-weight-bold">Sin stock</span>`;
-  }
-
-  getTallesSelectHTML() {
-    return `
-<div class="form-group mb-4">
-  <label for="variation_1" class="form-label">Talles Disponibles</label>
-  <select id="variation_1" class="form-select" aria-label="Selecciona un talle" required>
-    <option value="" disabled selected>Selecciona un talle...</option>
-    ${this.sizes
-      .filter((item) => item.stock > 0)
-      .map(
-        (item) =>
-          `<option value="${item.size}">${item.size} - (Stock Disponible: ${item.stock})</option>`
-      )
-      .join("")}
-  </select>
-  <small class="form-text text-muted">Selecciona un talle antes de agregar el producto al carrito.</small>
-</div>
-
-<div class="text-center">
-  <button type="button" class="btn btn-primary btn-lg" data-carrito>
-    <i class="fas fa-shopping-cart"></i> Agregar al Carrito
-  </button>
-  <div class="spinner-border text-primary" id="loadingSpinner" style="display: none;" role="status">
-    <span class="visually-hidden">Cargando...</span>
-  </div>
-</div>
-
-<div id="messageContainer" style="display: none;" class="mt-3">
-  <p id="message" class="alert alert-warning text-center"></p>
-</div>
-
-    `;
-  }
-
-  getAmountSelectHTML() {
-    // Generar las opciones del select según el stock disponible
-    const options = Array.from(
-      { length: this.generalStock },
-      (_, i) => `<option value="${i + 1}">${i + 1}</option>`
-    ).join("");
-
-    return `
-    <div class="form-group mb-4">
-  <label for="quantity" class="form-label">Seleccione la Cantidad</label>
-  <select id="quantity" class="form-select" aria-label="Cantidad de producto" required>
-    <option value="" disabled selected>Elige una cantidad...</option>
-    ${options}
-  </select>
-  <small class="form-text text-muted">Por favor, selecciona cuántos productos deseas agregar al carrito.</small>
-</div>
-
-<div class="text-center">
-  <button type="button" class="btn btn-primary btn-lg" data-carrito>
-    <i class="fas fa-shopping-cart"></i> Agregar al Carrito
-  </button>
-  <div class="spinner-border text-primary" id="loadingSpinner" style="display: none;" role="status">
-    <span class="visually-hidden">Cargando...</span>
-  </div>
-</div>
-
-<div id="messageContainer" style="display: none;" class="mt-3">
-  <p id="message" class="alert alert-warning text-center"></p>
-</div>
-
-`;
   }
 
   getZoomImageHtml() {
     return `
-      <img class="card-img-top" src="${this.imagePath[0]}" alt="imagen del producto">
+      <div class="zoom-container position-relative">
+        <img class="card-img-top img-fluid zoom-image" src="${this.imagePath[0]}" alt="imagen del producto">
+      </div>
       <div class="d-flex justify-content-center">
-        <a href="#" type="button" class="btn btn-info btn-sm mt-2">Ver Detalles</a>
-      </div>`;
+        <a href="#" class="btn btn-info btn-sm mt-3">Ver Detalles</a>
+      </div>
+    `;
   }
 
   // eventos producto inicio
@@ -144,13 +85,23 @@ export class ProductInit {
   }
 
   containerTallesHandler() {
-    const content = this.getTallesSelectHTML();
+    const content = getSizesSelectHTML(this.sizes);
 
     this.updateModalContent(content);
     const carritoButton = document.querySelector("[data-carrito]");
 
-    carritoButton.addEventListener("click", () => {
+    carritoButton.addEventListener("click", (event) => {
       const talleSeleccionado = document.getElementById("variation_1").value;
+      const quantity = document.getElementById("quantity").value;
+
+      if (event.target.id === "addToCartBtn") {
+        const messageElement = document.getElementById("message");
+        console.log(messageElement);
+        if (!talleSeleccionado) {
+          messageElement.textContent = `Debes seleccionar un talle`;
+          document.getElementById("messageContainer").style.display = "block";
+        }
+      }
       comprarProducto(
         this.id,
         this.name,
@@ -159,13 +110,14 @@ export class ProductInit {
         this.sizes,
         talleSeleccionado,
         this.section,
-        this.generalStock
+        this.generalStock,
+        quantity
       );
     });
   }
 
   containerAmountHandler() {
-    const content = this.getAmountSelectHTML();
+    const content = getAmountSelectHTML(this.generalStock);
 
     this.updateModalContent(content);
     const carritoButton = document.querySelector("[data-carrito]");
@@ -181,9 +133,10 @@ export class ProductInit {
         this.price,
         this.imagePath,
         this.sizes,
-        cantidadSeleccionada,
+        undefined,
         this.section,
-        this.generalStock
+        this.generalStock,
+        cantidadSeleccionada
       );
     });
   }
@@ -211,12 +164,10 @@ export class ProductInit {
       )}</span> 
       $${(this.price * 0.8).toFixed(2)} <!-- Precio con descuento -->
     </p>
-    <div class="d-flex justify-content-center">
-      <a href="#" class="btn btn-primary">Ver Detalles</a>
-    </div>
-    <div>
+    <div class=" justify-content-center gap-2 mt-2">
+      <a href="#" class="btn btn-primary m-1 ">Detalle</a>
       ${this.getMensajeStockHtml()}
-    </div>
+     </div>
     <ul class="list-unstyled mt-2">
       <li><i class="fas fa-check-circle"></i> Material de alta calidad</li>
       <li><i class="fas fa-check-circle"></i> Disponible en múltiples colores</li>

@@ -152,37 +152,6 @@ input#check {
   transform: scale(1.05); /* Aumenta el tamaño del botón al pasar el mouse */
 }
 
-/* .banner {
-  display: flex;
-  flex-direction: column;
-  background: url(https://moda-modesta.s3.us-east-2.amazonaws.com/1723777096394.jpeg)
-    center / cover no-repeat;
-  position: static;
-  justify-content: center;
-}
-
-.texto p {
-  font-weight: 400;
-  font-size: 20px;
-  color: var(--fuente-banner);
-  margin-left: 7.5rem;
-  margin-bottom: 1.25rem;
-  text-align: left;
-}
-
-.consolas {
-  width: 6.8rem;
-  height: 3rem;
-  font-size: 16px;
-  font-weight: 400;
-  background-color: var(--fuente-productos-azul);
-  color: white;
-  margin-left: 7.5rem;
-  margin-bottom: 1.5rem;
-  text-align: left;
-  border: none;
-} */
-
 .texto h1 {
   font-size: 3rem;
   font-weight: 700;
@@ -394,7 +363,7 @@ span#final-total {
 
 .carousel-item img {
   width: 100%;
-  height: 300px; /* Ajusta la altura según tus necesidades */
+  height: 350px; /* Ajusta la altura según tus necesidades */
   object-fit: cover;
 }
 

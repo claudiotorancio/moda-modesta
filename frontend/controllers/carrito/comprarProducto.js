@@ -10,11 +10,12 @@ export async function comprarProducto(
   sizes,
   talleSeleccionado, // Cantidad cuando es de 'opcion3'
   section,
-  generalStock
+  generalStock,
+  quantityInput
 ) {
   try {
     let stockSeleccionado;
-    let cantidad = 1; // Por defecto, la cantidad es 1
+    let cantidad = quantityInput; // Por defecto, la cantidad es 1
 
     // Verificar si es de la sección 'opcion3'
     if (section === "opcion3") {
@@ -22,7 +23,15 @@ export async function comprarProducto(
       stockSeleccionado = generalStock;
 
       // Asignar la cantidad seleccionada
-      cantidad = parseInt(talleSeleccionado, 10);
+      cantidad = Math.max(0, parseInt(quantityInput));
+
+      // Verificar que haya suficiente stock general
+      if (cantidad > stockSeleccionado) {
+        console.error("Stock insuficiente para la cantidad seleccionada.");
+        return alert(
+          "No hay suficiente stock disponible para la cantidad seleccionada."
+        );
+      }
 
       // Verificar que haya suficiente stock general
       if (cantidad > stockSeleccionado) {

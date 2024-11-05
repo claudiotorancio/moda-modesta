@@ -60,10 +60,6 @@ div.card-header h3 {
   font-size: 1.5rem;
 }
 
-.card-body a {
-  text-decoration: underline;
-}
-
 .card-title {
   font-size: 1.5vw;
   font-weight: 600;
@@ -239,7 +235,7 @@ div.card-header h3 {
 
   .card-title {
     width: auto;
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
 
   .productos {
