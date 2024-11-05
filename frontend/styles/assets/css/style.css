@@ -392,6 +392,170 @@ span#final-total {
   margin: 0 auto;
 }
 
+.discount-tag {
+  display: inline-block;
+  background-color: #ffe6e6; /* Color de fondo */
+  color: #ff4d4d; /* Color del texto */
+  font-size: 0.8em; /* Tamaño de fuente más pequeño */
+  padding: 2px 5px; /* Espaciado interno */
+  border-radius: 4px; /* Bordes redondeados */
+  margin-left: 5px; /* Espaciado entre el precio y el descuento */
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #888; /* Color gris para indicar que está deshabilitado */
+  font-size: 0.9em; /* Tamaño de fuente más pequeño */
+  margin-right: 5px; /* Espaciado entre el precio tachado y el nuevo precio */
+}
+
+/* Estilos principales del contenedor */
+.main-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos de la tabla */
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+}
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #e9ecef;
+}
+.table-scrollable tbody {
+  display: block;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.summary-img-wrap img {
+  max-width: 60px;
+  border-radius: 6px;
+}
+
+/* Precio original tachado */
+.original-price {
+  text-decoration: line-through;
+  color: #6c757d;
+  font-size: 0.9em;
+  margin-right: 6px;
+}
+
+/* Precio con descuento */
+.table-price {
+  font-size: 1em;
+  font-weight: 600;
+  color: #28a745;
+}
+
+/* Etiqueta de descuento */
+.discount-tag {
+  display: inline-block;
+  background-color: #ff4757;
+  color: #fff;
+  font-size: 0.8em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+/* Subtotal y total */
+.table-subtotal {
+  padding-top: 10px;
+}
+.table-subtotal td {
+  padding: 8px;
+  font-size: 1em;
+}
+.table-footer .table-price {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Botón de eliminar */
+.btn-danger {
+  padding: 5px 10px;
+  font-size: 0.85em;
+  color: #fff;
+  background-color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Estilo del botón "Siguiente" */
+.purchase-actions .btn-primary {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1em;
+  font-weight: 600;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.purchase-actions .btn-primary:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Estilo del formulario de envío */
+#envio-form-container {
+  padding: 10px;
+  background-color: #f0f3f5;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+.input-container {
+  margin-bottom: 10px;
+}
+.input {
+  width: 100%;
+  padding: 8px;
+  font-size: 0.95em;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  color: #495057;
+}
+.input-message-error {
+  color: #dc3545;
+  font-size: 0.85em;
+  margin-top: 4px;
+  display: none; /* Muestra el mensaje solo en caso de error */
+}
+
+/* Estilos adicionales */
+.continuos-move {
+  transition: transform 0.3s ease;
+}
+.continuos-move.open {
+  transform: rotate(180deg);
+}
+
+.share-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  font-size: 0.9rem;
+}
+
+.share-button i {
+  margin-right: 5px;
+}
+
 @media (min-width: 768px) and (max-width: 1200px) {
 }
 

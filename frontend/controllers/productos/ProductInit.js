@@ -28,6 +28,10 @@ export class ProductInit {
     this.discount = discount;
   }
 
+  async mostrarProducto() {
+    await mostrarProducto.call(this);
+  }
+
   updateModalContent(content) {
     modalControllers.baseModal();
     const modal = document.getElementById("modal");
@@ -66,18 +70,7 @@ export class ProductInit {
         e.preventDefault();
         window.location.hash = `product-${this.id}`;
         try {
-          await mostrarProducto(
-            this.id,
-            this.name,
-            this.price,
-            this.imagePath,
-            this.description,
-            this.sizes,
-            this.hayStock,
-            this.section,
-            this.generalStock,
-            this.discount
-          );
+          this.mostrarProducto();
         } catch (err) {
           console.error(err);
         }
@@ -85,7 +78,7 @@ export class ProductInit {
   }
 
   containerTallesHandler() {
-    const content = getSizesSelectHTML(this.sizes);
+    const content = getSizesSelectHTML.call(this);
 
     this.updateModalContent(content);
     const carritoButton = document.querySelector("[data-carrito]");
@@ -117,7 +110,7 @@ export class ProductInit {
   }
 
   containerAmountHandler() {
-    const content = getAmountSelectHTML(this.generalStock);
+    const content = getAmountSelectHTML.call(this);
 
     this.updateModalContent(content);
     const carritoButton = document.querySelector("[data-carrito]");
@@ -166,13 +159,17 @@ export class ProductInit {
     <p class="card-title text-center font-weight-bold">
     ${
       this.discount && this.hayStock
-        ? `<span class="text-decoration-line-through text-muted">$${this.price.toFixed(
-            2
-          )}</span> 
-      $${(this.price - (this.price * this.discount) / 100).toFixed(
-        2
-      )} <!-- Precio con descuento -->
-    </p>`
+        ? `<span class="original-price">
+          $${this.price.toFixed(2)}
+          </span>
+          <br>
+          <span >
+          $${(this.price * (1 - this.discount / 100)).toFixed(2)}
+          </span>
+           <span class="discount-tag">
+          ${this.discount}% off
+          </span>
+          `
         : `<span class=" text-muted">$${this.price.toFixed(2)}</span> `
     }
       
@@ -197,29 +194,16 @@ export class ProductInit {
       this.zoomImageHandler();
     });
 
-    // Evento para mostrar el modal de compra al hacer clic en "Ver Detalles"
     card.querySelector("a").addEventListener("click", async (e) => {
       e.preventDefault();
-      // Agregar el identificador único
       window.location.hash = `product-${this.id}`;
 
       try {
-        await mostrarProducto(
-          this.id,
-          this.name,
-          this.price,
-          this.imagePath,
-          this.description,
-          this.sizes,
-          this.hayStock,
-          this.section,
-          this.generalStock,
-          this.discount
-        );
+        this.mostrarProducto();
       } catch (err) {
         console.log(err);
       }
-    });
+    }); // Asegura que `this` mantenga el contexto de la instancia actual
 
     // Solo permitir la compra si hay stock disponible y no es "opcion3"
     if (this.hayStock) {

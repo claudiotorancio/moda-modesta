@@ -18,7 +18,7 @@ import {
   cargarReseñasAdmin,
 } from "./controllers/reseña/reseñas.js";
 import { Compras } from "./controllers/compras/compras-controllers.js";
-import { hashControllers } from "./controllers/hashControllers.js";
+import { hashControllers } from "./hashControllers/hashControllers.js";
 import { ListaServices } from "./services/lista_services.js";
 import { ListaControllers } from "./controllers/ListaUsuarios/lista.controllers.js";
 import { FormResena } from "./controllers/reseña/formResena.js";

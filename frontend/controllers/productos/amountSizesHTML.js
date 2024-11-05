@@ -1,12 +1,14 @@
-export function getAmountSelectHTML(generalStock) {
+export function getAmountSelectHTML() {
   return `
       <div class="form-group mt-3 mb-4">
         <label for="quantity" class="form-label">Cantidad</label>
         <div class="d-flex align-items-center">
           <button type="button" id="decrement" class="btn btn-outline-secondary" disabled>-</button>
-          <input type="number" id="quantity" class="form-control text-center mx-2" value="1" min="1" max="${generalStock}" readonly>
+          <input type="number" id="quantity" class="form-control text-center mx-2" value="1" min="1" max="${
+            this.generalStock
+          }" readonly>
           <button type="button" id="increment" class="btn btn-outline-secondary"${
-            generalStock > 1 ? "" : " disabled"
+            this.generalStock > 1 ? "" : " disabled"
           }>+</button>
         </div>
         <div class="text-center mt-3">
@@ -23,9 +25,9 @@ export function getAmountSelectHTML(generalStock) {
     `;
 }
 
-export function getSizesSelectHTML(sizes) {
+export function getSizesSelectHTML() {
   // Generar las opciones de talles según el stock disponible
-  const sizesOptions = sizes
+  const sizesOptions = this.sizes
     .filter((item) => item.stock > 0)
     .map(
       (item) =>

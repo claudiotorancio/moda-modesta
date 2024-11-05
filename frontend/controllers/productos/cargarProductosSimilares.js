@@ -1,9 +1,9 @@
 import productoServices from "../../services/product_services.js";
-import { mostrarProducto } from "./ProductViewer.js";
+import { ProductInit } from "./ProductInit.js";
 
-export async function cargarProductosSimilares(id) {
+export async function cargarProductosSimilares() {
   try {
-    const data = await productoServices.productoSimilar(id);
+    const data = await productoServices.productoSimilar(this.id);
     const similares = data.slice(0, 3); // Limitar a los primeros 3 productos
 
     const contenedorSimilares = document.getElementById("productos-similares");
@@ -50,12 +50,6 @@ export async function cargarProductosSimilares(id) {
       const target = e.target.closest(".producto-similar");
       if (target) {
         const id = target.dataset.id;
-        const name = target.dataset.name;
-        const price = target.dataset.price;
-        const imagePath = JSON.parse(target.dataset.image); // Asegúrate de que esto sea un array
-        const description = target.dataset.description;
-        const sizes = JSON.parse(target.dataset.sizes);
-        const hayStock = target.dataset.stock === "true"; // Recuperar el stock ya calculado
 
         window.location.hash = `product-${id}`;
 
@@ -67,28 +61,20 @@ export async function cargarProductosSimilares(id) {
         }
 
         try {
-          await mostrarProducto(
-            id,
-            name,
-            price,
-            imagePath,
-            description,
-            sizes,
-            hayStock
+          const productoSimilar = new ProductInit(
+            producto._id,
+            producto.name,
+            producto.price,
+            producto.imagePath,
+            producto.description,
+            producto.sizes,
+            producto.hayStock
           );
+          productoSimilar.mostrarProducto();
         } catch (error) {
           console.error("Error al mostrar producto:", error);
         }
       }
-    });
-
-    // Manejo de eventos para enlaces
-    const enlaces = contenedorSimilares.querySelectorAll("a");
-    enlaces.forEach((enlace) => {
-      enlace.addEventListener("click", (e) => {
-        e.preventDefault();
-        window.location.hash = `product-${id}`;
-      });
     });
   } catch (error) {
     console.error("Error al cargar productos similares:", error);

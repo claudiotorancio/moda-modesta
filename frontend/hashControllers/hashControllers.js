@@ -1,5 +1,5 @@
 import productoServices from "../services/product_services.js";
-import { mostrarProducto } from "./productos/ProductViewer.js";
+import { ProductInit } from "../controllers/productos/ProductInit.js";
 import { modalControllers } from "../modal/modal.js";
 
 export async function hashControllers() {
@@ -33,7 +33,7 @@ export async function hashControllers() {
         producto.generalStock > 0 || // Verifica stock general para "Diversos"
         producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
 
-      mostrarProducto(
+      const productHash = new ProductInit(
         producto._id,
         producto.name,
         producto.price,
@@ -45,6 +45,8 @@ export async function hashControllers() {
         producto.generalStock,
         producto.discount
       );
+
+      productHash.mostrarProducto();
     }
 
     // Si el producto está pausado, mostramos un HTML personalizado

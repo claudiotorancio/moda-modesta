@@ -58,20 +58,24 @@ export function mostrarCarrito() {
       item.discount > 0
         ? `
           <!-- Precio original tachado y precio con descuento -->
-          <span style="text-decoration: line-through; color: #a0a0a0;">$${(
-            item.price * item.cantidad
-          ).toFixed(2)}</span><br>
-          <span style="font-weight: bold; color: #ff0000;">$${(
-            item.price *
-            (1 - item.discount / 100) *
-            item.cantidad
-          ).toFixed(2)} <small>(${item.discount}% off)</small></span>
+          <br>
+          <span class="original-price">
+          $${(item.price * item.cantidad).toFixed(2)}
+          </span>
+          <br>
+          <span ">
+          $${(item.price * (1 - item.discount / 100) * item.cantidad).toFixed(
+            2
+          )}
+          </span>
+          <br>
+          <span class="discount-tag">
+          ${item.discount}% off
+          </span>
         `
         : `
           <!-- Precio sin descuento -->
-          <span style="font-weight: bold;">$${(
-            item.price * item.cantidad
-          ).toFixed(2)}</span>
+          <span >$${(item.price * item.cantidad).toFixed(2)}</span>
         `
     }
   </td>

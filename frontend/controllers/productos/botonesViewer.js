@@ -3,21 +3,12 @@ import { cargarProductosSimilares } from "./cargarProductosSimilares.js";
 import { handleEnvioFormProduct } from "../carrito/envioHandlers.js";
 import envioServices from "../../services/envio_services.js";
 
-export async function eventListenerBotones(
-  id,
-  name,
-  price,
-  imagePath,
-  sizes,
-  section,
-  generalStock,
-  discount
-) {
+export async function eventListenerBotones() {
   //evento productos similares
   const botonSimilares = document.getElementById("toggle-similares");
 
-  botonSimilares.addEventListener("click", async function () {
-    const icon = this.querySelector("i");
+  botonSimilares.addEventListener("click", async () => {
+    const icon = botonSimilares.querySelector("i");
     icon.classList.toggle("fa-chevron-down");
     icon.classList.toggle("fa-chevron-up");
     document.getElementById("similares-Container").classList.toggle("show");
@@ -25,9 +16,11 @@ export async function eventListenerBotones(
     if (
       document.getElementById("similares-Container").classList.contains("show")
     ) {
-      await cargarProductosSimilares(id).catch((error) =>
-        console.error("Error al cargar productos similares:", error)
-      );
+      await cargarProductosSimilares
+        .bind(this)()
+        .catch((error) =>
+          console.error("Error al cargar productos similares:", error)
+        );
     }
   });
 
@@ -50,7 +43,7 @@ export async function eventListenerBotones(
       let quantity;
 
       // Comprobar si la sección es 'opcion3'
-      if (section === "opcion3") {
+      if (this.section === "opcion3") {
         // No hay talle seleccionado, puedes asignar un valor predeterminado
         quantity = document.getElementById("quantity").value || 1;
       } else {
@@ -72,16 +65,16 @@ export async function eventListenerBotones(
       }
 
       await comprarProducto(
-        id,
-        name,
-        price,
-        imagePath,
-        sizes,
+        this.id,
+        this.name,
+        this.price,
+        this.imagePath,
+        this.sizes,
         talleSeleccionado,
-        section,
-        generalStock,
+        this.section,
+        this.generalStock,
         quantity,
-        discount
+        this.discount
       );
     });
   } else {
@@ -103,7 +96,7 @@ export async function eventListenerBotones(
       if (navigator.share) {
         navigator
           .share({
-            text: `¡Mira este producto! ${name} por solo $${price}`,
+            text: `¡Mira este producto! ${this.name} por solo $${this.price}`,
             url: productUrl,
           })
           .then(() => {

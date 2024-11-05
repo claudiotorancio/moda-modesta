@@ -13,7 +13,7 @@ import { modalControllers } from "./modal/modal.js";
 import { cargarReseñas } from "./controllers/reseña/reseñas.js";
 import { initializeCategoryControls } from "./controllers/productos/categoryControls.js";
 import { ListaServices } from "./services/lista_services.js";
-import { hashControllers } from "./controllers/hashControllers.js";
+import { hashControllers } from "./hashControllers/hashControllers.js";
 import { initializeCategoryControlsAdmin } from "./controllers/productos/categoryControlsAdmin.js";
 
 document.addEventListener("DOMContentLoaded", async () => {

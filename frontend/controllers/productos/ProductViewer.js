@@ -2,18 +2,7 @@ import { modalControllers } from "../../modal/modal.js";
 import { eventListenerBotones } from "./botonesViewer.js";
 import { getAmountSelectHTML, getSizesSelectHTML } from "./amountSizesHTML.js";
 
-export const mostrarProducto = async (
-  id,
-  name,
-  price,
-  imagePath,
-  description,
-  sizes,
-  hayStock,
-  section,
-  generalStock,
-  discount
-) => {
+export function mostrarProducto() {
   modalControllers.baseModal();
   const modal = document.getElementById("modal");
   const mostrarProducto = modal.querySelector("[data-table]");
@@ -26,7 +15,7 @@ export const mostrarProducto = async (
       <div class="col-md-6">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-indicators">
-            ${imagePath
+            ${this.imagePath
               .map(
                 (_, index) => `
               <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${index}" class="${
@@ -39,22 +28,32 @@ export const mostrarProducto = async (
               .join("")}
           </div>
           <div class="carousel-inner">
-            ${imagePath
+            ${this.imagePath
               .map(
                 (img, index) => `
-              <div class="carousel-item ${index === 0 ? "active" : ""}">
-                <img src="${img}" class="d-block w-100" alt="Imagen ${
+                <div class="carousel-item ${index === 0 ? "active" : ""}">
+                  <img src="${img}" class="d-block w-100" alt="Imagen ${
                   index + 1
                 }">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Imagen ${index + 1}</h5>
-                  <p>Descripción de la imagen ${index + 1}</p>
+                  ${
+                    this.hayStock
+                      ? `
+                        <button id="compartir-producto" class="btn btn-outline-secondary share-button">
+                    <i class="fa-solid fa-share-nodes"></i> Compartir
+                  </button>
+                      `
+                      : ""
+                  }
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5>Imagen ${index + 1}</h5>
+                    <p>Descripción de la imagen ${index + 1}</p>
+                  </div>
                 </div>
-              </div>
-            `
+              `
               )
               .join("")}
           </div>
+
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Anterior</span>
@@ -68,18 +67,38 @@ export const mostrarProducto = async (
   
       <!-- Columna derecha: Información del producto y selección de talles -->
       <div class="col-md-6">
-        <h2 class="product-title-bold mt-2" style="font-size: 1.3rem;">${name}</h2>
-        <h3 class="product-price text-primary-bold mt-2" style="font-weight: bold; font-size: 1.25em;">$${price}</h3>
-        <p class="product-description text-muted">${description}</p>
+        <h2 class="product-title-bold mt-2" style="font-size: 1.3rem;">${
+          this.name
+        }</h2>
+        <h3 class="product-price text-primary-bold mt-2" style="font-weight: bold; font-size: 1.25em;"> ${
+          this.discount && this.hayStock
+            ? `<span class="original-price">
+          $${this.price.toFixed(2)}
+          </span>
+          <br>
+          <span >
+          $${(this.price * (1 - this.discount / 100)).toFixed(2)}
+          </span>
+           <span class="discount-tag">
+          ${this.discount}% off
+          </span>
+          `
+            : `<span class=" text-muted">$${this.price.toFixed(2)}</span> `
+        }</h3>
+        <p class="product-description text-muted">${this.description}</p>
         
-        ${hayStock ? "" : '<div class="alert alert-warning">Sin stock</div>'}
+        ${
+          this.hayStock
+            ? ""
+            : '<div class="alert alert-warning">Sin stock</div>'
+        }
   
         <!-- Selección de talla o cantidad -->
         ${
-          hayStock
-            ? !generalStock
-              ? `${getSizesSelectHTML(sizes)}`
-              : `${getAmountSelectHTML(generalStock)}`
+          this.hayStock
+            ? !this.generalStock
+              ? `${getSizesSelectHTML.call(this)}`
+              : `${getAmountSelectHTML.call(this)}`
             : `
           <div class="main-container">
             <div class="text-center">
@@ -98,19 +117,13 @@ export const mostrarProducto = async (
         }
   
         <!-- Botón de compartir -->
-        ${
-          hayStock
-            ? `<div class="d-flex justify-content-center mt-3">
-              <a id="compartir-producto" class="btn btn-outline-secondary"><i class="fa-solid fa-share-nodes"></i> Compartir</a>
-            </div>`
-            : ""
-        }
+       
       </div>
     </div>
   
     <!-- Fila inferior: Calcular envío y productos similares -->
     ${
-      hayStock
+      this.hayStock
         ? `<div class="row mx-auto  align-items-center">
             <div class=" mt-2">
               <h5>Calcular envío</h5>
@@ -135,16 +148,5 @@ export const mostrarProducto = async (
     </div>
   </div>
   `;
-
-  // Manejar eventos para los botones
-  eventListenerBotones(
-    id,
-    name,
-    price,
-    imagePath,
-    sizes,
-    section,
-    generalStock,
-    discount
-  );
-};
+  eventListenerBotones.call(this);
+}

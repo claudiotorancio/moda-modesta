@@ -15,7 +15,9 @@ const destacadosProduct = async (req, res) => {
         { generalStock: { $gt: 0 } }, // Productos con generalStock mayor a 0
         { "sizes.stock": { $gt: 0 } }, // O productos con al menos un tamaño con stock mayor a 0
       ],
-    });
+    })
+      .sort({ discount: -1 })
+      .limit(20);
 
     // Enviar los productos destacados como respuesta
     res.json(productosDestacados);
