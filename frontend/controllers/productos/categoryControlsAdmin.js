@@ -93,7 +93,8 @@ export async function initializeCategoryControlsAdmin() {
           producto.isActive,
           producto.inCart,
           producto.section,
-          producto.generalStock
+          producto.generalStock,
+          producto.discount
         );
 
         let tarjetaProducto;

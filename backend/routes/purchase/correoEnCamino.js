@@ -4,21 +4,6 @@ const correoEnCamino = async (req, res) => {
   try {
     const { email, name, producto } = req.body;
 
-    // Verificar que el campo email está presente
-    if (!email) {
-      return res
-        .status(400)
-        .json({ error: "El correo electrónico es requerido." });
-    }
-
-    // Validar el formato del correo electrónico
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res
-        .status(400)
-        .json({ error: "El correo electrónico proporcionado no es válido." });
-    }
-
     // Construir el contenido del correo
     const contentHTML = `
     <div style="font-family: Arial, sans-serif; color: #333;">

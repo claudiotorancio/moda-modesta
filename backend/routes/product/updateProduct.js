@@ -22,6 +22,7 @@ const updateProduct = async (req, res) => {
       generalStock,
       isFeatured,
       id,
+      discount,
     } = req.body;
 
     await connectToDatabase();
@@ -39,6 +40,7 @@ const updateProduct = async (req, res) => {
       price,
       description,
       isFeatured,
+      discount,
     };
 
     if (generalStock !== undefined) {

@@ -10,7 +10,8 @@ export async function eventListenerBotones(
   imagePath,
   sizes,
   section,
-  generalStock
+  generalStock,
+  discount
 ) {
   //evento productos similares
   const botonSimilares = document.getElementById("toggle-similares");
@@ -80,7 +81,8 @@ export async function eventListenerBotones(
         talleSeleccionado,
         section,
         generalStock,
-        quantity
+        quantity,
+        discount
       );
     });
   } else {

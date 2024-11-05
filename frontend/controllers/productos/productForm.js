@@ -62,7 +62,10 @@ export class ProductForm {
             <div class="form-group">
               <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" name="description" required data-description></textarea>
             </div>
-            
+            <div class="form-group">
+            <input class="form-control mt-3 mb-3 p-2" type="number" min="0" max="100" placeholder="Descuento (%)" name="discount" data-discount>
+            </div>
+
             <!-- Talles disponibles y cantidad de stock -->
          
             <div class="form-group mb-4 sizes-container"> <!-- Añade una clase aquí -->
@@ -183,6 +186,8 @@ export class ProductForm {
     const price = parseFloat(document.querySelector("[data-price]").value);
     const description = document.querySelector("[data-description]").value;
     const isFeatured = document.getElementById("isFeatured").checked;
+    const discount =
+      parseInt(document.querySelector("[data-discount]").value) || 0; // Capturar el descuento
 
     let productData = new FormData();
     productData.append("name", name);
@@ -190,6 +195,7 @@ export class ProductForm {
     productData.append("description", description);
     productData.append("section", this.sectionSelect.value);
     productData.append("isFeatured", isFeatured);
+    productData.append("discount", discount); // Agregar el descuento a los datos
 
     // Agrega cada archivo de imagen al FormData
     const images = document.querySelector("[data-imageUrls]").files;
@@ -199,13 +205,11 @@ export class ProductForm {
 
     // Capturar datos de stock dependiendo de la sección seleccionada
     if (this.sectionSelect.value === "opcion3") {
-      // Si es "Diversos", capturar el stock general
       productData.append(
         "generalStock",
         parseInt(document.getElementById("generalStock").value) || 0
       );
     } else {
-      // Si no es "Diversos", capturar los talles y sus stocks
       const sizesStock = this.collectSizesAndStock();
       productData.append("sizes", JSON.stringify(sizesStock));
     }

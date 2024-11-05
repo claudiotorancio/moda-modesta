@@ -11,19 +11,18 @@ export async function comprarProducto(
   talleSeleccionado, // Cantidad cuando es de 'opcion3'
   section,
   generalStock,
-  quantityInput
+  quantityInput,
+  discount
 ) {
+  console.log(discount);
   try {
     let stockSeleccionado;
-    let cantidad = quantityInput; // Por defecto, la cantidad es 1
+    let cantidad = Math.max(0, parseInt(quantityInput)); // Por defecto, la cantidad es 1
 
     // Verificar si es de la sección 'opcion3'
     if (section === "opcion3") {
       // En 'opcion3', 'talleSeleccionado' contiene la cantidad seleccionada
       stockSeleccionado = generalStock;
-
-      // Asignar la cantidad seleccionada
-      cantidad = Math.max(0, parseInt(quantityInput));
 
       // Verificar que haya suficiente stock general
       if (cantidad > stockSeleccionado) {
@@ -63,7 +62,9 @@ export async function comprarProducto(
       section: section,
       stock: stockSeleccionado, // Stock del talle o general, dependiendo de la sección
       cantidad: cantidad, // Incluir la cantidad seleccionada
+      discount: discount,
     };
+    console.log(producto);
 
     // Agregar producto al carrito
     await carrito.agregarProducto({

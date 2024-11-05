@@ -90,7 +90,8 @@ export async function initializeCategoryControls() {
           producto.sizes,
           hayStock,
           producto.section,
-          producto.generalStock
+          producto.generalStock,
+          producto.discount
         );
 
         let tarjetaProducto;

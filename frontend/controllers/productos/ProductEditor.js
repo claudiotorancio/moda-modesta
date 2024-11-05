@@ -16,7 +16,8 @@ export class ProductEditor {
     sizes,
     isFeatured,
     section,
-    generalStock
+    generalStock,
+    discount
   ) {
     this.renderEditor(
       id,
@@ -27,7 +28,8 @@ export class ProductEditor {
       sizes,
       isFeatured,
       section,
-      generalStock
+      generalStock,
+      discount
     );
     this.setupImageCheckListeners();
     this.setupGeneralStockCheck();
@@ -44,7 +46,8 @@ export class ProductEditor {
     sizes,
     isFeatured,
     section,
-    generalStock
+    generalStock,
+    discount
   ) {
     modalControllers.baseModal();
     this.productoEdicion.innerHTML = `
@@ -96,6 +99,11 @@ export class ProductEditor {
         <div class="form-group">
           <input class="form-control mt-3 mb-3 p-2" placeholder="precio" type="text" value="${price}" required data-precio>
         </div>
+        <div class="form-group">
+      <input class="form-control mt-3 mb-3 p-2" placeholder="descuento (%)" type="number" min="0" max="100" value="${
+        discount || 0
+      }" required data-descuento>
+    </div>
         <div class="form-group">
           <textarea class="form-control mt-3 mb-2 p-2" placeholder="Descripción" required data-description>${description}</textarea>
         </div>
@@ -268,6 +276,7 @@ export class ProductEditor {
       const price = document.querySelector("[data-precio]").value;
       const description = document.querySelector("[data-description]").value;
       const isFeatured = document.querySelector("#isFeatured").checked;
+      const discount = document.querySelector("[data-descuento]").value;
 
       const selectedSizes = Array.from(
         document.querySelectorAll('input[name="sizes"]:checked')
@@ -295,6 +304,11 @@ export class ProductEditor {
       const dataEdit = new FormData();
 
       dataEdit.append("id", id);
+      dataEdit.append("name", name);
+      dataEdit.append("price", price);
+      dataEdit.append("description", description);
+      dataEdit.append("isFeatured", isFeatured);
+      dataEdit.append("discount", discount);
 
       if (imagePath1) {
         dataEdit.append("imagePath", imagePath1);
@@ -309,11 +323,6 @@ export class ProductEditor {
           document.querySelector("[data-oldPath2]").value
         );
       }
-
-      dataEdit.append("name", name);
-      dataEdit.append("price", price);
-      dataEdit.append("description", description);
-      dataEdit.append("isFeatured", isFeatured);
 
       // Lógica para manejar sizes y generalStock
       if (selectedSizes.length > 0 && generalStock !== null) {

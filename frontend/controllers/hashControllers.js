@@ -42,7 +42,8 @@ export async function hashControllers() {
         producto.sizes, // Pasar las tallas con su stock
         hayStock,
         producto.section,
-        producto.generalStock
+        producto.generalStock,
+        producto.discount
       );
     }
 

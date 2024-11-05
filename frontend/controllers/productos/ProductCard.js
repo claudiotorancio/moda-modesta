@@ -14,7 +14,8 @@ export class ProductCard {
     isActive,
     inCart,
     section,
-    generalStock
+    generalStock,
+    discount
   ) {
     this.id = id;
     this.name = name;
@@ -28,6 +29,7 @@ export class ProductCard {
     this.inCart = inCart;
     this.section = section;
     this.generalStock = generalStock;
+    this.discount = discount;
   }
 
   render() {
@@ -35,7 +37,13 @@ export class ProductCard {
     card.classList.add("card");
 
     card.innerHTML = `
-    
+     ${
+       this.discount
+         ? `<div class="offer-badge">
+      <span>¡${this.discount}% de Descuento!</span>
+    </div>`
+         : ""
+     }
     <div class="container mx-auto mt-4">
   <div class="img-card">
     <img class="card-img-top" src="${this.imagePath[0]}" alt="">
@@ -87,7 +95,8 @@ export class ProductCard {
           this.sizes,
           this.hayStock,
           this.section,
-          this.generalStock
+          this.generalStock,
+          this.discount
         );
       });
 
@@ -129,7 +138,8 @@ export class ProductCard {
         this.sizes,
         this.isFeatured,
         this.section,
-        this.generalStock
+        this.generalStock,
+        this.discount
       );
     });
   }

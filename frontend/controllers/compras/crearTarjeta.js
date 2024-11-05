@@ -112,7 +112,7 @@ export function crearTarjeta({
     .querySelector("[data-aceptarPedido]")
     .addEventListener("click", async () => {
       await aceptarPedidoHandler(email, name, producto, id);
-      await this.renderCompraLista();
+      await renderCompraLista();
     });
 
   card

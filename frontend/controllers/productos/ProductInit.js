@@ -1,10 +1,7 @@
-import {
-  getAmountSelectHTML,
-  getSizesSelectHTML,
-  mostrarProducto,
-} from "./ProductViewer.js";
+import { mostrarProducto } from "./ProductViewer.js";
 import { comprarProducto } from "../carrito/comprarProducto.js";
 import { modalControllers } from "../../modal/modal.js";
+import { getAmountSelectHTML, getSizesSelectHTML } from "./amountSizesHTML.js";
 
 export class ProductInit {
   constructor(
@@ -16,7 +13,8 @@ export class ProductInit {
     sizes,
     hayStock,
     section,
-    generalStock
+    generalStock,
+    discount
   ) {
     this.id = id;
     this.name = name;
@@ -27,6 +25,7 @@ export class ProductInit {
     this.hayStock = hayStock;
     this.section = section; // Añadimos la categoría (opcion3)
     this.generalStock = generalStock;
+    this.discount = discount;
   }
 
   updateModalContent(content) {
@@ -76,7 +75,8 @@ export class ProductInit {
             this.sizes,
             this.hayStock,
             this.section,
-            this.generalStock
+            this.generalStock,
+            this.discount
           );
         } catch (err) {
           console.error(err);
@@ -96,7 +96,6 @@ export class ProductInit {
 
       if (event.target.id === "addToCartBtn") {
         const messageElement = document.getElementById("message");
-        console.log(messageElement);
         if (!talleSeleccionado) {
           messageElement.textContent = `Debes seleccionar un talle`;
           document.getElementById("messageContainer").style.display = "block";
@@ -111,7 +110,8 @@ export class ProductInit {
         talleSeleccionado,
         this.section,
         this.generalStock,
-        quantity
+        quantity,
+        this.discount
       );
     });
   }
@@ -136,7 +136,8 @@ export class ProductInit {
         undefined,
         this.section,
         this.generalStock,
-        cantidadSeleccionada
+        cantidadSeleccionada,
+        this.discount
       );
     });
   }
@@ -152,25 +153,36 @@ export class ProductInit {
     <div class="overlay-icon">
       <i class="fas fa-search-plus"></i>
     </div>
-    <div class="offer-badge">
-      <span>¡20% de Descuento!</span>
-    </div>
+    ${
+      this.discount && this.hayStock
+        ? `<div class="offer-badge">
+      <span>¡${this.discount}% de Descuento!</span>
+    </div>`
+        : ""
+    }
   </div>
   <div class="card-body text-center">
     <h3 class="card-text text-muted mb-2">${this.name}</h3>
     <p class="card-title text-center font-weight-bold">
-      <span class="text-decoration-line-through text-muted">$${this.price.toFixed(
+    ${
+      this.discount && this.hayStock
+        ? `<span class="text-decoration-line-through text-muted">$${this.price.toFixed(
+            2
+          )}</span> 
+      $${(this.price - (this.price * this.discount) / 100).toFixed(
         2
-      )}</span> 
-      $${(this.price * 0.8).toFixed(2)} <!-- Precio con descuento -->
-    </p>
+      )} <!-- Precio con descuento -->
+    </p>`
+        : `<span class=" text-muted">$${this.price.toFixed(2)}</span> `
+    }
+      
     <div class=" justify-content-center gap-2 mt-2">
       <a href="#" class="btn btn-primary m-1 ">Detalle</a>
       ${this.getMensajeStockHtml()}
      </div>
     <ul class="list-unstyled mt-2">
       <li><i class="fas fa-check-circle"></i> Material de alta calidad</li>
-      <li><i class="fas fa-check-circle"></i> Disponible en múltiples colores</li>
+      <li><i class="fas fa-check-circle"></i> Stock permanente</li>
     </ul>
   </div>
 </div>
@@ -201,7 +213,8 @@ export class ProductInit {
           this.sizes,
           this.hayStock,
           this.section,
-          this.generalStock
+          this.generalStock,
+          this.discount
         );
       } catch (err) {
         console.log(err);

@@ -32,7 +32,8 @@ export const controllers = {
             producto.isActive,
             producto.inCart,
             producto.section,
-            producto.generalStock
+            producto.generalStock,
+            producto.discount
           );
           contenedorDestacados.appendChild(card.render());
         }
@@ -65,7 +66,8 @@ export const controllers = {
           producto.isActive,
           producto.inCart,
           producto.section,
-          producto.generalStock
+          producto.generalStock,
+          producto.discount
         );
 
         const contenedorSeccion = document.querySelector(
@@ -102,7 +104,8 @@ export const controllers = {
           producto.sizes,
           hayStock,
           producto.section,
-          producto.generalStock
+          producto.generalStock,
+          producto.discount
         );
         contenedorDestacados.appendChild(card.productoInicio());
       }
@@ -129,7 +132,8 @@ export const controllers = {
           producto.sizes,
           hayStock,
           producto.section,
-          producto.generalStock
+          producto.generalStock,
+          producto.discount
         );
 
         const contenedorSeccion = document.querySelector(

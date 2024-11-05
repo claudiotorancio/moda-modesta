@@ -17,7 +17,6 @@ export async function cargarCarritoDesdeStorage() {
 
 export function actualizarNotificacionCarrito() {
   const items = this.items;
-  console.log(items);
 
   const carritoContainer = document.querySelector(".carrito-link");
   if (!carritoContainer) {
@@ -72,7 +71,9 @@ export async function agregarProducto(product, size) {
           imagePath: product.imagePath[0],
           productId: sanitizedProductId,
           category: product.section,
+          discount: product.discount,
         };
+        console.log(productoNuevo);
         await carritoServices.addProductCart(productoNuevo);
         this.items.push(productoNuevo);
       } else {

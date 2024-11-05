@@ -162,11 +162,6 @@ const validacionesSignin = [
 ];
 
 const validacionesProducto = [
-  // (req, res, next) => {
-  //   // Ver los datos que están llegando a la validación
-  //   console.log("Datos entrantes:", req.body);
-  //   next(); // Continúa al siguiente middleware
-  // },
   validarCampo("name", "El nombre es obligatorio."),
   validarCampo("price", "El precio es obligatorio.", true),
   validarCampo("description", "La descripción es obligatoria."),
@@ -178,7 +173,6 @@ const validacionesProducto = [
   body("sizes")
     .optional()
     .custom((value) => {
-      // Verificar si el value es una cadena JSON y parsear
       try {
         const sizes = typeof value === "string" ? JSON.parse(value) : value;
         if (
@@ -199,7 +193,13 @@ const validacionesProducto = [
       }
     })
     .withMessage("El formato de talles y stocks no es válido."),
+  body("discount")
+    .optional()
+    .isFloat({ min: 0, max: 100 })
+    .withMessage("El descuento debe ser un número entre 0 y 100."),
 ];
+
+export default validacionesProducto;
 
 const validacionesProductoActualizacion = [
   // (req, res, next) => {
@@ -278,6 +278,10 @@ const validacionesProductoActualizacion = [
       }
     })
     .withMessage("El formato de talles y stocks no es válido."),
+  body("discount")
+    .optional()
+    .isFloat({ min: 0, max: 100 })
+    .withMessage("El descuento debe ser un número entre 0 y 100."),
 ];
 
 export {
