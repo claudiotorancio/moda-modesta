@@ -64,7 +64,6 @@ export async function eventListenerBotones(
 
         if (event.target.id === "addToCartBtn") {
           const messageElement = document.getElementById("message");
-          console.log(messageElement);
           if (!talleSeleccionado) {
             messageElement.textContent = `Debes seleccionar un talle`;
             document.getElementById("messageContainer").style.display = "block";

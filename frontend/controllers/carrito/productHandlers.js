@@ -73,7 +73,6 @@ export async function agregarProducto(product, size) {
           category: product.section,
           discount: product.discount,
         };
-        console.log(productoNuevo);
         await carritoServices.addProductCart(productoNuevo);
         this.items.push(productoNuevo);
       } else {

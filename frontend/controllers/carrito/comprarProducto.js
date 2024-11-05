@@ -14,7 +14,6 @@ export async function comprarProducto(
   quantityInput,
   discount
 ) {
-  console.log(discount);
   try {
     let stockSeleccionado;
     let cantidad = Math.max(0, parseInt(quantityInput)); // Por defecto, la cantidad es 1
@@ -64,7 +63,6 @@ export async function comprarProducto(
       cantidad: cantidad, // Incluir la cantidad seleccionada
       discount: discount,
     };
-    console.log(producto);
 
     // Agregar producto al carrito
     await carrito.agregarProducto({
