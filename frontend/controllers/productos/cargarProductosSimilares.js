@@ -51,8 +51,6 @@ export async function cargarProductosSimilares() {
       if (target) {
         const id = target.dataset.id;
 
-        window.location.hash = `product-${id}`;
-
         const producto = await productoServices.detalleProducto(id);
 
         if (!producto) {
@@ -61,6 +59,10 @@ export async function cargarProductosSimilares() {
         }
 
         try {
+          const hayStock =
+            producto.generalStock > 0 || // Verifica stock general para "Diversos"
+            producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
+
           const productoSimilar = new ProductInit(
             producto._id,
             producto.name,
@@ -68,7 +70,10 @@ export async function cargarProductosSimilares() {
             producto.imagePath,
             producto.description,
             producto.sizes,
-            producto.hayStock
+            hayStock,
+            producto.section,
+            producto.generalStock,
+            producto.discount
           );
           productoSimilar.mostrarProducto();
         } catch (error) {

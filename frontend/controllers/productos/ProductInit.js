@@ -29,6 +29,7 @@ export class ProductInit {
   }
 
   async mostrarProducto() {
+    window.location.hash = `product-${this.id}`;
     await mostrarProducto.call(this);
   }
 
@@ -196,8 +197,6 @@ export class ProductInit {
 
     card.querySelector("a").addEventListener("click", async (e) => {
       e.preventDefault();
-      window.location.hash = `product-${this.id}`;
-
       try {
         this.mostrarProducto();
       } catch (err) {
