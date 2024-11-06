@@ -1,6 +1,6 @@
-import { ProductCard } from "../../controllers/productos/ProductCard.js"; // Ajusta la ruta según tu estructura
+import { ProductCard } from "../../productoControl/ProductCard.js"; // Ajusta la ruta según tu estructura
 import productoServices from "../../services/product_services.js"; // Importa el servicio que obtiene los productos
-import { ProductInit } from "./ProductInit.js";
+import { Producto } from "./Producto.js";
 
 export const controllers = {
   //Mostrar productos admin
@@ -95,7 +95,7 @@ export const controllers = {
         const hayStock =
           producto.generalStock > 0 || // Verifica stock general para "Diversos"
           producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
-        const card = new ProductInit(
+        const card = new Producto(
           producto._id,
           producto.name,
           producto.price,
@@ -123,7 +123,7 @@ export const controllers = {
           producto.generalStock > 0 || // Verifica stock general para "Diversos"
           producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
 
-        const productCard = new ProductInit(
+        const productCard = new Producto(
           producto._id,
           producto.name,
           producto.price,

@@ -1,6 +1,10 @@
-import { ProductEventHandler } from "../productos/ProductEventHandler.js";
+import { ProductCard } from "../../productoControl/ProductCard.js";
 import productoServices from "../../services/product_services.js";
 import { StockControllers } from "./stock-controllers.js";
+import {
+  handleActivate,
+  handleDesactivate,
+} from "../../productoControl/productEventHandler.js";
 
 export async function agregarEventListenerBotones() {
   const titulo = document.querySelector("[data-titulo]");
@@ -18,31 +22,19 @@ export async function agregarEventListenerBotones() {
           throw new Error("Datos del producto no disponibles");
         }
 
-        const {
-          name,
-          price,
-          imagePath,
-          description,
-          sizes,
-          isFeatured,
-          section,
-          generalStock,
-        } = product;
-
-        // Llamar a ProductEventHandler.handleEdit con todos los parámetros
-        await ProductEventHandler.handleEdit(
-          idProducto,
-          name,
-          price,
-          imagePath,
-          description,
-          sizes,
-          isFeatured,
-          section,
-          generalStock
+        const productoDetalles = new ProductCard(
+          product._id,
+          product.name,
+          product.price,
+          product.imagePath,
+          product.description,
+          product.sizes,
+          product.isFeatured,
+          product.section,
+          product.generalStock
         );
 
-        await stockControllersInstance.renderStock();
+        await productoDetalles.handleEdit();
       } catch (error) {
         console.error("Error al obtener los detalles del producto:", error);
         alert("Ocurrió un error al obtener los detalles del producto.");
@@ -58,7 +50,7 @@ export async function agregarEventListenerBotones() {
 
       try {
         // Desactivar el producto
-        await ProductEventHandler.handleDesactivate(idProducto);
+        await handleDesactivate(idProducto);
         // Recargar los productos después de desactivar
         await stockControllersInstance.renderStock();
       } catch (error) {
@@ -74,7 +66,7 @@ export async function agregarEventListenerBotones() {
       const idProducto = event.target.dataset.id;
       try {
         // Esperar a que se complete la desactivación
-        await ProductEventHandler.handleActivate(idProducto);
+        await handleActivate(idProducto);
 
         // Recargar los productos después de desactivar
         await stockControllersInstance.renderStock();
@@ -93,10 +85,7 @@ export async function agregarEventListenerBotones() {
 
       try {
         // Esperar a que se complete la desactivación
-        await ProductEventHandler.handleNotification(
-          idProducto,
-          idNotificaciones
-        );
+        await handleNotification(idProducto, idNotificaciones);
 
         // Recargar los productos después de desactivar
         await stockControllersInstance.renderStock();

@@ -1,5 +1,5 @@
 import productoServices from "../../services/product_services.js";
-import { ProductInit } from "./ProductInit.js";
+import { Producto } from "./Producto.js";
 
 export async function initializeCategoryControls() {
   // Obtener la opción de la query string
@@ -81,7 +81,7 @@ export async function initializeCategoryControls() {
             ? producto.generalStock > 0 // Verifica stock general para "Diversos"
             : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
 
-        const productCategory = new ProductInit(
+        const productCategory = new Producto(
           producto._id,
           producto.name,
           producto.price,

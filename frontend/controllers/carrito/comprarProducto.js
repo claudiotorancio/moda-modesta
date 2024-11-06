@@ -43,7 +43,7 @@ export async function comprarProducto(
       const sizeObject = sizes.find((item) => item.size === talleSeleccionado);
 
       // Obtener el stock del talle seleccionado
-      stockSeleccionado = sizeObject.stock;
+      stockSeleccionado = sizeObject.stock || undefined;
 
       // Verificar si hay stock disponible para la talla seleccionada
       if (stockSeleccionado <= 0) {

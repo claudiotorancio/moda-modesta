@@ -1,5 +1,4 @@
 import { modalControllers } from "../../modal/modal.js";
-import { eventListenerBotones } from "./botonesViewer.js";
 import { getAmountSelectHTML, getSizesSelectHTML } from "./amountSizesHTML.js";
 
 export function mostrarProducto() {
@@ -148,5 +147,9 @@ export function mostrarProducto() {
     </div>
   </div>
   `;
-  eventListenerBotones.call(this);
+  this.cargarProductosSimilares?.();
+  this.calcularEnvio?.();
+  this.agregarProductoCarrito?.();
+  this.compartirProducto?.();
+  this.notificacionesSinStock?.();
 }

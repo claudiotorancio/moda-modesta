@@ -2,8 +2,13 @@ import { mostrarProducto } from "./ProductViewer.js";
 import { comprarProducto } from "../carrito/comprarProducto.js";
 import { modalControllers } from "../../modal/modal.js";
 import { getAmountSelectHTML, getSizesSelectHTML } from "./amountSizesHTML.js";
+import { cargarProductosSimilares } from "./cargarProductosSimilares.js";
+import { calcularEnvio } from "./calcularEnvio.js";
+import { agregarProductoCarrito } from "./agregarProductoCarrito.js";
+import { compartirProducto } from "./compartirProducto.js";
+import { notificacionesSinStock } from "./notificacionesSinStock.js";
 
-export class ProductInit {
+export class Producto {
   constructor(
     id,
     name,
@@ -31,6 +36,26 @@ export class ProductInit {
   async mostrarProducto() {
     window.location.hash = `product-${this.id}`;
     await mostrarProducto.call(this);
+  }
+
+  async cargarProductosSimilares() {
+    await cargarProductosSimilares.call(this);
+  }
+
+  async calcularEnvio() {
+    await calcularEnvio.call(this);
+  }
+
+  async agregarProductoCarrito() {
+    await agregarProductoCarrito.call(this);
+  }
+
+  async compartirProducto() {
+    await compartirProducto.call(this);
+  }
+
+  async notificacionesSinStock() {
+    await notificacionesSinStock.call(this);
   }
 
   updateModalContent(content) {
@@ -69,7 +94,6 @@ export class ProductInit {
       .querySelector("a.btn-info")
       .addEventListener("click", async (e) => {
         e.preventDefault();
-        window.location.hash = `product-${this.id}`;
         try {
           this.mostrarProducto();
         } catch (err) {
