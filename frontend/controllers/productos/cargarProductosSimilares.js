@@ -57,6 +57,7 @@ export async function cargarProductosSimilares() {
                 <span >
                 $${(producto.price * (1 - producto.discount / 100)).toFixed(2)}
                 </span>
+                <br>
                  <span class="discount-tag">
                 ${producto.discount}% off
                 </span>
