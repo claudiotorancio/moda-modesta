@@ -35,7 +35,7 @@ export function mostrarProducto() {
                   index + 1
                 }">
                   ${
-                    this.hayStock
+                    index === 0 && this.hayStock
                       ? `
                         <button id="compartir-producto" class="btn btn-outline-secondary share-button">
                     <i class="fa-solid fa-share-nodes"></i> Compartir

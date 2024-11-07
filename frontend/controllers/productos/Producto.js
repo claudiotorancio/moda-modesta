@@ -75,11 +75,21 @@ export class Producto {
 
   getZoomImageHtml() {
     return `
-      <div class="zoom-container position-relative">
-        <img class="card-img-top img-fluid zoom-image" src="${this.imagePath[0]}" alt="imagen del producto">
-      </div>
-      <div class="d-flex justify-content-center">
-        <a href="#" class="btn btn-info btn-sm mt-3">Ver Detalles</a>
+      <div class="zoom-container position-relative d-flex flex-column align-items-center p-3" style="border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+        <!-- Imagen con efecto de sombra y hover -->
+        <div class="image-wrapper position-relative" style="overflow: hidden; border-radius: 8px;">
+          <img class="zoom-image img-fluid" src="${this.imagePath[0]}" alt="Imagen del producto" style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;">
+        </div>
+        
+        <!-- Descripción breve -->
+        <div class="product-description text-center mt-3" style="color: #333;">
+          <p class="m-0" style="font-size: 0.95rem;">${this.description}</p>
+        </div>
+  
+        <!-- Botón de detalles -->
+        <div class="d-flex justify-content-center">
+          <a href="#" class="btn btn-info btn-sm mt-3" style="padding: 0.4rem 1rem; font-size: 0.9rem;">Ver Detalles</a>
+        </div>
       </div>
     `;
   }
