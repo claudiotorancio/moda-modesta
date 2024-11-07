@@ -1,6 +1,6 @@
 export function getAmountSelectHTML() {
   return `
-      <div class="form-group mt-3 mb-4">
+       <div class="main-container text-center mb-4">
         <label for="quantity" class="form-label">Cantidad</label>
         <div class="d-flex align-items-center">
           <button type="button" id="decrement" class="btn btn-outline-secondary" disabled>-</button>
@@ -41,6 +41,7 @@ export function getSizesSelectHTML() {
   }
 
   return `
+     <div class="main-container text-center mb-4">
       <div class="form-group mt-3 mb-4">
         <label for="variation_1" class="form-label">Selecciona un talle</label>
         <select id="variation_1" class="form-select" aria-label="Selecciona un talle" required>
@@ -67,6 +68,7 @@ export function getSizesSelectHTML() {
       <div id="messageContainer" style="display: none;" class="mt-3">
     <p id="message" class="alert alert-warning text-center"></p>
     </div>
+     </div>
   
     `;
 }
