@@ -10,10 +10,10 @@ import { handleFinalizePurchase } from "./finalizeHandlers.js";
 export function mostrarCarrito() {
   const summaryDetails = document.querySelector("[data-table]");
 
-  const subtotal = this.calcularSubtotal();
-  const total = this.calcularTotal();
+  const subtotal = this.calcularSubtotal?.();
+  const total = this.calcularTotal?.();
 
-  if (this.items.length > 0) {
+  if (this.items?.length > 0) {
     const progresoCompra = document.createElement("div");
     progresoCompra.id = "progreso-compra";
     progresoCompra.classList.add("barra-progreso");
@@ -37,7 +37,7 @@ export function mostrarCarrito() {
     <table class="table table-scrollable">
       <tbody>
         ${this.items
-          .map((item) => {
+          ?.map((item) => {
             // Calcula el precio con descuento para cada artículo
             (item.price * (1 - item.discount / 100)).toFixed(2);
             return `
@@ -146,8 +146,7 @@ export function mostrarCarrito() {
       <button class="btn btn-primary" id="finalize-purchase" disabled>Siguiente</button>
     </div>
   </div>
-</div>
-`;
+</div>`;
 
     summaryDetails.insertAdjacentHTML("beforeend", carritoContent);
 
@@ -185,7 +184,7 @@ export function mostrarCarrito() {
         const productId = event.target.dataset.id;
         if (productId) {
           await this.eliminarProducto?.(productId);
-          this.mostrarCarrito(); // Refresh the cart view
+          this.mostrarCarrito?.(); // Refresh the cart view
         } else {
           console.error("ID del producto no encontrado:", event.target);
         }

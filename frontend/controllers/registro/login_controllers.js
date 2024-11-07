@@ -75,8 +75,8 @@ export class LoginControllers {
                         </div>
                         <div class="form-group mt-3">
                             <input type="password" id="password" name="password" placeholder="${passwordPlaceholder}" class="input" required  minlength="8"
-    pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"  title="${titleHolder}"
-   autocomplete="current-password">
+                              pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"  title="${titleHolder}"
+                            autocomplete="current-password">
                         </div>
                         <div class="form-group mt-3">
                             <button class="btn btn-primary btn-block" >${buttonLabel}</button>
@@ -87,6 +87,10 @@ export class LoginControllers {
 
                         </div>
                     </form>
+                    </div>
+                            <div id="messageContainer" style="display: none;" class="mt-3">
+                            <p id="message" class="alert alert-warning text-center"></p>
+                     </div>
                 </div>
             </div>
         `;

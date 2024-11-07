@@ -42,9 +42,8 @@ export class LoginServices {
         headers: {
           "Content-Type": "application/json",
         },
-        // Habilita las credenciales solo si es necesario para cookies
-        // credentials: "include",
         body: JSON.stringify(dataUser),
+        // credentials: "include",
       });
 
       const dataResponse = await response.json();
@@ -70,8 +69,12 @@ export class LoginServices {
 
       modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {
-      modalControllers.modalMsgReload(error.message);
       console.error(error);
+      const messageElement = document.getElementById("message");
+      if (messageElement) {
+        messageElement.textContent = `Usuario y o contraseña incorrecta`;
+        document.getElementById("messageContainer").style.display = "block";
+      }
     }
   }
 

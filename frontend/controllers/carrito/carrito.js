@@ -15,7 +15,6 @@ import { CarritoServices } from "../../services/carrito_services.js";
 class Carrito {
   constructor() {
     this.carritoServices = new CarritoServices();
-    this.items = []; // Inicia con un array vacío
     this.costoEnvio = 0;
     this.inicializarEventos();
     this.cargarCarrito();
@@ -38,16 +37,15 @@ class Carrito {
     if (toggleCart) {
       toggleCart.addEventListener("click", (event) => {
         event.preventDefault();
-        this.cargarCarrito();
         modalControllers.baseModal();
-        this.mostrarCarrito();
+        this.cargarCarrito();
       });
     }
   }
 
-  async agregarProducto({ product, size }) {
+  async agregarProducto({ product, unidad }) {
     try {
-      await agregarProducto.call(this, product, size);
+      await agregarProducto.call(this, product, unidad);
       await this.cargarCarrito(); // Recargar carrito después de agregar producto
     } catch (error) {
       console.error("Error al agregar producto:", error);
@@ -92,10 +90,10 @@ class Carrito {
   }
 
   // Limpia el carrito
-  limpiarCarrito() {
+  async limpiarCarrito() {
     this.items = [];
     sessionStorage.removeItem("carrito");
-    this.carritoServices.limpiarCarrito();
+    await this.carritoServices.limpiarCarrito();
   }
 }
 

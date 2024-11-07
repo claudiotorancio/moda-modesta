@@ -138,7 +138,7 @@ export async function handleFinalizePurchase() {
       const email = document.querySelector("#email").value;
       const telefono = document.querySelector("#phoneNumber").value;
 
-      const productos = this.items.map((item) => {
+      const productos = this.items?.map((item) => {
         const size = item.size ? item.size : null;
         return {
           id: item.productId,
@@ -156,7 +156,7 @@ export async function handleFinalizePurchase() {
         email,
         telefono,
         productos,
-        total: this.calcularTotal(),
+        total: this.calcularTotal?.(),
         costoEnvio: this.costoEnvio,
         provincia: this.provinciaDestino,
         codigoPostal: this.cpDestino,
@@ -171,7 +171,7 @@ export async function handleFinalizePurchase() {
           "Hubo un problema al procesar la compra. Por favor, intente nuevamente."
         );
       }
-      this.limpiarCarrito();
+      this.limpiarCarrito?.();
     }
   });
 
@@ -179,10 +179,9 @@ export async function handleFinalizePurchase() {
   document
     .querySelector("#progreso-compra")
     .addEventListener("click", (event) => {
-      console.log("Evento Click Disparado", event.target.dataset.step); // Verifica que el evento se esté disparando
       if (event.target.dataset.step === "1") {
         this.costoEnvio = 0;
-        this.mostrarCarrito();
+        this.mostrarCarrito?.();
       }
     });
 }

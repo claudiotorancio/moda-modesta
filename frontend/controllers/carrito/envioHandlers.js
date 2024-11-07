@@ -58,7 +58,7 @@ export async function handleEnvioFormSubmission(event) {
     this.cpDestino = cpDestino;
 
     // Actualizar el total del carrito
-    const totalCost = this.calcularTotal();
+    const totalCost = this.calcularTotal?.();
     document.querySelector("#final-total").textContent = `$${totalCost.toFixed(
       2
     )}`;
@@ -117,7 +117,7 @@ export function handleCoordinarVendedorChange(event) {
     ? 0
     : parseFloat(document.querySelector("#shipping-total").value || 0);
 
-  const totalCost = this.calcularTotal();
+  const totalCost = this.calcularTotal?.();
   document.querySelector("#final-total").textContent = `$${totalCost.toFixed(
     2
   )}`;

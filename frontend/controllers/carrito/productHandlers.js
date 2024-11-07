@@ -5,10 +5,10 @@ const carritoServices = new CarritoServices();
 
 export async function cargarCarritoDesdeStorage() {
   try {
-    const carrito = await carritoServices.getProductsCart();
-    this.items = carrito || [];
+    this.items = await carritoServices.getProductsCart();
     sessionStorage.setItem("carrito", JSON.stringify(this.items));
     this.actualizarNotificacion?.();
+    return this.items;
   } catch (error) {
     console.error("Error al cargar el carrito desde la base de datos:", error);
     this.items = [];

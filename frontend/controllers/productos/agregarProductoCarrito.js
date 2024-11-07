@@ -15,7 +15,7 @@ export async function agregarProductoCarrito() {
       let stockSeleccionado;
 
       // Comprobar si la sección es 'opcion3'
-      if (this.section === "opcion3") {
+      if (this.generalStock) {
         // No hay talle seleccionado, puedes asignar un valor predeterminado
         const valorQuantity = document.getElementById("quantity").value || 1;
         quantity = Math.max(0, parseInt(valorQuantity));
@@ -67,7 +67,7 @@ export async function agregarProductoCarrito() {
 
         await carrito.agregarProducto({
           product: producto,
-          size: this.section === "opcion3" ? "Un." : talleSeleccionado,
+          unidad: this.generalStock ? "Un." : talleSeleccionado,
         });
       } catch (error) {
         console.log(error);

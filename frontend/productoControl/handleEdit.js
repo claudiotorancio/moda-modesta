@@ -77,7 +77,7 @@ export function handleEdit() {
           <label class="form-check-label" for="isFeatured">Destacar producto</label>
         </div>
         ${
-          this.section !== "opcion3" && this.sizes
+          !this.generalStock && this.sizes
             ? `
           <label for="sizes">Modificar talles y stocks </label>
           <div class="form-row mt-3 mb-3">
