@@ -72,7 +72,7 @@ export class LoginServices {
       console.error(error);
       const messageElement = document.getElementById("message");
       if (messageElement) {
-        messageElement.textContent = `Usuario y o contraseña incorrecta`;
+        messageElement.textContent = `${error.message}`;
         document.getElementById("messageContainer").style.display = "block";
       }
     }
