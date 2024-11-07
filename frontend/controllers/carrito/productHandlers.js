@@ -8,7 +8,7 @@ export async function cargarCarritoDesdeStorage() {
     const carrito = await carritoServices.getProductsCart();
     this.items = carrito || [];
     sessionStorage.setItem("carrito", JSON.stringify(this.items));
-    actualizarNotificacionCarrito.call(this);
+    this.actualizarNotificacion?.();
   } catch (error) {
     console.error("Error al cargar el carrito desde la base de datos:", error);
     this.items = [];
@@ -25,8 +25,9 @@ export function actualizarNotificacionCarrito() {
     carritoContainer.querySelector(".carrito-cantidad");
   const carritoMonto = carritoContainer.querySelector(".carrito-monto");
 
-  const cantidadTotal = this.cantidadTotal();
-  const total = this.calcularTotal();
+  const cantidadTotal = this.cantidadTotal?.();
+  const total = this.calcularTotal?.();
+  console.log(cantidadTotal);
 
   carritoNotificacion.textContent = cantidadTotal > 0 ? cantidadTotal : "0";
   carritoMonto.textContent = total > 0 ? `$${total.toFixed(2)}` : "$0.00";
@@ -67,7 +68,7 @@ export async function agregarProducto(product, size) {
           discount: product.discount,
         };
         await carritoServices.addProductCart(productoNuevo);
-        this.items.push(productoNuevo);
+        this.items?.push(productoNuevo);
       } else {
         console.error("Producto sin stock disponible.");
         return alert("Este producto ya no tiene stock disponible.");

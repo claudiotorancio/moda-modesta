@@ -27,7 +27,6 @@ class Carrito {
       await cargarCarritoDesdeStorage.call(this);
       this.costoEnvio = 0;
       this.mostrarCarrito(); // Muestra el carrito una vez cargado
-      this.actualizarNotificacion();
     } catch (error) {
       console.error("Error al cargar el carrito:", error);
     }
@@ -38,10 +37,9 @@ class Carrito {
     if (toggleCart) {
       toggleCart.addEventListener("click", (event) => {
         event.preventDefault();
-        this.cargarCarrito(); // Carga los productos al iniciar
+        this.cargarCarrito();
         modalControllers.baseModal();
         this.mostrarCarrito();
-        this.actualizarNotificacion();
       });
     }
   }
@@ -50,7 +48,6 @@ class Carrito {
     try {
       await agregarProducto.call(this, product, size);
       await this.cargarCarrito(); // Recargar carrito después de agregar producto
-      this.actualizarNotificacion();
     } catch (error) {
       console.error("Error al agregar producto:", error);
     }
@@ -68,7 +65,6 @@ class Carrito {
   async actualizarCantidad(id, cantidad) {
     try {
       await actualizarCantidad.call(this, id, cantidad);
-      await this.cargarCarrito(); // Recargar carrito después de actualizar cantidad
     } catch (error) {
       console.error("Error al actualizar cantidad:", error);
     }
@@ -87,7 +83,7 @@ class Carrito {
   }
 
   actualizarNotificacion() {
-    return actualizarNotificacionCarrito.call(this);
+    actualizarNotificacionCarrito.call(this);
   }
 
   mostrarCarrito() {

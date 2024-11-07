@@ -38,7 +38,7 @@ export async function agregarProductoCarrito() {
         const sizeObject = this.sizes.find(
           (item) => item.size === selectedSize
         );
-        console.log(this.sizes);
+
         stockSeleccionado = sizeObject.stock;
 
         talleSeleccionado = selectedSize;

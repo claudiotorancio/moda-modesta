@@ -183,7 +183,6 @@ export function mostrarCarrito() {
     summaryDetails.querySelectorAll(".btn-danger").forEach((button) => {
       button.addEventListener("click", async (event) => {
         const productId = event.target.dataset.id;
-        console.log(productId);
         if (productId) {
           await this.eliminarProducto?.(productId);
           this.mostrarCarrito(); // Refresh the cart view
