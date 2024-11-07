@@ -40,6 +40,7 @@ class Carrito {
         this.cargarCarrito();
         modalControllers.baseModal();
         this.mostrarCarrito();
+        this.actualizarNotificacion();
       });
     }
   }

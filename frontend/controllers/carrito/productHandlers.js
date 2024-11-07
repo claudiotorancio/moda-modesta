@@ -27,7 +27,6 @@ export function actualizarNotificacionCarrito() {
 
   const cantidadTotal = this.cantidadTotal?.();
   const total = this.calcularTotal?.();
-  console.log(cantidadTotal);
 
   carritoNotificacion.textContent = cantidadTotal > 0 ? cantidadTotal : "0";
   carritoMonto.textContent = total > 0 ? `$${total.toFixed(2)}` : "$0.00";
