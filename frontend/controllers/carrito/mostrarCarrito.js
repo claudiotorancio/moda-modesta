@@ -39,12 +39,7 @@ export function mostrarCarrito() {
         ${this.items
           .map((item) => {
             // Calcula el precio con descuento para cada artículo
-            const discountedPrice = (
-              item.price *
-              (1 - item.discount / 100)
-            ).toFixed(2);
-            const totalPrice = (discountedPrice * item.cantidad).toFixed(2);
-
+            (item.price * (1 - item.discount / 100)).toFixed(2);
             return `
                <tr>
   <td class="summary-img-wrap">
@@ -188,8 +183,9 @@ export function mostrarCarrito() {
     summaryDetails.querySelectorAll(".btn-danger").forEach((button) => {
       button.addEventListener("click", async (event) => {
         const productId = event.target.dataset.id;
+        console.log(productId);
         if (productId) {
-          await this.eliminarProducto(productId);
+          await this.eliminarProducto?.(productId);
           this.mostrarCarrito(); // Refresh the cart view
         } else {
           console.error("ID del producto no encontrado:", event.target);

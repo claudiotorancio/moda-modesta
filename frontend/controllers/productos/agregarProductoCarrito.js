@@ -1,55 +1,77 @@
-import { comprarProducto } from "../carrito/comprarProducto.js";
+// import { comprarProducto } from "../carrito/comprarProducto.js";
+import Carrito from "../carrito/carrito.js";
+
+const carrito = new Carrito();
 
 export async function agregarProductoCarrito() {
-  // Agregar al carrito
-  const agregarCarritoBtn = document.querySelector("[data-carrito]");
-  if (agregarCarritoBtn) {
-    agregarCarritoBtn.addEventListener("click", async (event) => {
+  const carritoButton = document.querySelector("[data-carrito]");
+
+  if (carritoButton) {
+    carritoButton.addEventListener("click", async (event) => {
+      event.preventDefault();
+
       let talleSeleccionado;
       let quantity;
+      let stockSeleccionado;
 
       // Comprobar si la sección es 'opcion3'
       if (this.section === "opcion3") {
         // No hay talle seleccionado, puedes asignar un valor predeterminado
-        quantity = document.getElementById("quantity").value || 1;
+        const valorQuantity = document.getElementById("quantity").value || 1;
+        quantity = Math.max(0, parseInt(valorQuantity));
+        stockSeleccionado = this.generalStock;
       } else {
         // Obtener el talle seleccionado del select
-
         const sizeSelect = document.getElementById("variation_1");
         const quantityInput = document.getElementById("quantity");
 
-        talleSeleccionado = sizeSelect.value;
+        const selectedSize = sizeSelect.value;
+
+        if (!selectedSize) {
+          // Si no se ha seleccionado un talle, mostramos un mensaje y salimos
+          const messageElement = document.getElementById("message");
+          messageElement.textContent = `Debes seleccionar un talle`;
+          document.getElementById("messageContainer").style.display = "block";
+          return; // No continuar hasta que se seleccione el talle
+        }
+
+        const sizeObject = this.sizes.find(
+          (item) => item.size === selectedSize
+        );
+        console.log(this.sizes);
+        stockSeleccionado = sizeObject.stock;
+
+        talleSeleccionado = selectedSize;
         quantity = parseInt(quantityInput.value, 10);
 
-        if (event.target.id === "addToCartBtn") {
+        // Validación de cantidad
+        if (quantity <= 0 || isNaN(quantity)) {
           const messageElement = document.getElementById("message");
-          if (!talleSeleccionado) {
-            messageElement.textContent = `Debes seleccionar un talle`;
-            document.getElementById("messageContainer").style.display = "block";
-          }
+          messageElement.textContent = `La cantidad debe ser un número positivo`;
+          document.getElementById("messageContainer").style.display = "block";
+          return; // No continuar si la cantidad no es válida
         }
       }
 
       try {
-        await comprarProducto(
-          this.id,
-          this.name,
-          this.price,
-          this.imagePath,
-          this.sizes,
-          talleSeleccionado,
-          this.section,
-          this.generalStock,
-          quantity,
-          this.discount
-        );
+        const producto = {
+          _id: this.id,
+          name: this.name,
+          price: this.price,
+          imagePath: this.imagePath,
+          section: this.section,
+          stock: stockSeleccionado,
+          cantidad: quantity,
+          discount: this.discount,
+        };
+
+        await carrito.agregarProducto({
+          product: producto,
+          size: this.section === "opcion3" ? "Un." : talleSeleccionado,
+        });
       } catch (error) {
         console.log(error);
       }
     });
-  } else {
-    console.log(
-      "Botón de añadir al carrito no encontrado, posiblemente no hay stock."
-    );
   }
 }

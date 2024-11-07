@@ -1,5 +1,5 @@
 import { mostrarProducto } from "./ProductViewer.js";
-import { comprarProducto } from "../carrito/comprarProducto.js";
+// import { comprarProducto } from "../carrito/comprarProducto.js";
 import { modalControllers } from "../../modal/modal.js";
 import { getAmountSelectHTML, getSizesSelectHTML } from "./amountSizesHTML.js";
 import { cargarProductosSimilares } from "./cargarProductosSimilares.js";
@@ -46,8 +46,8 @@ export class Producto {
     await calcularEnvio.call(this);
   }
 
-  async agregarProductoCarrito() {
-    await agregarProductoCarrito.call(this);
+  async agregarProductoCarrito(event) {
+    await agregarProductoCarrito.call(this, event);
   }
 
   async compartirProducto() {
@@ -102,62 +102,16 @@ export class Producto {
       });
   }
 
-  containerTallesHandler() {
+  async containerTallesHandler() {
     const content = getSizesSelectHTML.call(this);
-
     this.updateModalContent(content);
-    const carritoButton = document.querySelector("[data-carrito]");
-
-    carritoButton.addEventListener("click", (event) => {
-      const talleSeleccionado = document.getElementById("variation_1").value;
-      const quantity = document.getElementById("quantity").value;
-
-      if (event.target.id === "addToCartBtn") {
-        const messageElement = document.getElementById("message");
-        if (!talleSeleccionado) {
-          messageElement.textContent = `Debes seleccionar un talle`;
-          document.getElementById("messageContainer").style.display = "block";
-        }
-      }
-      comprarProducto(
-        this.id,
-        this.name,
-        this.price,
-        this.imagePath,
-        this.sizes,
-        talleSeleccionado,
-        this.section,
-        this.generalStock,
-        quantity,
-        this.discount
-      );
-    });
+    await this.agregarProductoCarrito();
   }
 
-  containerAmountHandler() {
+  async containerAmountHandler() {
     const content = getAmountSelectHTML.call(this);
-
     this.updateModalContent(content);
-    const carritoButton = document.querySelector("[data-carrito]");
-
-    // Agregar evento de clic al botón para agregar al carrito
-    carritoButton.addEventListener("click", () => {
-      const cantidadSeleccionada = document.getElementById("quantity").value;
-
-      // Lógica para comprar producto
-      comprarProducto(
-        this.id,
-        this.name,
-        this.price,
-        this.imagePath,
-        this.sizes,
-        undefined,
-        this.section,
-        this.generalStock,
-        cantidadSeleccionada,
-        this.discount
-      );
-    });
+    await this.agregarProductoCarrito();
   }
 
   productoInicio() {
@@ -222,7 +176,7 @@ export class Producto {
     card.querySelector("a").addEventListener("click", async (e) => {
       e.preventDefault();
       try {
-        this.mostrarProducto();
+        await this.mostrarProducto();
       } catch (err) {
         console.log(err);
       }
@@ -232,14 +186,18 @@ export class Producto {
     if (this.hayStock) {
       card.querySelector("[data-compra]").addEventListener("click", (e) => {
         e.preventDefault();
-        if (this.section === "opcion3") {
-          this.containerAmountHandler();
-        } else {
-          this.containerTallesHandler();
-        }
+        this.selectSizeAmount();
       });
     }
 
     return card;
+  }
+
+  selectSizeAmount() {
+    if (this.section === "opcion3") {
+      this.containerAmountHandler();
+    } else {
+      this.containerTallesHandler();
+    }
   }
 }

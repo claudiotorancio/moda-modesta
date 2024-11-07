@@ -15,3 +15,8 @@ export function calcularSubtotal() {
 export function calcularTotal() {
   return this.calcularSubtotal() + this.costoEnvio;
 }
+
+// Función para calcular la cantidad total de productos
+export function cantidadTotal() {
+  return this.items.reduce((acc, item) => acc + item.cantidad, 0);
+}

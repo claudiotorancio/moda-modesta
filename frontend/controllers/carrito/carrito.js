@@ -7,8 +7,9 @@ import {
   eliminarProducto,
   actualizarCantidad,
   actualizarNotificacionCarrito,
+  cargarCarritoDesdeStorage,
 } from "./productHandlers.js";
-import { calcularSubtotal, calcularTotal } from "./calculos.js";
+import { calcularSubtotal, calcularTotal, cantidadTotal } from "./calculos.js";
 import { CarritoServices } from "../../services/carrito_services.js";
 
 class Carrito {
@@ -16,16 +17,17 @@ class Carrito {
     this.carritoServices = new CarritoServices();
     this.items = []; // Inicia con un array vacío
     this.costoEnvio = 0;
-    this.envioExpiracion = null;
     this.inicializarEventos();
+    this.cargarCarrito();
   }
 
   async cargarCarrito() {
     try {
       // Carga los productos del carrito desde la API
-      this.items = await this.carritoServices.getProductsCart();
+      await cargarCarritoDesdeStorage.call(this);
       this.costoEnvio = 0;
       this.mostrarCarrito(); // Muestra el carrito una vez cargado
+      this.actualizarNotificacion();
     } catch (error) {
       console.error("Error al cargar el carrito:", error);
     }
@@ -39,6 +41,7 @@ class Carrito {
         this.cargarCarrito(); // Carga los productos al iniciar
         modalControllers.baseModal();
         this.mostrarCarrito();
+        this.actualizarNotificacion();
       });
     }
   }
@@ -47,7 +50,7 @@ class Carrito {
     try {
       await agregarProducto.call(this, product, size);
       await this.cargarCarrito(); // Recargar carrito después de agregar producto
-      await actualizarNotificacionCarrito;
+      this.actualizarNotificacion();
     } catch (error) {
       console.error("Error al agregar producto:", error);
     }
@@ -79,12 +82,16 @@ class Carrito {
     return calcularTotal.call(this);
   }
 
+  cantidadTotal() {
+    return cantidadTotal.call(this);
+  }
+
   actualizarNotificacion() {
     return actualizarNotificacionCarrito.call(this);
   }
 
   mostrarCarrito() {
-    mostrarCarrito.call(this);
+    return mostrarCarrito.call(this);
   }
 
   // Limpia el carrito

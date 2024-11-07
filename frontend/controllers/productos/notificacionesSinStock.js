@@ -12,10 +12,10 @@ export async function notificacionesSinStock() {
 
       const datos = {
         email,
-        id,
+        id: this.id,
       };
       // Validar que los campos no estén vacíos
-      if (!email || !id) {
+      if (!email || !this.id) {
         alert("Por favor, complete todos los campos.");
         return;
       }

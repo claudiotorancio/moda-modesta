@@ -65,7 +65,7 @@ div.card-header h3 {
   font-weight: 600;
 }
 .productos {
-  display: ruby;
+  display: flex;
 }
 
 .productos div:nth-child(n + 5) {
@@ -78,7 +78,7 @@ div.card-header h3 {
 }
 
 .allProducts {
-  display: ruby;
+  display: flex;
   max-width: 100%;
   margin: auto;
 }

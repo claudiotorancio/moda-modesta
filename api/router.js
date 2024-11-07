@@ -257,7 +257,6 @@ router.get(
 // Notificaciones
 router.post(
   "/api/notificacionSinStock",
-  authenticateToken,
   validacionesNotificacionesSinStock,
   handleValidationErrors,
   notificacionSinStock
@@ -442,11 +441,6 @@ router.get("/api/listaProductos", authenticateToken, listaProductos);
 router.post(
   "/api/createProduct",
   uploadSingle,
-  (req, res, next) => {
-    // Ver los datos que están llegando a la validación
-    console.log("Datos entrantes router.js:", req.body);
-    next(); // Continúa al siguiente middleware
-  },
 
   validacionesProducto,
   handleValidationErrors,

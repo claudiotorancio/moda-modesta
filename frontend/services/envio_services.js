@@ -31,7 +31,6 @@ export class EnvioService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
         },
         body: JSON.stringify(datos),
       });
