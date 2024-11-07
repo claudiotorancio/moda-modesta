@@ -27,6 +27,7 @@ class Carrito {
       await cargarCarritoDesdeStorage.call(this);
       this.costoEnvio = 0;
       this.mostrarCarrito(); // Muestra el carrito una vez cargado
+      this.actualizarNotificacion();
     } catch (error) {
       console.error("Error al cargar el carrito:", error);
     }
@@ -40,7 +41,6 @@ class Carrito {
         this.cargarCarrito();
         modalControllers.baseModal();
         this.mostrarCarrito();
-        this.actualizarNotificacion();
       });
     }
   }
