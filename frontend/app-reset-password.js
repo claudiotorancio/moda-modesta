@@ -9,7 +9,6 @@ import "./styles/assets/css/table.css";
 import { baseURL } from "../backend/baseUrl.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  alert("estoy aqui en reset-pass.html");
   // Obtener el token de la URL
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get("token");

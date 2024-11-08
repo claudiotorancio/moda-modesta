@@ -111,7 +111,6 @@ const validacionesResetPassword = [validarEmail()];
 
 const validacionesUpdatePassword = [
   query("token", "El token es requerido"),
-
   body("newPassword")
     .exists()
     .withMessage("La nueva contraseña es requerida")
