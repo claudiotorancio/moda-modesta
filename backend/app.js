@@ -21,10 +21,24 @@ const __dirname = path.dirname(__filename);
 const outputPath = path.join(__dirname, "../public");
 
 //middlewares
+import cors from "cors";
+
+// Configuración de CORS con opciones específicas
 app.use(
   cors({
-    origin: "https://moda-modesta.vercel.app",
+    origin: "https://moda-modesta.vercel.app", // Cambia este dominio si es necesario
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "X-CSRF-Token",
+      "X-Requested-With",
+      "Accept",
+      "Accept-Version",
+      "Content-Length",
+      "Content-MD5",
+      "Content-Type",
+      "Date",
+      "X-Api-Version",
+    ],
     credentials: true,
   })
 );

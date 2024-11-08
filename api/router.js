@@ -100,6 +100,10 @@ import authenticateToken from "../backend/routes/login/authenticateToken.js";
 const router = Router();
 // const app = express();
 
+router.get("/some-endpoint", (req, res) => {
+  res.json({ message: "Hello from the API!" });
+});
+
 // router.set("trust proxy", 1); // confianza en el proxy de primer nivel
 // Ruta hacia carpeta 'public'
 // const __filename = fileURLToPath(import.meta.url);
