@@ -1,79 +1,82 @@
-// // import express, { urlencoded } from "express";
-// // import { fileURLToPath } from "url";
-// // import path from "path";
-// // import morgan from "morgan";
-// // import cors from "cors";
-// // import cookieParser from "cookie-parser";
-// // import indexRouter from "../api/router.js";
-// // import passport from "../backend/lib/passport.js";
-// // import session from "express-session";
-// // import MongoDBStore from "connect-mongodb-session";
-// // import MONGODB_URI from "../backend/config.js";
+import express, { urlencoded } from "express";
+import { fileURLToPath } from "url";
+import path from "path";
+import morgan from "morgan";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import indexRouter from "../api/router.js";
+import passport from "../backend/lib/passport.js";
+import session from "express-session";
+import MongoDBStore from "connect-mongodb-session";
+import MONGODB_URI from "../backend/config.js";
 
-// // const app = express();
+const app = express();
 
-// //router
-// // // Ruta hacia carpeta 'public'
-// // const __filename = fileURLToPath(import.meta.url);
-// // const __dirname = path.dirname(__filename);
-// // const outputPath = path.join(__dirname, "../public");
+app.set("trust proxy", 1); // confianza en el proxy de primer nivel
 
-// //middlewares
-// app.use(cookieParser());
-// app.use(urlencoded({ extended: false }));
-// app.use(express.json());
-// app.use(morgan("dev"));
+// router;
+// Ruta hacia carpeta 'public'
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const outputPath = path.join(__dirname, "../public");
 
-// app.use(cors());
-// //passport
+//middlewares
+app.use(cookieParser());
+app.use(urlencoded({ extended: false }));
+app.use(express.json());
+app.use(morgan("dev"));
 
-// const store = new MongoDBStore(session)({
-//   uri: MONGODB_URI,
-//   collection: "mySessions",
-// });
+app.use(cors());
 
-// app.use(
-//   session({
-//     key: "user_sid",
-//     secret: process.env.SECRET_KEY,
-//     resave: false,
-//     saveUninitialized: false,
-//     store: store,
-//     cookie: {
-//       expires: 600000, // 10 minutos
-//       secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
-//       httpOnly: true, // Previene acceso JavaScript a la cookie
-//       sameSite: "lax", // Protección contra CSRF
-//     },
-//   })
-// );
+//passport
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+const store = new MongoDBStore(session)({
+  uri: MONGODB_URI,
+  collection: "mySessions",
+});
 
-// app.use("/", indexRouter);
+app.use(
+  session({
+    key: "user_sid",
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+      expires: 600000, // 10 minutos
+      secure: process.env.NODE_ENV === "production", // Se asegura de que las cookies sean seguras en producción
+      httpOnly: true, // Previene acceso JavaScript a la cookie
+      sameSite: "lax", // Protección contra CSRF
+    },
+  })
+);
 
-// //manejo de errores
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res
-//     .status(500)
-//     .send({ error: "Algo salió mal, inténtalo de nuevo más tarde." });
-// });
+app.use(passport.initialize());
+app.use(passport.session());
 
-// indexRouter.use((err, req, res, next) => {
-//   console.error(err);
-//   res.status(500).json({ error: "Error interno del servidor" });
-// });
+app.use("/", indexRouter);
 
-// app.use((err, req, res, next) => {
-//   console.error(err);
-//   res.status(500).json({ error: "Error interno del servidor" });
-// });
+//manejo de errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res
+    .status(500)
+    .send({ error: "Algo salió mal, inténtalo de nuevo más tarde." });
+});
 
-// /*app.use('/', authRouter)*/
+indexRouter.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Error interno del servidor" });
+});
 
-// //Archivos estaticos
-// app.use(express.static(outputPath));
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Error interno del servidor" });
+});
 
-// export default app;
+/*app.use('/', authRouter)*/
+
+//Archivos estaticos
+app.use(express.static(outputPath));
+
+export default app;
