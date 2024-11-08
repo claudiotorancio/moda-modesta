@@ -414,6 +414,7 @@ router.post(
 router.get("/reset-password", password);
 router.post(
   "/api/update-password",
+
   validacionesUpdatePassword,
   handleValidationErrors,
   updatePassword
@@ -457,12 +458,6 @@ router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct",
   uploadSingleUpdate,
-  (req, res, next) => {
-    // Ver los datos que están llegando a la validación
-    console.log("Datos entrantes router.js:", req.body);
-    next(); // Continúa al siguiente middleware
-  },
-
   validacionesProductoActualizacion,
   handleValidationErrors,
   authenticateToken,

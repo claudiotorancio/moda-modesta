@@ -9,9 +9,11 @@ import "./styles/assets/css/table.css";
 import { baseURL } from "../backend/baseUrl.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  alert("estoy aqui en reset-pass.html");
   // Obtener el token de la URL
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get("token");
+  console.log(token);
   document.getElementById("token").value = token; // Asignar el token al input hidden
 
   const form = document.getElementById("resetPasswordForm");

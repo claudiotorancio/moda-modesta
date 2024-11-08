@@ -5,6 +5,7 @@ import helpers from "../../lib/helpers.js";
 
 const updatePassword = async (req, res) => {
   const { newPassword, token } = req.body;
+  console.log(token);
 
   if (!token || !newPassword) {
     return res

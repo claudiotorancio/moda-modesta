@@ -110,7 +110,7 @@ const validacionesCostoEnvio = [
 const validacionesResetPassword = [validarEmail()];
 
 const validacionesUpdatePassword = [
-  validarCampo("token", "El token es requerido"),
+  query("token", "El token es requerido"),
 
   body("newPassword")
     .exists()
@@ -126,7 +126,7 @@ const validacionesUpdatePassword = [
 ];
 
 const validacionesConfirmResetPassword = [
-  validarCampo("token", "El token es requerido"),
+  query("token", "El token es requerido"),
 ];
 
 const validacionesListaProductos = [validarId("user_id").optional()];
