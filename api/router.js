@@ -100,6 +100,7 @@ import authenticateToken from "../backend/routes/login/authenticateToken.js";
 const router = Router();
 // const app = express();
 
+router.set("trust proxy", 1); // confianza en el proxy de primer nivel
 // Ruta hacia carpeta 'public'
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
