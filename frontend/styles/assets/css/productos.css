@@ -79,7 +79,6 @@ div.card-header h3 {
 
 .allProducts {
   display: flex;
-  max-width: 100%;
   margin: auto;
 }
 
