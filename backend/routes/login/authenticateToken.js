@@ -1,67 +1,34 @@
-import jwt from "jsonwebtoken";
-
-// Middleware de autenticación
 const authenticateToken = (req, res, next) => {
-  // Lista de rutas públicas que no requieren autenticación
-  const publicRoutes = ["/api/listaProductos"]; // Agrega más rutas públicas si es necesario
+  const publicRoutes = ["/api/listaProductos"]; // Rutas públicas
 
-  // Verificar si la ruta es pública
+  // Permitir acceso a rutas públicas
   if (publicRoutes.includes(req.path)) {
-    return next(); // Permitir acceso a rutas públicas
+    return next();
   }
 
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  // Solo aplicar lógica de token en desarrollo
-  if (process.env.NODE_ENV === "development") {
-    if (!token) {
-      return res.status(401).json({ error: "Token no proporcionado" });
-    }
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) {
-        return res.status(403).json({ error: "Token inválido" });
-      }
-      const { user } = decoded; // Obtén el objeto user
-      const { _id, email, role, nombre } = user; // Desestructura los valores de user
-
-      req.user = {
-        _id,
-        email,
-        role,
-        nombre,
-      };
-
-      next();
-    });
-  } else {
-    // En producción, verificar autenticación
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
-
-    // Permitir acceso solo a administradores y usuarios normales
-    const isAdmin = req.user.role === "admin";
-    const isUser = req.user.role === "user"; // Asumiendo que tienes un rol "user"
-
-    if (!isAdmin && !isUser) {
-      return res.status(403).json({
-        error: "Acceso denegado: Solo usuarios autenticados pueden acceder",
-      });
-    }
-
-    // Si el usuario es un administrador, puede continuar
-    if (isAdmin) {
-      next(); // Administrador tiene acceso
-    } else if (isUser) {
-      next(); // Usuario normal tiene acceso
-    } else {
-      return res.status(403).json({
-        error: "Acceso denegado: Solo usuarios administradores pueden acceder",
-      });
-    }
+  if (!token) {
+    return res.status(401).json({ error: "Token no proporcionado" });
   }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ error: "Token inválido" });
+    }
+
+    const { _id, email, role, nombre } = decoded.user; // Desestructura el usuario
+
+    req.user = {
+      _id,
+      email,
+      role,
+      nombre,
+    };
+
+    next(); // Continuar al siguiente middleware
+  });
 };
 
 export default authenticateToken;
