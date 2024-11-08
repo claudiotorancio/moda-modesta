@@ -9,6 +9,7 @@ import passport from "../backend/lib/passport.js";
 import session from "express-session";
 import MongoDBStore from "connect-mongodb-session";
 import MONGODB_URI from "../backend/config.js";
+import rateLimit from "express-rate-limit";
 
 const app = express();
 
@@ -76,6 +77,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", indexRouter);
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // Límite de 100 solicitudes por IP en el periodo
+  keyGenerator: (req) => {
+    return (
+      req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress
+    );
+  },
+});
+
+app.use(limiter);
 
 app.use((err, req, res, next) => {
   console.error(err);

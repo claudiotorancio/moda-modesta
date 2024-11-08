@@ -32,7 +32,7 @@ import {
 import multer from "multer";
 import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
-import rateLimit from "express-rate-limit";
+// import rateLimit from "express-rate-limit";
 import path from "path";
 
 // import passport from "../backend/lib/passport.js";
@@ -191,14 +191,14 @@ const handleValidationErrors = (req, res, next) => {
 // app.use(express.static(outputPath));
 
 // Configuración del rate-limiter
-const purchaseLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 10, // Limitar a 10 solicitudes por IP en el intervalo
-  message: {
-    error:
-      "Demasiadas solicitudes desde esta IP. Intenta nuevamente más tarde.",
-  },
-});
+// const purchaseLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutos
+//   max: 10, // Limitar a 10 solicitudes por IP en el intervalo
+//   message: {
+//     error:
+//       "Demasiadas solicitudes desde esta IP. Intenta nuevamente más tarde.",
+//   },
+// });
 
 // Configuración de Multer y AWS S3
 const s3 = new AWS.S3({
@@ -361,14 +361,14 @@ router.post(
   "/api/sendMail",
   validacionesSendMail,
   handleValidationErrors,
-  purchaseLimiter,
+  // purchaseLimiter,
   sendMail
 );
 router.post(
   "/api/suscribeMail",
   validacionesSuscribeMail,
   handleValidationErrors,
-  purchaseLimiter,
+  // purchaseLimiter,
   suscribeMail
 );
 router.get("/api/confirmMail", confirmMail);
@@ -395,7 +395,7 @@ router.post(
   "/api/signup",
   validacionesSignup,
   handleValidationErrors,
-  purchaseLimiter,
+  // purchaseLimiter,
   signup
 );
 
@@ -403,7 +403,7 @@ router.post(
   "/api/signin",
   validacionesSignin,
   handleValidationErrors,
-  purchaseLimiter,
+  // purchaseLimiter,
   signin
 );
 
@@ -412,7 +412,7 @@ router.post(
   "/api/send-reset-password",
   validacionesResetPassword,
   handleValidationErrors,
-  purchaseLimiter,
+  // purchaseLimiter,
   sendResetPassword
 );
 router.get("/reset-password", password);
