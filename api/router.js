@@ -430,7 +430,7 @@ router.get(
 );
 
 // Rutas listado
-router.get("/api/getDataUser", authenticateToken, getDataUser);
+router.get("/api/getDataUser", getDataUser);
 router.get("/api/getAdmin", getAdmin);
 router.get("/api/getUser/:id", authenticateToken, getUser);
 router.get("/api/renderLista", authenticateToken, listaAdmin);
