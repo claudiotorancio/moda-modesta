@@ -22,27 +22,27 @@ const outputPath = path.join(__dirname, "../public");
 
 //middlewares
 // import cors from "cors";
-app.use(cors());
+// app.use(cors());
 
 // Configuración de CORS con opciones específicas
-// app.use(
-//   cors({
-//     origin: "https://moda-modesta.vercel.app", // Cambia este dominio si es necesario
-//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//     allowedHeaders: [
-//       "X-CSRF-Token",
-//       "X-Requested-With",
-//       "Accept",
-//       "Accept-Version",
-//       "Content-Length",
-//       "Content-MD5",
-//       "Content-Type",
-//       "Date",
-//       "X-Api-Version",
-//     ],
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: "https://moda-modesta.vercel.app", // Cambia este dominio si es necesario
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "X-CSRF-Token",
+      "X-Requested-With",
+      "Accept",
+      "Accept-Version",
+      "Content-Length",
+      "Content-MD5",
+      "Content-Type",
+      "Date",
+      "X-Api-Version",
+    ],
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 app.use(urlencoded({ extended: false }));
