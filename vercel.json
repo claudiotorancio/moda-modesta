@@ -7,7 +7,7 @@
     },
     {
       "src": "/api/(.*)",
-      "dest": "backend/app.js",
+      "dest": "api/router.js",
       "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       "headers": {
         "Access-Control-Allow-Origin": "https://moda-modesta.vercel.app",

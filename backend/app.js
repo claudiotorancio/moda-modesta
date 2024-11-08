@@ -21,6 +21,14 @@ const __dirname = path.dirname(__filename);
 const outputPath = path.join(__dirname, "../public");
 
 //middlewares
+app.use(
+  cors({
+    origin: "https://moda-modesta.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
+
 app.use(cookieParser());
 app.use(urlencoded({ extended: false }));
 app.use(express.json());
@@ -55,6 +63,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", indexRouter);
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Error interno del servidor" });
+});
 
 //manejo de errores
 app.use((err, req, res, next) => {
