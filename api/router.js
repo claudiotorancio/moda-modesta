@@ -1,6 +1,5 @@
-// import { fileURLToPath } from "url";
-// import express, { Router } from "express";
-import { Router } from "express";
+import { fileURLToPath } from "url";
+import express, { Router, urlencoded } from "express";
 import {
   validacionesAgregarResena,
   validacionesPutResena,
@@ -23,19 +22,19 @@ import {
   validacionesProducto,
   validacionesProductoActualizacion,
 } from "../api/validaciones.js";
-// import morgan from "morgan";
+import morgan from "morgan";
 // import cors from "cors";
-// import cors from "cors";
-// import cookieParser from "cookie-parser";
-// import session from "express-session";
-// import MongoDBStore from "connect-mongodb-session";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import MongoDBStore from "connect-mongodb-session";
 import multer from "multer";
 import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
-// import rateLimit from "express-rate-limit";
+import rateLimit from "express-rate-limit";
 import path from "path";
 
-// import passport from "../backend/lib/passport.js";
+import passport from "../backend/lib/passport.js";
 import MONGODB_URI from "../backend/config.js";
 import signin from "../backend/routes/login/signin.js";
 import signup from "../backend/routes/login/signup.js";
@@ -98,17 +97,14 @@ import getCustomerAnalytics from "../backend/sales/getCustomerAnalytics.js";
 import authenticateToken from "../backend/routes/login/authenticateToken.js";
 
 const router = Router();
-// const app = express();
+const app = express();
 
-router.get("/some-endpoint", (req, res) => {
-  res.json({ message: "Hello from the API!" });
-});
+app.set("trust proxy", 1); // confianza en el proxy de primer nivel
 
-// router.set("trust proxy", 1); // confianza en el proxy de primer nivel
 // Ruta hacia carpeta 'public'
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-// const outputPath = path.join(__dirname, "../public");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const outputPath = path.join(__dirname, "../public");
 
 // Middlewares
 // Middleware para manejo de errores de validación
@@ -129,76 +125,76 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // Middlewares
-// app.use(cors()); // Mueve cors() al inicio
-// app.use(urlencoded({ extended: false }));
-// app.use(express.json());
-// app.use(morgan("dev"));
+app.use(cors()); // Mueve cors() al inicio
+app.use(urlencoded({ extended: false }));
+app.use(express.json());
+app.use(morgan("dev"));
 
 // Configuración de la sesión
-// const MongoStore = MongoDBStore(session);
-// const store = new MongoStore({
-//   uri: MONGODB_URI,
-//   collection: "mySessions",
-// });
+const MongoStore = MongoDBStore(session);
+const store = new MongoStore({
+  uri: MONGODB_URI,
+  collection: "mySessions",
+});
 
-// app.use(
-//   session({
-//     key: "user_sid",
-//     secret: process.env.SECRET_KEY,
-//     resave: false,
-//     saveUninitialized: false,
-//     store: store,
-//     cookie: {
-//       expires: 600000, // 10 minutos
-//       secure: process.env.NODE_ENV === "production", // Asegura que las cookies sean seguras en producción
-//       httpOnly: true, // Previene acceso JavaScript a la cookie
-//       sameSite: "lax", // Protección contra CSRF
-//     },
-//   })
-// );
+app.use(
+  session({
+    key: "user_sid",
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+      expires: 600000, // 10 minutos
+      secure: process.env.NODE_ENV === "production", // Asegura que las cookies sean seguras en producción
+      httpOnly: true, // Previene acceso JavaScript a la cookie
+      sameSite: "lax", // Protección contra CSRF
+    },
+  })
+);
 
-// app.use(cookieParser());
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Ruta para ver las cookies
-// app.get("/", (req, res) => {
-//   // Acceder a las cookies desde req.cookies
-//   console.log(req.cookies); // Ver las cookies en la consola
-//   res.send("Revisa las cookies en la consola!");
-// });
-// // Manejo de errores
-// app.use((err, req, res, next) => {
-//   console.log("router.js", req.user);
-//   console.error(err.stack);
-//   res
-//     .status(500)
-//     .send({ error: "Algo salió mal, inténtalo de nuevo más tarde." });
-// });
+app.get("/", (req, res) => {
+  // Acceder a las cookies desde req.cookies
+  console.log(req.cookies); // Ver las cookies en la consola
+  res.send("Revisa las cookies en la consola!");
+});
+// Manejo de errores
+app.use((err, req, res, next) => {
+  console.log("router.js", req.user);
+  console.error(err.stack);
+  res
+    .status(500)
+    .send({ error: "Algo salió mal, inténtalo de nuevo más tarde." });
+});
 
-// app.use((req, res, next) => {
-//   res.setHeader(
-//     "Cache-Control",
-//     "no-store, no-cache, must-revalidate, proxy-revalidate"
-//   );
-//   res.setHeader("Pragma", "no-cache");
-//   res.setHeader("Expires", "0");
-//   res.setHeader("Surrogate-Control", "no-store");
-//   next();
-// });
+app.use((req, res, next) => {
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate"
+  );
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.setHeader("Surrogate-Control", "no-store");
+  next();
+});
 
-// // Archivos estáticos
-// app.use(express.static(outputPath));
+// Archivos estáticos
+app.use(express.static(outputPath));
 
 // Configuración del rate-limiter
-// const purchaseLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutos
-//   max: 10, // Limitar a 10 solicitudes por IP en el intervalo
-//   message: {
-//     error:
-//       "Demasiadas solicitudes desde esta IP. Intenta nuevamente más tarde.",
-//   },
-// });
+const purchaseLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 10, // Limitar a 10 solicitudes por IP en el intervalo
+  message: {
+    error:
+      "Demasiadas solicitudes desde esta IP. Intenta nuevamente más tarde.",
+  },
+});
 
 // Configuración de Multer y AWS S3
 const s3 = new AWS.S3({
@@ -209,7 +205,7 @@ const s3 = new AWS.S3({
   },
 });
 
-// const uploadNone = multer();
+const uploadNone = multer();
 
 const upload = () =>
   multer({
@@ -361,14 +357,14 @@ router.post(
   "/api/sendMail",
   validacionesSendMail,
   handleValidationErrors,
-  // purchaseLimiter,
+  purchaseLimiter,
   sendMail
 );
 router.post(
   "/api/suscribeMail",
   validacionesSuscribeMail,
   handleValidationErrors,
-  // purchaseLimiter,
+  purchaseLimiter,
   suscribeMail
 );
 router.get("/api/confirmMail", confirmMail);
@@ -395,7 +391,7 @@ router.post(
   "/api/signup",
   validacionesSignup,
   handleValidationErrors,
-  // purchaseLimiter,
+  purchaseLimiter,
   signup
 );
 
@@ -403,7 +399,7 @@ router.post(
   "/api/signin",
   validacionesSignin,
   handleValidationErrors,
-  // purchaseLimiter,
+  purchaseLimiter,
   signin
 );
 
@@ -412,7 +408,7 @@ router.post(
   "/api/send-reset-password",
   validacionesResetPassword,
   handleValidationErrors,
-  // purchaseLimiter,
+  purchaseLimiter,
   sendResetPassword
 );
 router.get("/reset-password", password);
@@ -430,7 +426,7 @@ router.get(
 );
 
 // Rutas listado
-router.get("/api/getDataUser", getDataUser);
+router.get("/api/getDataUser", authenticateToken, getDataUser);
 router.get("/api/getAdmin", getAdmin);
 router.get("/api/getUser/:id", authenticateToken, getUser);
 router.get("/api/renderLista", authenticateToken, listaAdmin);
@@ -474,8 +470,8 @@ router.put(
 );
 router.get("/api/productoSimilar/:id", productoSimilar);
 
-// // Middleware para la autenticación
-// app.use("/", router);
+// Middleware para la autenticación
+app.use("/", router);
 
 // Escuchar en el puerto especificado
-export default router;
+export default app;

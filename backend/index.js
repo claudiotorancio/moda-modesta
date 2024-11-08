@@ -1,4 +1,4 @@
-import app from "../api/app.js";
+import app from "../api/router.js";
 
 //manejo de puerto acorde al modo dev o prod
 
