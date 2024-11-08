@@ -17,19 +17,7 @@ class Carrito {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
     this.inicializarEventos();
-    this.cargarCarrito();
-  }
-
-  async cargarCarrito() {
-    try {
-      // Carga los productos del carrito desde la API
-      await cargarCarritoDesdeStorage.call(this);
-      this.costoEnvio = 0;
-      this.mostrarCarrito(); // Muestra el carrito una vez cargado
-      this.actualizarNotificacion();
-    } catch (error) {
-      console.error("Error al cargar el carrito:", error);
-    }
+    this.items = cargarCarritoDesdeStorage.call(this) || [];
   }
 
   inicializarEventos() {
@@ -37,8 +25,9 @@ class Carrito {
     if (toggleCart) {
       toggleCart.addEventListener("click", (event) => {
         event.preventDefault();
+        this.costoEnvio = 0;
         modalControllers.baseModal();
-        this.cargarCarrito();
+        this.mostrarCarrito();
       });
     }
   }
@@ -46,7 +35,7 @@ class Carrito {
   async agregarProducto({ product, unidad }) {
     try {
       await agregarProducto.call(this, product, unidad);
-      await this.cargarCarrito(); // Recargar carrito después de agregar producto
+      await this.mostrarCarrito(); // Recargar carrito después de agregar producto
     } catch (error) {
       console.error("Error al agregar producto:", error);
     }
@@ -55,7 +44,7 @@ class Carrito {
   async eliminarProducto(id) {
     try {
       await eliminarProducto.call(this, id);
-      await this.cargarCarrito(); // Recargar carrito después de eliminar producto
+      await this.mostrarCarrito(); // Recargar carrito después de eliminar producto
     } catch (error) {
       console.error("Error al eliminar producto:", error);
     }
@@ -85,7 +74,8 @@ class Carrito {
     actualizarNotificacionCarrito.call(this);
   }
 
-  mostrarCarrito() {
+  async mostrarCarrito() {
+    await cargarCarritoDesdeStorage.call(this);
     return mostrarCarrito.call(this);
   }
 

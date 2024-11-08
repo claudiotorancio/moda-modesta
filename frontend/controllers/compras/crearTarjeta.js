@@ -131,7 +131,6 @@ export function crearTarjeta({
         size: item.size,
       }));
 
-      console.log(productos);
       await cancelarPedidoHandler(id, productos); // Maneja la lógica para cancelar la compra y devolver el producto al stock
       await renderCompraLista(); // Vuelve a renderizar la lista de compras
     });
