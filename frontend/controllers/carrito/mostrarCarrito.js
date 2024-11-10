@@ -47,7 +47,7 @@ export function mostrarCarrito() {
               item.imagePath
             }">
   </td>
-  <td>${item.name} × ${item.cantidad} <br> <small>${item.size}</small></td>
+  <td>${item.name} × ${item.cantidad} <br> <small>${item.unidad}</small></td>
   <td class="table-price">
     ${
       item.discount > 0

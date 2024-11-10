@@ -1,6 +1,6 @@
 //validaciones.js
 
-import { body, param, query } from "express-validator";
+import { body, param, query, validationResult } from "express-validator";
 import escape from "escape-html";
 
 // Funciones auxiliares
@@ -196,9 +196,34 @@ const validacionesProducto = [
     .optional()
     .isFloat({ min: 0, max: 100 })
     .withMessage("El descuento debe ser un número entre 0 y 100."),
-];
+  body("discountExpiry")
+    .optional()
+    .custom((value) => {
+      if (!value) return true;
+      // Ajuste explícito de la fecha a la zona horaria local
+      const parsedDate = new Date(value + "T23:59:59"); // Establece la fecha ingresada al final del día en hora local
 
-export default validacionesProducto;
+      // Verificar si la fecha es válida
+      if (isNaN(parsedDate.getTime())) {
+        throw new Error(
+          "La fecha de expiración del descuento debe ser una fecha válida."
+        );
+      }
+
+      // Obtener la fecha actual al inicio del día en hora local
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+
+      // Comparar solo la fecha
+      if (parsedDate < currentDate) {
+        throw new Error(
+          "La fecha de expiración no puede ser una fecha pasada."
+        );
+      }
+
+      return true;
+    }),
+];
 
 const validacionesProductoActualizacion = [
   // (req, res, next) => {
@@ -281,6 +306,41 @@ const validacionesProductoActualizacion = [
     .optional()
     .isFloat({ min: 0, max: 100 })
     .withMessage("El descuento debe ser un número entre 0 y 100."),
+  body("discountExpiry")
+    .optional()
+    .custom((value) => {
+      if (!value) return true;
+      // Ajuste explícito de la fecha a la zona horaria local
+      const parsedDate = new Date(value + "T23:59:59"); // Establece la fecha ingresada al final del día en hora local
+      // Verificar si la fecha es válida
+      if (isNaN(parsedDate.getTime())) {
+        throw new Error(
+          "La fecha de expiración del descuento debe ser una fecha válida."
+        );
+      }
+      // Obtener la fecha actual al inicio del día en hora local
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+
+      // Comparar solo la fecha
+      if (parsedDate < currentDate) {
+        throw new Error(
+          "La fecha de expiración no puede ser una fecha pasada."
+        );
+      }
+
+      return true;
+    }),
+
+  // // Verifica si hay errores
+  // (req, res, next) => {
+  //   const errors = validationResult(req);
+  //   if (!errors.isEmpty()) {
+  //     // Si hay errores, se envía un array con los mensajes de error
+  //     return res.status(400).json({ errors: errors.array() });
+  //   }
+  //   next(); // Si no hay errores, continúa con el siguiente middleware o controlador
+  // },
 ];
 
 export {

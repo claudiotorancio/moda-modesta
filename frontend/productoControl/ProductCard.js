@@ -17,7 +17,8 @@ export class ProductCard {
     inCart,
     section,
     generalStock,
-    discount
+    discount,
+    discountExpiry
   ) {
     this.id = id;
     this.name = name;
@@ -32,6 +33,7 @@ export class ProductCard {
     this.section = section;
     this.generalStock = generalStock;
     this.discount = discount;
+    this.discountExpiry = discountExpiry;
   }
 
   async mostrarProducto() {

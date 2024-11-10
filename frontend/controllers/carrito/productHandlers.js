@@ -33,14 +33,12 @@ export function actualizarNotificacionCarrito() {
 }
 
 //agregar producto nuevo
-export async function agregarProducto(product, size) {
+export async function agregarProducto(product) {
   try {
     const sanitizedProductId = validator.escape(product._id);
-    const sanitizedSize = validator.escape(size);
 
     const productoExistente = this.items.find(
-      (item) =>
-        item.productId === sanitizedProductId && item.size === sanitizedSize
+      (item) => item.productId === sanitizedProductId
     );
 
     if (productoExistente) {
@@ -60,7 +58,7 @@ export async function agregarProducto(product, size) {
           name: product.name,
           price: parseFloat(product.price),
           cantidad: product.cantidad,
-          size: size,
+          unidad: product.unidad,
           imagePath: product.imagePath[0],
           productId: sanitizedProductId,
           category: product.section,

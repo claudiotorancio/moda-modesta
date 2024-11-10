@@ -61,14 +61,40 @@ export function handleEdit() {
           }" required data-precio>
         </div>
         <div class="form-group">
-      <input class="form-control mt-3 mb-3 p-2" placeholder="descuento (%)" type="number" min="0" max="100" value="${
-        this.discount || 0
-      }" required data-descuento>
-    </div>
-        <div class="form-group">
           <textarea class="form-control mt-3 mb-2 p-2" placeholder="Descripción" required data-description>${
             this.description
           }</textarea>
+          </div>
+          
+
+           <div class="form-row mb-3">
+          <div id="discountFields" >
+            <div class="row">
+              <!-- Porcentaje de descuento -->
+              <div class="col-md-6">
+                <label for="discountPercentage">Porcentaje de descuento:</label>
+                <input class="form-control mt-3 mb-3 p-2" placeholder="descuento (%)" type="number" min="0" max="100" value="${
+                  this.discount || 0
+                }" required data-descuento>
+              </div>
+
+              <!-- Fecha de expiración del descuento -->
+              <div class="col-md-6">
+                <label for="discountExpiration">Fecha de expiración del descuento:</label>
+                <input class="form-control mt-3 mb-3 p-2" type="date" id="discountExpiration" name="discountExpiry" data-discount-expiry
+                  value="${
+                    this.discountExpiry
+                      ? new Date(this.discountExpiry)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }"
+                  required
+                  data-descuento
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <div class="form-group form-check mb-3">
           <input type="checkbox" class="form-check-input" id="isFeatured" name="isFeatured" ${
@@ -96,7 +122,33 @@ export function handleEdit() {
   setupImageCheckListeners();
   setupGeneralStockCheck();
   setupSizesCheckListeners();
+  setupDiscountExpiry();
   this.setupFormSubmitHandler?.();
+}
+
+function setupDiscountExpiry() {
+  const discountInput = document.querySelector("[data-descuento]");
+  const discountExpirationInput = document.querySelector(
+    "[data-discount-expiry]"
+  );
+
+  // Si el descuento es 0, deshabilitar la fecha de expiración y ponerla en 0
+  if (parseFloat(discountInput.value) === 0) {
+    discountExpirationInput.disabled = true;
+    discountExpirationInput.value = ""; // Opcionalmente puedes poner la fecha en blanco o en 0
+  } else {
+    discountExpirationInput.disabled = false; // Habilitar la fecha de expiración si el descuento no es 0
+  }
+
+  // Actualizar la fecha de expiración si el descuento cambia
+  discountInput.addEventListener("input", () => {
+    if (parseFloat(discountInput.value) === 0) {
+      discountExpirationInput.disabled = true;
+      discountExpirationInput.value = "";
+    } else {
+      discountExpirationInput.disabled = false;
+    }
+  });
 }
 
 function setupGeneralStockCheck() {

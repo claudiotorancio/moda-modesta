@@ -22,6 +22,8 @@ export function setupFormSubmitHandler() {
     const description = document.querySelector("[data-description]").value;
     const isFeatured = document.querySelector("#isFeatured").checked;
     const discount = document.querySelector("[data-descuento]").value;
+    const discountExpiry =
+      document.querySelector("[data-discount-expiry]").value || "";
 
     const selectedSizes = Array.from(
       document.querySelectorAll('input[name="sizes"]:checked')
@@ -54,6 +56,7 @@ export function setupFormSubmitHandler() {
     dataEdit.append("description", description);
     dataEdit.append("isFeatured", isFeatured);
     dataEdit.append("discount", discount);
+    dataEdit.append("discountExpiry", discountExpiry);
 
     if (imagePath1) {
       dataEdit.append("imagePath", imagePath1);
@@ -82,6 +85,11 @@ export function setupFormSubmitHandler() {
     } else if (selectedSizes.length > 0) {
       dataEdit.append("sizes", JSON.stringify(selectedSizes));
     }
+
+    // // Mostrar los datos del FormData en la consola
+    // for (let [key, value] of dataEdit.entries()) {
+    //   console.log(`${key}:`, value);
+    // }
 
     try {
       await productoServices.actualizarProducto(dataEdit);

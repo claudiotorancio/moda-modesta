@@ -33,7 +33,8 @@ export const controllers = {
             producto.inCart,
             producto.section,
             producto.generalStock,
-            producto.discount
+            producto.discount,
+            producto.discountExpiry
           );
           contenedorDestacados.appendChild(card.render());
         }
@@ -67,7 +68,8 @@ export const controllers = {
           producto.inCart,
           producto.section,
           producto.generalStock,
-          producto.discount
+          producto.discount,
+          producto.discountExpiry
         );
 
         const contenedorSeccion = document.querySelector(
@@ -105,7 +107,8 @@ export const controllers = {
           hayStock,
           producto.section,
           producto.generalStock,
-          producto.discount
+          producto.discount,
+          producto.discountExpiry
         );
         contenedorDestacados.appendChild(card.productoInicio());
       }
@@ -133,7 +136,8 @@ export const controllers = {
           hayStock,
           producto.section,
           producto.generalStock,
-          producto.discount
+          producto.discount,
+          producto.discountExpiry
         );
 
         const contenedorSeccion = document.querySelector(

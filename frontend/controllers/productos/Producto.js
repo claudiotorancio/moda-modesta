@@ -19,7 +19,8 @@ export class Producto {
     hayStock,
     section,
     generalStock,
-    discount
+    discount,
+    discountExpiry
   ) {
     this.id = id;
     this.name = name;
@@ -31,6 +32,7 @@ export class Producto {
     this.section = section; // Añadimos la categoría (opcion3)
     this.generalStock = generalStock;
     this.discount = discount;
+    this.discountExpiry = discountExpiry;
   }
 
   async mostrarProducto() {

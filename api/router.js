@@ -108,20 +108,44 @@ const outputPath = path.join(__dirname, "../public");
 
 // Middlewares
 // Middleware para manejo de errores de validación
-const handleValidationErrors = (req, res, next) => {
-  // console.log(req.user);
-  // console.log("Datos en handleValidationErrors:", req.body); // Log para verificar
+const handleValidationErrors = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
+    // Si hay errores, primero eliminamos las imágenes cargadas previamente en S3
+    if (req.files && req.files.length > 0) {
+      console.log("Eliminando imágenes de S3...");
+      for (const file of req.files) {
+        const params = {
+          Bucket: process.env.BUCKET_AWS,
+          Key: file.key,
+        };
+
+        try {
+          await s3.deleteObject(params).promise();
+          console.log(`Imagen ${file.key} eliminada correctamente de S3.`);
+        } catch (deleteError) {
+          console.error(
+            `Error al eliminar la imagen ${file.key}:`,
+            deleteError
+          );
+        }
+      }
+    }
+
+    // Ahora devolvemos la respuesta con los errores de validación
     return res.status(400).json({
-      error: errors.array().map((err) => ({
-        field: err.param,
+      status: "error",
+      message: "Se encontraron errores de validación.",
+      errors: errors.array().map((err) => ({
+        field: err.path,
         message: err.msg,
+        value: err.value,
       })),
     });
   }
-  next();
+
+  next(); // Si no hay errores, continuamos al siguiente middleware
 };
 
 // Middlewares
@@ -156,6 +180,8 @@ app.use(
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
+
+//middleware para la eliminacion de imagenes en caso de fallo de validacion
 
 // Ruta para ver las cookies
 app.get("/", (req, res) => {
@@ -223,10 +249,8 @@ const upload = () =>
     }),
   });
 
-export const uploadSingle = upload(process.env.BUCKET_AWS).array("images[]", 3);
-export const uploadSingleUpdate = upload(process.env.BUCKET_AWS).single(
-  "imagePath"
-);
+export const uploadSingle = upload().array("images[]", 3);
+export const uploadSingleUpdate = upload().single("imagePath");
 
 // Rutas
 
@@ -442,7 +466,6 @@ router.get("/api/listaProductos", authenticateToken, listaProductos);
 router.post(
   "/api/createProduct",
   uploadSingle,
-
   validacionesProducto,
   handleValidationErrors,
   authenticateToken,

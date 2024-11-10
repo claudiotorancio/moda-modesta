@@ -16,6 +16,11 @@ export class ProductForm {
     this.setupSelectChangeHandler();
     this.updateSizesVisibility();
     this.setupFormSubmitHandler();
+    const enableDiscountCheckbox = this.titulo.querySelector("#enableDiscount");
+    enableDiscountCheckbox.addEventListener("change", () =>
+      this.toggleDiscountInputs()
+    );
+    this.toggleDiscountInputs();
   }
 
   // Vaciar contenido
@@ -40,31 +45,72 @@ export class ProductForm {
         <br>
         <div class="card-body w-100">
           <form id="form" action="/api/createProduct" enctype="multipart/form-data" method="POST" data-form>
-
-            <p for="miMenuDesplegable">Sección</p>
-            <div class="form-group">
-              <select class="form-control mb-3 p-2" id="miMenuDesplegable" name="section">
-                <option value="opcion1">Vestidos</option>
-                <option value="opcion2">Polleras</option>
-                <option value="opcion3">Diversos</option>
-              </select>
+        <div class="form-row">
+            
+            <!-- Fila 1 -->
+            <div class="row">
+              <div class="col-md-6">
+                <label for="miMenuDesplegable">Sección</label>
+                <select class="form-control mb-3 p-2" id="miMenuDesplegable" name="section">
+                  <option value="opcion1">Vestidos</option>
+                  <option value="opcion2">Polleras</option>
+                  <option value="opcion3">Diversos</option>
+                </select>
+              </div>
+              
+              <div class="col-md-6">
+                <label>Imágenes</label>
+                <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required accept="image/*">
+              </div>
             </div>
 
-            <div class="form-group">
-              <input class="form-control p-2" type="file" name="images" data-imageUrls multiple required autofocus accept="image/*>
+            <!-- Fila 2 -->
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <input class="form-control p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
+              </div>
+              
+              <div class="col-md-6">
+                <input class="form-control p-2" type="number" placeholder="Precio del producto" name="price" required data-price step="0.01">
+              </div>
             </div>
-            <div class="form-group">
-              <input class="form-control mt-3 p-2" type="text" placeholder="Nombre del producto" name="name" required data-name>
+
+            <!-- Fila 3 -->
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <textarea class="form-control p-2" placeholder="Descripción" name="description" required data-description></textarea>
+              </div>
             </div>
-            <div class="form-group">
-              <input class="form-control mt-3 mb-3 p-2" type="text" placeholder="Precio del producto" name="price" required data-price>
+          
+          </div>
+          <div class="text-center">
+        <div class="card-header mt-3 mb-3">
+          <label>
+            <input type="checkbox" id="enableDiscount" />
+            Activar descuento
+          </label>
+          </div>
+          
+
+          <div class="form-row mb-3">
+            <div id="discountFields" style="display: none;">
+              <div class="row">
+                <!-- Porcentaje de descuento -->
+                <div class="col-md-6">
+                  <label for="discountPercentage">Porcentaje de descuento:</label>
+                  <input class="form-control p-2" type="number" id="discountPercentage" name="discount" min="0" max="100" disabled data-discount />
+                </div>
+                
+                <!-- Fecha de expiración del descuento -->
+                <div class="col-md-6">
+                  <label for="discountExpiration">Fecha de expiración del descuento:</label>
+                  <input class="form-control p-2" type="date" id="discountExpiration" name="discountExpiry" disabled data-discount-expiry/>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <textarea class="form-control mt-3 mb-3 p-2" placeholder="Descripción" name="description" required data-description></textarea>
-            </div>
-            <div class="form-group">
-            <input class="form-control mt-3 mb-3 p-2" type="number" min="0" max="100" placeholder="Descuento (%)" name="discount" data-discount>
-            </div>
+          </div>
+
+
 
             <!-- Talles disponibles y cantidad de stock -->
          
@@ -167,6 +213,7 @@ export class ProductForm {
   }
 
   // Capturar el evento submit
+  // Capturar el evento submit
   setupFormSubmitHandler() {
     const form = this.titulo.querySelector("[data-form]");
     form.addEventListener("submit", (e) => {
@@ -178,9 +225,67 @@ export class ProductForm {
         return; // Salir de la función
       }
 
-      e.preventDefault();
+      // Verificar la sección seleccionada
+      const selectedSection = this.sectionSelect.value;
+
+      // Validar que se haya seleccionado al menos un talle para secciones que no sean "Diversos"
+      if (selectedSection !== "opcion3") {
+        const selectedSizes = Array.from(
+          document.querySelectorAll('input[name="sizes"]:checked')
+        );
+        if (selectedSizes.length === 0) {
+          e.preventDefault(); // Evitar el envío del formulario
+          alert("Por favor, selecciona al menos un talle."); // Mensaje de alerta
+          return; // Salir de la función
+        }
+      } else {
+        // Si es "Diversos", validar que se haya ingresado un stock general
+        const generalStock = document.querySelector("#generalStock").value;
+        if (!generalStock || parseInt(generalStock) <= 0) {
+          e.preventDefault(); // Evitar el envío del formulario
+          alert("Por favor, ingresar una cantidad de stock"); // Mensaje de alerta
+          return; // Salir de la función
+        }
+      }
+
+      // Si las validaciones son correctas, enviar el formulario
+      e.preventDefault(); // Prevenir el envío predeterminado
       this.handleSubmit();
     });
+  }
+
+  // Función para mostrar u ocultar los campos de descuento y hacer obligatoria la expiración si está habilitado
+  toggleDiscountInputs() {
+    const isDiscountEnabled = document.getElementById("enableDiscount").checked;
+    const discountFields = document.getElementById("discountFields");
+    const discountPercentage = document.getElementById("discountPercentage");
+    const discountExpiration = document.getElementById("discountExpiration");
+
+    discountFields.style.display = isDiscountEnabled ? "block" : "none";
+    discountPercentage.disabled = !isDiscountEnabled;
+    discountExpiration.disabled = !isDiscountEnabled;
+
+    // Hacer que la fecha de expiración sea obligatoria si el descuento está activado
+    if (isDiscountEnabled) {
+      discountExpiration.setAttribute("required", "required");
+    } else {
+      discountExpiration.removeAttribute("required");
+    }
+  }
+
+  // Función para validar el formulario antes de enviarlo
+  validateForm(event) {
+    const isDiscountEnabled = document.getElementById("enableDiscount").checked;
+    const discountExpiration =
+      document.getElementById("discountExpiration").value;
+
+    // Si el descuento está activado pero no se ha ingresado una fecha de expiración, muestra un alert
+    if (isDiscountEnabled && !discountExpiration) {
+      alert("Por favor, ingrese una fecha de expiración para el descuento.");
+      event.preventDefault(); // Evita el envío del formulario
+      return false;
+    }
+    return true;
   }
 
   async handleSubmit() {
@@ -189,7 +294,9 @@ export class ProductForm {
     const description = document.querySelector("[data-description]").value;
     const isFeatured = document.getElementById("isFeatured").checked;
     const discount =
-      parseInt(document.querySelector("[data-discount]").value) || 0; // Capturar el descuento
+      parseInt(document.querySelector("[data-discount]").value) || 0;
+    const discountExpiry =
+      document.querySelector("[data-discount-expiry]").value || "";
 
     let productData = new FormData();
     productData.append("name", name);
@@ -197,7 +304,8 @@ export class ProductForm {
     productData.append("description", description);
     productData.append("section", this.sectionSelect.value);
     productData.append("isFeatured", isFeatured);
-    productData.append("discount", discount); // Agregar el descuento a los datos
+    productData.append("discount", discount);
+    productData.append("discountExpiry", discountExpiry);
 
     // Agrega cada archivo de imagen al FormData
     const images = document.querySelector("[data-imageUrls]").files;

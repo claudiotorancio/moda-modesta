@@ -1,15 +1,6 @@
 import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
-import AWS from "aws-sdk";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
-
-const s3 = new AWS.S3({
-  region: process.env.S3_BUCKET_REGION,
-  credentials: {
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  },
-});
 
 const updateProduct = async (req, res) => {
   try {
@@ -23,6 +14,7 @@ const updateProduct = async (req, res) => {
       isFeatured,
       id,
       discount,
+      discountExpiry,
     } = req.body;
 
     await connectToDatabase();
@@ -41,6 +33,7 @@ const updateProduct = async (req, res) => {
       description,
       isFeatured,
       discount,
+      discountExpiry,
     };
 
     if (generalStock !== undefined) {
@@ -80,8 +73,6 @@ const updateProduct = async (req, res) => {
 
     // Actualizar el producto en la base de datos sin incluir aún las imágenes
     const result = await model.findByIdAndUpdate(id, updateData, { new: true });
-
-    console.log(result);
 
     if (!result) {
       return res.status(404).json({ message: "Producto no encontrado" });
@@ -123,10 +114,10 @@ const updateProduct = async (req, res) => {
     result.imagePath = updatedImagePath.length ? updatedImagePath : undefined;
     await result.save();
 
-    res.json({ message: "Producto actualizado", updatedProduct: result });
+    res.json({ message: "Producto actualizado" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Producto no actualizado" });
+    res.status(400).json({ error: "Producto no actualizado" });
   }
 };
 

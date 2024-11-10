@@ -12,6 +12,7 @@ const VistaSchema = new Schema(
     name: { type: String, required: true },
     price: { type: Number, required: true },
     discount: { type: Number, default: 0 }, // Nuevo campo para el descuento
+    discountExpiry: { type: Date }, // Campo para la fecha de expiración del descuento
     imagePath: [String], // Array de strings para las rutas de imágenes
     description: { type: String, required: true },
     section: { type: String, required: true },

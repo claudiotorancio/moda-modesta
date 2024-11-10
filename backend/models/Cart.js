@@ -9,7 +9,7 @@ const CartSchema = new Schema(
     imagePath: { type: String, required: true },
     cantidad: { type: Number, required: true, default: 1 },
     discount: { type: Number, default: 0 }, // Nuevo campo para el descuento
-    size: { type: String, required: true }, // Cambiado a String si se trata de tallas como "S", "M", etc.
+    unidad: { type: String, required: true }, // Cambiado a String si se trata de tallas como "S", "M", etc.
     productId: { type: Schema.Types.ObjectId, ref: "Vista", required: true }, // Usando ObjectId y referencia a otra colección
     category: { type: String, required: true }, // Categoría del producto
     created_at: { type: Date, default: Date.now },

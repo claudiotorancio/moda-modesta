@@ -8,7 +8,7 @@ const addProductCart = async (req, res) => {
       name,
       price,
       imagePath,
-      size,
+      unidad,
       productId,
       cantidad,
       category,
@@ -20,7 +20,6 @@ const addProductCart = async (req, res) => {
     // Buscar si el producto ya existe en el carrito
     const existingProduct = await Cart.findOne({
       productId: productId,
-      size: size,
     });
 
     if (existingProduct) {
@@ -38,7 +37,7 @@ const addProductCart = async (req, res) => {
         name,
         price,
         imagePath,
-        size,
+        unidad,
         cantidad: cantidad, // Usar la cantidad recibida
         productId: productId,
         category: category,

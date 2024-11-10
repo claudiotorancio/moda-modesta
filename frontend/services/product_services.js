@@ -60,22 +60,21 @@ class ProductService {
         },
       });
 
-      const dataResponse = await response.json();
+      const dataResponse = await response.json().catch(() => {
+        throw new Error("Respuesta no válida del servidor.");
+      });
 
       if (!response.ok) {
-        // Aquí manejas el mensaje de error que envía el backend
-        throw new Error(dataResponse.error || "Error en la solicitud.");
+        // Lanza el contenido JSON en caso de error (si está presente)
+        throw dataResponse;
       }
-
       // Muestra de éxito en pantalla
       modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {
-      modalControllers.modalMsgReload(error.message);
-      // Asegúrate de que el error se imprima correctamente en la consola
-      console.error(
-        "Error al crear el producto:",
-        JSON.stringify(error, null, 2)
-      ); // Esto mostrará más detalles
+      const errorMessages = error.errors
+        .map((err) => `${err.field}: ${err.message}`)
+        .join("\n");
+      modalControllers.modalMsgReload(errorMessages);
     }
   }
 
@@ -164,22 +163,21 @@ class ProductService {
         },
       });
 
-      const dataResponse = await response.json();
+      const dataResponse = await response.json().catch(() => {
+        throw new Error("Respuesta no válida del servidor.");
+      });
 
       if (!response.ok) {
-        // Aquí manejas el mensaje de error que envía el backend
-        throw new Error(dataResponse.error || "Error en la solicitud.");
+        // Lanza el contenido JSON en caso de error (si está presente)
+        throw dataResponse;
       }
-
       // Muestra de éxito en pantalla
       modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {
-      modalControllers.modalMsgReload(error.message);
-      // Asegúrate de que el error se imprima correctamente en la consola
-      console.error(
-        "Error al actualizar el producto:",
-        JSON.stringify(error, null, 2)
-      ); // Esto mostrará más detalles
+      const errorMessages = error.errors
+        .map((err) => `${err.field}: ${err.message}`)
+        .join("\n");
+      modalControllers.modalMsgReload(errorMessages);
     }
   }
 
