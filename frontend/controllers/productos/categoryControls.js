@@ -91,7 +91,8 @@ export async function initializeCategoryControls() {
           hayStock,
           producto.section,
           producto.generalStock,
-          producto.discount
+          producto.discount,
+          producto.discountExpiry
         );
 
         let tarjetaProducto;
