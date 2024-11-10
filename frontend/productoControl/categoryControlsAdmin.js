@@ -94,7 +94,8 @@ export async function initializeCategoryControlsAdmin() {
           producto.inCart,
           producto.section,
           producto.generalStock,
-          producto.discount
+          producto.discount,
+          producto.discountExpiry
         );
 
         let tarjetaProducto;
