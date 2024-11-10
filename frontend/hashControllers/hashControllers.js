@@ -43,7 +43,8 @@ export async function hashControllers() {
         hayStock,
         producto.section,
         producto.generalStock,
-        producto.discount
+        producto.discount,
+        producto.discountExpiry
       );
 
       productHash.mostrarProducto();
