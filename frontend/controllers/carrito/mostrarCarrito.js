@@ -30,23 +30,27 @@ export function mostrarCarrito() {
 
     summaryDetails.innerHTML = "";
     summaryDetails.appendChild(progresoCompra);
+    console.log(this.items);
 
     const carritoContent = `
       <div class="main-container">
   <div class="summary-details panel p-none">
     <table class="table table-scrollable">
       <tbody>
+      
         ${this.items
           ?.map((item) => {
             // Calcula el precio con descuento para cada artículo
             (item.price * (1 - item.discount / 100)).toFixed(2);
             return `
                <tr>
-  <td class="summary-img-wrap">
-    <img class="card-img-top" alt="${item.name}" title="${item.name}" src="${
+ <td class="summary-img-wrap">
+   
+      <img class="card-img-top" alt="${item.name}" title="${item.name}" src="${
               item.imagePath
             }">
-  </td>
+  
+</td>
   <td>${item.name} × ${item.cantidad} <br> <small>${item.unidad}</small></td>
   <td class="table-price">
     ${

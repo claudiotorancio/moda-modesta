@@ -7,6 +7,7 @@ import { calcularEnvio } from "./calcularEnvio.js";
 import { agregarProductoCarrito } from "./agregarProductoCarrito.js";
 import { compartirProducto } from "./compartirProducto.js";
 import { notificacionesSinStock } from "./notificacionesSinStock.js";
+import { contadorHorasDescuento } from "./contadorHorasDescuento.js";
 
 export class Producto {
   constructor(
@@ -203,6 +204,10 @@ export class Producto {
     }
 
     return card;
+  }
+
+  contadorHorasDescuento() {
+    contadorHorasDescuento.call(this);
   }
 
   selectSizeAmount() {
