@@ -37,6 +37,8 @@ export class Estilos {
   // Vaciar contenido
   clearForm() {
     this.titulo.innerHTML = "";
+    const card = document.createElement("div");
+    card.innerHTML = "";
   }
 
   createButtons() {
@@ -63,7 +65,8 @@ export class Estilos {
     const bannerButton = this.titulo.querySelector("[data-banner]");
     bannerButton.addEventListener("click", (e) => {
       e.preventDefault();
-
+      const existingForms = this.titulo.querySelectorAll(".form-container");
+      existingForms.forEach((form) => form.remove());
       // Verifica si ya existe un formulario, para evitar duplicados
       const existingForm = this.titulo.querySelector("#uploadForm");
       if (existingForm) return;
@@ -94,6 +97,9 @@ export class Estilos {
     logoButton.addEventListener("click", (e) => {
       e.preventDefault();
 
+      const existingForms = this.titulo.querySelectorAll(".form-container");
+      existingForms.forEach((form) => form.remove());
+
       // Verifica si ya existe un formulario, para evitar duplicados
       const existingForm = this.titulo.querySelector("#uploadLogoForm");
       if (existingForm) return;
@@ -123,6 +129,9 @@ export class Estilos {
     const tituloBannerButton = this.titulo.querySelector("[data-tituloBanner]");
     tituloBannerButton.addEventListener("click", (e) => {
       e.preventDefault();
+
+      const existingForms = this.titulo.querySelectorAll(".form-container");
+      existingForms.forEach((form) => form.remove());
 
       // Verifica si ya existe un formulario, para evitar duplicados
       const existingForm = this.titulo.querySelector("#textForm");
@@ -162,6 +171,9 @@ export class Estilos {
     colorPaginaButton.addEventListener("click", (e) => {
       e.preventDefault();
 
+      const existingForms = this.titulo.querySelectorAll(".form-container");
+      existingForms.forEach((form) => form.remove());
+
       // Crear y añadir el formulario para seleccionar el color de fondo de la página
       const existingForm = this.titulo.querySelector("#colorPaginaForm");
       if (existingForm) return;
@@ -194,9 +206,17 @@ export class Estilos {
       // Crear y añadir el formulario para seleccionar el color de fondo de la página
       const existingForm = this.titulo.querySelector("#colorPaginaForm");
       if (existingForm) return;
-      alert("enviar el archivo y las imagenes al creador de la pagina ");
-      saveStylesToFile();
-      window.location.replace("/index.html");
+
+      // Mostrar la ventana de confirmación
+      const userConfirmed = confirm(
+        "¿Enviar el archivo y las imágenes al creador de la página?"
+      );
+
+      if (userConfirmed) {
+        // Si el usuario confirma, guarda los estilos y redirige
+        saveStylesToFile();
+        window.location.replace("/index.html");
+      }
     });
   }
 
@@ -204,6 +224,9 @@ export class Estilos {
     const colorTarjetasButton = this.titulo.querySelector("[data-colorCard]");
     colorTarjetasButton.addEventListener("click", (e) => {
       e.preventDefault();
+
+      const existingForms = this.titulo.querySelectorAll(".form-container");
+      existingForms.forEach((form) => form.remove());
 
       // Crear y añadir el formulario para seleccionar el color de fondo de las tarjetas
       const existingForm = this.titulo.querySelector("#colorTarjetasForm");
