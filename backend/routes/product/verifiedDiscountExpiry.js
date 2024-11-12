@@ -6,7 +6,7 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 await connectToDatabase();
 
 // Tarea programada para ejecutar cada día a la medianoche
-cron.schedule("0 0 * * *", async () => {
+cron.schedule("* * * * *", async () => {
   console.log("Ejecutando tarea de verificación de expiración de descuentos");
 
   try {
