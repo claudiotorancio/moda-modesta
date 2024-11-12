@@ -2,6 +2,7 @@
 
 import { body, param, query, validationResult } from "express-validator";
 import escape from "escape-html";
+import moment from "moment";
 
 // Funciones auxiliares
 const validarEmail = () =>
@@ -310,20 +311,22 @@ const validacionesProductoActualizacion = [
     .optional()
     .custom((value) => {
       if (!value) return true;
-      // Ajuste explícito de la fecha a la zona horaria local
-      const parsedDate = new Date(value + "T23:59:59Z"); // Establece la fecha ingresada al final del día en hora local
+
+      // Interpretar la fecha como fin del día en UTC
+      const parsedDate = moment.utc(value).endOf("day");
+
       // Verificar si la fecha es válida
-      if (isNaN(parsedDate.getTime())) {
+      if (!parsedDate.isValid()) {
         throw new Error(
           "La fecha de expiración del descuento debe ser una fecha válida."
         );
       }
-      // Obtener la fecha actual al inicio del día en hora local
-      const currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0);
+
+      // Obtener la fecha actual en UTC al inicio del día
+      const currentDate = moment.utc().startOf("day");
 
       // Comparar solo la fecha
-      if (parsedDate < currentDate) {
+      if (parsedDate.isBefore(currentDate)) {
         throw new Error(
           "La fecha de expiración no puede ser una fecha pasada."
         );

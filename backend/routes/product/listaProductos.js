@@ -3,7 +3,6 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 // Controlador para listar productos
 const listaProductos = async (req, res) => {
-  console.log(req.user);
   try {
     // Conectar a la base de datos
     await connectToDatabase();
