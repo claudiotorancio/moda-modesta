@@ -17,6 +17,11 @@ const updateProduct = async (req, res) => {
       discountExpiry,
     } = req.body;
 
+    // Convierte discountExpiry a un objeto Date si está presente
+    const parsedDiscountExpiry = discountExpiry
+      ? new Date(discountExpiry)
+      : null;
+
     await connectToDatabase();
 
     const model = esAdministrador(req.user) ? Vista : Product;
@@ -33,7 +38,7 @@ const updateProduct = async (req, res) => {
       description,
       isFeatured,
       discount,
-      discountExpiry,
+      discountExpiry: parsedDiscountExpiry, // Usar el Date parseado
     };
 
     if (generalStock !== undefined) {
