@@ -110,6 +110,61 @@ checkBox.addEventListener("change", (e) => {
             <button class="btn btn-primary consolas" data-init>¡Suscribite!</button>          
         </div>
     </div>
+  
+    <div id="countdown">
+      <span id="days">0</span> días,
+      <span id="hours">0</span> horas,
+      <span id="minutes">0</span> minutos,
+      <span id="seconds">0</span> segundos
+    </div>
+  
+    <script>
+      // Fecha de expiración del descuento en UTC (2024-11-11T23:59:59Z)
+      const discountExpiryUTC = "2024-11-11T23:59:59Z";
+      const expiryDate = new Date(discountExpiryUTC); // Fecha final de expiración en UTC
+      console.log(expiryDate.toISOString());
+      // Fecha de inicio del contador: 5 horas antes de la expiración
+      const countdownStartDate = new Date(expiryDate.getTime() - 5 * 60 * 60 * 1000);
+  
+      // Función para actualizar el contador
+      function updateCountdown() {
+        // Obtener la fecha y hora actual en UTC
+        const now = new Date();
+        const nowUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()));
+  // console.log(nowUTC)
+        // Calcular el tiempo restante
+        const timeRemaining = expiryDate.getTime() - nowUTC.getTime();
+  
+        // Verificar si estamos dentro de las 5 horas previas a la expiración
+        if (nowUTC >= countdownStartDate && nowUTC < expiryDate) {
+          // Convertir el tiempo restante en días, horas, minutos y segundos
+          const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));  // días
+          const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  // horas
+          const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));  // minutos
+          const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);  // segundos
+  
+          // Mostrar el tiempo restante en el DOM
+          document.getElementById("days").textContent = days;
+          document.getElementById("hours").textContent = hours;
+          document.getElementById("minutes").textContent = minutes;
+          document.getElementById("seconds").textContent = seconds;
+        } else if (nowUTC >= expiryDate) {
+          // Si el descuento ha expirado, mostrar un mensaje
+          document.getElementById("countdown").textContent = "¡El descuento ha expirado!";
+          clearInterval(countdownInterval); // Detener el contador
+        } else {
+          // Si aún no estamos en la ventana de 5 horas, mostrar un mensaje
+          document.getElementById("countdown").textContent = "El descuento comenzará en menos de 5 horas";
+        }
+      }
+  
+      // Actualizar el contador cada segundo
+      const countdownInterval = setInterval(updateCountdown, 1000);
+  
+      // Llamar a la función inicialmente para mostrar el estado correcto de inmediato
+      updateCountdown();
+    </script>
+
     
         <div class="botones-admin mt-2">
           <div class="busqueda admin-only mb-2">

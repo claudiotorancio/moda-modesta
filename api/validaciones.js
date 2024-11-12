@@ -311,7 +311,7 @@ const validacionesProductoActualizacion = [
     .custom((value) => {
       if (!value) return true;
       // Ajuste explícito de la fecha a la zona horaria local
-      const parsedDate = new Date(value + "T23:59:59"); // Establece la fecha ingresada al final del día en hora local
+      const parsedDate = new Date(value + "T23:59:59Z"); // Establece la fecha ingresada al final del día en hora local
       // Verificar si la fecha es válida
       if (isNaN(parsedDate.getTime())) {
         throw new Error(

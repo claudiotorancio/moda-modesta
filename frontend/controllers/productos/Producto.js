@@ -146,6 +146,8 @@ export class Producto {
         : ""
     }
   </div>
+ 
+ 
   <div class="card-body text-center">
     <h3 class="card-text text-muted mb-2">${this.name}</h3>
     <p class="card-title text-center font-weight-bold">
@@ -175,8 +177,6 @@ export class Producto {
     </ul>
   </div>
 </div>
-
-
     `;
 
     card.innerHTML = contenido;
