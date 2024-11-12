@@ -307,26 +307,25 @@ const validacionesProductoActualizacion = [
     .optional()
     .isFloat({ min: 0, max: 100 })
     .withMessage("El descuento debe ser un número entre 0 y 100."),
+
   body("discountExpiry")
     .optional()
     .custom((value) => {
       if (!value) return true;
 
-      // Interpretar la fecha como fin del día en UTC
-      const parsedDate = moment.utc(value).endOf("day");
+      // Ajusta parsedDate al final del día local
+      const parsedDate = moment(value).endOf("day");
+      console.log(
+        "Fecha de expiración ajustada:",
+        parsedDate.format("YYYY-MM-DD")
+      );
 
-      // Verificar si la fecha es válida
-      if (!parsedDate.isValid()) {
-        throw new Error(
-          "La fecha de expiración del descuento debe ser una fecha válida."
-        );
-      }
+      // Obtener la fecha actual al inicio del día en la zona horaria local
+      const currentDate = moment().startOf("day");
+      console.log("Fecha actual:", currentDate.format("YYYY-MM-DD"));
 
-      // Obtener la fecha actual en UTC al inicio del día
-      const currentDate = moment.utc().startOf("day");
-
-      // Comparar solo la fecha
-      if (parsedDate.isBefore(currentDate)) {
+      // Comparar solo las fechas locales
+      if (parsedDate.isBefore(currentDate, "day")) {
         throw new Error(
           "La fecha de expiración no puede ser una fecha pasada."
         );
