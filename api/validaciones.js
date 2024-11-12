@@ -313,12 +313,12 @@ const validacionesProductoActualizacion = [
     .custom((value) => {
       if (!value) return true;
 
-      // Crear `parsedDate` y `currentDate` en la misma zona horaria
-      const parsedDate = moment(value, "YYYY-MM-DD").endOf("day").local(); // Localiza la fecha de expiración
-      const currentDate = moment().startOf("day").local(); // Localiza la fecha actual
+      // Crear `parsedDate` y `currentDate` en UTC
+      const parsedDate = moment.utc(value, "YYYY-MM-DD").endOf("day");
+      const currentDate = moment.utc().startOf("day");
 
-      console.log("Fecha de expiración ajustada:", parsedDate.format()); // Muestra la fecha de expiración ajustada
-      console.log("Fecha actual:", currentDate.format()); // Muestra la fecha actual ajustada a la zona horaria local
+      console.log("Fecha de expiración ajustada:", parsedDate.format()); // Muestra la fecha de expiración ajustada en UTC
+      console.log("Fecha actual:", currentDate.toISOString()); // Muestra la fecha actual en formato UTC
 
       // Comparación únicamente de la fecha
       if (parsedDate.isBefore(currentDate)) {
