@@ -317,11 +317,8 @@ const validacionesProductoActualizacion = [
       const parsedDate = moment(value, "YYYY-MM-DD").endOf("day");
       const currentDate = moment().startOf("day");
 
-      console.log(
-        "Fecha de expiración ajustada:",
-        parsedDate.format("YYYY-MM-DD")
-      );
-      console.log("Fecha actual:", currentDate.format("YYYY-MM-DD"));
+      console.log("Fecha de expiración ajustada:", parsedDate.format()); // Muestra la fecha de expiración ajustada
+      console.log("Fecha actual:", currentDate.toISOString()); // Muestra la fecha actual en formato ISO
 
       // Comparación únicamente de la fecha
       if (parsedDate.isBefore(currentDate)) {
