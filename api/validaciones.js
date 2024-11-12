@@ -313,19 +313,18 @@ const validacionesProductoActualizacion = [
     .custom((value) => {
       if (!value) return true;
 
-      // Ajusta parsedDate al final del día local
-      const parsedDate = moment(value).endOf("day");
+      // Crear `parsedDate` y `currentDate` usando solo la parte de la fecha (sin tiempo)
+      const parsedDate = moment(value, "YYYY-MM-DD").endOf("day");
+      const currentDate = moment().startOf("day");
+
       console.log(
         "Fecha de expiración ajustada:",
         parsedDate.format("YYYY-MM-DD")
       );
-
-      // Obtener la fecha actual al inicio del día en la zona horaria local
-      const currentDate = moment().startOf("day");
       console.log("Fecha actual:", currentDate.format("YYYY-MM-DD"));
 
-      // Comparar solo las fechas locales
-      if (parsedDate.isBefore(currentDate, "day")) {
+      // Comparación únicamente de la fecha
+      if (parsedDate.isBefore(currentDate)) {
         throw new Error(
           "La fecha de expiración no puede ser una fecha pasada."
         );
