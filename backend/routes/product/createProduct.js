@@ -1,6 +1,7 @@
 import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
+import moment from "moment";
 
 const createProduct = async (req, res) => {
   try {
@@ -15,6 +16,9 @@ const createProduct = async (req, res) => {
       discountExpiry,
       sizes: sizesInput,
     } = req.body;
+
+    const parsedDate = moment.utc(discountExpiry).endOf("day");
+    const parsedDiscountExpiry = parsedDate.format() || null;
 
     // Validar y convertir el descuento a número
     const validDiscount = parseFloat(discount);
@@ -38,7 +42,7 @@ const createProduct = async (req, res) => {
       name,
       price,
       discount: validDiscount,
-      discountExpiry,
+      discountExpiry: parsedDiscountExpiry,
       description,
       section,
       isFeatured: isFeatured || false,

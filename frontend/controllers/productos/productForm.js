@@ -325,9 +325,9 @@ export class ProductForm {
     }
 
     // // Mostrar los datos del FormData en la consola
-    // for (let [key, value] of productData.entries()) {
-    //   console.log(`${key}:`, value);
-    // }
+    for (let [key, value] of productData.entries()) {
+      console.log(`${key}:`, value);
+    }
 
     try {
       await productoServices.crearProducto(productData);

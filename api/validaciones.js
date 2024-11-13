@@ -201,22 +201,16 @@ const validacionesProducto = [
     .optional()
     .custom((value) => {
       if (!value) return true;
-      // Ajuste explícito de la fecha a la zona horaria local
-      const parsedDate = new Date(value + "T23:59:59"); // Establece la fecha ingresada al final del día en hora local
 
-      // Verificar si la fecha es válida
-      if (isNaN(parsedDate.getTime())) {
-        throw new Error(
-          "La fecha de expiración del descuento debe ser una fecha válida."
-        );
-      }
+      // Crear `parsedDate` y `currentDate` en UTC
+      const parsedDate = moment.utc(value).endOf("day");
+      const discountExoiryParsed = parsedDate.format();
 
-      // Obtener la fecha actual al inicio del día en hora local
-      const currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0);
+      // console.log("Fecha de expiración ajustada:", parsedDate.format()); // Muestra la fecha de expiración ajustada en UTC
+      // console.log("Fecha actual:", currentDate.toISOString()); // Muestra la fecha actual en formato UTC
 
-      // Comparar solo la fecha
-      if (parsedDate < currentDate) {
+      // Comparación únicamente de la fecha
+      if (parsedDate.isBefore(discountExoiryParsed)) {
         throw new Error(
           "La fecha de expiración no puede ser una fecha pasada."
         );
@@ -314,14 +308,14 @@ const validacionesProductoActualizacion = [
       if (!value) return true;
 
       // Crear `parsedDate` y `currentDate` en UTC
-      const parsedDate = moment.utc(value, "YYYY-MM-DD").endOf("day");
-      const currentDate = moment.utc().startOf("day");
+      const parsedDate = moment.utc(value).endOf("day");
+      const discountExoiryParsed = parsedDate.format();
 
-      console.log("Fecha de expiración ajustada:", parsedDate.format()); // Muestra la fecha de expiración ajustada en UTC
-      console.log("Fecha actual:", currentDate.toISOString()); // Muestra la fecha actual en formato UTC
+      // console.log("Fecha de expiración ajustada:", parsedDate.format()); // Muestra la fecha de expiración ajustada en UTC
+      // console.log("Fecha actual:", currentDate.toISOString()); // Muestra la fecha actual en formato UTC
 
       // Comparación únicamente de la fecha
-      if (parsedDate.isBefore(currentDate)) {
+      if (parsedDate.isBefore(discountExoiryParsed)) {
         throw new Error(
           "La fecha de expiración no puede ser una fecha pasada."
         );
@@ -329,7 +323,6 @@ const validacionesProductoActualizacion = [
 
       return true;
     }),
-
   // // Verifica si hay errores
   // (req, res, next) => {
   //   const errors = validationResult(req);
