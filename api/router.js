@@ -95,6 +95,7 @@ import getTopSellingProducts from "../backend/sales/getTopSellingProducts.js";
 import gefetchPendingOrders from "../backend/sales/getFetchPendingOrders.js";
 import getCustomerAnalytics from "../backend/sales/getCustomerAnalytics.js";
 import authenticateToken from "../backend/routes/login/authenticateToken.js";
+import handler from "./cron.js";
 
 const router = Router();
 const app = express();
@@ -262,6 +263,8 @@ router.get("/api/protected-route", authenticateToken, (req, res) => {
 });
 
 //Sales
+
+router.get("/api/cron", handler);
 
 router.get("/api/sales", authenticateToken, getSalesByPeriod);
 router.get(
