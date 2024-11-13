@@ -264,7 +264,7 @@ router.get("/api/protected-route", authenticateToken, (req, res) => {
 
 //Sales
 
-router.get("/api/cron", handler);
+app.get("/api/cron", handler);
 
 router.get("/api/sales", authenticateToken, getSalesByPeriod);
 router.get(
