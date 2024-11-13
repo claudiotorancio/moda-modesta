@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     try {
       const currentDate = new Date();
 
-      const parsedDate = moment.utc(currentDate, "YYYY-MM-DD").endOf("day");
+      const parsedDate = moment.utc(currentDate);
       // Obtener la fecha actual
 
       console.log(currentDate);

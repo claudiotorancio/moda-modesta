@@ -1,6 +1,7 @@
 import Product from "../../models/Product.js";
 import Vista from "../../models/Vista.js";
 import { connectToDatabase } from "../../db/connectToDatabase.js";
+import moment from "moment";
 
 const updateProduct = async (req, res) => {
   try {
@@ -18,9 +19,10 @@ const updateProduct = async (req, res) => {
     } = req.body;
 
     // Convierte discountExpiry a un objeto Date si está presente
-    const parsedDiscountExpiry = discountExpiry
-      ? new Date(discountExpiry)
-      : null;
+    const currentDate = new Date();
+    const parsedDate = moment.utc(currentDate, "YYYY-MM-DD").endOf("day");
+
+    const parsedDiscountExpiry = discountExpiry ? parsedDate.format() : null;
 
     await connectToDatabase();
 
