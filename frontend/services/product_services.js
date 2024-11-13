@@ -172,7 +172,7 @@ class ProductService {
         throw dataResponse;
       }
       // Muestra de éxito en pantalla
-      modalControllers.modalMsg(dataResponse.message);
+      modalControllers.modalMsgReload(dataResponse.message);
     } catch (error) {
       const errorMessages = error.errors
         .map((err) => `${err.field}: ${err.message}`)
