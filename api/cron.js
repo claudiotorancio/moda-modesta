@@ -1,4 +1,5 @@
-// api/cron.js
+// api/cron.
+import moment from "moment";
 import Vista from "../backend/models/Vista.js";
 import { connectToDatabase } from "../backend/db/connectToDatabase.js";
 
@@ -7,7 +8,7 @@ export default async function handler(req, res) {
     await connectToDatabase();
     try {
       // Obtener la fecha actual
-      const currentDate = new Date();
+      const currentDate = moment.utc().endOf("day");
 
       // Buscar productos cuyo discountExpiry haya pasado
       const productosConDescuentoExpirado = await Vista.find({
@@ -23,7 +24,7 @@ export default async function handler(req, res) {
         })
       );
 
-      res.status(200).send("Productos actualizados exitosamente");
+      res.status(200).json({ message: "Productos actualizados exitosamente" });
     } catch (error) {
       console.error(
         "Error al actualizar productos con descuento expirado:",

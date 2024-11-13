@@ -172,12 +172,12 @@ class ProductService {
         throw dataResponse;
       }
       // Muestra de éxito en pantalla
-      modalControllers.modalMsgReload(dataResponse.message);
+      modalControllers.modalMsg(dataResponse.message);
     } catch (error) {
       const errorMessages = error.errors
         .map((err) => `${err.field}: ${err.message}`)
         .join("\n");
-      modalControllers.modalMsgReload(errorMessages);
+      modalControllers.modalMsg(errorMessages);
     }
   }
 
