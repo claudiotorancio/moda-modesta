@@ -20,9 +20,8 @@ const updateProduct = async (req, res) => {
 
     // Convierte discountExpiry a un objeto Date si está presente
 
-    const parsedDate = moment.utc(discountExpiry).endOf("day");
-
-    const parsedDiscountExpiry = discountExpiry ? parsedDate.format() : null;
+    const parsedDiscountExpiry =
+      moment.utc(discountExpiry).endOf("day") || null;
 
     await connectToDatabase();
 

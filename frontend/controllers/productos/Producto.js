@@ -164,7 +164,6 @@ export class Producto {
           ${this.discount}% off
           </span>
            <div id="countdown">
-      <span id="days">0</span> días,
       <span id="hours">0</span> horas,
       <span id="minutes">0</span> minutos,
       <span id="seconds">0</span> segundos
