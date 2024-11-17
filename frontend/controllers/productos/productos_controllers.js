@@ -2,6 +2,12 @@ import { ProductCard } from "../../productoControl/ProductCard.js"; // Ajusta la
 import productoServices from "../../services/product_services.js"; // Importa el servicio que obtiene los productos
 import { Producto } from "./Producto.js";
 
+export const hayStock = (producto) => {
+  return (
+    producto.generalStock > 0 || producto.sizes.some((item) => item.stock > 0)
+  );
+};
+
 export const controllers = {
   //Mostrar productos admin
   async renderProducts() {
@@ -15,11 +21,6 @@ export const controllers = {
 
         // Renderiza las tarjetas de los productos destacados
         for (const producto of productosDestacados) {
-          `hola todo bien`;
-          const hayStock =
-            producto.generalStock > 0 || // Verifica stock general para "Diversos"
-            producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
-
           const card = new ProductCard(
             producto._id,
             producto.name,
@@ -27,7 +28,7 @@ export const controllers = {
             producto.imagePath,
             producto.description,
             producto.sizes,
-            hayStock,
+            hayStock(producto),
             producto.isFeatured,
             producto.isActive,
             producto.inCart,
@@ -51,10 +52,6 @@ export const controllers = {
 
       // Renderiza las tarjetas de productos en sus respectivas secciones
       for (const producto of products) {
-        const hayStock =
-          producto.generalStock > 0 || // Verifica stock general para "Diversos"
-          producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
-
         const productCard = new ProductCard(
           producto._id,
           producto.name,
@@ -62,7 +59,7 @@ export const controllers = {
           producto.imagePath,
           producto.description,
           producto.sizes,
-          hayStock,
+          hayStock(producto),
           producto.isFeatured,
           producto.isActive,
           producto.inCart,
@@ -94,9 +91,6 @@ export const controllers = {
 
       // Renderizar productos destacados
       for (const producto of productosDestacados) {
-        const hayStock =
-          producto.generalStock > 0 || // Verifica stock general para "Diversos"
-          producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
         const card = new Producto(
           producto._id,
           producto.name,
@@ -104,7 +98,7 @@ export const controllers = {
           producto.imagePath,
           producto.description,
           producto.sizes,
-          hayStock,
+          hayStock(producto),
           producto.section,
           producto.generalStock,
           producto.discount,
@@ -122,10 +116,6 @@ export const controllers = {
 
       // Renderizar productos generales
       for (const producto of products) {
-        const hayStock =
-          producto.generalStock > 0 || // Verifica stock general para "Diversos"
-          producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
-
         const productCard = new Producto(
           producto._id,
           producto.name,
@@ -133,13 +123,12 @@ export const controllers = {
           producto.imagePath,
           producto.description,
           producto.sizes,
-          hayStock,
+          hayStock(producto),
           producto.section,
           producto.generalStock,
           producto.discount,
           producto.discountExpiry
         );
-
         const contenedorSeccion = document.querySelector(
           `[data-${producto.section}]`
         );

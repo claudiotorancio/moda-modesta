@@ -4,7 +4,6 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 const putProductCart = async (req, res) => {
   try {
     const { cantidad, productId } = req.body;
-    console.log(req.body);
 
     // Conexión a la base de datos
 

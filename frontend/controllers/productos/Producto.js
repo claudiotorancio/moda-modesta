@@ -163,9 +163,16 @@ export class Producto {
            <span class="discount-tag">
           ${this.discount}% off
           </span>
+           <div id="countdown">
+      <span id="days">0</span> días,
+      <span id="hours">0</span> horas,
+      <span id="minutes">0</span> minutos,
+      <span id="seconds">0</span> segundos
+    </div>
           `
         : `<span class=" text-muted">$${this.price.toFixed(2)}</span> `
     }
+   
       
     <div class=" justify-content-center gap-2 mt-2">
       <a href="#" class="btn btn-primary m-1 ">Detalle</a>
@@ -181,6 +188,11 @@ export class Producto {
 
     card.innerHTML = contenido;
     card.classList.add("card");
+
+    if (this.discountExpiry && this.discount) {
+      const countdownContainer = card.querySelector("#countdown");
+      contadorHorasDescuento(this.discountExpiry, countdownContainer);
+    }
 
     card.querySelector(".img-card img").addEventListener("click", async () => {
       this.zoomImageHandler();
@@ -206,9 +218,9 @@ export class Producto {
     return card;
   }
 
-  contadorHorasDescuento() {
-    contadorHorasDescuento.call(this);
-  }
+  // contadorHorasDescuento() {
+  //   contadorHorasDescuento.call(this);
+  // }
 
   selectSizeAmount() {
     if (this.section === "opcion3") {

@@ -1,6 +1,7 @@
 import productoServices from "../services/product_services.js";
 import { Producto } from "../controllers/productos/Producto.js";
 import { modalControllers } from "../modal/modal.js";
+import { hayStock } from "../controllers/productos/productos_controllers.js";
 
 export async function hashControllers() {
   try {
@@ -29,10 +30,6 @@ export async function hashControllers() {
 
     // Si el producto está activo, lo mostramos normalmente
     if (isActive) {
-      const hayStock =
-        producto.generalStock > 0 || // Verifica stock general para "Diversos"
-        producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
-
       const productHash = new Producto(
         producto._id,
         producto.name,
@@ -40,7 +37,7 @@ export async function hashControllers() {
         producto.imagePath,
         producto.description,
         producto.sizes, // Pasar las tallas con su stock
-        hayStock,
+        hayStock(producto),
         producto.section,
         producto.generalStock,
         producto.discount,

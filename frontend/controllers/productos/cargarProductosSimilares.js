@@ -1,5 +1,6 @@
 import productoServices from "../../services/product_services.js";
 import { Producto } from "./Producto.js";
+import { hayStock } from "./productos_controllers.js";
 
 export async function cargarProductosSimilares() {
   try {
@@ -31,10 +32,6 @@ export async function cargarProductosSimilares() {
       // Construir HTML de productos similares
       let productosHTML = "";
       similares.forEach((producto) => {
-        const hayStock =
-          producto.generalStock > 0 || // Verifica stock general para "Diversos"
-          producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
-
         productosHTML += `
           <div class="producto-similar" data-id="${producto._id}" data-name="${
           producto.name
@@ -42,19 +39,19 @@ export async function cargarProductosSimilares() {
           producto.imagePath
         )}' data-sizes='${JSON.stringify(producto.sizes)}' data-description="${
           producto.description
-        }" data-stock="${hayStock}">
+        }" data-stock="${hayStock(producto)}">
             <a href="#">
               <img src="${producto.imagePath[0]}" alt="${
           producto.name
         }" class="img-thumbnail">
               <p>${producto.name}</p>
               ${
-                producto.discount && hayStock
+                producto.discount && hayStock(producto)
                   ? `<span class="original-price">
                 $${producto.price.toFixed(2)}
                 </span>
                 <br>
-                <span >
+                <span>
                 $${(producto.price * (1 - producto.discount / 100)).toFixed(2)}
                 </span>
                 <br>
@@ -86,10 +83,6 @@ export async function cargarProductosSimilares() {
           }
 
           try {
-            const hayStock =
-              producto.generalStock > 0 || // Verifica stock general para "Diversos"
-              producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
-
             const productoSimilar = new Producto(
               producto._id,
               producto.name,
@@ -97,7 +90,7 @@ export async function cargarProductosSimilares() {
               producto.imagePath,
               producto.description,
               producto.sizes,
-              hayStock,
+              hayStock(producto),
               producto.section,
               producto.generalStock,
               producto.discount

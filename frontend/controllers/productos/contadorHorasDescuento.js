@@ -1,40 +1,43 @@
 import moment from "moment";
 
-export async function contadorHorasDescuento() {
-  const discountExpiryUTC = "2024-11-11T23:59:59Z";
-
-  // Crear un objeto moment a partir de la fecha de expiración en UTC
-  const expiryDate = moment.utc(discountExpiryUTC); // Asegurarse de tratar la fecha como UTC
+export async function contadorHorasDescuento(expiryDate, countdownContainer) {
+  // Usa la fecha directamente si ya está en UTC
+  const expiryDateUTC = moment(expiryDate).utc(); // Convertir a UTC si es necesario
+  console.log(
+    "Fecha de expiración (UTC):",
+    expiryDateUTC.format("YYYY-MM-DD HH:mm:ss")
+  );
 
   function updateCountdown() {
-    const now = moment.utc(); // Obtener la fecha y hora actual en UTC
+    // Obtén la fecha actual en UTC
+    const now = moment.utc(); // Fecha actual en UTC
+    console.log("Fecha actual (UTC):", now.format("YYYY-MM-DD HH:mm:ss"));
 
-    // Calcular la diferencia en milisegundos
-    const timeRemaining = expiryDate.diff(now);
+    // Calcula la diferencia en milisegundos
+    const timeRemaining = expiryDateUTC.diff(now);
+    console.log("Tiempo restante (ms):", timeRemaining);
 
     if (timeRemaining > 0) {
-      // Calcular el tiempo restante en días, horas, minutos y segundos
       const duration = moment.duration(timeRemaining);
-      const days = Math.floor(duration.asDays());
-      const hours = duration.hours();
+
+      const hours = Math.floor(duration.asHours());
       const minutes = duration.minutes();
       const seconds = duration.seconds();
 
-      // Mostrar el tiempo restante en el DOM
-      document.getElementById("days").textContent = days;
-      document.getElementById("hours").textContent = hours;
-      document.getElementById("minutes").textContent = minutes;
-      document.getElementById("seconds").textContent = seconds;
+      // Mostrar solo si faltan menos de 5 horas
+      if (hours < 5) {
+        countdownContainer.innerHTML = `
+          <small>Descuento termina en ${hours}h ${minutes}m ${seconds}s</small>
+        `;
+      } else {
+        countdownContainer.innerHTML = ""; // No mostrar si faltan más de 5 horas
+      }
     } else {
-      // Si el descuento ha expirado
-      document.getElementById("countdown").textContent =
-        "¡El descuento ha expirado!";
+      countdownContainer.textContent = "";
     }
   }
 
-  // Actualizar el contador cada segundo
+  // Actualiza cada segundo
   setInterval(updateCountdown, 1000);
-
-  // Llamar a la función inicialmente para mostrar el estado correcto
   updateCountdown();
 }

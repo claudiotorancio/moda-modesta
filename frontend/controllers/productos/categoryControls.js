@@ -1,5 +1,6 @@
 import productoServices from "../../services/product_services.js";
 import { Producto } from "./Producto.js";
+import { hayStock } from "./productos_controllers.js";
 
 export async function initializeCategoryControls() {
   // Obtener la opción de la query string
@@ -76,11 +77,6 @@ export async function initializeCategoryControls() {
       const productosBloque = productosFiltrados.slice(inicio, fin);
 
       for (const producto of productosBloque) {
-        const hayStock =
-          producto.section === "opcion3"
-            ? producto.generalStock > 0 // Verifica stock general para "Diversos"
-            : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
-
         const productCategory = new Producto(
           producto._id,
           producto.name,
@@ -88,7 +84,7 @@ export async function initializeCategoryControls() {
           producto.imagePath,
           producto.description,
           producto.sizes,
-          hayStock,
+          hayStock(producto),
           producto.section,
           producto.generalStock,
           producto.discount,

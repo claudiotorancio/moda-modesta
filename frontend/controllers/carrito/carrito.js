@@ -32,7 +32,7 @@ class Carrito {
     }
   }
 
-  async agregarProducto({ product }) {
+  async agregarProducto(product) {
     try {
       await agregarProducto.call(this, product);
       await this.mostrarCarrito(); // Recargar carrito después de agregar producto

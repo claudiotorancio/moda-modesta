@@ -30,7 +30,6 @@ export function mostrarCarrito() {
 
     summaryDetails.innerHTML = "";
     summaryDetails.appendChild(progresoCompra);
-    console.log(this.items);
 
     const carritoContent = `
       <div class="main-container">
