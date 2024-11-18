@@ -1,4 +1,4 @@
-import { ProductCard } from "../../productoControl/ProductCard.js"; // Ajusta la ruta según tu estructura
+import { ProductCard } from "../productoControl/ProductCard.js";
 import productoServices from "../../services/product_services.js"; // Importa el servicio que obtiene los productos
 import { Producto } from "./Producto.js";
 

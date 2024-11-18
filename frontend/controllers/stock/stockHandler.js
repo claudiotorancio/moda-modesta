@@ -1,10 +1,10 @@
-import { ProductCard } from "../../productoControl/ProductCard.js";
+import { ProductCard } from "../productoControl/ProductCard.js";
 import productoServices from "../../services/product_services.js";
 import { StockControllers } from "./stock-controllers.js";
 import {
   handleActivate,
   handleDesactivate,
-} from "../../productoControl/productEventHandler.js";
+} from "../productoControl/productEventHandler.js";
 
 export async function agregarEventListenerBotones() {
   const titulo = document.querySelector("[data-titulo]");

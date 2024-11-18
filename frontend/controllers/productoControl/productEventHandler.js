@@ -1,5 +1,5 @@
-import productoServices from "../services/product_services.js";
-import envioServices from "../services/envio_services.js";
+import productoServices from "../../services/product_services.js";
+import envioServices from "../../services/envio_services.js";
 
 export async function handleDesactivate(id) {
   try {

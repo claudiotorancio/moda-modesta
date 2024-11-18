@@ -10,15 +10,11 @@ export default async function handler(req, res) {
       const currentDate = new Date();
 
       const parsedDate = moment.utc(currentDate);
-      // Obtener la fecha actual
-
-      console.log(currentDate);
 
       // Buscar productos cuyo discountExpiry haya pasado
       const productosConDescuentoExpirado = await Vista.find({
         discountExpiry: { $lte: parsedDate },
       });
-      console.log(productosConDescuentoExpirado);
       // Actualizar los productos con descuento expirado
       await Promise.all(
         productosConDescuentoExpirado.map(async (producto) => {

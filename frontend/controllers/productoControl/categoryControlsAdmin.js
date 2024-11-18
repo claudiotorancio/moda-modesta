@@ -1,4 +1,4 @@
-import productoServices from "../services/product_services.js";
+import productoServices from "../../services/product_services.js";
 import { ProductCard } from "./ProductCard.js";
 
 export async function initializeCategoryControlsAdmin() {

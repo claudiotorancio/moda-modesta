@@ -1,4 +1,4 @@
-import { mostrarProducto } from "../controllers/productos/ProductViewer.js";
+import { mostrarProducto } from "../../controllers/productos/ProductViewer.js";
 import { handleEdit } from "./handleEdit.js";
 import { setupFormSubmitHandler } from "./setupFormSubmitHandler.js.js";
 import { handleDesactivate, handleActivate } from "./productEventHandler.js";

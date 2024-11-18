@@ -1,4 +1,4 @@
-import productoServices from "../services/product_services.js";
+import productoServices from "../../services/product_services.js";
 
 export function setupFormSubmitHandler() {
   const form = document.querySelector("[data-forma]");

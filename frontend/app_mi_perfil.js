@@ -10,7 +10,7 @@ import "./styles/assets/css/table.css";
 import { LoginServices } from "./services/login_services.js";
 import { LoginControllers } from "./controllers/registro/login_controllers.js";
 import { ListaServices } from "./services/lista_services.js";
-import { RenderProfile } from "./profile/RenderProfile.js";
+import { RenderProfile } from "./controllers/profile/RenderProfile.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Obtener rol del usuario y datos
