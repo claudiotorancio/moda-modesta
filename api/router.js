@@ -23,7 +23,6 @@ import {
   validacionesProductoActualizacion,
 } from "../api/validaciones.js";
 import morgan from "morgan";
-// import cors from "cors";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -33,13 +32,11 @@ import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
 import rateLimit from "express-rate-limit";
 import path from "path";
-
 import passport from "../backend/lib/passport.js";
 import MONGODB_URI from "../backend/config.js";
 import signin from "../backend/routes/login/signin.js";
 import signup from "../backend/routes/login/signup.js";
 import logout from "../backend/routes/login/logout.js";
-// import listaProductosUsuario from "../backend/routes/product/listaProductosUsuario.js";
 import listaProductos from "../backend/routes/product/listaProductos.js";
 import createProduct from "../backend/routes/product/createProduct.js";
 import desactivateProduct from "../backend/routes/product/desactivateProduct.js";
@@ -88,12 +85,12 @@ import password from "../backend/routes/nodeMailer/password.js";
 import sendResetPassword from "../backend/routes/login/sendResetPassword.js";
 import updatePassword from "../backend/routes/login/updatePassword.js";
 import confirmResetpassword from "../backend/routes/login/confirmResetPassword.js";
-import { profileControllers } from "../backend/profile/profileControllers.js";
+import { profileControllers } from "../backend/routes/profile/profileControllers.js";
 import { validationResult } from "express-validator";
-import getSalesByPeriod from "../backend/sales/getSalesByPeriod.js";
-import getTopSellingProducts from "../backend/sales/getTopSellingProducts.js";
-import gefetchPendingOrders from "../backend/sales/getFetchPendingOrders.js";
-import getCustomerAnalytics from "../backend/sales/getCustomerAnalytics.js";
+import getSalesByPeriod from "../backend/routes/sales/getSalesByPeriod.js";
+import getTopSellingProducts from "../backend/routes/sales/getTopSellingProducts.js";
+import gefetchPendingOrders from "../backend/routes/sales/getFetchPendingOrders.js";
+import getCustomerAnalytics from "../backend/routes/sales/getCustomerAnalytics.js";
 import authenticateToken from "../backend/routes/login/authenticateToken.js";
 import handler from "./cron.js";
 
@@ -231,8 +228,6 @@ const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   },
 });
-
-const uploadNone = multer();
 
 const upload = () =>
   multer({

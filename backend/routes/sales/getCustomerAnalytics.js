@@ -1,6 +1,6 @@
-import CustomerAnalytic from "../models/CustomerAnalytics.js";
-import Sale from "../models/Sales.js";
-import { connectToDatabase } from "../db/connectToDatabase.js";
+import CustomerAnalytic from "../../models/CustomerAnalytics.js";
+import Sale from "../../models/Sales.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const getCustomerAnalytics = async (req, res) => {
   try {

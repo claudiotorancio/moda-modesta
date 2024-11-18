@@ -1,5 +1,5 @@
-import Order from "../models/Order.js";
-import { connectToDatabase } from "../db/connectToDatabase.js";
+import Order from "../../models/Order.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const gefetchPendingOrders = async (req, res) => {
   try {

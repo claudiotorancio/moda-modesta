@@ -1,7 +1,7 @@
-import { ListaServices } from "../services/lista_services.js";
-import { ProfileServices } from "../services/profile-services.js";
-import { LoginControllers } from "../controllers/registro/login_controllers.js";
-import { modalControllers } from "../modal/modal.js";
+import { ListaServices } from "../../services/lista_services.js";
+import { ProfileServices } from "../../services/profile-services.js";
+import { LoginControllers } from "../registro/login_controllers.js";
+import { modalControllers } from "../../modal/modal.js";
 
 function escapeHtml(unsafe) {
   return unsafe

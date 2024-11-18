@@ -1,5 +1,5 @@
-import Sale from "../models/Sales.js";
-import { connectToDatabase } from "../db/connectToDatabase.js";
+import Sale from "../../models/Sales.js";
+import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const getSalesByPeriod = async (req, res) => {
   try {
