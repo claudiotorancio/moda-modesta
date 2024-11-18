@@ -324,10 +324,10 @@ export class ProductForm {
       productData.append("sizes", JSON.stringify(sizesStock));
     }
 
-    // // Mostrar los datos del FormData en la consola
-    for (let [key, value] of productData.entries()) {
-      console.log(`${key}:`, value);
-    }
+    // Mostrar los datos del FormData en la consola
+    // for (let [key, value] of productData.entries()) {
+    //   console.log(`${key}:`, value);
+    // }
 
     try {
       await productoServices.crearProducto(productData);

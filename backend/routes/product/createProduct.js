@@ -17,8 +17,8 @@ const createProduct = async (req, res) => {
       sizes: sizesInput,
     } = req.body;
 
-    const parsedDate = moment.utc(discountExpiry).endOf("day");
-    const parsedDiscountExpiry = parsedDate.format() || null;
+    const parsedDiscountExpiry =
+      moment.utc(discountExpiry).endOf("day") || null;
 
     // Validar y convertir el descuento a número
     const validDiscount = parseFloat(discount);

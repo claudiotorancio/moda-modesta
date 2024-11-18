@@ -163,11 +163,7 @@ export class Producto {
            <span class="discount-tag">
           ${this.discount}% off
           </span>
-           <div id="countdown">
-      <span id="hours">0</span> horas,
-      <span id="minutes">0</span> minutos,
-      <span id="seconds">0</span> segundos
-    </div>
+           <div id="countdown" class="text-muted small text-center mt-2"></div>
           `
         : `<span class=" text-muted">$${this.price.toFixed(2)}</span> `
     }

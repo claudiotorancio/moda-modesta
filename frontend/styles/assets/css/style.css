@@ -555,6 +555,15 @@ span#final-total {
   margin-right: 5px;
 }
 
+#countdown {
+  font-size: 0.9rem; /* Tamaño pequeño */
+  color: #6c757d; /* Gris estándar de Bootstrap */
+}
+
+#countdown small {
+  font-weight: bold; /* Resaltar el mensaje */
+}
+
 @media (min-width: 768px) and (max-width: 1200px) {
 }
 
