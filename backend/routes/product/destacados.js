@@ -11,7 +11,7 @@ const destacadosProduct = async (req, res) => {
     const productosDestacados = await Vista.find({
       isFeatured: true,
       isActive: true,
-      section: { $in: ["opcion1", "opcion2", "opcion3"] },
+      section: { $in: ["vestidos", "polleras", "diversos"] },
       $or: [
         { generalStock: { $gt: 0 } }, // Productos con generalStock mayor a 0
         { "sizes.stock": { $gt: 0 } }, // O productos con al menos un tamaño con stock mayor a 0

@@ -55,7 +55,7 @@ export class ProductForm {
     );
     const selectedValue = this.sectionSelect.value;
 
-    if (selectedValue === "opcion3") {
+    if (selectedValue === "diversos") {
       // Si es "Diversos", oculta los talles y muestra el campo de stock general
       sizesContainer.classList.add("d-none");
       generalStockContainer.classList.remove("d-none");

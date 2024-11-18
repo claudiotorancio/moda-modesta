@@ -1,6 +1,12 @@
 import moment from "moment";
 
 export async function contadorHorasDescuento(expiryDate, countdownContainer) {
+  // Verificar si expiryDate es null o no válido
+  if (!expiryDate) {
+    countdownContainer.innerHTML = ""; // No mostrar el contador si la fecha es null o no válida
+    return;
+  }
+
   // Convierte la fecha de expiración a UTC
   let expiryDateUTC = moment.utc(expiryDate).format("YYYY-MM-DD HH:mm:ss");
   let end = new Date(expiryDateUTC).getTime();
@@ -19,8 +25,6 @@ export async function contadorHorasDescuento(expiryDate, countdownContainer) {
         countdownContainer.innerHTML = `
         <small class="text-info">Descuento finaliza en ${hours}h ${minutes}m ${seconds}s</small>
       `;
-      } else {
-        countdownContainer.innerHTML = ""; // No mostrar si faltan más de 5 horas
       }
     } else {
       countdownContainer.textContent = "";

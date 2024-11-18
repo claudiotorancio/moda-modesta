@@ -1,5 +1,5 @@
 import app from "../api/router.js";
-// import "./routes/product/verifiedDiscountExpiry.js";
+import "./routes/product/verifiedDiscountExpiry.js";
 
 //manejo de puerto acorde al modo dev o prod
 

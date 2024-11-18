@@ -16,8 +16,7 @@ export async function agregarReseña(resena) {
 
 // Función para obtener todas las reseñas
 export async function cargarReseñas() {
-  const reseñasContainer = document.querySelector("[data-opcion4]");
-
+  const reseñasContainer = document.querySelector("[data-resenasUser]");
   // Limpia el contenedor antes de agregar nuevas reseñas
   reseñasContainer.innerHTML = "";
 
@@ -47,7 +46,7 @@ export async function cargarReseñas() {
   });
 }
 export async function cargarReseñasAdmin() {
-  const reseñasContainer = document.querySelector("[data-opcion4]");
+  const reseñasContainer = document.querySelector("[data-resenasUser]");
 
   // Limpia el contenedor antes de agregar nuevas reseñas
   reseñasContainer.innerHTML = "";

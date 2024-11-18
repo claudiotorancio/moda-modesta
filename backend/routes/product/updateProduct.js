@@ -20,8 +20,9 @@ const updateProduct = async (req, res) => {
 
     // Convierte discountExpiry a un objeto Date si está presente
 
-    const parsedDiscountExpiry =
-      moment.utc(discountExpiry).endOf("day") || null;
+    const parsedDiscountExpiry = discountExpiry
+      ? moment.utc(discountExpiry).endOf("day")
+      : null;
 
     await connectToDatabase();
 
@@ -42,7 +43,7 @@ const updateProduct = async (req, res) => {
       discountExpiry: parsedDiscountExpiry, // Usar el Date parseado
     };
 
-    if (generalStock !== undefined) {
+    if (generalStock) {
       const parsedGeneralStock = Number(generalStock);
       if (isNaN(parsedGeneralStock)) {
         return res
@@ -50,9 +51,7 @@ const updateProduct = async (req, res) => {
           .json({ error: "El generalStock debe ser un número." });
       }
       updateData.generalStock = parsedGeneralStock;
-    }
-
-    if (sizes) {
+    } else if (sizes) {
       try {
         const sizesParsed = JSON.parse(sizes);
         if (Array.isArray(sizesParsed) && sizesParsed.length > 0) {

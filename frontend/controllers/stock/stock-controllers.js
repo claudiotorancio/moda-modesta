@@ -15,9 +15,9 @@ export class StockControllers {
     const notificaciones = await envioServices.getNotificaciones();
 
     const categorias = {
-      Vestidos: productos.filter((producto) => producto.section === "opcion1"),
-      Polleras: productos.filter((producto) => producto.section === "opcion2"),
-      Diversos: productos.filter((producto) => producto.section === "opcion3"),
+      Vestidos: productos.filter((producto) => producto.section === "vestidos"),
+      Polleras: productos.filter((producto) => producto.section === "polleras"),
+      Diversos: productos.filter((producto) => producto.section === "diversos"),
     };
 
     this.titulo.innerHTML = "";
@@ -25,7 +25,7 @@ export class StockControllers {
     for (const categoria in categorias) {
       if (categorias[categoria].length > 0) {
         const tituloCategoria = `
-          <h3 class="mt-4">${categoria}</h3>
+          <h3 class="text-center mt-4 mb-3" style="font-size: 1.5rem;">${categoria}</h3>
           <div id="productos-${categoria}" class="productos-container"></div>
         `;
         this.titulo.innerHTML += tituloCategoria;

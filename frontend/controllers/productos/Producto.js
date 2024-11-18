@@ -213,12 +213,8 @@ export class Producto {
     return card;
   }
 
-  // contadorHorasDescuento() {
-  //   contadorHorasDescuento.call(this);
-  // }
-
   selectSizeAmount() {
-    if (this.section === "opcion3") {
+    if (this.generalStock) {
       this.containerAmountHandler();
     } else {
       this.containerTallesHandler();

@@ -17,8 +17,9 @@ const createProduct = async (req, res) => {
       sizes: sizesInput,
     } = req.body;
 
-    const parsedDiscountExpiry =
-      moment.utc(discountExpiry).endOf("day") || null;
+    const parsedDiscountExpiry = discountExpiry
+      ? moment.utc(discountExpiry).endOf("day")
+      : null;
 
     // Validar y convertir el descuento a número
     const validDiscount = parseFloat(discount);
@@ -30,7 +31,7 @@ const createProduct = async (req, res) => {
 
     // Manejo de los talles en función de la sección
     let sizes = [];
-    if (section !== "opcion3" && sizesInput) {
+    if (sizesInput) {
       sizes = JSON.parse(sizesInput).map((sizeData) => ({
         size: sizeData.size,
         stock: parseInt(sizeData.stock, 10) || 0,
@@ -52,7 +53,7 @@ const createProduct = async (req, res) => {
     };
 
     // Manejo específico de stock según sección
-    if (section === "opcion3") {
+    if (generalStock) {
       createProductData.generalStock = parseInt(generalStock, 10) || 0;
     } else {
       createProductData.sizes = sizes;
