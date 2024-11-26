@@ -12,6 +12,7 @@ const CartSchema = new Schema(
     unidad: { type: String, required: true }, // Cambiado a String si se trata de tallas como "S", "M", etc.
     productId: { type: Schema.Types.ObjectId, ref: "Vista", required: true }, // Usando ObjectId y referencia a otra colección
     category: { type: String, required: true }, // Categoría del producto
+    isActive: { type: Boolean },
     created_at: { type: Date, default: Date.now },
   },
   {

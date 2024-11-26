@@ -63,7 +63,9 @@ export async function agregarProducto(product) {
           productId: sanitizedProductId,
           category: product.section,
           discount: product.discount,
+          isActive: product.isActive,
         };
+
         await carritoServices.addProductCart(productoNuevo);
         this.items?.push(productoNuevo);
       } else {

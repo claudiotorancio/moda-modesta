@@ -101,6 +101,7 @@ export function handleEdit() {
           }>
           <label class="form-check-label" for="isFeatured">Destacar producto</label>
         </div>
+          <p class="form-text text-muted mt-2 mb-3"  style="display: block; text-align: justify;"> Nota: Este producto podría aparecer en la lista de destacados automáticamente si está entre los más vendidos, incluso sin marcar esta casilla.</p>
         ${
           !this.generalStock && this.sizes
             ? `

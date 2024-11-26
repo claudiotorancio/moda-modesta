@@ -88,7 +88,8 @@ export async function initializeCategoryControls() {
           producto.section,
           producto.generalStock,
           producto.discount,
-          producto.discountExpiry
+          producto.discountExpiry,
+          producto.isActive
         );
 
         let tarjetaProducto;

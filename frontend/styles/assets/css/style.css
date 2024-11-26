@@ -564,6 +564,38 @@ span#final-total {
   font-weight: bold; /* Resaltar el mensaje */
 }
 
+.producto-bloqueado {
+  /* Aplica opacidad solo a los elementos específicos */
+  .card-img-top {
+    opacity: 0.5; /* Solo afecta la imagen */
+  }
+  .badge-warning {
+    opacity: 0.5; /* Si también deseas aplicar opacidad al badge */
+  }
+  .table-price {
+    opacity: 0.5;
+  }
+  .table-unidad {
+    opacity: 0.5;
+  }
+}
+
+/* Devolver opacidad al botón */
+.producto-bloqueado button {
+  opacity: 1 !important; /* Asegura que el botón no tenga opacidad */
+  pointer-events: auto !important; /* Habilita los eventos en el botón */
+}
+
+.producto-bloqueado .badge-warning {
+  color: #856404;
+  background-color: #fff3cd;
+}
+
+.producto-bloqueado button {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
 @media (min-width: 768px) and (max-width: 1200px) {
 }
 

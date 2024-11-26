@@ -102,7 +102,8 @@ export const controllers = {
           producto.section,
           producto.generalStock,
           producto.discount,
-          producto.discountExpiry
+          producto.discountExpiry,
+          producto.isActive
         );
         contenedorDestacados.appendChild(card.productoInicio());
       }
@@ -127,7 +128,8 @@ export const controllers = {
           producto.section,
           producto.generalStock,
           producto.discount,
-          producto.discountExpiry
+          producto.discountExpiry,
+          producto.isActive
         );
         const contenedorSeccion = document.querySelector(
           `[data-${producto.section}]`

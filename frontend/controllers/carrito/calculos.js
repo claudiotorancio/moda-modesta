@@ -1,6 +1,8 @@
 // calculos.js
 export function calcularSubtotal() {
   return this.items.reduce((total, producto) => {
+    // Excluir productos pausados
+    if (!producto.isActive) return total;
     // Si el producto tiene un descuento, calcula el precio con descuento
     const precioConDescuento =
       producto.discount > 0
@@ -13,10 +15,17 @@ export function calcularSubtotal() {
 }
 
 export function calcularTotal() {
-  return this.calcularSubtotal() + this.costoEnvio;
+  // Excluir los productos pausados al calcular el subtotal
+  const subtotal = this.calcularSubtotal();
+  return subtotal + this.costoEnvio;
 }
 
 // Función para calcular la cantidad total de productos
 export function cantidadTotal() {
-  return this.items.reduce((acc, item) => acc + item.cantidad, 0);
+  return this.items.reduce((acc, item) => {
+    // Excluir productos pausados
+    if (!item.isActive) return acc;
+
+    return acc + item.cantidad;
+  }, 0);
 }

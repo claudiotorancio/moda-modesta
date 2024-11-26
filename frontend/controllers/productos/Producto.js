@@ -21,7 +21,8 @@ export class Producto {
     section,
     generalStock,
     discount,
-    discountExpiry
+    discountExpiry,
+    isActive
   ) {
     this.id = id;
     this.name = name;
@@ -34,6 +35,7 @@ export class Producto {
     this.generalStock = generalStock;
     this.discount = discount;
     this.discountExpiry = discountExpiry;
+    this.isActive = isActive;
   }
 
   async mostrarProducto() {

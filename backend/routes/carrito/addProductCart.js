@@ -13,6 +13,7 @@ const addProductCart = async (req, res) => {
       cantidad,
       category,
       discount,
+      isActive,
     } = req.body;
     // Conectar a la base de datos
     await connectToDatabase();
@@ -42,6 +43,7 @@ const addProductCart = async (req, res) => {
         productId: productId,
         category: category,
         discount: discount,
+        isActive,
       });
 
       await newProductInCart.save();

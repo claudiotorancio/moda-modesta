@@ -32,65 +32,63 @@ export function mostrarCarrito() {
     summaryDetails.appendChild(progresoCompra);
 
     const carritoContent = `
-      <div class="main-container">
-  <div class="summary-details panel p-none">
-    <table class="table table-scrollable">
-      <tbody>
-      
-        ${this.items
-          ?.map((item) => {
-            // Calcula el precio con descuento para cada artículo
-            (item.price * (1 - item.discount / 100)).toFixed(2);
-            return `
-               <tr>
- <td class="summary-img-wrap">
-   
-      <img class="card-img-top" alt="${item.name}" title="${item.name}" src="${
-              item.imagePath
-            }">
-  
-</td>
-  <td>${item.name} × ${item.cantidad} <br> <small>${item.unidad}</small></td>
-  <td class="table-price">
-    ${
-      item.discount > 0
-        ? `
-          <!-- Precio original tachado y precio con descuento -->
-          <br>
-          <span class="original-price">
-          $${(item.price * item.cantidad).toFixed(2)}
-          </span>
-          <br>
-          <span ">
-          $${(item.price * (1 - item.discount / 100) * item.cantidad).toFixed(
-            2
-          )}
-          </span>
-          <br>
-          <span class="discount-tag">
-          ${item.discount}% off
-          </span>
-        `
-        : `
-          <!-- Precio sin descuento -->
-          <span >$${(item.price * item.cantidad).toFixed(2)}</span>
-        `
-    }
-  </td>
-  <td class="table-price">
-    <button class="btn btn-danger" data-id="${item._id}" data-size="${
-              item.size
-            }">
-      Del
-    </button>
-  </td>
-</tr>
+    <div class="main-container">
+      <div class="summary-details panel p-none">
+        <table class="table table-scrollable">
+          <tbody>
+            ${this.items
+              ?.map((item) => {
+                const isBlocked = !item.isActive; // Verifica si el producto está bloqueado
+                const productPrice = (
+                  item.price *
+                  (1 - item.discount / 100) *
+                  item.cantidad
+                ).toFixed(2);
 
+                return `
+                <tr class="${isBlocked ? "producto-bloqueado" : ""}">
+                  <td class="summary-img-wrap">
+                    <img class="card-img-top" alt="${item.name}" title="${
+                  item.name
+                }" src="${item.imagePath}">
+                  </td>
+                  <td class="table-unidad">
+                    ${item.name} × ${item.cantidad}
+                    <br>
+                    <small>${item.unidad}</small>
+                    ${
+                      isBlocked
+                        ? `<br><span class="badge badge-warning">Producto pausado</span>`
+                        : ""
+                    }
+                  </td>
+                  <td class="table-price">
+                    ${
+                      item.discount > 0
+                        ? `
+                          <span class="original-price">$${(
+                            item.price * item.cantidad
+                          ).toFixed(2)}</span><br>
+                          <span>$${productPrice}</span><br>
+                          <span class="discount-tag">${
+                            item.discount
+                          }% off</span>
+                        `
+                        : `<span>$${productPrice}</span>`
+                    }
+                  </td>
+                  <td class="table-button">
+                    <!-- El botón de eliminar siempre estará presente -->
+                    <button class="btn btn-danger" data-id="${
+                      item._id
+                    }" data-size="${item.size}">Del</button>
+                  </td>
+                </tr>
               `;
-          })
-          .join("")}
-      </tbody>
-    </table>
+              })
+              .join("")}
+          </tbody>
+        </table>
 
     <div class="table-subtotal mb-9">
       <table class="table">
@@ -183,15 +181,15 @@ export function mostrarCarrito() {
       .addEventListener("input", handleCoordinarVendedorChange.bind(this));
 
     summaryDetails.querySelectorAll(".btn-danger").forEach((button) => {
-      button.addEventListener("click", async (event) => {
-        const productId = event.target.dataset.id;
-        if (productId) {
-          await this.eliminarProducto?.(productId);
-          this.mostrarCarrito?.(); // Refresh the cart view
-        } else {
-          console.error("ID del producto no encontrado:", event.target);
-        }
-      });
+      if (!button.disabled) {
+        button.addEventListener("click", async (event) => {
+          const productId = event.target.dataset.id;
+          if (productId) {
+            await this.eliminarProducto?.(productId);
+            this.mostrarCarrito?.(); // Refrescar vista del carrito
+          }
+        });
+      }
     });
 
     document
