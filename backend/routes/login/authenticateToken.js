@@ -3,7 +3,13 @@ import jwt from "jsonwebtoken";
 // Middleware de autenticación
 const authenticateToken = (req, res, next) => {
   // Lista de rutas públicas que no requieren autenticación
-  const publicRoutes = ["/api/listaProductos"]; // Agrega más rutas públicas si es necesario
+  const publicRoutes = [
+    "/api/listaProductos",
+    "/api/addProductCart",
+    "/api/getProductsCart",
+    "/api/putProductCart",
+    "/api/deleteProductCart",
+  ]; // Agrega más rutas públicas si es necesario
 
   // Verificar si la ruta es pública
   if (publicRoutes.includes(req.path)) {

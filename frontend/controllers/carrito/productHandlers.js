@@ -5,15 +5,20 @@ const carritoServices = new CarritoServices();
 
 export async function cargarCarritoDesdeStorage() {
   try {
-    this.items = await carritoServices.getProductsCart();
+    if (!this.sessionId) {
+      throw new Error("El sessionId no está definido");
+    }
+    // Obtén los productos del carrito usando el sessionId
+    this.items = await carritoServices.getProductsCart(this.sessionId);
+
     sessionStorage.setItem("carrito", JSON.stringify(this.items));
     this.actualizarNotificacion?.();
-    return this.items;
   } catch (error) {
     console.error("Error al cargar el carrito desde la base de datos:", error);
     this.items = [];
   }
 }
+
 export function actualizarNotificacionCarrito() {
   const carritoContainer = document.querySelector(".carrito-link");
   if (!carritoContainer) {
@@ -64,8 +69,8 @@ export async function agregarProducto(product) {
           category: product.section,
           discount: product.discount,
           isActive: product.isActive,
+          sessionId: this.sessionId,
         };
-
         await carritoServices.addProductCart(productoNuevo);
         this.items?.push(productoNuevo);
       } else {
@@ -109,6 +114,7 @@ export async function actualizarCantidad(id, cantidad, product) {
     await carritoServices.putProductCart({
       cantidad: nuevaCantidad,
       productId: producto._id,
+      sessionId: this.sessionId,
     });
   } catch (error) {
     console.error("Error al actualizar cantidad:", error);
@@ -120,7 +126,7 @@ export async function eliminarProducto(id) {
     if (!this.items) {
       await cargarCarritoDesdeStorage.call(this);
     }
-    await carritoServices.deleteProductCart(id);
+    await carritoServices.deleteProductCart(this.sessionId, id);
     this.items = this.items.filter((item) => item._id !== id);
   } catch (error) {
     console.error("Error al eliminar producto:", error);
@@ -129,5 +135,6 @@ export async function eliminarProducto(id) {
 
 // Verificar si los datos del carrito están presentes al cargar la página
 window.addEventListener("load", async () => {
-  await cargarCarritoDesdeStorage.call({ items: [] });
+  const sessionId = sessionStorage.getItem("sessionId");
+  await cargarCarritoDesdeStorage.call({ items: [], sessionId });
 });

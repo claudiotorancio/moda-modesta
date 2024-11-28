@@ -9,6 +9,7 @@ const getDataUser = async (req, res) => {
     const token = {
       nombre: req.user.nombre,
       email: req.user.email,
+      userId: req.user._id,
     };
 
     // Generar un token (ajusta la clave secreta y el tiempo de expiración según sea necesario)

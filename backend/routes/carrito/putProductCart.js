@@ -3,31 +3,50 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const putProductCart = async (req, res) => {
   try {
-    const { cantidad, productId } = req.body;
+    const { cantidad, productId, sessionId } = req.body;
 
     // Conexión a la base de datos
-
     await connectToDatabase();
 
-    // Buscar el producto en el carrito
-    const productFind = await Cart.findById(productId);
+    // Determinar el userId si el usuario está autenticado
+    const userId = req.isAuthenticated() ? req.user._id : null;
 
-    if (!productFind) {
+    // Buscar el carrito correspondiente (por sessionId o userId)
+    const cart = await Cart.findOne(userId ? { userId } : { sessionId });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Carrito no encontrado" });
+    }
+
+    // Buscar el producto dentro del array de items
+    const product = cart.items.find(
+      (item) => item._id.toString() === productId
+    );
+
+    console.log("producto", product);
+
+    if (!product) {
       return res
         .status(404)
         .json({ message: "Producto no encontrado en el carrito" });
     }
 
-    // Actualizar el producto en el carrito
-    const updatedProduct = await Cart.findByIdAndUpdate(
-      productId,
-      { cantidad: cantidad },
+    // Actualizar la cantidad del producto
+    product.cantidad = cantidad;
 
-      { new: true }
+    // Recalcular el precio total del carrito
+    cart.totalPrice = cart.items.reduce(
+      (sum, item) => sum + item.price * item.cantidad,
+      0
     );
+
+    // Guardar el carrito actualizado
+    await cart.save();
+
     res.json({
-      message: `El producto: ${updatedProduct.name} fue actualizado`,
-      product: updatedProduct,
+      message: `La cantidad del producto: ${product.name} fue actualizada`,
+      product,
+      cart,
     });
   } catch (error) {
     console.error(error);

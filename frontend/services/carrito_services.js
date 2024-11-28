@@ -20,16 +20,34 @@ export class CarritoServices {
       console.error("Error al limpiar el carrito en la base de datos:", error);
     }
   }
-
-  // Obtener productos del carrito
-  getProductsCart = async () => {
+  getProductsCart = async (sessionId) => {
     try {
-      const respuesta = await fetch(`${this.baseURL}/api/getProductsCart`);
+      const token = sessionStorage.getItem("authToken");
+      // Verifica que el sessionId no sea undefined
+      if (!sessionId) {
+        throw new Error("El sessionId no está definido");
+      }
+
+      // Realizar la solicitud GET
+      const respuesta = await fetch(
+        `${this.baseURL}/api/getProductsCart?sessionId=${sessionId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       if (!respuesta.ok) {
         throw new Error("Error en la solicitud");
       }
+
       const data = await respuesta.json();
-      const productosCarrito = data.productsCart;
+
+      // Devolver los productos del carrito
+      const productosCarrito = data.items;
       return productosCarrito;
     } catch (error) {
       console.error("Error al obtener productos del carrito:", error);
@@ -39,14 +57,18 @@ export class CarritoServices {
 
   // Agregar producto al carrito
   addProductCart = async (producto) => {
+    const token = sessionStorage.getItem("authToken");
+
     try {
       const respuesta = await fetch(`${this.baseURL}/api/addProductCart`, {
         method: "POST",
+        body: JSON.stringify(producto),
         headers: {
+          Authorization: `Bearer ${token}`, // Agrega el token aquí
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(producto),
       });
+
       if (!respuesta.ok) {
         throw new Error("Error en la solicitud");
       }
@@ -57,14 +79,17 @@ export class CarritoServices {
   };
 
   // Eliminar producto del carrito
-  deleteProductCart = async (id) => {
+  deleteProductCart = async (sessionId, id) => {
     try {
-      const respuesta = await fetch(
-        `${this.baseURL}/api/deleteProductCart/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const token = sessionStorage.getItem("authToken");
+      const respuesta = await fetch(`${this.baseURL}/api/deleteProductCart`, {
+        method: "DELETE",
+        body: JSON.stringify({ sessionId, id }),
+        headers: {
+          Authorization: `Bearer ${token}`, // Agrega el token aquí
+          "Content-Type": "application/json",
+        },
+      });
       if (!respuesta.ok) {
         throw new Error("Error en la solicitud");
       }

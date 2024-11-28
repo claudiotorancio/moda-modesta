@@ -317,8 +317,8 @@ router.put(
 router.delete("/api/deleteResena", authenticateToken, deleteResena);
 
 // Carrito
-router.get("/api/getProductsCart", getProductsCart);
-router.post("/api/addProductCart", addProductCart);
+router.get("/api/getProductsCart", authenticateToken, getProductsCart);
+router.post("/api/addProductCart", authenticateToken, addProductCart);
 
 router.put(
   "/api/putProductCart",
@@ -326,12 +326,7 @@ router.put(
   handleValidationErrors,
   putProductCart
 );
-router.delete(
-  "/api/deleteProductCart/:id",
-  validacionesDeleteCart,
-  handleValidationErrors,
-  deleteProductCart
-);
+router.delete("/api/deleteProductCart", authenticateToken, deleteProductCart);
 router.delete("/api/limpiarCarrito", limpiarCarrito);
 
 // Compras
