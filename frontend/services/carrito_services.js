@@ -130,7 +130,6 @@ export class CarritoServices {
       }
 
       const data = await response.json();
-      console.log(data);
       return data.sessionId;
     } catch (error) {
       console.error("Error al obtener sessionId del servidor:", error);
