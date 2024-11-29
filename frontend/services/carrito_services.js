@@ -118,7 +118,7 @@ export class CarritoServices {
     }
   };
 
-  async obtenerSessionIdDelServidor() {
+  obtenerSessionIdDelServidor = async () => {
     try {
       const response = await fetch(`${this.baseURL}/api/sessionId`, {
         method: "GET",
@@ -136,5 +136,5 @@ export class CarritoServices {
       console.error("Error al obtener sessionId del servidor:", error);
       return null;
     }
-  }
+  };
 }
