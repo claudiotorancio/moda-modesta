@@ -18,8 +18,15 @@ class Carrito {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
     this.inicializarEventos();
-    this.sessionId = this.obtenerOGenerarSessionId();
+    this.sessionId = null;
     this.items = cargarCarritoDesdeStorage.call(this) || [];
+    this.init();
+  }
+
+  async init() {
+    // Esperamos que se resuelva el sessionId antes de continuar
+    this.sessionId = await this.obtenerOGenerarSessionId();
+    console.log("Session ID:", this.sessionId); // Aquí el sessionId ya estará resuelto
   }
 
   generateSessionId() {
@@ -29,10 +36,7 @@ class Carrito {
 
   // Recuperar o generar sessionId
   async obtenerOGenerarSessionId() {
-    const data = await this.carritoServices.obtenerSessionIdDelServidor();
-    let sessionId = data;
-
-    console.log("SESSIONiD", sessionId);
+    let sessionId = await this.carritoServices.obtenerSessionIdDelServidor();
     if (!sessionId) {
       sessionId = this.generateSessionId();
     }
@@ -53,7 +57,7 @@ class Carrito {
 
   async agregarProducto(product) {
     try {
-      await agregarProducto.call(product, this);
+      await agregarProducto.call(this, product);
       await this.mostrarCarrito(); // Recargar carrito después de agregar producto
     } catch (error) {
       console.error("Error al agregar producto:", error);
