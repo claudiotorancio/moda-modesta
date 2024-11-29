@@ -28,18 +28,11 @@ class Carrito {
 
   // Recuperar o generar sessionId
   obtenerOGenerarSessionId() {
-    let sessionId = this.getCookie("sessionId");
+    let sessionId = this.carritoServices.obtenerSessionIdDelServidor();
     if (!sessionId) {
       sessionId = this.generateSessionId();
     }
     return sessionId;
-  }
-
-  getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-    return null; // Si la cookie no existe
   }
 
   inicializarEventos() {

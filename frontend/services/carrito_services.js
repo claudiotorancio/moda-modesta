@@ -117,4 +117,23 @@ export class CarritoServices {
       throw error;
     }
   };
+
+  async obtenerSessionIdDelServidor() {
+    try {
+      const response = await fetch(`${this.baseURL}/api/sessionId`, {
+        method: "GET",
+        credentials: "include", // Importante para incluir cookies en la solicitud
+      });
+
+      if (!response.ok) {
+        throw new Error("No se pudo obtener sessionId");
+      }
+
+      const data = await response.json();
+      return data.sessionId;
+    } catch (error) {
+      console.error("Error al obtener sessionId del servidor:", error);
+      return null;
+    }
+  }
 }

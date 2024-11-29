@@ -182,15 +182,25 @@ app.use(passport.session());
 
 //middleware para la eliminacion de imagenes en caso de fallo de validacion
 app.use((req, res, next) => {
-  // Si no hay sessionId en las cookies, crear uno nuevo
   if (!req.cookies.sessionId) {
     const sessionId = uuidv4();
     res.cookie("sessionId", sessionId, {
-      secure: process.env.NODE_ENV === "production", // Solo por HTTPS en producción
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // solo HTTPS en producción
       maxAge: 24 * 60 * 60 * 1000, // Expira en 24 horas
     });
   }
   next();
+});
+
+// Endpoint para acceder al sessionId
+router.get("/api/sessionId", (req, res) => {
+  const sessionId = req.cookies.sessionId;
+  if (sessionId) {
+    res.json({ sessionId });
+  } else {
+    res.status(404).json({ error: "No sessionId found" });
+  }
 });
 
 // Ruta para ver las cookies
