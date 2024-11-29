@@ -139,6 +139,6 @@ export async function eliminarProducto(id) {
 
 // Verificar si los datos del carrito están presentes al cargar la página
 window.addEventListener("load", async () => {
-  const sessionId = sessionStorage.getItem("sessionId");
+  const sessionId = localStorage.getItem("sessionId");
   await cargarCarritoDesdeStorage.call({ items: [], sessionId });
 });
