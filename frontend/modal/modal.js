@@ -67,6 +67,7 @@ const showModal = async (
   const modalContent = modal.querySelector("[data-table]");
 
   modalContent.innerHTML = `
+   <div class="main-container text-center mb-4">
     <div class="text-center">
       <div class="card-header">
         <div>
@@ -77,6 +78,8 @@ const showModal = async (
         </div>
       </div>
     </div>
+    </div>
+
   `;
   modal.style.display = "block";
 
