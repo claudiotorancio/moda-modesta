@@ -13,6 +13,7 @@ import { calcularSubtotal, calcularTotal, cantidadTotal } from "./calculos.js";
 import { CarritoServices } from "../../services/carrito_services.js";
 
 class Carrito {
+  a;
   constructor() {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
@@ -28,7 +29,9 @@ class Carrito {
 
   // Recuperar o generar sessionId
   async obtenerOGenerarSessionId() {
-    let sessionId = await this.carritoServices.obtenerSessionIdDelServidor();
+    const data = await this.carritoServices.obtenerSessionIdDelServidor();
+    let sessionId = data;
+
     console.log("SESSIONiD", sessionId);
     if (!sessionId) {
       sessionId = this.generateSessionId();
@@ -50,7 +53,7 @@ class Carrito {
 
   async agregarProducto(product) {
     try {
-      await agregarProducto.call(this, product);
+      await agregarProducto.call(product, this);
       await this.mostrarCarrito(); // Recargar carrito después de agregar producto
     } catch (error) {
       console.error("Error al agregar producto:", error);
