@@ -94,6 +94,7 @@ import getCustomerAnalytics from "../backend/routes/sales/getCustomerAnalytics.j
 import authenticateToken from "../backend/routes/login/authenticateToken.js";
 import handler from "./cron.js";
 import { v4 as uuidv4 } from "uuid";
+import obtenerCookiesServidor from "../backend/routes/carrito/obtenerCookiesServidor.js";
 
 const router = Router();
 const app = express();
@@ -188,19 +189,10 @@ app.use((req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // solo HTTPS en producción
       maxAge: 24 * 60 * 60 * 1000, // Expira en 24 horas
+      sameSite: "lax",
     });
   }
   next();
-});
-
-// Endpoint para acceder al sessionId
-app.get("/api/sessionId", (req, res) => {
-  const sessionId = req.cookies.sessionId;
-  if (sessionId) {
-    res.json({ sessionId });
-  } else {
-    res.status(404).json({ error: "No sessionId found" });
-  }
 });
 
 // Ruta para ver las cookies
@@ -280,7 +272,8 @@ router.get("/api/protected-route", authenticateToken, (req, res) => {
 });
 
 //Sales
-
+// Endpoint para acceder al sessionId
+router.get("/api/sessionId", obtenerCookiesServidor);
 router.get("/api/cron", handler);
 
 router.get("/api/sales", authenticateToken, getSalesByPeriod);

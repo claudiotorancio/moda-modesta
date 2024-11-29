@@ -122,7 +122,7 @@ export class CarritoServices {
     try {
       const response = await fetch(`${this.baseURL}/api/sessionId`, {
         method: "GET",
-        credentials: "include", // Importante para incluir cookies en la solicitud
+        // credentials: "include", // Importante para incluir cookies en la solicitud
       });
 
       if (!response.ok) {
@@ -130,6 +130,7 @@ export class CarritoServices {
       }
 
       const data = await response.json();
+      console.log(data);
       return data.sessionId;
     } catch (error) {
       console.error("Error al obtener sessionId del servidor:", error);

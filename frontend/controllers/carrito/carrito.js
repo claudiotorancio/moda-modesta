@@ -27,8 +27,9 @@ class Carrito {
   }
 
   // Recuperar o generar sessionId
-  obtenerOGenerarSessionId() {
-    let sessionId = this.carritoServices.obtenerSessionIdDelServidor();
+  async obtenerOGenerarSessionId() {
+    let sessionId = await this.carritoServices.obtenerSessionIdDelServidor();
+    console.log("SESSIONiD", sessionId);
     if (!sessionId) {
       sessionId = this.generateSessionId();
     }
