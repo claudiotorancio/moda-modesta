@@ -273,7 +273,7 @@ router.get("/api/protected-route", authenticateToken, (req, res) => {
 
 //Sales
 // Endpoint para acceder al sessionId
-app.get("/api/sessionId", obtenerCookiesServidor);
+router.get("/api/sessionId", obtenerCookiesServidor);
 router.get("/api/cron", handler);
 
 router.get("/api/sales", authenticateToken, getSalesByPeriod);
