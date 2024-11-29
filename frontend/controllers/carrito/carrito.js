@@ -28,10 +28,10 @@ class Carrito {
 
   // Recuperar o generar sessionId
   obtenerOGenerarSessionId() {
-    let sessionId = sessionStorage.getItem("sessionId");
+    let sessionId = localStorage.getItem("sessionId");
     if (!sessionId) {
       sessionId = this.generateSessionId();
-      sessionStorage.setItem("sessionId", sessionId);
+      localStorage.setItem("sessionId", sessionId);
     }
     return sessionId;
   }

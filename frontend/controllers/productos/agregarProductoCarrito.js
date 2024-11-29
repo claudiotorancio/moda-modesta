@@ -58,7 +58,7 @@ export async function agregarProductoCarrito() {
 
       try {
         const sessionId = await carrito_services.obtenerSessionIdDelServidor();
-        sessionStorage.setItem("sessionId", sessionId);
+        localStorage.setItem("sessionId", sessionId);
 
         const producto = {
           _id: this.id,

@@ -73,7 +73,7 @@ export async function agregarProducto(product) {
           category: product.section,
           discount: product.discount,
           isActive: product.isActive,
-          sessionId: this.sessionId,
+          sessionId: product.sessionId || this.sessionId,
           size: product.size,
         };
         await carritoServices.addProductCart(productoNuevo);
