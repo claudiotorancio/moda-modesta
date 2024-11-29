@@ -63,6 +63,7 @@ export class LoginControllers {
       : ""; // Si no, deja el campo vacío
 
     loginInicio.innerHTML = `
+     <div class="main-container text-center mb-4">
             <div class="text-center">
                 <div class="card-header">
                     <h3>${title}</h3>
@@ -93,6 +94,7 @@ export class LoginControllers {
                      </div>
                 </div>
             </div>
+            </div>
         `;
     loginInicio.classList.add("modalVisor");
     const form = document.querySelector("[data-signin]");
@@ -120,6 +122,7 @@ export class LoginControllers {
   renderResetPassword() {
     const resetModal = this.modal.querySelector("[data-table]");
     resetModal.innerHTML = `
+    <div class="main-container text-center mb-4">
       <div class="text-center">
         <div class="card-header">
           <h3>Restablecer contraseña</h3>
@@ -134,6 +137,7 @@ export class LoginControllers {
             </div>
           </form>
         </div>
+      </div>
       </div>
     `;
 

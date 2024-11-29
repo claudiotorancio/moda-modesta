@@ -195,6 +195,19 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(async (req, res, next) => {
+  const sessionId = req.cookies.sessionId;
+  if (!sessionId) {
+    try {
+      await Carrito.deleteOne({ sessionId });
+      console.log(`Carrito con sessionId ${sessionId} eliminado`);
+    } catch (error) {
+      console.error("Error eliminando carrito:", error);
+    }
+  }
+  next();
+});
+
 // Ruta para ver las cookies
 app.get("/", (req, res) => {
   // Acceder a las cookies desde req.cookies

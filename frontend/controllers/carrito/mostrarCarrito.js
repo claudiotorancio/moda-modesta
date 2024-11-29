@@ -197,10 +197,13 @@ export function mostrarCarrito() {
       .addEventListener("click", handleFinalizePurchase.bind(this));
   } else {
     summaryDetails.innerHTML = `
+      <div class="main-container text-center mb-4">
         <div class="empty-cart-message" style="padding: 20px; text-align: center; font-size: 1.5rem; color: #ff0000;">
           <p>Tu carrito está vacío.</p>
           <button class="btn btn-primary" onclick="window.location.href='index.html';">Volver a la tienda</button>
         </div>
+        </div>
+
       `;
   }
 }

@@ -3,16 +3,6 @@ import envioServices from "../../services/envio_services.js";
 
 export async function handleDesactivate(id) {
   try {
-    const respuesta = await productoServices.detalleProducto(id);
-    const enCarrito = respuesta.inCart;
-
-    if (enCarrito) {
-      alert(
-        "No puedes desactivar este producto porque está en el carrito de compras."
-      );
-      return false; // Salir de la función si está en el carrito
-    }
-
     const confirmacion = confirm("¿Desea desactivar el producto?");
     if (confirmacion) {
       await productoServices.desactivarProducto(id);
