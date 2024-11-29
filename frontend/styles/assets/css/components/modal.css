@@ -13,15 +13,21 @@
 }
 
 .modal-content {
-  position: relative; /* Mantener el contenido centrado por defecto */
+  position: absolute; /* Cambiado a absolute para personalizar la posición */
+  top: 0;
+  right: 0; /* El modal se posiciona desde el lado derecho */
+  height: 100%; /* Altura completa del modal */
   background-color: #fff;
   border-radius: 8px;
-  margin: 5% auto; /* Margen para pantallas grandes */
   padding: 2rem;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  max-width: 40%;
+  max-width: 40%; /* Ancho máximo del modal */
+  overflow-y: auto; /* Permitir desplazamiento vertical si el contenido excede */
   text-align: center;
-  animation: slide-down 0.3s ease-out; /* Animación de entrada */
+  animation: slide-in-right 0.3s ease-out; /* Animación de entrada desde la derecha */
+  display: flex;
+  flex-direction: column; /* Para asegurar que los productos se muestren en una sola columna */
+  justify-content: flex-start; /* Alineación de los productos al inicio de la columna */
 }
 
 /* Estilo del botón de cierre */
@@ -44,13 +50,15 @@
 }
 
 /* Animación de deslizamiento */
-@keyframes slide-down {
+@keyframes slide-in-right {
   from {
-    transform: translateY(-20%);
+    transform: translateX(
+      100%
+    ); /* Comienza fuera de la pantalla, a la derecha */
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
   }
 }
@@ -80,7 +88,7 @@
     max-height: calc(
       100% - 50px
     ); /* Asegura que no exceda la altura de la ventana */
-    overflow-y: auto; /* Permitir desplazamiento vertical si el contenido es mayor */
+
     background-color: #fff; /* Color de fondo del contenido */
     border-radius: 0; /* Sin bordes redondeados */
     padding: 1.5rem; /* Ajustado para móviles */

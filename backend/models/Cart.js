@@ -11,6 +11,7 @@ const CartItemSchema = new Schema({
   productId: { type: Schema.Types.ObjectId, ref: "Vista", required: true },
   category: { type: String, required: true },
   isActive: { type: Boolean },
+  size: { type: String, required: false },
   created_at: { type: Date, default: Date.now },
 });
 

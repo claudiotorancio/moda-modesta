@@ -9,9 +9,10 @@ const addProductCart = async (req, res) => {
       productId, // ID del producto
       cantidad, // Cantidad a agregar
       unidad, // Unidad (tallas, medidas, etc.)
+      size,
     } = req.body;
 
-    console.log(req.body);
+    // console.log(req.body);
 
     // Conectar a la base de datos
     await connectToDatabase();
@@ -37,7 +38,7 @@ const addProductCart = async (req, res) => {
 
     // Buscar si el producto ya está en el carrito
     const existingItem = cart.items.find(
-      (item) => item.productId.toString() === productId
+      (item) => item.productId.toString() === productId && item.size === size
     );
 
     if (existingItem) {
@@ -62,6 +63,7 @@ const addProductCart = async (req, res) => {
         category: productDetails.section,
         discount: productDetails.discount || 0,
         isActive: productDetails.isActive,
+        size,
       });
     }
 

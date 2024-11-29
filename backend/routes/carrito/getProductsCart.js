@@ -6,8 +6,8 @@ const getProductsCart = async (req, res) => {
     const userId = req.isAuthenticated() ? req.user._id : null;
     const sessionId = req.query.sessionId || null;
 
-    console.log("userId:", userId);
-    console.log("sessionId:", sessionId);
+    // console.log("userId:", userId);
+    // console.log("sessionId:", sessionId);
 
     if (!userId && !sessionId) {
       return res
@@ -18,12 +18,12 @@ const getProductsCart = async (req, res) => {
     await connectToDatabase();
 
     const query = userId ? { userId } : { sessionId };
-    console.log("Buscando carrito con los criterios:", query);
+    // console.log("Buscando carrito con los criterios:", query);
 
     const cart = await Cart.findOne(query);
 
     if (!cart || !cart.items || cart.items.length === 0) {
-      console.log("Carrito no encontrado o está vacío.");
+      // console.log("Carrito no encontrado o está vacío.");
       // Cambiamos a 200 para evitar que el cliente registre el error como crítico.
       return res.status(200).json({
         message: "El carrito está vacío",

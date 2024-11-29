@@ -64,6 +64,7 @@ export async function agregarProductoCarrito() {
           cantidad: quantity,
           discount: this.discount,
           unidad: this.generalStock ? "Un." : talleSeleccionado,
+          size: talleSeleccionado,
         };
 
         await carrito.agregarProducto(producto);

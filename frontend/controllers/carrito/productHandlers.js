@@ -41,9 +41,12 @@ export function actualizarNotificacionCarrito() {
 export async function agregarProducto(product) {
   try {
     const sanitizedProductId = validator.escape(product._id);
+    const sanitizedSize = product.size ? validator.escape(product.size) : null;
 
     const productoExistente = this.items.find(
-      (item) => item.productId === sanitizedProductId
+      (item) =>
+        item.productId === sanitizedProductId &&
+        String(item.size).trim().toLowerCase() === sanitizedSize
     );
 
     if (productoExistente) {
@@ -70,6 +73,7 @@ export async function agregarProducto(product) {
           discount: product.discount,
           isActive: product.isActive,
           sessionId: this.sessionId,
+          size: product.size,
         };
         await carritoServices.addProductCart(productoNuevo);
         this.items?.push(productoNuevo);
