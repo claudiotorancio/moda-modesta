@@ -93,6 +93,7 @@ import gefetchPendingOrders from "../backend/routes/sales/getFetchPendingOrders.
 import getCustomerAnalytics from "../backend/routes/sales/getCustomerAnalytics.js";
 import authenticateToken from "../backend/routes/login/authenticateToken.js";
 import handler from "./cron.js";
+import { v4 as uuidv4 } from "uuid";
 
 const router = Router();
 const app = express();
@@ -180,7 +181,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //middleware para la eliminacion de imagenes en caso de fallo de validacion
-
+app.use((req, res, next) => {
+  // Si no hay sessionId en las cookies, crear uno nuevo
+  if (!req.cookies.sessionId) {
+    const sessionId = uuidv4();
+    res.cookie("sessionId", sessionId, {
+      httpOnly: true, // Para evitar el acceso por JS
+      secure: process.env.NODE_ENV === "production", // Solo por HTTPS en producción
+      maxAge: 24 * 60 * 60 * 1000, // Expira en 24 horas
+    });
+  }
+  next();
+});
 // Ruta para ver las cookies
 app.get("/", (req, res) => {
   // Acceder a las cookies desde req.cookies
