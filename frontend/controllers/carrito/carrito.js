@@ -28,12 +28,19 @@ class Carrito {
 
   // Recuperar o generar sessionId
   obtenerOGenerarSessionId() {
-    let sessionId = sessionStorage.getItem("sessionId");
+    let sessionId = this.getCookie("sessionId");
     if (!sessionId) {
       sessionId = this.generateSessionId();
       sessionStorage.setItem("sessionId", sessionId);
     }
     return sessionId;
+  }
+
+  getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+    return null; // Si la cookie no existe
   }
 
   inicializarEventos() {
