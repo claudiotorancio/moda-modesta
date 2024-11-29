@@ -13,7 +13,6 @@ import { calcularSubtotal, calcularTotal, cantidadTotal } from "./calculos.js";
 import { CarritoServices } from "../../services/carrito_services.js";
 
 class Carrito {
-  a;
   constructor() {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
@@ -28,11 +27,11 @@ class Carrito {
   }
 
   // Recuperar o generar sessionId
-  async obtenerOGenerarSessionId() {
-    let sessionId = await this.carritoServices.obtenerSessionIdDelServidor();
-
+  obtenerOGenerarSessionId() {
+    let sessionId = sessionStorage.getItem("sessionId");
     if (!sessionId) {
       sessionId = this.generateSessionId();
+      sessionStorage.setItem("sessionId", sessionId);
     }
     return sessionId;
   }
