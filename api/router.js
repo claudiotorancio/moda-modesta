@@ -186,13 +186,13 @@ app.use((req, res, next) => {
   if (!req.cookies.sessionId) {
     const sessionId = uuidv4();
     res.cookie("sessionId", sessionId, {
-      httpOnly: true, // Para evitar el acceso por JS
       secure: process.env.NODE_ENV === "production", // Solo por HTTPS en producción
       maxAge: 24 * 60 * 60 * 1000, // Expira en 24 horas
     });
   }
   next();
 });
+
 // Ruta para ver las cookies
 app.get("/", (req, res) => {
   // Acceder a las cookies desde req.cookies

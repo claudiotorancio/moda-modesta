@@ -31,7 +31,6 @@ class Carrito {
     let sessionId = this.getCookie("sessionId");
     if (!sessionId) {
       sessionId = this.generateSessionId();
-      sessionStorage.setItem("sessionId", sessionId);
     }
     return sessionId;
   }
