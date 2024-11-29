@@ -6,6 +6,9 @@ import {
   handleCoordinarVendedorChange,
 } from "./envioHandlers.js";
 import { handleFinalizePurchase } from "./finalizeHandlers.js";
+import { Producto } from "../productos/Producto.js";
+import productoServices from "../../services/product_services.js";
+import { hayStock } from "../productos/productos_controllers.js";
 
 export function mostrarCarrito() {
   const summaryDetails = document.querySelector("[data-table]");
@@ -48,9 +51,13 @@ export function mostrarCarrito() {
                 return `
                 <tr class="${isBlocked ? "producto-bloqueado" : ""}">
                   <td class="summary-img-wrap">
-                    <img class="card-img-top" alt="${item.name}" title="${
+                    <a href="#" data-id="${
+                      item.productId
+                    }" class="product-link">
+                      <img class="card-img-top" alt="${item.name}" title="${
                   item.name
-                }" src="${item.imagePath}">
+                }" src="${item.imagePath[0]}">
+                    </a>
                   </td>
                   <td class="table-unidad">
                     ${item.name} × ${item.cantidad}
@@ -78,13 +85,12 @@ export function mostrarCarrito() {
                     }
                   </td>
                   <td class="table-button">
-                    <!-- El botón de eliminar siempre estará presente -->
                     <button class="btn btn-danger" data-id="${
                       item._id
                     }" data-size="${item.size}">Del</button>
                   </td>
                 </tr>
-              `;
+                `;
               })
               .join("")}
           </tbody>
@@ -195,6 +201,33 @@ export function mostrarCarrito() {
     document
       .querySelector("#finalize-purchase")
       .addEventListener("click", handleFinalizePurchase.bind(this));
+
+    document.querySelectorAll(".product-link").forEach((link) => {
+      link.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const productId = event.currentTarget.getAttribute("data-id");
+        const productData = await productoServices.detalleProducto(productId);
+
+        // Crear una instancia del producto
+        const producto = new Producto(
+          productData._id,
+          productData.name,
+          productData.price,
+          productData.imagePath,
+          productData.description,
+          productData.sizes,
+          hayStock(productData),
+          productData.section,
+          productData.generalStock,
+          productData.discount,
+          productData.discountExpiry,
+          productData.isActive
+        );
+
+        // Renderizar el producto en el modal
+        await producto.mostrarProducto();
+      });
+    });
   } else {
     summaryDetails.innerHTML = `
       <div class="main-container text-center mb-4">

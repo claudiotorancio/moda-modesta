@@ -8,6 +8,7 @@ import { agregarProductoCarrito } from "./agregarProductoCarrito.js";
 import { compartirProducto } from "./compartirProducto.js";
 import { notificacionesSinStock } from "./notificacionesSinStock.js";
 import { contadorHorasDescuento } from "./contadorHorasDescuento.js";
+import { hayStock } from "./productos_controllers.js";
 
 export class Producto {
   constructor(
@@ -37,6 +38,10 @@ export class Producto {
     this.discountExpiry = discountExpiry;
     this.isActive = isActive;
   }
+
+  // async cargarDatos(data) {
+  //   Object.assign(this, data); // Asigna las propiedades dinámicamente
+  // }
 
   async mostrarProducto() {
     window.location.hash = `product-${this.id}`;

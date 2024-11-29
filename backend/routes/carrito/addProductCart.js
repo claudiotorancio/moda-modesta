@@ -12,7 +12,7 @@ const addProductCart = async (req, res) => {
       size,
     } = req.body;
 
-    // console.log(req.body);
+    console.log(req.body);
 
     // Conectar a la base de datos
     await connectToDatabase();
@@ -56,7 +56,7 @@ const addProductCart = async (req, res) => {
       cart.items.push({
         name: productDetails.name,
         price: productDetails.price,
-        imagePath: productDetails.imagePath[0],
+        imagePath: productDetails.imagePath,
         unidad,
         cantidad,
         productId: productDetails._id,

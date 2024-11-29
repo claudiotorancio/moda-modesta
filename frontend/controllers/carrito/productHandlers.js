@@ -67,7 +67,7 @@ export async function agregarProducto(product) {
           price: parseFloat(product.price),
           cantidad: product.cantidad,
           unidad: product.unidad,
-          imagePath: product.imagePath[0],
+          imagePath: product.imagePath,
           productId: sanitizedProductId,
           category: product.section,
           discount: product.discount,

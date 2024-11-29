@@ -123,7 +123,11 @@ export function handleCoordinarVendedorChange(event) {
   )}`;
 
   const finalizeButton = document.querySelector("#finalize-purchase");
-  finalizeButton.disabled = !isChecked && this.costoEnvio === 0;
+  finalizeButton.disabled = !(
+    this?.calcularTotal() > 0 &&
+    isChecked &&
+    this.costoEnvio === 0
+  );
 
   // Actualizar el progreso
   const pasoEntrega = document.querySelector(

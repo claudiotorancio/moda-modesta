@@ -4,7 +4,7 @@ import { Schema, model } from "mongoose";
 const CartItemSchema = new Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
-  imagePath: { type: String, required: true },
+  imagePath: [String],
   cantidad: { type: Number, required: true, default: 1 },
   discount: { type: Number, default: 0 },
   unidad: { type: String, required: true }, // Talla o unidad
