@@ -194,7 +194,7 @@ app.use((req, res, next) => {
 });
 
 // Endpoint para acceder al sessionId
-router.get("/api/sessionId", (req, res) => {
+app.get("/api/sessionId", (req, res) => {
   const sessionId = req.cookies.sessionId;
   if (sessionId) {
     res.json({ sessionId });
