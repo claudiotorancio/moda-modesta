@@ -211,10 +211,6 @@ input#check {
   height: 40px;
 }
 
-.quienesSomos_container {
-  display: ruby;
-}
-
 .barra-progreso {
   display: flex;
   justify-content: space-between;
