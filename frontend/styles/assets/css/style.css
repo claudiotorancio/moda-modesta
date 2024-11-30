@@ -140,18 +140,6 @@ input#check {
   margin-bottom: 20px;
 }
 
-.consolas {
-  padding: 10px 20px; /* Ajusta el padding del botón */
-  font-size: 1.2rem; /* Aumenta el tamaño del texto del botón */
-  border-radius: 5px; /* Bordes redondeados */
-  transition: background-color 0.3s, transform 0.3s; /* Transiciones suaves */
-}
-
-.consolas:hover {
-  background-color: #0056b3; /* Cambia el color de fondo al pasar el mouse */
-  transform: scale(1.05); /* Aumenta el tamaño del botón al pasar el mouse */
-}
-
 .texto h1 {
   font-size: 3rem;
   font-weight: 700;

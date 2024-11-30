@@ -97,10 +97,6 @@ div.card-header h3 {
   overflow: hidden;
 }
 
-/* div.card:hover {
-  transform: translateY(-10px);
-  box-shadow: 1.25px 1.25pc 10px rgba(0, 0, 0);
-} */
 .modalCard {
   border: 1px solid #dd2476;
 }
@@ -278,31 +274,8 @@ div.card-header h3 {
     width: 100%;
   }
 
-  /* Define la animación para rotar hacia arriba */
-  @keyframes moveUp {
-    0% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-    100% {
-      transform: translateY(0);
-    }
-  }
-
   .continuous-move {
     animation: moveUpDown 1s infinite;
-  }
-
-  /* Define la animación para rotar hacia abajo */
-  @keyframes moveDown {
-    from {
-      transform: rotate(-180deg);
-    }
-    to {
-      transform: rotate(0deg);
-    }
   }
 
   .producto-similar {
@@ -310,7 +283,8 @@ div.card-header h3 {
   }
 
   #productos-similares {
-    width: max-content;
+    width: auto;
+    text-align: center;
   }
 
   /* Clases que activan las animaciones */

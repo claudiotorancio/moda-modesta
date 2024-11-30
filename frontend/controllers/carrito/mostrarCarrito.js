@@ -235,8 +235,7 @@ export function mostrarCarrito() {
           <p>Tu carrito está vacío.</p>
           <button class="btn btn-primary" onclick="window.location.href='index.html';">Volver a la tienda</button>
         </div>
-        </div>
-
+      </div>
       `;
   }
 }

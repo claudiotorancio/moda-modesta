@@ -25,7 +25,7 @@ export async function cargarProductosSimilares() {
 
       // Verificar si hay productos similares
       if (similares.length === 0) {
-        contenedorSimilares.innerHTML = `<p>No se encontraron productos similares.</p>`;
+        contenedorSimilares.textContent = `No se encontraron productos similares`;
         return;
       }
 

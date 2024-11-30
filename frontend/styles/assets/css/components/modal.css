@@ -85,10 +85,6 @@
     top: 5%;
     height: 100%; /* Altura completa del modal en móviles */
     max-width: 90%; /* Ancho deseado para móviles */
-    max-height: calc(
-      100% - 50px
-    ); /* Asegura que no exceda la altura de la ventana */
-
     background-color: #fff; /* Color de fondo del contenido */
     border-radius: 0; /* Sin bordes redondeados */
     padding: 1.5rem; /* Ajustado para móviles */

@@ -8,6 +8,7 @@ export function mostrarProducto() {
 
   // Crear el HTML del producto con el carrusel integrado
   mostrarProducto.innerHTML = `
+     <div class="main-container text-center mb-4">
   <div class="container-fluid">
     <div class="row">
       <!-- Columna izquierda: Carrusel de imágenes -->
@@ -113,17 +114,14 @@ export function mostrarProducto() {
               </div>
             </div>
           </div>`
-        }
-  
-        <!-- Botón de compartir -->
-       
+        }       
       </div>
     </div>
   
     <!-- Fila inferior: Calcular envío y productos similares -->
     ${
       this.hayStock
-        ? `<div class="row mx-auto  align-items-center">
+        ? `<div class="row mx-auto text-center  align-items-center">
             <div class=" mt-2">
               <h5>Calcular envío</h5>
                 <div class="d-flex mt-2">
@@ -146,6 +144,8 @@ export function mostrarProducto() {
       </div>
     </div>
   </div>
+  </div>
+
   `;
   this.cargarProductosSimilares?.();
   this.calcularEnvio?.();
