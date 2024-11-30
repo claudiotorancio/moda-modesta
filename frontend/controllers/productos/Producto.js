@@ -83,7 +83,7 @@ export class Producto {
 
   getZoomImageHtml() {
     return `
-      <div class="zoom-container">
+      <div class="main-container">
         <!-- Imagen con efecto de sombra y hover -->
         <div class="image-wrapper position-relative" style="overflow: hidden; border-radius: 8px;">
           <img class="zoom-image img-fluid" src="${this.imagePath[0]}" alt="Imagen del producto" style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;">

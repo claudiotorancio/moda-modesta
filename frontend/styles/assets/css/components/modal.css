@@ -49,6 +49,24 @@
   color: #333;
 }
 
+.modal-footer {
+  justify-content: center;
+  text-align: center;
+  padding: 15px 0;
+
+  border-top: 1px solid #ddd;
+}
+
+.quienesSomos_redesSociales a img {
+  width: 40px;
+  margin: 0 10px;
+  transition: transform 0.3s ease;
+}
+
+.quienesSomos_redesSociales a img:hover {
+  transform: scale(1.2); /* Efecto de hover */
+}
+
 /* Animación de deslizamiento */
 @keyframes slide-in-right {
   from {
@@ -70,6 +88,13 @@
   color: #333;
 }
 
+.main-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 /* Modal para pantallas grandes */
 @media (min-width: 768px) and (max-width: 1200px) {
   .modal-content {
@@ -79,21 +104,42 @@
 
 /* Modal para dispositivos móviles */
 @media (max-width: 768px) {
+  .modal {
+    position: fixed;
+    top: 4rem; /* La altura del header */
+    left: 0;
+    width: 100%;
+    height: calc(
+      100% - 4rem
+    ); /* Altura ajustada para no superponer el header */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    z-index: 9998; /* Debajo del header */
+    display: none; /* Oculto por defecto */
+    overflow: auto; /* Permite el scroll si el contenido es más grande */
+  }
   .modal-content {
     position: absolute; /* Cambiado a absolute para permitir el ajuste */
     left: 0;
-    top: 5%;
+
     height: 100%; /* Altura completa del modal en móviles */
     max-width: 90%; /* Ancho deseado para móviles */
     background-color: #fff; /* Color de fondo del contenido */
     border-radius: 0; /* Sin bordes redondeados */
-    padding: 1.5rem; /* Ajustado para móviles */
+    padding: 0rem; /* Ajustado para móviles */
     animation: slide-in 0.3s forwards; /* Animación de entrada */
   }
 
+  /* Estilos principales del contenedor */
+  .main-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
   .modal-close {
-    top: 4rem; /* Ajustado para que sea visible */
-    right: 3rem; /* Ajustado para que sea visible */
+    top: 0rem; /* Ajustado para que sea visible */
+    right: 2rem; /* Ajustado para que sea visible */
     font-size: 2rem; /* Tamaño ajustado */
     color: black; /* Color ajustado */
   }

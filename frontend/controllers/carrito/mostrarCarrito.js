@@ -19,6 +19,8 @@ export function mostrarCarrito() {
   if (this.items?.length > 0) {
     const progresoCompra = document.createElement("div");
     progresoCompra.id = "progreso-compra";
+
+    progresoCompra.classList.add("main-container");
     progresoCompra.classList.add("barra-progreso");
 
     const pasos = ["Carrito", "Entrega", "Pago"];

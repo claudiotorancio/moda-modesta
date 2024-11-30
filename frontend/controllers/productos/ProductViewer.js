@@ -8,6 +8,7 @@ export function mostrarProducto() {
 
   // Crear el HTML del producto con el carrusel integrado
   mostrarProducto.innerHTML = `
+      <div class="main-container">
   <div class="container-fluid">
     <div class="row">
       <!-- Columna izquierda: Carrusel de imágenes -->
@@ -147,6 +148,8 @@ export function mostrarProducto() {
       </div>
     </div>
   </div>
+  </div>
+
   `;
   this.cargarProductosSimilares?.();
   this.calcularEnvio?.();

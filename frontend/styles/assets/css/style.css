@@ -211,6 +211,10 @@ input#check {
   height: 40px;
 }
 
+.quienesSomos_container {
+  display: ruby;
+}
+
 .barra-progreso {
   display: flex;
   justify-content: space-between;
@@ -395,14 +399,6 @@ span#final-total {
   color: #888; /* Color gris para indicar que está deshabilitado */
   font-size: 0.9em; /* Tamaño de fuente más pequeño */
   margin-right: 5px; /* Espaciado entre el precio tachado y el nuevo precio */
-}
-
-/* Estilos principales del contenedor */
-.main-container {
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilos de la tabla */
