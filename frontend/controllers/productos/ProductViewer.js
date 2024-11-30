@@ -127,7 +127,8 @@ export function mostrarProducto() {
             <div class=" mt-2">
               <h5>Calcular envío</h5>
                 <div class="d-flex mt-2">
-                   <input type="number" class="form-control me-2" id="cpDestino" name="cpDestino" placeholder="Código Postal">
+                   <input type="number" class="input me-2" id="cpDestino" name="cpDestino" placeholder="Codigo Postal" data-tipo="cpDestino" required>
+                     <span class="input-message-error">Este campo no es válido</span>
                    <button class="btn btn-secondary" id="calcular-envio">Calcular</button>
                 </div>
             <div id="shipping-total" class="mt-2"></div>
