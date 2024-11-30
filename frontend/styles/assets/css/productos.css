@@ -283,8 +283,7 @@ div.card-header h3 {
   }
 
   #productos-similares {
-    width: auto;
-    text-align: center;
+    width: max-content;
   }
 
   /* Clases que activan las animaciones */
