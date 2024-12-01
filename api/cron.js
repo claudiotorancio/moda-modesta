@@ -1,6 +1,6 @@
 import moment from "moment";
 import Vista from "../backend/models/Vista.js";
-import { connectToDatabase } from "../backend/utils/db.js"; // Asumiendo que el caché está aquí
+import { connectToDatabase } from "../backend/db/connectToDatabase.js";
 
 export default async function handler(req, res) {
   try {
