@@ -2,13 +2,18 @@ import jwt from "jsonwebtoken";
 import Users from "../models/User.js"; // Importa el modelo de usuario
 import { connectToDatabase } from "../db/connectToDatabase.js";
 
-export const authenticateJWT = async (req, res, user, next) => {
-  console.log(user);
+export const authenticateJWT = async (req, res, next) => {
+  console.log("estoy aqui");
   try {
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.cookie("user_token", token, { httpOnly: true });
+    res.cookie("user_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // solo HTTPS en producción
+      maxAge: 24 * 60 * 60 * 1000, // Expira en 24 horas
+      sameSite: "lax",
+    });
 
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
