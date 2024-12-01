@@ -27,13 +27,14 @@ export const authenticateJWT = async (req, res, next) => {
           await connectToDatabase(); // Conecta a MongoDB si no está conectado
 
           const user = await Users.findById(decoded.id); // Busca al usuario en la base de datos
-
-          if (!user || !user.active) {
+          console.log(user);
+          if (!user) {
             // Si el usuario no existe o no está activo
             return res.status(403).send("Forbidden");
           }
 
           req.user = user; // Adjunta el usuario a la solicitud (request)
+          console.log("hecho", user);
           next(); // Llama al siguiente middleware
         } catch (dbError) {
           console.error("Error en la base de datos:", dbError);
