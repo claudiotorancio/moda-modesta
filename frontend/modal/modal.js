@@ -99,7 +99,9 @@ const showModal = async (
     setTimeout(() => {
       closeModal();
       if (redirectUrl) {
-        window.location.replace(redirectUrl); // Redirige si hay una URL
+        window.location.replace(redirectUrl);
+      } else {
+        window.location.reload(); // Recarga la página actual
       }
     }, autoClose);
   }
@@ -181,9 +183,23 @@ const modalMsgReload = (message) => {
   );
 };
 
+const modalMsgReloadEstado = (message) => {
+  showModal(
+    message,
+    "",
+    "recargar",
+
+    () => {
+      window.location.reload();
+    },
+    5000
+  );
+};
+
 export const modalControllers = {
   modalMsgReload,
   baseModal,
   modalSuscribe,
   modalMsg,
+  modalMsgReloadEstado,
 };
