@@ -10,12 +10,14 @@ export class MailServices {
 
   async sendMail(datosCompra) {
     try {
+      const token = sessionStorage.getItem("authToken");
       const response = await fetch(`${this.baseURL}/api/sendMail`, {
         method: "POST",
+        body: JSON.stringify(datosCompra),
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(datosCompra),
       });
 
       const dataResponse = await response.json();
@@ -36,12 +38,14 @@ export class MailServices {
 
   async mailContact(datos) {
     try {
+      const token = sessionStorage.getItem("authToken");
       const response = await fetch(`${this.baseURL}/api/suscribeMail`, {
         method: "POST",
+        body: JSON.stringify(datos),
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(datos),
       });
 
       const dataResponse = await response.json();

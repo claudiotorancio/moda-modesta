@@ -10,11 +10,11 @@ export class EnvioService {
     try {
       const response = await fetch(`${this.baseURL}/api/costoEnvio`, {
         method: "POST",
+        body: JSON.stringify(datosEnvio),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
         },
-        body: JSON.stringify(datosEnvio),
       });
       if (!response.ok) {
         throw new Error("No fue posible calcular el costo del envío");
@@ -29,10 +29,10 @@ export class EnvioService {
     try {
       const response = await fetch(`${this.baseURL}/api/notificacionSinStock`, {
         method: "POST",
+        body: JSON.stringify(datos),
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(datos),
       });
 
       const dataResponse = await response.json();
@@ -76,11 +76,11 @@ export class EnvioService {
     try {
       const response = await fetch(`${this.baseURL}/api/notificacionIngreso`, {
         method: "POST",
+        body: JSON.stringify({ idProducto, idNotificaciones }),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`, // Agregar el token aquí
         },
-        body: JSON.stringify({ idProducto, idNotificaciones }),
       });
 
       const dataResponse = await response.json();

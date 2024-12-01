@@ -67,10 +67,9 @@ export class StockControllers {
           } = producto;
 
           // Lógica para verificar si hay stock
-          const hayStock =
-            producto.section === "opcion3"
-              ? producto.generalStock > 0 // Verifica stock general para "Diversos"
-              : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
+          const hayStock = generalStock
+            ? producto.generalStock > 0 // Verifica stock general para "Diversos"
+            : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
 
           const productoDiv = createProductElement(
             _id,

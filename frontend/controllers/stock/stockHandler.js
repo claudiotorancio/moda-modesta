@@ -4,6 +4,7 @@ import { StockControllers } from "./stock-controllers.js";
 import {
   handleActivate,
   handleDesactivate,
+  handleNotification,
 } from "../productoControl/productEventHandler.js";
 
 export async function agregarEventListenerBotones() {

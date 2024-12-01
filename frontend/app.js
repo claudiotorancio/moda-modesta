@@ -81,7 +81,7 @@ async function initializeUserControls(user, isAdmin) {
     userActive.style.display = "none";
     buscar();
     await controllers.renderProducts();
-    cargarReseñasAdmin();
+    await cargarReseñasAdmin();
   } else if (user && isAdmin?.role === "user") {
     showUserControls();
     actualizarUsuario.textContent = user;
@@ -153,7 +153,7 @@ function setupAdminEventListeners(titulo) {
     .addEventListener("click", async (e) => {
       e.preventDefault();
       const productForm = new ProductForm(titulo);
-      await productForm.render();
+      productForm.render();
     });
 
   document.querySelector("[data-resenas]").addEventListener("click", (e) => {

@@ -7,8 +7,13 @@ export class CarritoServices {
 
   async limpiarCarrito() {
     try {
+      const token = sessionStorage.getItem("authToken");
       const response = await fetch(`${this.baseURL}/api/limpiarCarrito`, {
-        method: "DELETE", // Asumiendo que DELETE es el método para limpiar el carrito en el backend
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {

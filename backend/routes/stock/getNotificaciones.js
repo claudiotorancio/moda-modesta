@@ -3,6 +3,7 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const getNotificaciones = async (req, res) => {
   try {
+    console.log("Estoy en getNorificacion");
     // Conectar a la base de datos
     await connectToDatabase();
 

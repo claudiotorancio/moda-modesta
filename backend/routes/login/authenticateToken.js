@@ -9,6 +9,10 @@ const authenticateToken = (req, res, next) => {
     "/api/getProductsCart",
     "/api/putProductCart",
     "/api/deleteProductCart",
+    "/api/limpiarCarrito",
+    "/api/sendMail",
+    "/api/suscribeMail",
+    "/api/costoEnvio",
   ]; // Agrega más rutas públicas si es necesario
 
   // Verificar si la ruta es pública
@@ -49,7 +53,7 @@ const authenticateToken = (req, res, next) => {
 
     // Permitir acceso solo a administradores y usuarios normales
     const isAdmin = req.user.role === "admin";
-    const isUser = req.user.role === "user"; // Asumiendo que tienes un rol "user"
+    const isUser = req.user.role === "user";
 
     if (!isAdmin && !isUser) {
       return res.status(403).json({

@@ -3,11 +3,12 @@ import Users from "../models/User.js"; // Importa el modelo de usuario
 import { connectToDatabase } from "../db/connectToDatabase.js";
 
 export const authenticateJWT = async (req, res, user, next) => {
+  console.log(user);
   try {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.cookie("user_sid", token, { httpOnly: true });
+    res.cookie("user_token", token, { httpOnly: true });
 
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {

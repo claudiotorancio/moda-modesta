@@ -57,6 +57,7 @@ import success from "../backend/routes/nodeMailer/success.js";
 import error from "../backend/routes/nodeMailer/error.js";
 import costoEnvio from "../backend/routes/Envios/costoEnvio.js";
 import productoSimilar from "../backend/routes/product/productoSimilar.js";
+import { requireAdmin } from "../backend/routes/requireAdmin.js";
 import purchaseOrder from "../backend/routes/purchase/purchase.js";
 import deleteOrder from "../backend/routes/purchase/deleteCompra.js";
 import compraPrepare from "../backend/routes/purchase/compraPrepare.js";
@@ -285,19 +286,31 @@ router.get("/api/protected-route", authenticateToken, (req, res) => {
   });
 });
 
-//Sales
 // Endpoint para acceder al sessionId
 router.get("/api/sessionId", obtenerCookiesServidor);
-router.get("/api/cron", handler);
 
-router.get("/api/sales", authenticateToken, getSalesByPeriod);
+//Sales
+
+router.get("/api/cron", handler);
+router.get("/api/sales", authenticateToken, requireAdmin, getSalesByPeriod);
 router.get(
   "/api/top-selling-products",
   authenticateToken,
+  requireAdmin,
   getTopSellingProducts
 );
-router.get("/api/orders-pending", authenticateToken, gefetchPendingOrders);
-router.get("/api/customer-analytics", authenticateToken, getCustomerAnalytics);
+router.get(
+  "/api/orders-pending",
+  authenticateToken,
+  requireAdmin,
+  gefetchPendingOrders
+);
+router.get(
+  "/api/customer-analytics",
+  authenticateToken,
+  requireAdmin,
+  getCustomerAnalytics
+);
 //profile
 router.get(
   "/api/pedidosRecientes",
@@ -315,12 +328,14 @@ router.post(
 router.get(
   "/api/getNotificaciones",
   authenticateToken,
+  requireAdmin,
   authenticateJWT,
   getNotificaciones
 );
 router.post(
   "/api/notificacionIngreso/",
   authenticateToken,
+  requireAdmin,
   authenticateJWT,
   notificacionIngreso
 );
@@ -329,20 +344,26 @@ router.post(
 router.post(
   "/api/agregarResena",
   authenticateToken,
+  requireAdmin,
   validacionesAgregarResena,
   handleValidationErrors,
-
   agregarResena
 );
 router.get("/api/getResena", getResena);
 router.put(
   "/api/putResena",
   authenticateToken,
+  requireAdmin,
   validacionesPutResena,
   handleValidationErrors,
   putResena
 );
-router.delete("/api/deleteResena", authenticateToken, deleteResena);
+router.delete(
+  "/api/deleteResena",
+  authenticateToken,
+  requireAdmin,
+  deleteResena
+);
 
 // Carrito
 router.get("/api/getProductsCart", authenticateToken, getProductsCart);
@@ -350,35 +371,54 @@ router.post("/api/addProductCart", authenticateToken, addProductCart);
 
 router.put(
   "/api/putProductCart",
+  authenticateToken,
   validacionesPutProductCart,
   handleValidationErrors,
   putProductCart
 );
 router.delete("/api/deleteProductCart", authenticateToken, deleteProductCart);
-router.delete("/api/limpiarCarrito", limpiarCarrito);
+router.delete("/api/limpiarCarrito", authenticateToken, limpiarCarrito);
 
 // Compras
-router.get("/api/purchaseOrder", authenticateToken, purchaseOrder);
+router.get(
+  "/api/purchaseOrder",
+  authenticateToken,
+  requireAdmin,
+  purchaseOrder
+);
 router.delete(
   "/api/deleteOrder/:id",
   authenticateToken,
+  requireAdmin,
   validacionesDeletOrder,
   handleValidationErrors,
   deleteOrder
 );
-router.post("/api/compraPrepare", authenticateToken, compraPrepare);
+router.post(
+  "/api/compraPrepare",
+  authenticateToken,
+  requireAdmin,
+  compraPrepare
+);
 router.put("/api/compraEnCamino/:id", authenticateToken, compraEnCamino);
 router.put(
   "/api/aceptarPedido/:id",
   authenticateToken,
+  requireAdmin,
   validacionesAceptarPedido,
   handleValidationErrors,
   aceptarPedido
 );
-router.post("/api/correoEnCamino", authenticateToken, correoEnCamino);
+router.post(
+  "/api/correoEnCamino",
+  authenticateToken,
+  requireAdmin,
+  correoEnCamino
+);
 router.put(
   "/api/finalizarPedido/:id",
   authenticateToken,
+  requireAdmin,
   validacionesFinalizarPedido,
   handleValidationErrors,
   finalizarPedido
@@ -386,6 +426,7 @@ router.put(
 router.put(
   "/api/compraCancelada/:id",
   authenticateToken,
+  requireAdmin,
   validacionesCancelarPedido,
   handleValidationErrors,
   compraCancelada
@@ -394,6 +435,7 @@ router.put(
 // Rutas nodeMailer
 router.post(
   "/api/sendMail",
+  authenticateToken,
   validacionesSendMail,
   handleValidationErrors,
   purchaseLimiter,
@@ -401,6 +443,7 @@ router.post(
 );
 router.post(
   "/api/suscribeMail",
+  authenticateToken,
   validacionesSuscribeMail,
   handleValidationErrors,
   purchaseLimiter,
@@ -412,6 +455,7 @@ router.get("/error", error);
 router.post(
   "/api/enviarPromocion/",
   authenticateToken,
+  requireAdmin,
   validacionesEnviarPromociones,
   enviarPromocion
 );
@@ -419,6 +463,7 @@ router.post(
 // Rutas envío
 router.post(
   "/api/costoEnvio",
+  authenticateToken,
   validacionesCostoEnvio,
   handleValidationErrors,
   costoEnvio

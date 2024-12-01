@@ -9,7 +9,6 @@ const output = path.resolve(__dirname, "../../public");
 
 const password = async (req, res) => {
   try {
-    alert("estoy aqui en password.js");
     res.sendFile(path.join(output, "reset-password.html"));
   } catch (error) {
     console.error("Error al recivbir los datos", error.message);
