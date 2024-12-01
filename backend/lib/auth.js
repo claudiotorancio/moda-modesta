@@ -4,14 +4,15 @@ import { connectToDatabase } from "../db/connectToDatabase.js";
 
 export const authenticateJWT = async (req, res, next) => {
   try {
-    const token =
-      process.env.NODE_ENV === "development"
-        ? jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, {
-            expiresIn: "1h",
-          })
-        : jwt.sign({ id: req.cookies["sessionId"] }, process.env.JWT_SECRET, {
-            expiresIn: "1h",
-          }); // En producción, usa la cookie
+    const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    res.cookie("user_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // solo HTTPS en producción
+      maxAge: 3600000, // Expira en 24 horas
+      sameSite: "lax",
+    });
 
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {

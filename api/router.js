@@ -315,6 +315,7 @@ router.get(
 router.get(
   "/api/pedidosRecientes",
   authenticateToken,
+  requireAdmin,
   profileControllers.pedidosRecientes
 );
 
@@ -323,20 +324,21 @@ router.post(
   "/api/notificacionSinStock",
   validacionesNotificacionesSinStock,
   handleValidationErrors,
+  requireAdmin,
   notificacionSinStock
 );
 router.get(
   "/api/getNotificaciones",
   authenticateToken,
   requireAdmin,
-  authenticateJWT,
+  requireAdmin,
   getNotificaciones
 );
 router.post(
   "/api/notificacionIngreso/",
   authenticateToken,
   requireAdmin,
-  authenticateJWT,
+  requireAdmin,
   notificacionIngreso
 );
 
@@ -511,11 +513,21 @@ router.get(
 // Rutas listado
 router.get("/api/getDataUser", authenticateToken, getDataUser);
 router.get("/api/getAdmin", getAdmin);
-router.get("/api/getUser/:id", authenticateToken, getUser);
-router.get("/api/renderLista", authenticateToken, listaAdmin);
-router.delete("/api/deleteUser/:id", authenticateToken, deleteUser);
-router.put("/api/updateUser/:id", authenticateToken, updateUser);
-router.get("/api/contadorProductos/:id", authenticateToken, contadorProductos);
+router.get("/api/getUser/:id", authenticateToken, requireAdmin, getUser);
+router.get("/api/renderLista", authenticateToken, requireAdmin, listaAdmin);
+router.delete(
+  "/api/deleteUser/:id",
+  authenticateToken,
+  requireAdmin,
+  deleteUser
+);
+router.put("/api/updateUser/:id", authenticateToken, requireAdmin, updateUser);
+router.get(
+  "/api/contadorProductos/:id",
+  authenticateToken,
+  requireAdmin,
+  contadorProductos
+);
 
 // Rutas productos
 router.get("/api/renderDestacados", destacadosProduct);
@@ -527,14 +539,21 @@ router.post(
   validacionesProducto,
   handleValidationErrors,
   authenticateToken,
+  requireAdmin,
   createProduct
 );
 router.put(
   "/api/desactivateProduct/:id",
   authenticateToken,
+  requireAdmin,
   desactivateProduct
 );
-router.put("/api/activateProduct/:id", authenticateToken, activarProducto);
+router.put(
+  "/api/activateProduct/:id",
+  authenticateToken,
+  requireAdmin,
+  activarProducto
+);
 router.get("/api/detailsProduct/:id", detailsProduct);
 router.put(
   "/api/updateProduct",
@@ -542,6 +561,7 @@ router.put(
   validacionesProductoActualizacion,
   handleValidationErrors,
   authenticateToken,
+  requireAdmin,
   updateProduct
 );
 router.get("/api/productoSimilar/:id", productoSimilar);
