@@ -56,17 +56,6 @@ const authenticateToken = (req, res, next) => {
         error: "Acceso denegado: Solo usuarios autenticados pueden acceder",
       });
     }
-
-    // Si el usuario es un administrador, puede continuar
-    if (isAdmin) {
-      next(); // Administrador tiene acceso
-    } else if (isUser) {
-      next(); // Usuario normal tiene acceso
-    } else {
-      return res.status(403).json({
-        error: "Acceso denegado: Solo usuarios administradores pueden acceder",
-      });
-    }
   }
 };
 

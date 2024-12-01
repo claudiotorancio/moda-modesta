@@ -36,6 +36,8 @@
             />
           </a>
         </div>
+
+        <!-- logueo usuario -->
         <div class="div-usuario bg-light p-2 rounded-circle admin-only">
           <a href="#" class="d-flex align-items-center">
             <div class="profile-notificacion mr-2">
@@ -43,27 +45,27 @@
             </div>
           </a>
         </div>
-
-        <a href="#"
-          ><button
+        <a href="#">
+          <button
             type="submit"
             id="login"
             class="btn btn-primary"
             data-log
-          ></button
-        ></a>
-        <a href="#"
-          ><button
+          ></button>
+        </a>
+        <a href="#">
+          <button
             type="submit"
             id="login"
             class="admin-only"
             data-logOut
-          ></button
-        ></a>
+          ></button>
+        </a>
       </div>
     </header>
 
     <main class="container">
+      <!-- Contenido base del modal -->
       <div id="modal" class="modal">
         <div class="modal-content">
           <button class="modal-close">
@@ -73,7 +75,7 @@
             <!-- Contenido del modal -->
           </div>
           <div class="modal-footer">
-            <section class="quienesSomos" id="contacto" data-contact>
+            <section class="quienesSomos">
               <div class="quienesSomos_container_modal">
                 <p>Seguinos en nuestras redes</p>
                 <div class="quienesSomos_redesSociales">
@@ -101,7 +103,7 @@
           </div>
         </div>
       </div>
-
+      <!-- Tabla de informacion personal y pedidos -->
       <div class="card p-3" id="info-personal"></div>
 
       <div class="mt-4" id="pedidos-recientes"></div>
@@ -117,6 +119,7 @@
       </div>
     </main>
 
+    <!-- Footer -->
     <footer class="footer mt-5 text-center">
       <p>© Moda Modesta 2024</p>
     </footer>

@@ -57,6 +57,10 @@
   border-top: 1px solid #ddd;
 }
 
+.quienesSomos_container_modal {
+  display: ruby;
+}
+
 .quienesSomos_redesSociales a img {
   width: 40px;
   margin: 0 10px;
