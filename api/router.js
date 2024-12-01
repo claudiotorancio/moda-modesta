@@ -57,7 +57,6 @@ import success from "../backend/routes/nodeMailer/success.js";
 import error from "../backend/routes/nodeMailer/error.js";
 import costoEnvio from "../backend/routes/Envios/costoEnvio.js";
 import productoSimilar from "../backend/routes/product/productoSimilar.js";
-import { requireAdmin } from "../backend/routes/requireAdmin.js";
 import purchaseOrder from "../backend/routes/purchase/purchase.js";
 import deleteOrder from "../backend/routes/purchase/deleteCompra.js";
 import compraPrepare from "../backend/routes/purchase/compraPrepare.js";
@@ -322,7 +321,6 @@ router.get(
 router.post(
   "/api/notificacionIngreso/",
   authenticateToken,
-
   authenticateJWT,
   notificacionIngreso
 );
@@ -366,15 +364,9 @@ router.delete(
   authenticateToken,
   validacionesDeletOrder,
   handleValidationErrors,
-  requireAdmin,
   deleteOrder
 );
-router.post(
-  "/api/compraPrepare",
-  authenticateToken,
-  requireAdmin,
-  compraPrepare
-);
+router.post("/api/compraPrepare", authenticateToken, compraPrepare);
 router.put("/api/compraEnCamino/:id", authenticateToken, compraEnCamino);
 router.put(
   "/api/aceptarPedido/:id",
@@ -421,7 +413,6 @@ router.post(
   "/api/enviarPromocion/",
   authenticateToken,
   validacionesEnviarPromociones,
-  requireAdmin,
   enviarPromocion
 );
 
@@ -461,7 +452,6 @@ router.post(
 router.get("/reset-password", password);
 router.post(
   "/api/update-password",
-
   validacionesUpdatePassword,
   handleValidationErrors,
   updatePassword

@@ -51,7 +51,7 @@ const authenticateToken = (req, res, next) => {
     const isAdmin = req.user.role === "admin";
     const isUser = req.user.role === "user"; // Asumiendo que tienes un rol "user"
 
-    if (!isAdmin && !isUser) {
+    if (!isAdmin || !isUser) {
       return res.status(403).json({
         error: "Acceso denegado: Solo usuarios autenticados pueden acceder",
       });
