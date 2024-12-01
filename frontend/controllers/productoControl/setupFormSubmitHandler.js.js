@@ -3,8 +3,20 @@ import productoServices from "../../services/product_services.js";
 export function setupFormSubmitHandler() {
   const form = document.querySelector("[data-forma]");
 
+  let isDirty = false; // Bandera para detectar cambios
+
+  // Detectar cambios en los campos del formulario
+  form.addEventListener("input", () => {
+    isDirty = true;
+  });
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    if (!isDirty) {
+      alert("No se han realizado cambios en el formulario.");
+      return;
+    }
 
     const imageInput1 = document.querySelector("[data-image1]");
     const imageInput2 = document.querySelector("[data-image2]");

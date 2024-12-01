@@ -4,13 +4,7 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 
 const addProductCart = async (req, res) => {
   try {
-    const {
-      sessionId, // Identificador único para usuarios no logueados
-      productId, // ID del producto
-      cantidad, // Cantidad a agregar
-      unidad, // Unidad (tallas, medidas, etc.)
-      size,
-    } = req.body;
+    const { sessionId, productId, cantidad, unidad, size } = req.body;
 
     console.log(req.body);
 
