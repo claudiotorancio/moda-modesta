@@ -3,17 +3,15 @@ import Users from "../models/User.js"; // Importa el modelo de usuario
 import { connectToDatabase } from "../db/connectToDatabase.js";
 
 export const authenticateJWT = async (req, res, next) => {
-  console.log("estoy aqui");
   try {
-    const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-    res.cookie("user_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // solo HTTPS en producción
-      maxAge: 24 * 60 * 60 * 1000, // Expira en 24 horas
-      sameSite: "lax",
-    });
+    const token =
+      process.env.NODE_ENV === "development"
+        ? jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, {
+            expiresIn: "1h",
+          })
+        : jwt.sign({ id: req.cookies["sessionId"] }, process.env.JWT_SECRET, {
+            expiresIn: "1h",
+          }); // En producción, usa la cookie
 
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
@@ -27,14 +25,12 @@ export const authenticateJWT = async (req, res, next) => {
           await connectToDatabase(); // Conecta a MongoDB si no está conectado
 
           const user = await Users.findById(decoded.id); // Busca al usuario en la base de datos
-          console.log(user);
-          if (!user) {
+          if (user.role !== "admin") {
             // Si el usuario no existe o no está activo
             return res.status(403).send("Forbidden");
           }
 
-          req.user = user; // Adjunta el usuario a la solicitud (request)
-          console.log("hecho", user);
+          console.log("Usuario autenticado y verificado como administrador:");
           next(); // Llama al siguiente middleware
         } catch (dbError) {
           console.error("Error en la base de datos:", dbError);
