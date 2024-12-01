@@ -15,7 +15,9 @@ export default async function handler(req, res) {
       { $set: { discount: 0, discountExpiry: "" } }
     );
 
-    console.log(`${result.nModified} productos actualizados`);
+    console.log(result);
+
+    console.log(`${result.modifiedCount} productos actualizados`);
     res.status(200).json({ message: "Productos actualizados exitosamente" });
   } catch (error) {
     console.error("Error al actualizar productos:", error);
