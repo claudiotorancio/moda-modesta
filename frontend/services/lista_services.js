@@ -48,7 +48,7 @@ export class ListaServices {
         return { ok: false, message: data.message };
       }
 
-      const user = data.token;
+      const user = data.user;
 
       return {
         ok: data.ok,

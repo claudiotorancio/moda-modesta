@@ -232,12 +232,17 @@ export function mostrarCarrito() {
     });
   } else {
     summaryDetails.innerHTML = `
-      <div class="main-container text-center mb-4">
-        <div class="empty-cart-message" style="padding: 20px; text-align: center; font-size: 1.5rem; color: #ff0000;">
-          <p>Tu carrito está vacío.</p>
-          <button class="btn btn-primary" onclick="window.location.href='index.html';">Volver a la tienda</button>
-        </div>
+    <div class="main-container text-center mb-4">
+      <div class="empty-cart-message" style="padding: 20px; text-align: center; font-size: 1.5rem; color: #ff0000;">
+        <p>Tu carrito está vacío.</p>
+        <button id="reloadButton" class="btn btn-primary">Volver a la tienda</button>
       </div>
-      `;
+    </div>
+  `;
+
+    // Agregar el evento al botón dinámico
+    document.getElementById("reloadButton").addEventListener("click", () => {
+      window.location.reload();
+    });
   }
 }

@@ -6,7 +6,7 @@ const getDataUser = async (req, res) => {
     }
 
     // Crear un payload con información del usuario
-    const token = {
+    const user = {
       nombre: req.user.nombre,
       email: req.user.email,
       userId: req.user._id,
@@ -15,7 +15,7 @@ const getDataUser = async (req, res) => {
     // Generar un token (ajusta la clave secreta y el tiempo de expiración según sea necesario)
 
     // Devolver el token en la respuesta
-    return res.json({ ok: true, role: req.user.role, token });
+    return res.json({ ok: true, role: req.user.role, user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ ok: false, message: "Error del servidor" });

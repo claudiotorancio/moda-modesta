@@ -6,7 +6,7 @@ const addProductCart = async (req, res) => {
   try {
     const { sessionId, productId, cantidad, unidad, size } = req.body;
 
-    console.log(req.body);
+    // console.log(req.body);
 
     // Conectar a la base de datos
     await connectToDatabase();
