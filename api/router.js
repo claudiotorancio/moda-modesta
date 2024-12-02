@@ -191,8 +191,19 @@ app.use((req, res, next) => {
       maxAge: 24 * 60 * 60 * 1000, // Expira en 24 horas
       sameSite: "lax",
     });
+
+    console.log(sessionId);
   }
   next();
+});
+
+// Endpoint para devolver sessionId
+app.get("/api/sessionId", (req, res) => {
+  const sessionId = req.cookies.sessionId;
+  if (!sessionId) {
+    return res.status(404).json({ error: "sessionId no encontrado" });
+  }
+  res.json({ sessionId });
 });
 
 // Ruta para elimiar Carrito
@@ -287,7 +298,7 @@ router.get("/api/protected-route", authenticateToken, (req, res) => {
 });
 
 // Endpoint para acceder al sessionId
-router.get("/api/sessionId", obtenerCookiesServidor);
+// app.get("/api/sessionId", obtenerCookiesServidor);
 
 //Sales
 

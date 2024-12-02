@@ -1,5 +1,6 @@
 import { CarritoServices } from "../../services/carrito_services.js";
 import validator from "validator";
+import { mostrarCarrito } from "./mostrarCarrito.js";
 
 const carritoServices = new CarritoServices();
 
@@ -13,6 +14,7 @@ export async function cargarCarritoDesdeStorage() {
 
     sessionStorage.setItem("carrito", JSON.stringify(this.items));
     this.actualizarNotificacion?.();
+    mostrarCarrito.call(this);
   } catch (error) {
     console.error("Error al cargar el carrito desde la base de datos:", error);
     this.items = [];
@@ -72,7 +74,7 @@ export async function agregarProducto(product) {
           category: product.section,
           discount: product.discount,
           isActive: product.isActive,
-          sessionId: product.sessionId || this.sessionId,
+          sessionId: product.sessionId,
           size: product.size,
         };
         await carritoServices.addProductCart(productoNuevo);

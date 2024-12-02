@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     try {
       // Conexión a la base de datos usando caché
 
-      const currentDate = moment.utc(new Date()).startOf("day"); // Formato UTC compatible con MongoDB
+      const currentDate = moment.utc(new Date()).startOf("day"); 
       console.log(currentDate);
       // Buscar y actualizar productos en lote
       const result = await Vista.updateMany(

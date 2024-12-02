@@ -15,9 +15,9 @@ import { CarritoServices } from "../../services/carrito_services.js";
 class Carrito {
   constructor() {
     this.carritoServices = new CarritoServices();
+    this.sessionId = this.obtenerOGenerarSessionId();
     this.costoEnvio = 0;
     this.inicializarEventos();
-    this.sessionId = this.obtenerOGenerarSessionId();
     this.items = cargarCarritoDesdeStorage.call(this) || [];
   }
 

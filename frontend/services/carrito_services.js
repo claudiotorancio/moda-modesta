@@ -135,10 +135,21 @@ export class CarritoServices {
       }
 
       const data = await response.json();
+
+      localStorage.setItem(
+        "sessionId",
+        data.sessionId ? data.sessionId : this.generarSessionIdLocal()
+      );
+
       return data.sessionId;
     } catch (error) {
       console.error("Error al obtener sessionId del servidor:", error);
       return null;
     }
+  };
+
+  generarSessionIdLocal = () => {
+    // Generar un identificador único (UUID)
+    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   };
 }
