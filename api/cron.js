@@ -1,3 +1,4 @@
+import moment from "moment";
 import Vista from "../backend/models/Vista.js";
 import { connectToDatabase } from "../backend/db/connectToDatabase.js";
 
@@ -7,7 +8,7 @@ export default async function handler(req, res) {
     try {
       // Conexión a la base de datos usando caché
 
-      const currentDate = new Date(); // Formato UTC compatible con MongoDB
+      const currentDate = moment.utc().toDate(); // Formato UTC compatible con MongoDB
       console.log(currentDate);
       // Buscar y actualizar productos en lote
       const result = await Vista.updateMany(
