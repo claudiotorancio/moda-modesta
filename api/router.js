@@ -291,7 +291,7 @@ router.get("/api/sessionId", obtenerCookiesServidor);
 
 //Sales
 
-router.get("/api/cron", handler);
+app.get("/api/cron", handler);
 router.get("/api/sales", authenticateToken, requireAdmin, getSalesByPeriod);
 router.get(
   "/api/top-selling-products",
