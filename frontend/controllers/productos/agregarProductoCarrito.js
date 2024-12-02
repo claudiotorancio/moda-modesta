@@ -57,9 +57,9 @@ export async function agregarProductoCarrito() {
       }
 
       try {
-        const sessionId = await carrito_services.obtenerSessionIdDelServidor();
-        console.log(sessionId);
-        localStorage.setItem("sessionId", sessionId);
+        // const sessionId = await carrito_services.obtenerSessionIdDelServidor();
+        // console.log(sessionId);
+        // localStorage.setItem("sessionId", sessionId);
 
         const producto = {
           _id: this.id,
@@ -72,7 +72,7 @@ export async function agregarProductoCarrito() {
           discount: this.discount,
           unidad: this.generalStock ? "Un." : talleSeleccionado,
           size: talleSeleccionado,
-          sessionId: sessionId,
+          // sessionId: sessionId,
         };
 
         await carrito.agregarProducto(producto);

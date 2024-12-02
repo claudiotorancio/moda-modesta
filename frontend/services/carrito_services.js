@@ -136,11 +136,6 @@ export class CarritoServices {
 
       const data = await response.json();
 
-      localStorage.setItem(
-        "sessionId",
-        data.sessionId ? data.sessionId : this.generarSessionIdLocal()
-      );
-
       return data.sessionId;
     } catch (error) {
       console.error("Error al obtener sessionId del servidor:", error);
@@ -148,8 +143,23 @@ export class CarritoServices {
     }
   };
 
-  generarSessionIdLocal = () => {
-    // Generar un identificador único (UUID)
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  };
+  generateSessionId() {
+    return `session_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  async obtenerOGenerarSessionId() {
+    try {
+      let sessionId = await this.obtenerSessionIdDelServidor();
+      if (!sessionId) {
+        sessionId = this.generateSessionId();
+      }
+      localStorage.setItem("sessionId", sessionId); // Guarda el sessionId
+      return sessionId;
+    } catch (error) {
+      console.error("Error en obtenerOGenerarSessionId:", error);
+      const fallbackSessionId = this.generateSessionId();
+      localStorage.setItem("sessionId", fallbackSessionId);
+      return fallbackSessionId;
+    }
+  }
 }
