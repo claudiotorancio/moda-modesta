@@ -12,16 +12,16 @@ class Carrito {
   constructor() {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
+    this.sessionId = this.obtenerOGenerarSessionId();
     this.inicializarEventos();
-    this.items = this.cargarCarritoDesdeStorage() || [];
+    this.items = [];
   }
 
   async cargarCarritoDesdeStorage() {
     try {
-      const sessionId = localStorage.getItem("sessionId");
-      if (!sessionId) throw new Error("El sessionId no está definido");
+      if (!this.sessionId) throw new Error("El sessionId no está definido");
 
-      this.items = await this.carritoServices.getProductsCart(sessionId);
+      this.items = await this.carritoServices.getProductsCart(this.sessionId);
       sessionStorage.setItem("carrito", JSON.stringify(this.items));
       this.actualizarNotificacion();
     } catch (error) {
@@ -46,9 +46,18 @@ class Carrito {
     }
   }
 
-  async agregarProducto({ producto, sessionId }) {
+  async obtenerOGenerarSessionId() {
+    // Recuperar o generar un sessionId
+    let sessionId;
+    if (!sessionId) {
+      sessionId = await this.carritoServices.obtenerOGenerarSessionId();
+    }
+    return sessionId;
+  }
+
+  async agregarProducto(producto) {
     try {
-      await agregarProducto.call(this, producto, sessionId);
+      await agregarProducto.call(this, producto);
       this.mostrarCarrito();
       this.actualizarNotificacion();
     } catch (error) {
@@ -58,8 +67,7 @@ class Carrito {
 
   async eliminarProducto(id) {
     try {
-      const sessionId = localStorage.getItem("sessionId");
-      await this.carritoServices.deleteProductCart(sessionId, id);
+      await this.carritoServices.deleteProductCart(this.sessionId, id);
       this.items = this.items.filter((item) => item._id !== id);
     } catch (error) {
       console.error("Error al eliminar producto:", error);
