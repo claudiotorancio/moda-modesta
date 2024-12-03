@@ -21,18 +21,9 @@ class Carrito {
     this.items = cargarCarritoDesdeStorage.call(this) || [];
   }
 
-  generateSessionId() {
-    // Generar un sessionId único (puedes usar cualquier método de generación de ID único)
-    return "session_" + Math.random().toString(36).substr(2, 9);
-  }
-
   // Recuperar o generar sessionId
   obtenerOGenerarSessionId() {
     let sessionId = localStorage.getItem("sessionId");
-    if (!sessionId) {
-      sessionId = this.generateSessionId();
-      localStorage.setItem("sessionId", sessionId);
-    }
     return sessionId;
   }
 
