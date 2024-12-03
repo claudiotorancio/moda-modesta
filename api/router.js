@@ -191,6 +191,8 @@ app.use((req, res, next) => {
       maxAge: 24 * 60 * 60 * 1000, // Expira en 24 horas
       sameSite: "lax",
     });
+    res.locals.sessionId = sessionId;
+
     console.log(sessionId);
   }
   next();
@@ -297,7 +299,7 @@ router.get("/api/protected-route", authenticateToken, (req, res) => {
 });
 
 // Endpoint para acceder al sessionId
-// app.get("/api/sessionId", obtenerCookiesServidor);
+app.get("/api/sessionId", obtenerCookiesServidor);
 
 //Sales
 
