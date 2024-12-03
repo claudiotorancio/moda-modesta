@@ -1,13 +1,9 @@
-//Carrito.js
-
 import { modalControllers } from "../../modal/modal.js";
 import { mostrarCarrito } from "./mostrarCarrito.js";
 import {
   agregarProducto,
-  eliminarProducto,
   actualizarCantidad,
   actualizarNotificacionCarrito,
-  cargarCarritoDesdeStorage,
 } from "./productHandlers.js";
 import { calcularSubtotal, calcularTotal, cantidadTotal } from "./calculos.js";
 import { CarritoServices } from "../../services/carrito_services.js";
@@ -17,22 +13,24 @@ class Carrito {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
     this.inicializarEventos();
-    this.sessionId = this.obtenerOGenerarSessionId();
-    this.items = cargarCarritoDesdeStorage.call(this) || [];
+    this.items = [];
   }
 
-  generateSessionId() {
-    // Generar un sessionId único (puedes usar cualquier método de generación de ID único)
-    return "session_" + Math.random().toString(36).substr(2, 9);
-  }
+  async cargarCarritoDesdeStorage() {
+    try {
+      const sessionId = localStorage.getItem("sessionId");
+      if (!sessionId) throw new Error("El sessionId no está definido");
 
-  // Recuperar o generar sessionId
-  obtenerOGenerarSessionId() {
-    let sessionId;
-    if (!sessionId) {
-      sessionId = localStorage.getItem("sessionId");
+      this.items = await this.carritoServices.getProductsCart(sessionId);
+      sessionStorage.setItem("carrito", JSON.stringify(this.items));
+      this.actualizarNotificacion();
+    } catch (error) {
+      console.error(
+        "Error al cargar el carrito desde la base de datos:",
+        error
+      );
+      this.items = [];
     }
-    return sessionId;
   }
 
   inicializarEventos() {
@@ -43,6 +41,7 @@ class Carrito {
         this.costoEnvio = 0;
         modalControllers.baseModal();
         this.mostrarCarrito();
+        this.actualizarNotificacion();
       });
     }
   }
@@ -50,7 +49,8 @@ class Carrito {
   async agregarProducto({ producto, sessionId }) {
     try {
       await agregarProducto.call(this, producto, sessionId);
-      await this.mostrarCarrito(); // Recargar carrito después de agregar producto
+      this.mostrarCarrito();
+      this.actualizarNotificacion();
     } catch (error) {
       console.error("Error al agregar producto:", error);
     }
@@ -58,8 +58,9 @@ class Carrito {
 
   async eliminarProducto(id) {
     try {
-      await eliminarProducto.call(this, id);
-      await this.mostrarCarrito(); // Recargar carrito después de eliminar producto
+      const sessionId = localStorage.getItem("sessionId");
+      await this.carritoServices.deleteProductCart(sessionId, id);
+      this.items = this.items.filter((item) => item._id !== id);
     } catch (error) {
       console.error("Error al eliminar producto:", error);
     }
@@ -90,11 +91,10 @@ class Carrito {
   }
 
   async mostrarCarrito() {
-    await cargarCarritoDesdeStorage.call(this);
+    this.cargarCarritoDesdeStorage();
     return mostrarCarrito.call(this);
   }
 
-  // Limpia el carrito
   async limpiarCarrito() {
     this.items = [];
     sessionStorage.removeItem("carrito");
@@ -103,3 +103,9 @@ class Carrito {
 }
 
 export default Carrito;
+
+// Inicializar el carrito al cargar la página
+window.addEventListener("load", async () => {
+  const carrito = new Carrito();
+  await carrito.cargarCarritoDesdeStorage();
+});
