@@ -327,7 +327,6 @@ router.get(
 router.get(
   "/api/pedidosRecientes",
   authenticateToken,
-  requireAdmin,
   profileControllers.pedidosRecientes
 );
 

@@ -107,12 +107,14 @@ export class CarritoServices {
   // Actualizar cantidad del producto en el carrito
   putProductCart = async (data) => {
     try {
+      const token = sessionStorage.getItem("authToken");
       const respuesta = await fetch(`${this.baseURL}/api/putProductCart`, {
         method: "PUT",
+        body: JSON.stringify(data),
         headers: {
+          Authorization: `Bearer ${token}`, // Agrega el token aquí
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
       });
       if (!respuesta.ok) {
         throw new Error("Error en la solicitud");
@@ -127,7 +129,7 @@ export class CarritoServices {
     try {
       const response = await fetch(`${this.baseURL}/api/sessionId`, {
         method: "GET",
-        credentials: "include", // Importante para incluir cookies en la solicitud
+        // credentials: "include", // Importante para incluir cookies en la solicitud
       });
 
       if (!response.ok) {
@@ -135,7 +137,7 @@ export class CarritoServices {
       }
 
       const data = await response.json();
-      console.log(data);
+
       return data.sessionId;
     } catch (error) {
       console.error("Error al obtener sessionId del servidor:", error);
@@ -150,7 +152,6 @@ export class CarritoServices {
   async obtenerOGenerarSessionId() {
     try {
       let sessionId = await this.obtenerSessionIdDelServidor();
-      console.log(sessionId);
       if (!sessionId) {
         sessionId = this.generateSessionId();
       }

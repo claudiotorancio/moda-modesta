@@ -196,7 +196,7 @@ export function mostrarCarrito() {
           if (productId) {
             const carrito = new Carrito();
             await carrito.eliminarProducto(productId);
-            this.mostrarCarrito?.();
+            await carrito.mostrarCarrito();
           }
         });
       }

@@ -1,6 +1,5 @@
 import { CarritoServices } from "../../services/carrito_services.js";
 import validator from "validator";
-import { mostrarCarrito } from "./mostrarCarrito.js";
 import Carrito from "./carrito.js";
 
 const carritoServices = new CarritoServices();
@@ -32,7 +31,6 @@ export function actualizarNotificacionCarrito() {
 
 // Agregar producto al carrito
 export async function agregarProducto(product) {
-  console.log(product, this.sessionId);
   try {
     const sanitizedProductId = validator.escape(product._id);
     const sanitizedSize = product.size ? validator.escape(product.size) : null;
@@ -65,7 +63,6 @@ export async function agregarProducto(product) {
 
         await carritoServices.addProductCart(productoNuevo);
         this.items.push(productoNuevo);
-        console.log("Producto agregado al carrito:", productoNuevo);
       } else {
         console.error("Producto sin stock disponible.");
         alert("Este producto ya no tiene stock disponible.");
@@ -80,7 +77,6 @@ export async function agregarProducto(product) {
 export async function actualizarCantidad(id, cantidad, product) {
   try {
     const carrito = new Carrito();
-
     await carrito.cargarCarritoDesdeStorage();
     const producto = this.items.find((item) => item.productId === id);
     if (!producto) {
@@ -108,10 +104,6 @@ export async function actualizarCantidad(id, cantidad, product) {
       productId: producto.productId,
       sessionId: this.sessionId,
     });
-
-    console.log(
-      `Cantidad actualizada a ${nuevaCantidad} para el producto con ID: ${id}`
-    );
   } catch (error) {
     console.error("Error al actualizar cantidad:", error);
   }

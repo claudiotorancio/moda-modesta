@@ -4,7 +4,7 @@ import { connectToDatabase } from "../../db/connectToDatabase.js";
 const putProductCart = async (req, res) => {
   try {
     const { cantidad, productId, sessionId } = req.body;
-    console.log("putProductCart", req.body);
+    // console.log("putProductCart", req.body);
 
     // Conexión a la base de datos
     await connectToDatabase();
@@ -14,7 +14,7 @@ const putProductCart = async (req, res) => {
 
     // Buscar el carrito correspondiente (por sessionId o userId)
     const cart = await Cart.findOne(userId ? { userId } : { sessionId });
-    console.log(cart);
+    // console.log(cart);
     if (!cart) {
       return res.status(404).json({ message: "Carrito no encontrado" });
     }
@@ -24,7 +24,7 @@ const putProductCart = async (req, res) => {
       (item) => item.productId.toString() === productId
     );
 
-    console.log("producto", product);
+    // console.log("producto", product);
 
     if (!product) {
       return res
