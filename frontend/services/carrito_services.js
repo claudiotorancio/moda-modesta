@@ -125,9 +125,14 @@ export class CarritoServices {
 
   obtenerSessionIdDelServidor = async () => {
     try {
+      const token = sessionStorage.getItem("authToken");
       const response = await fetch(`${this.baseURL}/api/sessionId`, {
         method: "GET",
-        credentials: "include", // Importante para incluir cookies en la solicitud
+        // credentials: "include", // Importante para incluir cookies en la solicitud
+        headers: {
+          Authorization: `Bearer ${token}`, // Agrega el token aquí
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
@@ -150,6 +155,7 @@ export class CarritoServices {
   async obtenerOGenerarSessionId() {
     try {
       let sessionId = await this.obtenerSessionIdDelServidor();
+      console.log(sessionId);
       if (!sessionId) {
         sessionId = this.generateSessionId();
       }

@@ -299,7 +299,7 @@ router.get("/api/protected-route", authenticateToken, (req, res) => {
 });
 
 // Endpoint para acceder al sessionId
-app.get("/api/sessionId", obtenerCookiesServidor);
+app.get("/api/sessionId", authenticateToken, obtenerCookiesServidor);
 
 //Sales
 
