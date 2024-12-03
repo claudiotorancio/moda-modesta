@@ -21,9 +21,17 @@ class Carrito {
     this.items = cargarCarritoDesdeStorage.call(this) || [];
   }
 
+  generateSessionId() {
+    // Generar un sessionId único (puedes usar cualquier método de generación de ID único)
+    return "session_" + Math.random().toString(36).substr(2, 9);
+  }
+
   // Recuperar o generar sessionId
   obtenerOGenerarSessionId() {
-    let sessionId = localStorage.getItem("sessionId");
+    let sessionId;
+    if (!sessionId) {
+      sessionId = localStorage.getItem("sessionId");
+    }
     return sessionId;
   }
 
@@ -39,9 +47,9 @@ class Carrito {
     }
   }
 
-  async agregarProducto(product) {
+  async agregarProducto({ producto, sessionId }) {
     try {
-      await agregarProducto.call(this, product);
+      await agregarProducto.call(this, producto, sessionId);
       await this.mostrarCarrito(); // Recargar carrito después de agregar producto
     } catch (error) {
       console.error("Error al agregar producto:", error);

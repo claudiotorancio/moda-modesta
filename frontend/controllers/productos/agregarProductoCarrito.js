@@ -58,7 +58,6 @@ export async function agregarProductoCarrito() {
 
       try {
         const sessionId = await carrito_services.obtenerOGenerarSessionId();
-        console.log(sessionId);
         localStorage.setItem("sessionId", sessionId);
 
         const producto = {
@@ -72,10 +71,13 @@ export async function agregarProductoCarrito() {
           discount: this.discount,
           unidad: this.generalStock ? "Un." : talleSeleccionado,
           size: talleSeleccionado,
+        };
+        const productData = {
+          producto: producto,
           sessionId: sessionId,
         };
-
-        await carrito.agregarProducto(producto);
+        console.log(productData);
+        await carrito.agregarProducto(productData);
       } catch (error) {
         console.log(error);
       }

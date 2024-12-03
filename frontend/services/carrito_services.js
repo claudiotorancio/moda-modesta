@@ -125,21 +125,15 @@ export class CarritoServices {
 
   obtenerSessionIdDelServidor = async () => {
     try {
-      const token = sessionStorage.getItem("authToken");
-      const response = await fetch(`${this.baseURL}/api/sessionId`, {
-        method: "GET",
-        // credentials: "include", // Importante para incluir cookies en la solicitud
-        headers: {
-          Authorization: `Bearer ${token}`, // Agrega el token aquí
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(`${this.baseURL}/api/sessionId`).then(
+        (res) => res.json()
+      );
 
       if (!response.ok) {
         throw new Error("No se pudo obtener sessionId");
       }
 
-      const data = await response.json();
+      console.log(response);
 
       return data.sessionId;
     } catch (error) {
@@ -155,7 +149,6 @@ export class CarritoServices {
   async obtenerOGenerarSessionId() {
     try {
       let sessionId = await this.obtenerSessionIdDelServidor();
-      console.log(sessionId);
       if (!sessionId) {
         sessionId = this.generateSessionId();
       }

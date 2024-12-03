@@ -40,7 +40,7 @@ export function actualizarNotificacionCarrito() {
 }
 
 //agregar producto nuevo
-export async function agregarProducto(product) {
+export async function agregarProducto(product, sessionId) {
   try {
     const sanitizedProductId = validator.escape(product._id);
     const sanitizedSize = product.size ? validator.escape(product.size) : null;
@@ -74,7 +74,7 @@ export async function agregarProducto(product) {
           category: product.section,
           discount: product.discount,
           isActive: product.isActive,
-          sessionId: this.sessionId,
+          sessionId: sessionId,
           size: product.size,
         };
         console.log(productoNuevo);
