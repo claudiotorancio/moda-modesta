@@ -12,9 +12,14 @@ class Carrito {
   constructor() {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
-    this.sessionId = this.obtenerOGenerarSessionId();
+    // this.sessionId = this.obtenerOGenerarSessionId();
     this.inicializarEventos();
     this.items = [];
+  }
+
+  async inicializar() {
+    this.sessionId = await this.obtenerOGenerarSessionId();
+    await this.cargarCarritoDesdeStorage();
   }
 
   async cargarCarritoDesdeStorage() {
@@ -47,14 +52,13 @@ class Carrito {
   }
 
   async obtenerOGenerarSessionId() {
-    // Recuperar o generar un sessionId
-    let sessionId;
+    let sessionId = sessionStorage.getItem("sessionId");
     if (!sessionId) {
       sessionId = await this.carritoServices.obtenerOGenerarSessionId();
+      sessionStorage.setItem("sessionId", sessionId); // Almacena sessionId en sessionStorage
     }
     return sessionId;
   }
-
   async agregarProducto(producto) {
     try {
       await agregarProducto.call(this, producto);
@@ -115,5 +119,5 @@ export default Carrito;
 // Inicializar el carrito al cargar la página
 window.addEventListener("load", async () => {
   const carrito = new Carrito();
-  await carrito.cargarCarritoDesdeStorage();
+  await carrito.inicializar();
 });

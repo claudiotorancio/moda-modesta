@@ -31,6 +31,7 @@ export function actualizarNotificacionCarrito() {
 
 // Agregar producto al carrito
 export async function agregarProducto(product) {
+  console.log(product, this.sessionId);
   try {
     const sanitizedProductId = validator.escape(product._id);
     const sanitizedSize = product.size ? validator.escape(product.size) : null;
