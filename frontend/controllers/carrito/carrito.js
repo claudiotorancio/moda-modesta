@@ -16,6 +16,7 @@ class Carrito {
   constructor() {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
+    this.sessionId = null;
     this.inicializarEventos();
     this.sessionId = this.obtenerOGenerarSessionId();
     this.items = cargarCarritoDesdeStorage.call(this) || [];
