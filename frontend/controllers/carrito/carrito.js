@@ -13,7 +13,7 @@ class Carrito {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
     this.inicializarEventos();
-    this.items = [];
+    this.items = this.cargarCarritoDesdeStorage() || [];
   }
 
   async cargarCarritoDesdeStorage() {
