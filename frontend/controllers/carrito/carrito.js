@@ -21,15 +21,18 @@ class Carrito {
     this.items = cargarCarritoDesdeStorage.call(this) || [];
   }
 
-  generateSessionId() {
+  async generateSessionId() {
     // Generar un sessionId único (puedes usar cualquier método de generación de ID único)
     return "session_" + Math.random().toString(36).substr(2, 9);
   }
 
   // Recuperar o generar sessionId
-  obtenerOGenerarSessionId() {
-    const sessionId = localStorage.getItem("sessionId");
-
+  async obtenerOGenerarSessionId() {
+    let sessionId = localStorage.getItem("sessionId");
+    if (!sessionId) {
+      sessionId = await this.carritoServices.obtenerSessionIdDelServidor();
+      localStorage.setItem("sessionId", sessionId);
+    }
     return sessionId;
   }
 
