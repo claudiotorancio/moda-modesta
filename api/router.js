@@ -188,7 +188,7 @@ app.use((req, res, next) => {
     res.cookie("sessionId", sessionId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // solo HTTPS en producción
-      maxAge: 24 * 60 * 60 * 1000, // Expira en 24 horas
+      maxAge: 7 * 24 * 60 * 60 * 1000, // Expira en 24 horas
       sameSite: "lax",
     });
     res.locals.sessionId = sessionId;

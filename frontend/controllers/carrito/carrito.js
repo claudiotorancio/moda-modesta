@@ -25,7 +25,7 @@ class Carrito {
         this.sessionId = await this.obtenerOGenerarSessionId();
       }
       // Cargar el carrito desde el almacenamiento
-      await this.cargarCarritoDesdeStorage.call(this);
+      await this.cargarCarritoDesdeStorage();
     } catch (error) {
       console.error("Error durante la inicialización del carrito:", error);
     }
@@ -55,10 +55,8 @@ class Carrito {
     if (toggleCart) {
       toggleCart.addEventListener("click", (event) => {
         event.preventDefault();
-        this.costoEnvio = 0;
         modalControllers.baseModal();
         this.mostrarCarrito();
-        this.actualizarNotificacion();
       });
     }
   }

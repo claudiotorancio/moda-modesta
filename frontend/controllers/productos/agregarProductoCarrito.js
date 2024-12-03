@@ -1,8 +1,4 @@
-// import { comprarProducto } from "../carrito/comprarProducto.js";
 import Carrito from "../carrito/carrito.js";
-import { CarritoServices } from "../../services/carrito_services.js";
-
-const carrito_services = new CarritoServices();
 
 const carrito = new Carrito();
 
@@ -57,9 +53,6 @@ export async function agregarProductoCarrito() {
       }
 
       try {
-        // const sessionId = await carrito_services.obtenerOGenerarSessionId();
-        // localStorage.setItem("sessionId", sessionId);
-
         const producto = {
           _id: this.id,
           name: this.name,
@@ -73,7 +66,7 @@ export async function agregarProductoCarrito() {
           size: talleSeleccionado,
           isActive: this.isActive,
         };
-        console.log(producto);
+
         await carrito.agregarProducto(producto);
       } catch (error) {
         console.log(error);
