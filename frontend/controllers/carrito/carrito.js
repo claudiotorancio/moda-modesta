@@ -28,11 +28,8 @@ class Carrito {
 
   // Recuperar o generar sessionId
   async obtenerOGenerarSessionId() {
-    let sessionId = await this.carritoServices.obtenerOGenerarSessionId();
-    if (!sessionId) {
-      sessionId = this.generateSessionId();
-    }
-    localStorage.setItem("sessionId", sessionId);
+    const sessionId = await this.carritoServices.obtenerOGenerarSessionId();
+
     return sessionId;
   }
 
