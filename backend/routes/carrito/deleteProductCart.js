@@ -7,9 +7,9 @@ const deleteProductCart = async (req, res) => {
     const { sessionId, id } = req.body; // `id` es el ID del producto en el array `items`.
     const userId = req.isAuthenticated() ? req.user._id : null;
 
-    // console.log("Producto ID:", id);
-    // console.log("Session ID:", sessionId);
-    // console.log("User ID:", userId);
+    console.log("Producto ID:", id);
+    console.log("Session ID:", sessionId);
+    console.log("User ID:", userId);
 
     await connectToDatabase();
 

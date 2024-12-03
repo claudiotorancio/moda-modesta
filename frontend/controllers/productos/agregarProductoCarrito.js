@@ -73,7 +73,7 @@ export async function agregarProductoCarrito() {
           size: talleSeleccionado,
           isActive: this.isActive,
         };
-
+        console.log(producto);
         await carrito.agregarProducto(producto);
       } catch (error) {
         console.log(error);

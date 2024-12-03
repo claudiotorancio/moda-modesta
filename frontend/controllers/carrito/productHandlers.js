@@ -1,6 +1,7 @@
 import { CarritoServices } from "../../services/carrito_services.js";
 import validator from "validator";
 import { mostrarCarrito } from "./mostrarCarrito.js";
+import Carrito from "./carrito.js";
 
 const carritoServices = new CarritoServices();
 
@@ -63,7 +64,7 @@ export async function agregarProducto(product) {
         };
 
         await carritoServices.addProductCart(productoNuevo);
-        this.items?.push(productoNuevo);
+        this.items.push(productoNuevo);
         console.log("Producto agregado al carrito:", productoNuevo);
       } else {
         console.error("Producto sin stock disponible.");
@@ -78,6 +79,9 @@ export async function agregarProducto(product) {
 // Actualizar cantidad en la base de datos
 export async function actualizarCantidad(id, cantidad, product) {
   try {
+    const carrito = new Carrito();
+
+    await carrito.cargarCarritoDesdeStorage();
     const producto = this.items.find((item) => item.productId === id);
     if (!producto) {
       console.error("Producto no encontrado en el carrito.");
@@ -102,7 +106,7 @@ export async function actualizarCantidad(id, cantidad, product) {
     await carritoServices.putProductCart({
       cantidad: nuevaCantidad,
       productId: producto.productId,
-      sessionId: this?.sessionId,
+      sessionId: this.sessionId,
     });
 
     console.log(
