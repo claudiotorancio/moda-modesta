@@ -149,7 +149,10 @@ export class CarritoServices {
 
   async obtenerOGenerarSessionId() {
     try {
-      let sessionId = await this.obtenerSessionIdDelServidor();
+      let sessionId = new Promise((resolve) => {
+        this.obtenerOGenerarSessionId();
+        resolve();
+      });
       if (!sessionId) {
         sessionId = this.generateSessionId();
       }
