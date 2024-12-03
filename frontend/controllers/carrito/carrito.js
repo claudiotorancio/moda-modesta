@@ -76,10 +76,7 @@ class Carrito {
 
   async agregarProducto(producto) {
     try {
-      let sessionId = localStorage.getItem("sessionId");
-      if (!sessionId) {
-        sessionId = await this.carritoServices.obtenerOGenerarSessionId();
-      }
+      await this.obtenerOGenerarSessionId();
       this.cargarCarritoDesdeStorage();
       await agregarProducto.call(this, producto);
       this.mostrarCarrito();
