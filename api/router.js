@@ -191,7 +191,6 @@ app.use((req, res, next) => {
       maxAge: 24 * 60 * 60 * 1000, // Expira en 24 horas
       sameSite: "lax",
     });
-
     console.log(sessionId);
   }
   next();
