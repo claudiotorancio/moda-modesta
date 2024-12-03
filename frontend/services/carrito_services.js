@@ -135,7 +135,7 @@ export class CarritoServices {
 
       console.log(response);
 
-      return data.sessionId;
+      return response.sessionId; // Corrección aquí
     } catch (error) {
       console.error("Error al obtener sessionId del servidor:", error);
       return null;

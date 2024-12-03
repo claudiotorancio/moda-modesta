@@ -12,14 +12,20 @@ class Carrito {
   constructor() {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
-    // this.sessionId = this.obtenerOGenerarSessionId();
-    this.inicializarEventos();
     this.items = [];
+    this.sessionId = null;
+    this.inicializarEventos();
   }
 
   async inicializar() {
+    // Asegúrate de que se obtiene el sessionId al cargar la página
     this.sessionId = await this.obtenerOGenerarSessionId();
-    await this.cargarCarritoDesdeStorage();
+    if (!this.sessionId) {
+      console.error("No se pudo obtener el sessionId.");
+    } else {
+      console.log("sessionId:", this.sessionId);
+      await this.cargarCarritoDesdeStorage();
+    }
   }
 
   async cargarCarritoDesdeStorage() {
@@ -51,16 +57,54 @@ class Carrito {
     }
   }
 
+  // Obtener sessionId desde el servidor
+  async obtenerSessionIdDelServidor() {
+    try {
+      const response = await fetch(`${this.baseURL}/api/sessionId`).then(
+        (res) => res.json()
+      );
+      if (!response.ok) {
+        throw new Error("No se pudo obtener sessionId");
+      }
+      return response.sessionId;
+    } catch (error) {
+      console.error("Error al obtener sessionId del servidor:", error);
+      return null;
+    }
+  }
+
+  generateSessionId() {
+    return `session_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  // Obtener o generar sessionId
   async obtenerOGenerarSessionId() {
     let sessionId = sessionStorage.getItem("sessionId");
     if (!sessionId) {
-      sessionId = await this.carritoServices.obtenerOGenerarSessionId();
+      sessionId = await this.obtenerSessionIdDelServidor();
+      if (!sessionId) {
+        sessionId = this.generateSessionId();
+      }
       sessionStorage.setItem("sessionId", sessionId); // Almacena sessionId en sessionStorage
     }
     return sessionId;
   }
+
+  // Método para agregar un producto
   async agregarProducto(producto) {
     try {
+      // Asegurarse de que el sessionId esté disponible
+      if (!this.sessionId) {
+        console.log("sessionId no disponible, obteniendo...");
+        this.sessionId = await this.obtenerOGenerarSessionId();
+      }
+
+      if (!this.sessionId) {
+        console.error("No se pudo obtener sessionId al agregar el producto.");
+        return;
+      }
+
+      // Aquí va la lógica para agregar el producto
       await agregarProducto.call(this, producto);
       this.mostrarCarrito();
       this.actualizarNotificacion();
