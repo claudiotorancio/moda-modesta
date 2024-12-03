@@ -125,8 +125,18 @@ export class CarritoServices {
 
   obtenerSessionIdDelServidor = async () => {
     try {
-      const sessionId = await fetch("/api/sessionId").then((res) => res.json()); // Simulando que obtienes un sessionId
-      return sessionId.sessionId || this.generateSessionId();
+      const response = await fetch(`${this.baseURL}/api/sessionId`, {
+        method: "GET",
+        credentials: "include", // Importante para incluir cookies en la solicitud
+      });
+
+      if (!response.ok) {
+        throw new Error("No se pudo obtener sessionId");
+      }
+
+      const data = await response.json();
+
+      return data.sessionId;
     } catch (error) {
       console.error("Error al obtener sessionId del servidor:", error);
       return null;
