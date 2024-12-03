@@ -30,12 +30,12 @@ class Carrito {
   async obtenerOGenerarSessionId() {
     let sessionId = localStorage.getItem("sessionId");
     if (!sessionId) {
-      // Esperamos que la promesa de obtener o generar el sessionId se resuelva
       sessionId = await this.carritoServices.obtenerOGenerarSessionId();
       localStorage.setItem("sessionId", sessionId);
     }
     return sessionId;
   }
+
   inicializarEventos() {
     const toggleCart = document.querySelector(".js-toggle-cart");
     if (toggleCart) {
