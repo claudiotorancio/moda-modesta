@@ -16,7 +16,6 @@ class Carrito {
   constructor() {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;
-    this.sessionId = null;
     this.inicializarEventos();
     this.sessionId = this.obtenerOGenerarSessionId();
     this.items = cargarCarritoDesdeStorage.call(this) || [];
@@ -31,12 +30,12 @@ class Carrito {
   async obtenerOGenerarSessionId() {
     let sessionId = localStorage.getItem("sessionId");
     if (!sessionId) {
-      sessionId = await this.carritoServices.obtenerSessionIdDelServidor();
+      // Esperamos que la promesa de obtener o generar el sessionId se resuelva
+      sessionId = await this.carritoServices.obtenerOGenerarSessionId();
       localStorage.setItem("sessionId", sessionId);
     }
     return sessionId;
   }
-
   inicializarEventos() {
     const toggleCart = document.querySelector(".js-toggle-cart");
     if (toggleCart) {

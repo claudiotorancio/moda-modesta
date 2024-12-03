@@ -123,43 +123,39 @@ export class CarritoServices {
     }
   };
 
-  obtenerSessionIdDelServidor = async () => {
+  async obtenerOGenerarSessionId() {
     try {
-      const response = await fetch(`${this.baseURL}/api/sessionId`, {
-        method: "GET",
-        credentials: "include", // Importante para incluir cookies en la solicitud
-      });
+      let sessionId = await this.obtenerSessionIdDelServidor();
 
-      if (!response.ok) {
-        throw new Error("No se pudo obtener sessionId");
+      if (!sessionId) {
+        sessionId = this.generateSessionId(); // Genera un nuevo sessionId si no se obtiene del servidor
       }
 
-      const data = await response.json();
+      return sessionId;
+    } catch (error) {
+      console.error("Error en obtenerOGenerarSessionId:", error);
 
-      return data.sessionId;
+      // Genera un sessionId de respaldo en caso de error
+      return this.generateSessionId();
+    }
+  }
+
+  async obtenerSessionIdDelServidor() {
+    try {
+      const response = await fetch("/api/sessionId", { method: "GET" });
+      if (response.ok) {
+        const data = await response.json();
+        return data.sessionId;
+      } else {
+        throw new Error("Error al obtener sessionId del servidor");
+      }
     } catch (error) {
       console.error("Error al obtener sessionId del servidor:", error);
       return null;
     }
-  };
+  }
 
   generateSessionId() {
     return `session_${Math.random().toString(36).substr(2, 9)}`;
-  }
-
-  async obtenerOGenerarSessionId() {
-    try {
-      let sessionId = await this.obtenerSessionIdDelServidor();
-      if (!sessionId) {
-        sessionId = this.generateSessionId();
-      }
-      localStorage.setItem("sessionId", sessionId); // Guarda el sessionId
-      return sessionId;
-    } catch (error) {
-      console.error("Error en obtenerOGenerarSessionId:", error);
-      const fallbackSessionId = this.generateSessionId();
-      localStorage.setItem("sessionId", fallbackSessionId);
-      return fallbackSessionId;
-    }
   }
 }
