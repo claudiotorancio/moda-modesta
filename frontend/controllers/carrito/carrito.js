@@ -115,6 +115,18 @@ class Carrito {
 
   async eliminarProducto(id) {
     try {
+      // Asegurarse de que el sessionId esté disponible
+      if (!this.sessionId) {
+        console.log("sessionId no disponible, obteniendo...");
+        this.sessionId = await this.obtenerOGenerarSessionId();
+      }
+
+      if (!this.sessionId) {
+        console.error("No se pudo obtener sessionId al eliminar el producto.");
+        return;
+      }
+
+      // Lógica para eliminar el producto
       await this.carritoServices.deleteProductCart(this.sessionId, id);
       this.items = this.items.filter((item) => item._id !== id);
     } catch (error) {
