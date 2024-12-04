@@ -59,6 +59,33 @@ export default async function handler(req, res) {
       });
     } catch (error) {
       console.error("Error al actualizar productos:", error);
+
+      // Intentar enviar un correo en caso de error
+      try {
+        const transporter = createTransporter();
+        const errorEmailContent = `
+          <p>Estimado administrador,</p>
+          <p>Ha ocurrido un error al ejecutar la tarea programada:</p>
+          <p><strong>Error:</strong> ${error.message}</p>
+          <p>Fecha: ${moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss")}</p>
+        `;
+
+        const errorMailOptions = {
+          from: process.env.EMAIL,
+          to: "claudiotorancio@gmail.com", // Cambiar por el correo destinatario
+          subject: "Error en la tarea programada de actualización",
+          html: errorEmailContent,
+        };
+
+        await transporter.sendMail(errorMailOptions);
+        console.log("Correo de error enviado exitosamente");
+      } catch (emailError) {
+        console.error(
+          "Error al enviar correo de notificación de error:",
+          emailError
+        );
+      }
+
       res.status(500).send("Error al ejecutar cron job");
     }
   } else {
