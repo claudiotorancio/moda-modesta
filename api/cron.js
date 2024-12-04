@@ -38,9 +38,9 @@ export default async function handler(req, res) {
         <p>Se han actualizado ${
           result.modifiedCount
         } productos cuyos descuentos han expirado.</p>
-        <p>Fecha de la actualización: ${moment().format(
-          "YYYY-MM-DD HH:mm:ss"
-        )}</p>
+        <p>Fecha de la actualización: ${moment
+          .utc()
+          .format("YYYY-MM-DD HH:mm:ss")}</p>
       `;
 
       const mailOptions = {
