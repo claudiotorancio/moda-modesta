@@ -67,7 +67,6 @@ class Carrito {
     const storedItems = JSON.parse(sessionStorage.getItem("carrito")) || [];
     if (storedItems.length > 0) {
       this.items = storedItems;
-      console.log("Carrito cargado desde sessionStorage:", this.items);
       return true; // Retorna true si se cargaron ítems desde storage
     } else {
       console.log("No hay ítems en sessionStorage.");
