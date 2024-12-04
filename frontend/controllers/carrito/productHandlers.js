@@ -64,7 +64,7 @@ export async function agregarProducto(product) {
         };
 
         await carritoServices.addProductCart(productoNuevo);
-        this.items.push(productoNuevo);
+        // this.items.push(productoNuevo);
       } else {
         console.error("Producto sin stock disponible.");
         alert("Este producto ya no tiene stock disponible.");
