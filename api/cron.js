@@ -39,7 +39,7 @@ export default async function handler(req, res) {
           result.modifiedCount
         } productos cuyos descuentos han expirado.</p>
         <p>Fecha de la actualización: ${moment
-          .utc()
+          .utc(new Date())
           .format("YYYY-MM-DD HH:mm:ss")}</p>
       `;
 
