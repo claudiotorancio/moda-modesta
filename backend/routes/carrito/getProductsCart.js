@@ -33,11 +33,9 @@ const getProductsCart = async (req, res) => {
     const vistas = await Vista.find({ _id: { $in: productIds } });
 
     if (!vistas || vistas.length === 0) {
-      return res
-        .status(404)
-        .json({
-          message: "No se encontraron vistas para los productos del carrito",
-        });
+      return res.status(404).json({
+        message: "No se encontraron vistas para los productos del carrito",
+      });
     }
 
     // **Actualizamos isActive en los items del carrito**

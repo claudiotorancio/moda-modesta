@@ -91,7 +91,7 @@ import getSalesByPeriod from "../backend/routes/sales/getSalesByPeriod.js";
 import getTopSellingProducts from "../backend/routes/sales/getTopSellingProducts.js";
 import gefetchPendingOrders from "../backend/routes/sales/getFetchPendingOrders.js";
 import getCustomerAnalytics from "../backend/routes/sales/getCustomerAnalytics.js";
-import authenticateToken from "../backend/routes/login/authenticateToken.js";
+import authenticateToken from "../backend/lib/authenticateToken.js";
 import handler from "./cron.js";
 import { v4 as uuidv4 } from "uuid";
 import obtenerCookiesServidor from "../backend/routes/carrito/obtenerCookiesServidor.js";

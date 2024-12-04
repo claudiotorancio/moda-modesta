@@ -9,7 +9,6 @@ import { handleFinalizePurchase } from "./finalizeHandlers.js";
 import { Producto } from "../productos/Producto.js";
 import productoServices from "../../services/product_services.js";
 import { hayStock } from "../productos/productos_controllers.js";
-import Carrito from "./carrito.js";
 
 export async function mostrarCarrito() {
   const summaryDetails = document.querySelector("[data-table]");
