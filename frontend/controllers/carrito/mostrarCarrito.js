@@ -11,9 +11,9 @@ import productoServices from "../../services/product_services.js";
 import { hayStock } from "../productos/productos_controllers.js";
 import Carrito from "./carrito.js";
 
-export function mostrarCarrito() {
+export async function mostrarCarrito() {
   const summaryDetails = document.querySelector("[data-table]");
-
+  await this.cargarCarrito();
   const subtotal = this.calcularSubtotal?.();
   const total = this.calcularTotal?.();
 
@@ -194,9 +194,7 @@ export function mostrarCarrito() {
         button.addEventListener("click", async (event) => {
           const productId = event.target.dataset.id;
           if (productId) {
-            const carrito = new Carrito();
-            await carrito.eliminarProducto(productId);
-            await carrito.mostrarCarrito();
+            await this.eliminarProducto(productId);
           }
         });
       }

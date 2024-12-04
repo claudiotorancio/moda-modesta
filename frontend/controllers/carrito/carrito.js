@@ -25,13 +25,27 @@ class Carrito {
         this.sessionId = await this.obtenerOGenerarSessionId();
       }
       // Cargar el carrito desde el almacenamiento
-      await this.cargarCarritoDesdeStorage();
+      await this.cargarCarrito();
     } catch (error) {
       console.error("Error durante la inicialización del carrito:", error);
     }
   }
 
-  async cargarCarritoDesdeStorage() {
+  async obtenerOGenerarSessionId() {
+    try {
+      let sessionId = localStorage.getItem("sessionId");
+      if (!sessionId) {
+        sessionId = await this.carritoServices.obtenerOGenerarSessionId();
+      }
+      return sessionId;
+    } catch (error) {
+      console.error("Error al obtener o generar sessionId:", error);
+      return null;
+    }
+  }
+
+  async cargarCarrito() {
+    console.log("estoy");
     try {
       this.sessionId = localStorage.getItem("sessionId");
       if (!this.sessionId) {
@@ -55,29 +69,15 @@ class Carrito {
     if (toggleCart) {
       toggleCart.addEventListener("click", (event) => {
         event.preventDefault();
+        this.costoEnvio = 0;
         modalControllers.baseModal();
         this.mostrarCarrito();
       });
     }
   }
 
-  async obtenerOGenerarSessionId() {
-    try {
-      let sessionId = localStorage.getItem("sessionId");
-      if (!sessionId) {
-        sessionId = await this.carritoServices.obtenerOGenerarSessionId();
-      }
-      return sessionId;
-    } catch (error) {
-      console.error("Error al obtener o generar sessionId:", error);
-      return null;
-    }
-  }
-
   async agregarProducto(producto) {
     try {
-      await this.obtenerOGenerarSessionId();
-      this.cargarCarritoDesdeStorage();
       await agregarProducto.call(this, producto);
       this.mostrarCarrito();
       this.actualizarNotificacion();
@@ -88,9 +88,10 @@ class Carrito {
 
   async eliminarProducto(id) {
     try {
-      await this.cargarCarritoDesdeStorage();
+      await this.cargarCarrito();
       await this.carritoServices.deleteProductCart(this.sessionId, id);
       this.items = this.items.filter((item) => item._id !== id);
+      this.mostrarCarrito();
     } catch (error) {
       console.error("Error al eliminar producto:", error);
     }
@@ -98,7 +99,6 @@ class Carrito {
 
   async actualizarCantidad(id, cantidad) {
     try {
-      this.cargarCarritoDesdeStorage();
       await actualizarCantidad.call(this, id, cantidad);
     } catch (error) {
       console.error("Error al actualizar cantidad:", error);
@@ -122,7 +122,6 @@ class Carrito {
   }
 
   async mostrarCarrito() {
-    await this.inicializar();
     return mostrarCarrito.call(this);
   }
 

@@ -40,6 +40,15 @@ const deleteProductCart = async (req, res) => {
       { new: true } // Retorna el carrito actualizado
     );
 
+    // Recalcular el totalPrice después de eliminar el producto
+    updatedCart.totalPrice = updatedCart.items.reduce(
+      (sum, item) => sum + item.price * item.cantidad,
+      0
+    );
+
+    // Guardar el carrito actualizado con el nuevo totalPrice
+    await updatedCart.save();
+
     // Actualizar el estado 'inCart' del producto en el modelo Vista
     await Vista.updateOne(
       { _id: deletedProduct.productId },

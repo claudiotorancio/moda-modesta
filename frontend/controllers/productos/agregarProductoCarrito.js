@@ -1,7 +1,5 @@
 import Carrito from "../carrito/carrito.js";
 
-const carrito = new Carrito();
-
 export async function agregarProductoCarrito() {
   const carritoButton = document.querySelector("[data-carrito]");
 
@@ -66,7 +64,7 @@ export async function agregarProductoCarrito() {
           size: talleSeleccionado,
           isActive: this.isActive,
         };
-
+        const carrito = new Carrito();
         await carrito.agregarProducto(producto);
       } catch (error) {
         console.log(error);
