@@ -18,6 +18,7 @@ export async function mostrarCarrito() {
   const total = this.calcularTotal?.();
 
   if (this.items?.length > 0) {
+    this.cargarSessionStorage();
     const progresoCompra = document.createElement("div");
     progresoCompra.id = "progreso-compra";
 

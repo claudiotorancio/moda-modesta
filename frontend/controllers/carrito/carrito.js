@@ -52,7 +52,7 @@ class Carrito {
       }
       // Obtener los productos del carrito desde el servidor
       this.items = await this.carritoServices.getProductsCart(this.sessionId);
-      sessionStorage.setItem("carrito", JSON.stringify(this.items));
+      this.actualizarSessionStorage();
       this.actualizarNotificacion();
     } catch (error) {
       console.error(
@@ -61,6 +61,22 @@ class Carrito {
       );
       this.items = [];
     }
+  }
+
+  cargarSessionStorage() {
+    const storedItems = JSON.parse(sessionStorage.getItem("carrito")) || [];
+    if (storedItems.length > 0) {
+      this.items = storedItems;
+      console.log("Carrito cargado desde sessionStorage:", this.items);
+      return true; // Retorna true si se cargaron ítems desde storage
+    } else {
+      console.log("No hay ítems en sessionStorage.");
+      return false; // Retorna false si no hay ítems en storage
+    }
+  }
+
+  actualizarSessionStorage() {
+    sessionStorage.setItem("carrito", JSON.stringify(this.items));
   }
 
   inicializarEventos() {
@@ -90,6 +106,7 @@ class Carrito {
       await this.cargarCarrito();
       await this.carritoServices.deleteProductCart(this.sessionId, id);
       this.items = this.items.filter((item) => item._id !== id);
+      this.actualizarSessionStorage();
       this.mostrarCarrito();
     } catch (error) {
       console.error("Error al eliminar producto:", error);
