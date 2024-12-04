@@ -1,8 +1,8 @@
 const obtenerCookiesServidor = async (req, res) => {
   try {
     // Intentamos obtener el sessionId de las cookies
-    const sessionId = req.cookies.sessionId;
-    console.log("sessionId", sessionId);
+    const sessionId = req.cookies.modesta_sessionId;
+    console.log("modesta_sessionId", sessionId);
 
     if (sessionId) {
       // Si encontramos sessionId, respondemos con el valor

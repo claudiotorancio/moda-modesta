@@ -181,9 +181,9 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-//middleware para la eliminacion de imagenes en caso de fallo de validacion
+//middleware para las cookies del carrito sim logueo
 app.use((req, res, next) => {
-  if (!req.cookies.sessionId) {
+  if (!req.cookies.modesta_sessionId) {
     const sessionId = uuidv4();
     res.cookie("modesta_sessionId", sessionId, {
       httpOnly: true,
@@ -199,13 +199,13 @@ app.use((req, res, next) => {
 });
 
 // Endpoint para devolver sessionId
-app.get("/api/sessionId", (req, res) => {
-  const sessionId = req.cookies.sessionId;
-  if (!sessionId) {
-    return res.status(404).json({ error: "sessionId no encontrado" });
-  }
-  res.json({ sessionId });
-});
+// app.get("/api/sessionId", (req, res) => {
+//   const sessionId = req.cookies.sessionId;
+//   if (!sessionId) {
+//     return res.status(404).json({ error: "sessionId no encontrado" });
+//   }
+//   res.json({ sessionId });
+// });
 
 // Ruta para elimiar Carrito
 
