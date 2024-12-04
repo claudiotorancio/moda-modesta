@@ -20,7 +20,7 @@ class Carrito {
   async inicializar() {
     try {
       // Cargar o generar el sessionId
-      this.sessionId = localStorage.getItem("sessionId");
+      this.sessionId = localStorage.getItem("modesta_sessionId");
       if (!this.sessionId) {
         this.sessionId = await this.obtenerOGenerarSessionId();
       }
@@ -33,7 +33,7 @@ class Carrito {
 
   async obtenerOGenerarSessionId() {
     try {
-      let sessionId = localStorage.getItem("sessionId");
+      let sessionId = localStorage.getItem("modesta_sessionId");
       if (!sessionId) {
         sessionId = await this.carritoServices.obtenerOGenerarSessionId();
       }
@@ -45,9 +45,8 @@ class Carrito {
   }
 
   async cargarCarrito() {
-    console.log("estoy");
     try {
-      this.sessionId = localStorage.getItem("sessionId");
+      this.sessionId = localStorage.getItem("modesta_sessionId");
       if (!this.sessionId) {
         throw new Error("El sessionId no está definido");
       }

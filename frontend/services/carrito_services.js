@@ -152,7 +152,7 @@ export class CarritoServices {
   async obtenerOGenerarSessionId() {
     try {
       // Primero verifica si ya hay un sessionId en localStorage
-      let sessionId = localStorage.getItem("sessionId");
+      let sessionId = localStorage.getItem("modesta_sessionId");
 
       if (!sessionId) {
         // Si no hay uno en localStorage, intenta obtenerlo del servidor
@@ -164,7 +164,7 @@ export class CarritoServices {
         }
 
         // Guarda el sessionId en localStorage
-        localStorage.setItem("sessionId", sessionId);
+        localStorage.setItem("modesta_sessionId", sessionId);
       }
 
       return sessionId;
@@ -172,7 +172,7 @@ export class CarritoServices {
       console.error("Error en obtenerOGenerarSessionId:", error);
       // Genera un sessionId como último recurso y lo guarda
       const fallbackSessionId = this.generateSessionId();
-      localStorage.setItem("sessionId", fallbackSessionId);
+      localStorage.setItem("modesta_sessionId", fallbackSessionId);
       return fallbackSessionId;
     }
   }

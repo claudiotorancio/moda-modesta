@@ -185,7 +185,7 @@ app.use(passport.session());
 app.use((req, res, next) => {
   if (!req.cookies.sessionId) {
     const sessionId = uuidv4();
-    res.cookie("sessionId", sessionId, {
+    res.cookie("modesta_sessionId", sessionId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // solo HTTPS en producción
       maxAge: 7 * 24 * 60 * 60 * 1000, // Expira en 24 horas
