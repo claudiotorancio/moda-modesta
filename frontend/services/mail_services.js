@@ -1,6 +1,7 @@
 import { modalControllers } from "../modal/modal.js";
 import { baseURL } from "../../backend/baseUrl.js";
 import { CarritoServices } from "./carrito_services.js";
+import Carrito from "../controllers/carrito/carrito.js";
 
 export class MailServices {
   constructor() {
@@ -20,19 +21,27 @@ export class MailServices {
         },
       });
 
-      const dataResponse = await response.json();
+      const dataResponse = await response.json().catch(() => {
+        throw new Error("Respuesta no válida del servidor.");
+      });
 
       if (!response.ok) {
-        // Aquí manejas el mensaje de error que envía el backend
-        throw new Error(dataResponse.error || "Error en la solicitud.");
+        // Lanza el contenido JSON en caso de error (si está presente)
+        throw dataResponse;
       }
-
       // Muestra de éxito en pantalla
-      modalControllers.modalMsgReload(dataResponse.message);
+      modalControllers.modalMsgReloadEstado(dataResponse.message);
+
+      const carrito = new Carrito();
+
+      carrito.limpiarCarrito();
+
       return dataResponse; // Devuelve los datos recibidos
     } catch (error) {
-      modalControllers.modalMsgReload(error.message);
-      console.error(error);
+      const errorMessages = error.errors
+        .map((err) => `${err.field}: ${err.message}`)
+        .join("\n");
+      modalControllers.modalMsg(errorMessages);
     }
   }
 

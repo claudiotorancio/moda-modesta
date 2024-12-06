@@ -1,5 +1,5 @@
 // sendMail.js
-import { validateOrderData } from "./mail/validation.js";
+// import { validateOrderData } from "./mail/validation.js";
 import {
   createTransporter,
   sendVerificationEmail,
@@ -18,9 +18,6 @@ const sendMail = async (req, res) => {
     const orderData = req.body;
 
     await connectToDatabase(); // Ensure the connection is established
-
-    // Validate order data
-    validateOrderData(orderData);
 
     // Set up the transporter for nodemailer
     const transporter = createTransporter();
@@ -63,6 +60,7 @@ const sendMail = async (req, res) => {
         <td>${producto.cantidad}</td>
         <td>${producto.size}</td>
         <td>$${producto.price.toFixed(2)}</td>
+        <td>${producto.category}</td>
         <td><a href="https://moda-modesta.vercel.app/#product-${
           producto.hash
         }">Ver producto</a></td>
@@ -92,8 +90,9 @@ const sendMail = async (req, res) => {
           <tr>
             <th>Nombre del Producto</th>
             <th>Cantidad</th>
-            <th>Talle</th>
+            <th>Talle/Unidad</th>
             <th>Precio</th>
+            <th>Seccion</th>
             <th>Enlace</th>
           </tr>
         </thead>

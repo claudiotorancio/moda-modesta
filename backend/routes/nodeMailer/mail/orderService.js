@@ -14,13 +14,9 @@ export const createOrder = async (data, userId) => {
     total,
     costoEnvio,
     checked,
-    aceptar = false,
-    enCamino = false,
-    finalizado = false,
-    cancelado = false,
   } = data;
 
-  console.log(data);
+  // console.log(data);
 
   const newOrder = new Order({
     customer: {
@@ -33,9 +29,11 @@ export const createOrder = async (data, userId) => {
       productId: producto.id,
       name: producto.name,
       price: producto.price,
+      discount: producto.discount,
       quantity: producto.cantidad,
       size: producto.size,
       hash: `https://moda-modesta.vercel.app/#product-${producto.hash}`,
+      category: producto.category,
     })),
     totalAmount: total,
     shippingCost: costoEnvio,
@@ -44,10 +42,6 @@ export const createOrder = async (data, userId) => {
       postalCode: codigoPostal,
     },
     checked,
-    aceptar,
-    enCamino,
-    finalizado,
-    cancelado,
   });
 
   console.log(newOrder);
@@ -94,11 +88,17 @@ export const saveSalesData = async (productos, userId, orderId) => {
   const saleData = productos.map((producto) => ({
     date: new Date(),
     productId: producto.id,
+    name: producto.name, // Guardar el nombre del producto al momento de la venta
+    price: producto.price * (1 - producto.discount / 100), // Guardar el precio al momento de la venta
     quantity: producto.cantidad,
-    totalPrice: producto.price * producto.cantidad,
+    discount: producto.discount,
+    totalPrice:
+      producto.price * producto.cantidad * (1 - producto.discount / 100),
     category: producto.category,
     customerId: userId,
     orderId,
+    size: producto.size, // Guardar el tamaño al momento de la venta
+    hash: producto.hash, // Guardar el hash o link si es necesario
   }));
 
   await Promise.all(saleData.map((data) => new Sale(data).save()));

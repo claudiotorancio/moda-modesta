@@ -135,9 +135,9 @@ export function renderSalesData(
   // Si no hay órdenes pendientes, continúa con el renderizado normal
   if (!document.querySelector(".btn-group.mb-3")) {
     createPeriodMenu(container, applyFiltersCallback, [
-      { name: "Vestidos", category: "opcion1" },
-      { name: "Polleras", category: "opcion2" },
-      { name: "Diversos", category: "opcion3" },
+      { name: "Vestidos", category: "vestidos" },
+      { name: "Polleras", category: "polleras" },
+      { name: "Diversos", category: "diversos" },
     ]);
   }
 
@@ -157,6 +157,7 @@ export function renderSalesData(
       <th>Fecha</th>
       <th>Categoría</th>
       <th>Cantidad</th>
+      <th>Descuento</th>
       <th>Precio Total</th>
     `;
   tbody.appendChild(headerRow);
@@ -175,6 +176,7 @@ export function renderSalesData(
         <td>${new Date(sale.date).toLocaleDateString()}</td>
         <td>${categoryName}</td>
         <td>${sale.quantity}</td>
+        <td>${sale.discount} %</td>
         <td>$${sale.totalPrice.toFixed(2)}</td>
       `;
     tbody.appendChild(row);

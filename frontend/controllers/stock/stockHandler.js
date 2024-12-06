@@ -6,6 +6,7 @@ import {
   handleDesactivate,
   handleNotification,
 } from "../productoControl/productEventHandler.js";
+import { hayStock } from "../productos/productos_controllers.js";
 
 export async function agregarEventListenerBotones() {
   const titulo = document.querySelector("[data-titulo]");
@@ -30,9 +31,14 @@ export async function agregarEventListenerBotones() {
           product.imagePath,
           product.description,
           product.sizes,
+          hayStock(product),
           product.isFeatured,
+          product.isActive,
+          product.inCart,
           product.section,
-          product.generalStock
+          product.generalStock,
+          product.discount,
+          product.discountExpiry
         );
 
         await productoDetalles.handleEdit();

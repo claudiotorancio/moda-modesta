@@ -8,7 +8,7 @@ import {
 import { calcularSubtotal, calcularTotal, cantidadTotal } from "./calculos.js";
 import { CarritoServices } from "../../services/carrito_services.js";
 
-class Carrito {
+export class Carrito {
   constructor() {
     this.carritoServices = new CarritoServices();
     this.costoEnvio = 0;

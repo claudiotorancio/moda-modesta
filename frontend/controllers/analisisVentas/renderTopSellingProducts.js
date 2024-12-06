@@ -19,9 +19,9 @@ export function renderTopSellingProducts(products, titulo) {
             .map(
               (product) => `
             <tr>
-              <td class="text-start">${product.productInfo.name}</td>
+              <td class="text-start">${product.productName}</td>
               <td class="text-center">${product.totalSales}</td>
-              <td class="text-end">$${product.revenueGenerated.toFixed(2)}</td>
+              <td class="text-end">$${product.totalRevenue.toFixed(2)}</td>
             </tr>
           `
             )
@@ -40,8 +40,8 @@ export function renderTopSellingProducts(products, titulo) {
   // Procesar datos para el gráfico
   const categoryData = {};
   products.forEach((product) => {
-    const category = product.productInfo.section;
-    const revenue = product.revenueGenerated;
+    const category = product.productCategory;
+    const revenue = product.totalRevenue;
 
     if (categoryData[category]) {
       categoryData[category] += revenue;

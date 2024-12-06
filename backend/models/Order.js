@@ -8,22 +8,24 @@ const orderSchema = new mongoose.Schema(
       phoneNumber: { type: String, required: true },
       userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User", // Hace referencia al modelo de usuarios
-        required: true, // Si deseas que sea obligatorio
+        ref: "User",
+        required: true,
       },
     },
     items: [
       {
         productId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
+          ref: "Vista",
           required: true,
         },
         name: { type: String, required: true },
         price: { type: Number, required: true },
+        discount: { type: Number, required: true },
         quantity: { type: Number, required: true },
-        size: { type: String },
-        hash: { type: String },
+        size: { type: String, required: false },
+        hash: { type: String, required: true },
+        category: { type: String, required: true },
       },
     ],
     totalAmount: { type: Number, required: true },
@@ -32,11 +34,11 @@ const orderSchema = new mongoose.Schema(
       province: { type: String, required: false },
       postalCode: { type: String, required: false },
     },
-    checked: { type: Boolean, required: false },
-    aceptar: { type: Boolean, required: false },
-    enCamino: { type: Boolean, required: false },
-    finalizado: { type: Boolean, required: false },
-    cancelado: { type: Boolean, required: false },
+    checked: { type: Boolean, default: false },
+    aceptar: { type: Boolean, default: false },
+    enCamino: { type: Boolean, default: false },
+    finalizado: { type: Boolean, default: false },
+    cancelado: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

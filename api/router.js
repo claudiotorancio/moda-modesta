@@ -3,7 +3,7 @@ import express, { Router, urlencoded } from "express";
 import {
   validacionesAgregarResena,
   validacionesPutResena,
-  validacionesSendMail,
+  validarOrderData,
   validacionesSuscribeMail,
   validacionesResetPassword,
   validacionesConfirmResetPassword,
@@ -449,7 +449,7 @@ router.put(
 router.post(
   "/api/sendMail",
   authenticateToken,
-  validacionesSendMail,
+  validarOrderData,
   handleValidationErrors,
   purchaseLimiter,
   sendMail

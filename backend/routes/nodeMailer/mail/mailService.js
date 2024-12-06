@@ -40,7 +40,7 @@ const getThankYouEmailHTML = (
           <tr style="background-color: #f2f2f2;">
             <th style="padding: 10px;">Nombre del Producto</th>
             <th style="padding: 10px;">Cantidad</th>
-            <th style="padding: 10px;">Talle</th>
+            <th style="padding: 10px;">Talle/Unidad</th>
             <th style="padding: 10px;">Precio</th>
           </tr>
         </thead>

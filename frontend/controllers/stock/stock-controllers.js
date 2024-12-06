@@ -4,6 +4,7 @@ import envioServices from "../../services/envio_services.js";
 import productoServices from "../../services/product_services.js";
 import { createProductElement } from "./createTableStock.js";
 import { agregarEventListenerBotones } from "./stockHandler.js";
+import { hayStock } from "../productos/productos_controllers.js";
 
 export class StockControllers {
   constructor(titulo) {
@@ -66,11 +67,6 @@ export class StockControllers {
             generalStock,
           } = producto;
 
-          // Lógica para verificar si hay stock
-          const hayStock = generalStock
-            ? producto.generalStock > 0 // Verifica stock general para "Diversos"
-            : producto.sizes.some((item) => item.stock > 0); // Verifica stock por talla para otras secciones
-
           const productoDiv = createProductElement(
             _id,
             name,
@@ -78,7 +74,7 @@ export class StockControllers {
             sizes,
             isActive,
             isFeatured,
-            hayStock,
+            hayStock(producto),
             generalStock,
             notificaciones
           );

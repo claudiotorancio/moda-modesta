@@ -80,11 +80,77 @@ const validacionesFinalizarPedido = [validacionesIdParam];
 
 const validacionesCancelarPedido = [validacionesIdParam];
 
-const validacionesSendMail = [
-  validarEmail(),
-  validarCampo("nombre", "El nombre es obligatorio."),
-  validarCampo("telefono", "El telefono es obligatorio.", true),
+// Validación de datos de la orden
+const validarOrderData = [
+  body("nombre").notEmpty().withMessage("El nombre es obligatorio.").trim(),
+
+  body("email")
+    .notEmpty()
+    .withMessage("El correo electrónico es obligatorio.")
+    .isEmail()
+    .withMessage("Debes proporcionar un correo electrónico válido.")
+    .trim(),
+
+  body("telefono")
+    .notEmpty()
+    .withMessage("El teléfono es obligatorio.")
+    .isNumeric()
+    .withMessage("El teléfono debe ser un número.")
+    .trim(),
+
+  body("provincia")
+    .optional() // No requiere validación porque es opcional
+    .trim()
+    .isString()
+    .withMessage("La provincia debe ser un valor válido."), // Si se proporciona, debe ser una cadena válida
+
+  body("codigoPostal")
+    .optional() // Campo opcional
+    .isNumeric()
+    .withMessage("El código postal debe ser numérico.") // Valida que sea numérico
+    .trim(), // Aplica un recorte al valor
+
+  body("productos")
+    .isArray({ min: 1 })
+    .withMessage("Debe haber al menos un producto en la orden.")
+    .bail()
+    .custom((value) => {
+      value.forEach((item, index) => {
+        if (
+          !item.id ||
+          !item.name ||
+          !item.price ||
+          typeof item.discount !== "number" ||
+          item.discount < 0 ||
+          item.discount > 100 ||
+          !item.cantidad ||
+          !item.size ||
+          !item.hash ||
+          !item.category
+        ) {
+          throw new Error(`Faltan campos en el producto #${index + 1}.`);
+        }
+      });
+      return true;
+    }),
+
+  body("total")
+    .notEmpty()
+    .withMessage("El total es obligatorio.")
+    .isFloat({ gt: 0 })
+    .withMessage("El total debe ser un número mayor a cero."),
+
+  body("costoEnvio")
+    .notEmpty()
+    .isFloat({ min: 0 })
+    .withMessage("El costo de envío debe ser un número válido."),
+
+  body("checked")
+    .isBoolean()
+    .withMessage("El campo 'checked' debe ser un valor booleano."),
 ];
+
+export default validarOrderData;
 
 const validacionesSuscribeMail = [
   validarCampo("nombre", "El nombre es obligatorio."),
@@ -344,7 +410,7 @@ export {
   validacionesAceptarPedido,
   validacionesCancelarPedido,
   validacionesFinalizarPedido,
-  validacionesSendMail,
+  validarOrderData,
   validacionesSuscribeMail,
   validacionesEnviarPromociones,
   validacionesCostoEnvio,

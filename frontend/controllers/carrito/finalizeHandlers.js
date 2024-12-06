@@ -139,11 +139,12 @@ export async function handleFinalizePurchase() {
       const telefono = document.querySelector("#phoneNumber").value;
 
       const productos = this.items?.map((item) => {
-        const size = item.size ? item.size : null;
+        const size = item.size ? item.size : "Un.";
         return {
           id: item.productId,
           name: item.name,
           price: item.price,
+          discount: item.discount,
           cantidad: item.cantidad,
           size: size,
           hash: item.productId,
@@ -163,15 +164,17 @@ export async function handleFinalizePurchase() {
         checked: this.isChecked || false,
       };
 
+      console.log(datosCompra);
+
       try {
         await mailServices.sendMail(datosCompra);
       } catch (error) {
         console.error("Error al enviar los datos de la compra:", error);
-        alert(
-          "Hubo un problema al procesar la compra. Por favor, intente nuevamente."
-        );
+        // alert(
+        //   "Hubo un problema al procesar la compra. Por favor, intente nuevamente."
+        // );
       }
-      this.limpiarCarrito?.();
+      // this.limpiarCarrito?.();
     }
   });
 

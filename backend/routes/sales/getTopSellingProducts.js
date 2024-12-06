@@ -8,7 +8,6 @@ const getTopSellingProducts = async (req, res) => {
 
     // Obtener la categoría de la consulta
     const { category } = req.query;
-    // console.log("Query Params:", req.query);
 
     // Realizar la agregación para acumular las ventas por producto
     const topSelling = await Sale.aggregate([
@@ -19,24 +18,12 @@ const getTopSellingProducts = async (req, res) => {
         $group: {
           _id: "$productId", // Agrupar por productId
           totalSales: { $sum: "$quantity" }, // Sumar las cantidades vendidas
-        },
-      },
-      {
-        $lookup: {
-          from: "vistas",
-          localField: "_id",
-          foreignField: "_id",
-          as: "productInfo",
-        },
-      },
-      {
-        $unwind: "$productInfo", // Desenrollar para acceder a los campos de producto
-      },
-      {
-        $addFields: {
-          revenueGenerated: {
-            $multiply: ["$totalSales", "$productInfo.price"],
-          }, // Calcular ingresos generados
+          totalRevenue: { $sum: { $multiply: ["$quantity", "$price"] } }, // Calcular los ingresos totales generados por el producto
+          productName: { $first: "$name" }, // Obtener el nombre del producto
+          productPrice: { $first: "$price" }, // Obtener el precio del producto
+          productSize: { $first: "$size" }, // Obtener el tamaño del producto
+          productHash: { $first: "$hash" }, // Obtener el hash del producto
+          productCategory: { $first: "$category" }, // Obtener la categoría del producto
         },
       },
       {
@@ -47,39 +34,12 @@ const getTopSellingProducts = async (req, res) => {
       },
     ]);
 
-    // console.log("Top Selling Products:", topSelling);
-
     // Filtrar por categoría si se proporciona
     const filteredTopSelling = category
-      ? topSelling.filter((product) => product.productInfo.section === category)
+      ? topSelling.filter((product) => product.productCategory === category)
       : topSelling;
 
-    // if (filteredTopSelling.length === 0) {
-    //   console.log(`No hay productos para la categoría: ${category}`);
-    // }
-    // // Iterar sobre los productos más vendidos y actualizar o crear registros
-    // for (const product of filteredTopSelling) {
-    //   const { _id: productId, totalSales } = product;
-
-    //   const existing = await TopSellingProduct.findOne({ productId });
-
-    //   if (existing) {
-    //     existing.totalSales += totalSales;
-    //     await existing.save();
-    //   } else {
-    //     const newTopSelling = new TopSellingProduct({
-    //       productId,
-    //       totalSales,
-    //       period: "monthly", // O el período que prefieras
-    //     });
-    //     await newTopSelling.save();
-    //   }
-    // }
-
-    // console.log("topStellings:", filteredTopSelling);
-
     // Enviar la respuesta al cliente
-
     res.status(200).json(filteredTopSelling);
   } catch (error) {
     console.error("Error al obtener los productos más vendidos:", error);
