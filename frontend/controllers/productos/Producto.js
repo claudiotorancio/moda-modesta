@@ -191,7 +191,7 @@ export class Producto {
 
     if (this.discountExpiry && this.discount) {
       const countdownContainer = card.querySelector("#countdown");
-      contadorHorasDescuento(this.discountExpiry, countdownContainer);
+      contadorHorasDescuento(this.discountExpiry, countdownContainer, this);
     }
 
     card.querySelector(".img-card img").addEventListener("click", async () => {
@@ -216,6 +216,23 @@ export class Producto {
     }
 
     return card;
+  }
+
+  removeDiscount() {
+    this.discount = null; // Eliminar el descuento
+    const card = document.querySelector(`[data-product-id="${this.id}"]`); // Selecciona la tarjeta del producto
+    if (card) {
+      const priceElement = card.querySelector(".card-title");
+      if (priceElement) {
+        priceElement.innerHTML = `<span class="text-muted">$${this.price.toFixed(
+          2
+        )}</span>`;
+      }
+      const countdownContainer = card.querySelector("#countdown");
+      if (countdownContainer) {
+        countdownContainer.remove(); // Elimina el contador
+      }
+    }
   }
 
   selectSizeAmount() {

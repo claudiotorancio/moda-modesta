@@ -44,7 +44,6 @@ export const createOrder = async (data, userId) => {
     checked,
   });
 
-  console.log(newOrder);
   await newOrder.save();
 
   return newOrder;
