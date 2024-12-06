@@ -22,7 +22,7 @@ export async function contadorHorasDescuento(expiryDate, countdownContainer) {
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
       // Mostrar solo si faltan menos de 5 horas
       if (hours < 5 && countdownContainer) {
-        countdownContainer.textContent = `
+        countdownContainer.innerHTML = `
         <small class="text-info">Descuento finaliza en ${hours}h ${minutes}m ${seconds}s</small>
       `;
       }
