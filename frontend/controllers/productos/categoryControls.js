@@ -49,7 +49,9 @@ export async function initializeCategoryControls() {
   volverBtn.id = "volverBtn";
   volverBtn.textContent = "ir a inicio";
   volverBtn.classList.add("show");
-  document.body.appendChild(volverBtn);
+  if (!document.querySelector("#volverBtn")) {
+    document.body.appendChild(volverBtn);
+  }
   volverBtn.onclick = () => {
     window.location.href = "index.html"; // O puedes usar window.location.href = "index.html";
   };
