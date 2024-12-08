@@ -6,7 +6,7 @@ import { calcularEnvio } from "./calcularEnvio.js";
 import { agregarProductoCarrito } from "./agregarProductoCarrito.js";
 import { compartirProducto } from "./compartirProducto.js";
 import { notificacionesSinStock } from "./notificacionesSinStock.js";
-import { contadorHorasDescuento } from "./contadorHorasDescuento.js";
+// import { contadorHorasDescuento } from "./contadorHorasDescuento.js";
 
 export class Producto {
   constructor(
@@ -168,7 +168,7 @@ export class Producto {
            <span class="discount-tag">
           ${this.discount}% off
           </span>
-           <div id="countdown" class="text-muted small text-center mt-2"></div>
+           <!--<div id="countdown" class="text-muted small text-center mt-2"></div> (habilitar esta linea para contador) -->
           `
         : `<span class=" text-muted">$${this.price.toFixed(2)}</span> `
     }
@@ -189,10 +189,12 @@ export class Producto {
     card.innerHTML = contenido;
     card.classList.add("card");
 
-    if (this.discountExpiry && this.discount) {
-      const countdownContainer = card.querySelector("#countdown");
-      contadorHorasDescuento(this.discountExpiry, countdownContainer, this);
-    }
+    // habilitar para mostrar contador d ehoras
+
+    // if (this.discountExpiry && this.discount) {
+    //   const countdownContainer = card.querySelector("#countdown");
+    //   contadorHorasDescuento(this.discountExpiry, countdownContainer);
+    // }
 
     card.querySelector(".img-card img").addEventListener("click", async () => {
       this.zoomImageHandler();
@@ -216,23 +218,6 @@ export class Producto {
     }
 
     return card;
-  }
-
-  removeDiscount() {
-    this.discount = null; // Eliminar el descuento
-    const card = document.querySelector(`[data-product-id="${this.id}"]`); // Selecciona la tarjeta del producto
-    if (card) {
-      const priceElement = card.querySelector(".card-title");
-      if (priceElement) {
-        priceElement.innerHTML = `<span class="text-muted">$${this.price.toFixed(
-          2
-        )}</span>`;
-      }
-      const countdownContainer = card.querySelector("#countdown");
-      if (countdownContainer) {
-        countdownContainer.remove(); // Elimina el contador
-      }
-    }
   }
 
   selectSizeAmount() {

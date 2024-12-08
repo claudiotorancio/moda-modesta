@@ -27,12 +27,7 @@ export async function contadorHorasDescuento(expiryDate, countdownContainer) {
       `;
       }
     } else {
-      if (countdownContainer) {
-        countdownContainer.textContent = "";
-      }
-      if (producto) {
-        producto.removeDiscount(); // Restablecer el precio original
-      }
+      countdownContainer.textContent = "";
     }
   }
 
