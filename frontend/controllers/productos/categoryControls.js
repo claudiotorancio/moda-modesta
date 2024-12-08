@@ -44,6 +44,10 @@ export async function initializeCategoryControls() {
   let paginaActual = 0;
   let cargando = false;
 
+  const spinner = document.createElement("div");
+  spinner.className = "spinner";
+  contenedorSeccion.appendChild(spinner);
+
   // **Crear botón de "Volver"**
   const volverBtn = document.createElement("button");
   volverBtn.id = "volverBtn";
