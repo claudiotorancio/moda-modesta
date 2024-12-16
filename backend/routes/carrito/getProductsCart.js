@@ -43,6 +43,7 @@ const getProductsCart = async (req, res) => {
       const vista = vistas.find((v) => v._id.equals(item.productId));
       if (vista) {
         item.isActive = vista.isActive; // Actualizamos el campo isActive
+        item.discount = vista.discount;
       }
       return item;
     });
