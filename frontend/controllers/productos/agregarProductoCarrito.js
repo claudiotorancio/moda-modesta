@@ -73,9 +73,6 @@ export async function agregarProductoCarrito() {
         await carrito.agregarProducto(producto);
       } catch (error) {
         console.error("Error al agregar el producto al carrito:", error);
-      } finally {
-        // Rehabilitar el botón después de que la operación haya terminado
-        carritoButton.disabled = false;
       }
     });
   }
