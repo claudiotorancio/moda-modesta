@@ -34,6 +34,7 @@ export async function agregarProductoCarrito() {
             const messageElement = document.getElementById("message");
             messageElement.textContent = `Debes seleccionar un talle`;
             document.getElementById("messageContainer").style.display = "block";
+            carritoButton.disabled = false;
             return; // No continuar hasta que se seleccione el talle
           }
 
@@ -51,6 +52,7 @@ export async function agregarProductoCarrito() {
             const messageElement = document.getElementById("message");
             messageElement.textContent = `La cantidad debe ser un número positivo`;
             document.getElementById("messageContainer").style.display = "block";
+            carritoButton.disabled = false;
             return; // No continuar si la cantidad no es válida
           }
         }
@@ -73,8 +75,6 @@ export async function agregarProductoCarrito() {
         await carrito.agregarProducto(producto);
       } catch (error) {
         console.error("Error al agregar el producto al carrito:", error);
-      } finally {
-        // Rehabilitar el botón después de que la operación haya terminado
         carritoButton.disabled = false;
       }
     });
