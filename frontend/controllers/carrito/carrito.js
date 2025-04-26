@@ -106,6 +106,7 @@ export class Carrito {
       await this.carritoServices.deleteProductCart(this.sessionId, id);
       this.items = this.items.filter((item) => item._id !== id);
       this.actualizarSessionStorage();
+      this.costoEnvio = 0;
       this.mostrarCarrito();
     } catch (error) {
       console.error("Error al eliminar producto:", error);
