@@ -335,7 +335,7 @@ router.post(
   "/api/notificacionSinStock",
   validacionesNotificacionesSinStock,
   handleValidationErrors,
-  requireAdmin,
+  // requireAdmin,
   notificacionSinStock
 );
 router.get(
