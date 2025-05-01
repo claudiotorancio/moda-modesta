@@ -28,6 +28,7 @@ const notificacionSinStock = async (req, res) => {
     const existingNotification = await Notification.findOne({
       email,
       productId,
+      notified: false,
     });
     if (existingNotification) {
       return res.status(400).json({
@@ -41,13 +42,11 @@ const notificacionSinStock = async (req, res) => {
 
     await notification.save();
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        message:
-          "Notificacion guardada! te avisaremos cuando tengamos ingeso del producto..",
-      });
+    res.status(201).json({
+      success: true,
+      message:
+        "Notificacion guardada! te avisaremos cuando tengamos ingeso del producto..",
+    });
   } catch (error) {
     console.error("Error al guardar la notificacion", error.message);
     res.status(500).json({
