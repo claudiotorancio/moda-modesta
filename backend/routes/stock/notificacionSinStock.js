@@ -28,7 +28,7 @@ const notificacionSinStock = async (req, res) => {
     const existingNotification = await Notification.findOne({
       email,
       productId,
-      notified: true,
+      notified: false,
     });
     if (existingNotification) {
       return res.status(400).json({
