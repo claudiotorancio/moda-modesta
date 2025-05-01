@@ -43,7 +43,11 @@ const notificacionSinStock = async (req, res) => {
 
     res
       .status(201)
-      .json({ success: true, message: "Notificacion enviada con exito!" });
+      .json({
+        success: true,
+        message:
+          "Notificacion guardada! te avisaremos cuando tengamos ingeso del producto..",
+      });
   } catch (error) {
     console.error("Error al guardar la notificacion", error.message);
     res.status(500).json({
