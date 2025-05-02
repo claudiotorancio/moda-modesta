@@ -31,9 +31,13 @@ const notificacionSinStock = async (req, res) => {
       notified: true,
     });
 
-    //borrar notificacion expirada
+    //si existe borrar notificacion expirada
     if (expiringNotification) {
       await Notification.findByIdAndDelete(expiringNotification._id);
+    } else {
+      return res
+        .status(400)
+        .json({ error: "No existen notificaciones expiradas" });
     }
 
     // Verificar si el usuario ya existe
