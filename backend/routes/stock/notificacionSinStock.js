@@ -24,12 +24,23 @@ const notificacionSinStock = async (req, res) => {
     // Conectar a la base de datos si es necesario
     await connectToDatabase();
 
+    // encontrar notificacion expirada
+    const expiringNotification = await Notification.findOne({
+      email,
+      productId,
+      notified: true,
+    });
+
+    //borrar notificacion expirada
+    await Notification.findByIdAndDelete(expiringNotification._id);
+
     // Verificar si el usuario ya existe
     const existingNotification = await Notification.findOne({
       email,
       productId,
       notified: false,
     });
+
     if (existingNotification) {
       return res.status(400).json({
         error:
@@ -45,7 +56,7 @@ const notificacionSinStock = async (req, res) => {
     res.status(201).json({
       success: true,
       message:
-        "Notificacion guardada! te avisaremos cuando tengamos ingeso del producto..",
+        "Notificacion guardada! te avisaremos cuando ingrese el producto..",
     });
   } catch (error) {
     console.error("Error al guardar la notificacion", error.message);
